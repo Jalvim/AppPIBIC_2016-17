@@ -1,7 +1,24 @@
 var express = require('express'),
 	app = express(),
 	request = require('request'),
-	fs = require('fs');
+	fs = require('fs'),
+	mysql = require('mysql');
+	
+var connection = mysql.createConnection({
+	host : '79.170.40.183',
+	user : 'cl19-dbpipibic',
+	password : 'XXXXXXXXXXX',
+	database : 'cl19-dbpipibic'
+});
+
+connection.connect();
+
+connection.query('INSERT INTO Paciente (nomePaciente) VALUES ("José Júnior")', 
+function(error, result, fields){
+	console.log(error);
+	console.log(result);
+	console.log(fields);
+});
 	
 
 //Fazer request GET para puxar dados de HR meus da API da FitBit	
@@ -36,8 +53,7 @@ function getHRCallback(errors, response, body) {
 		//adicionar código de automação de refresh access token
 		//Adicionado código de automação para refresh de token de acesso
 		//TO DO: 
-		//tokenRefreshAuthorization necessita do id de usuário e segredo da aplicação no lugar dos X's para funcionar
-		var tokenRefreshAuthorization = 'Basic ' + new Buffer("XXXXXX:XXXXXXXXXXXXXXXXXXXXXXXX").toString('base64');
+		var tokenRefreshAuthorization = 'Basic ' + new Buffer("XXXXXX:XXXXXXXXXXXXXXXXXXXXXX").toString('base64');
 		console.log(tokenRefreshAuthorization);
 		
 		var	optionsRefreshToken = {
