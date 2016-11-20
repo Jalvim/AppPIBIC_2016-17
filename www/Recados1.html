@@ -47,21 +47,36 @@
             <li><a href="#Lembretes_2">#3 Lembrete</a>
             <li><a href="#Lembretes_2">#4 Lembrete</a>
         </ul>
-        <p>&nbsp; <!-- Butões -->
-        <div data-role="controlgroup"><a href="#" data-role="button">Sair</a>
-            <a href="#" data-role="button">Add</a></div>
+        <p>&nbsp; <!-- Botões -->
+        <div data-role="controlgroup">
+            <a href="#" data-role="button">Sair</a>
+            <a href="#" data-role="button">Add</a>
+        </div> <!-- Acrescntear Links -->
         </p>
+    </div>
+    <div data-role="footer">
+        <h4>PIBIC</h4>
     </div>
 </div>
 
-<div data-role="page" id="Lembretes_2"> <!-- Conteúdo dos recados em si --> </div>
-<!-- <div class="app">
-   <h1>Selecione o Dia do seu Recado</h1>
-   <div id="deviceready" class="blink">
-       <p class="event listening">Connecting to Device</p>
-       <p class="event received">Device is Ready</p>
-   </div>
-</div>-->
+<div data-role="page" id="Lembretes_2"> <!-- Pagina onde se pode escrever os recados -->
+    <div data-role="header">
+        <h1>Lembrete</h1> <!-- Título -->
+    </div>
+    <div data-role="content"> <!-- Conteúdo, com caixa de texto editável. -->
+        <textarea>
+                Escreva aqui o seu lembrete.
+            </textarea>
+        <p>&nbsp; <!-- Botões -->
+        <div data-role="controlgroup">
+            <a href="#Lembretes_1" data-role="button">Sair</a>
+        </div>
+        </p>
+    </div>
+    <div data-role="footer">
+        <h4>PIBIC</h4>
+    </div>
+</div>
 
 <!-- Indexação da biblioteca do jQuery -->
 <script type="text/javascript" src="js/materialize.min.js"></script>
