@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="icons/material.css">
+    <link rel="stylesheet" href="css/materialize.min.css">
+    <title>Lista de Pacientes</title>
+</head>
+<body>
+
+    <div data-role="page" id="Pacientes_1"> <!-- Criação de Lista de Lembretes -->
+        <div data-role="header">
+            <h1>Lista de Pacientes</h1>
+        </div>
+        <div data-role="content">
+            <ul data-role="listview">
+                <li><a href="#Pacientes_2">#1 Paciente</a> <!-- Ítens da lista de lembretes -->
+                <li><a href="#Pacientes_2">#2 Paciente</a>
+                <li><a href="#Pacientes_2">#3 Paciente</a>
+                <li><a href="#Pacientes_2">#4 Paciente</a>
+            </ul>
+            <p>&nbsp; <!-- Botões -->
+            <div data-role="controlgroup">
+                <a href="#" data-role="button">Sair</a>
+                <a href="#" data-role="button">Add</a>
+            </div> <!-- Acrescntear Links -->
+            </p>
+        </div>
+        <div data-role="footer">
+            <h4>PIBIC</h4>
+        </div>
+    </div>
+
+    <div data-role="page" id="Pacientes_2"> <!-- Pagina onde se pode escrever os recados -->
+        <div data-role="header">
+            <h1>Lembrete</h1> <!-- Título -->
+        </div>
+        <div data-role="content">
+            <!-- Adicionar aqui pág de perfil do paciente -->
+            <p>&nbsp; <!-- Botões -->
+            <div data-role="controlgroup">
+                <a href="#Pacientes_1" data-role="button">Sair</a>
+            </div>
+            </p>
+        </div>
+        <div data-role="footer">
+            <h4>PIBIC</h4>
+        </div>
+    </div>
+
+    <script src="css\materialize-src\jquery.min.js"></script>
+    <script src="css\materialize-src\js\bin\materialize.min.js"></script>
+</body>
+</html>
