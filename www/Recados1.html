@@ -1,83 +1,43 @@
 <!DOCTYPE html>
-<!--
-    Licensed to the Apache Software Foundation (ASF) under one
-    or more contributor license agreements.  See the NOTICE file
-    distributed with this work for additional information
-    regarding copyright ownership.  The ASF licenses this file
-    to you under the Apache License, Version 2.0 (the
-    "License"); you may not use this file except in compliance
-    with the License.  You may obtain a copy of the License at
-
-    http://www.apache.org/licenses/LICENSE-2.0
-
-    Unless required by applicable law or agreed to in writing,
-    software distributed under the License is distributed on an
-    "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
-     KIND, either express or implied.  See the License for the
-    specific language governing permissions and limitations
-    under the License.
--->
 <html>
+
 <head>
-    <!--
-    Customize this policy to fit your own app's needs. For more guidance, see:
-        https://github.com/apache/cordova-plugin-whitelist/blob/master/README.md#content-security-policy
-    Some notes:
-        * gap: is required only on iOS (when using UIWebView) and is needed for JS->native communication
-        * https://ssl.gstatic.com is required only on Android and is needed for TalkBack to function properly
-        * Disables use of inline scripts in order to mitigate risk of XSS vulnerabilities. To change this:
-            * Enable inline JS: add 'unsafe-inline' to default-src
-    -->
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta charset="utf-8">
-    <link rel="stylesheet" href="icons/material.css">
-    <link rel="stylesheet" href="css/materialize.min.css">
-    <title>Lista de Lembretes</title>
+
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0"/>
+  <title>Lista de Lembretes</title>
+
+  <!-- CSS  -->
+  <link rel="stylesheet" href="icons/material.css">
+  <link rel="stylesheet" href="css\materialize-src\js\bin\materialize.min.css">
+  <link rel="stylesheet" href="css\estilos.css">
+
 </head>
+
 <body>
 
-<div data-role="page" id="Lembretes_1"> <!-- Criação de Lista de Lembretes -->
-    <div data-role="header">
-        <h1>Lista de Lembretes</h1>
+  <nav>
+    <div class="nav-wrapper blue lighten-1">
+      <a href="#" class="brand-logo center">Lista de Lembretes</a>
+      <ul id="nav-mobile" class="left hide-on-med-and-down">
+        <li><a href="index.html"><i class="material-icons">menu</i></a></li>
+      </ul>
+      <ul id="nav-mobile" class="right hide-on-med-and-down">
+        <li><a href="telainicial.html">Voltar</a></li>
+      </ul>
+      
     </div>
-    <div data-role="content">
-        <ul data-role="listview">
-            <li><a href="#Lembretes_2">#1 Lembrete</a> <!-- Ítens da lista de lembretes -->
-            <li><a href="#Lembretes_2">#2 Lembrete</a>
-            <li><a href="#Lembretes_2">#3 Lembrete</a>
-            <li><a href="#Lembretes_2">#4 Lembrete</a>
-        </ul>
-        <p>&nbsp; <!-- Botões -->
-        <div data-role="controlgroup">
-            <a href="#" data-role="button">Sair</a>
-            <a href="#" data-role="button">Add</a>
-        </div> <!-- Acrescntear Links -->
-        </p>
-    </div>
-    <div data-role="footer">
-        <h4>PIBIC</h4>
-    </div>
-</div>
+  </nav>
 
-<div data-role="page" id="Lembretes_2"> <!-- Pagina onde se pode escrever os recados -->
-    <div data-role="header">
-        <h1>Lembrete</h1> <!-- Título -->
+    <div class="collection">
+        <a href="#!" class="collection-item">Lembrete #1</a>
+        <a href="#!" class="collection-item">Lembrete #2</a>
+        <a href="#!" class="collection-item">Lembrete #3</a>
+        <a href="#!" class="collection-item">Lembrete #4</a>
     </div>
-    <div data-role="content"> <!-- Conteúdo, com caixa de texto editável. -->
-        <textarea>Escreva aqui o seu Lembrete</textarea>
-        <p>&nbsp; <!-- Botões -->
-        <div data-role="controlgroup">
-            <a href="#Lembretes_1" data-role="button">Sair</a>
-        </div>
-        </p>
-    </div>
-    <div data-role="footer">
-        <h4>PIBIC</h4>
-    </div>
-</div>
 
-<!-- Indexação da biblioteca do jQuery -->
-<script type="text/javascript" src="js/materialize.min.js"></script>
-<script type="text/javascript" src="js/jquery.mobile-1.4.5.min.js"></script>
+  <a class="right btn-floating btn-large waves-effect waves-light blue"><i class="material-icons">add</i></a>
+
+
 </body>
 </html>
