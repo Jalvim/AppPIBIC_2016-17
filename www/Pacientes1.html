@@ -63,7 +63,56 @@
     </li>
   </ul>
 
-  <a class="right btn-floating btn-large waves-effect waves-light blue"><i class="material-icons">add</i></a>
+    <div class="fixed-action-btn">
+        <a class="btn-floating btn-large waves-effect waves-light blue modal-trigger"
+           href="#confirmacao" id="confirmar">
+            <i class="material-icons">add</i>
+        </a>
+    </div>
 
+    <div id="confirmacao" class="modal modal-fixed-footer">
+       <div class="modal-content">
+           <h4 class="center">Adicionar novo Paciente</h4>
+           <div class="icon-block">
+           <h2 class="center light-blue-text"><i class="material-icons">group</i></h2>
+           </div>
+           <h6>Nome do Paciente:</h6>
+           <input id="nome-paciente" type="text" class="validate" placeholder="Inserir nome">
+           <blockquote id="add-paciente"></blockquote>
+           <h6>Idade:</h6>
+           <input id="idade-paciente" type="number" class="validate" placeholder="Inserir idade">
+           <blockquote id="add-paciente"></blockquote>
+           <h6>Data da Internação:</h6>
+           <input id="data-internacao" type="date" class="validate">
+           <blockquote id="add-paciente"></blockquote>
+           <h6>Causa da Internação:</h6>
+           <input id="causa-internacao" type="text" class="validate" placeholder="Inserir causa">
+           <blockquote id="add-paciente"></blockquote>
+           <div style="width: 100%; overflow: hidden;">
+               <div style="width: 50%; float: left;">Sincronizar em tempo real</div>
+           <div style="width: 50%; float: right;" class="switch right"> 
+           <!-- Switch -->
+           <label>
+               Não
+           <input type="checkbox">
+           <span class="lever"></span>
+               Sim
+           </label>
+           </div>
+           </div>
+       </div>
+       <div class="modal-footer">
+           <button class="btn blue lighten-1 waves-effect waves-light modal-close">
+               Salvar
+           </button>
+           <button class="btn-flat waves-effect waves-red modal-close acao-limpar">
+               Cancelar
+           </button>
+       </div>
+   </div>
+
+    <script src="js/jquery.min.js"></script>
+    <script src="js/materialize.min.js"></script>
+    <script src="js/app.js"></script>
 </body>
 </html>

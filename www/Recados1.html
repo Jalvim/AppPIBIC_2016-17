@@ -17,26 +17,60 @@
 <body>
 
   <nav>
-    <div class="nav-wrapper blue lighten-1">
+    <div class="nav-wrapper blue lighten-2">
       <a href="#" class="brand-logo center">Lista de Lembretes</a>
-      <ul id="nav-mobile" class="left hide-on-med-and-down">
-        <li><a href="index.html"><i class="material-icons">menu</i></a></li>
-      </ul>
-      <ul id="nav-mobile" class="right hide-on-med-and-down">
-        <li><a href="telainicial.html">Voltar</a></li>
+      <ul class="right">
+        <li><a class="waves-effect waves-light modal-trigger" 
+                href="#adicionarLembrete" id="addLembrete"><i class="material-icons">add</i></a></li>
       </ul>
       
     </div>
   </nav>
 
-    <div class="collection">
-        <a href="#!" class="collection-item">Lembrete #1</a>
-        <a href="#!" class="collection-item">Lembrete #2</a>
-        <a href="#!" class="collection-item">Lembrete #3</a>
-        <a href="#!" class="collection-item">Lembrete #4</a>
-    </div>
+    <ul id="listaLembretes" class="collection">
+        <li href="#confirmarRemov" class="collection-item modal-trigger">Lembrete #1</li>
+        <li href="#confirmarRemov" class="collection-item modal-trigger">Lembrete #2</li>
+        <li href="#confirmarRemov" class="collection-item modal-trigger">Lembrete #3</li>
+        <li href="#confirmarRemov" class="collection-item modal-trigger">Lembrete #4</li>
+    </ul>
 
-  <a class="right btn-floating btn-large waves-effect waves-light blue"><i class="material-icons">add</i></a>
+    <div id="adicionarLembrete" class="modal modal-fixed-footer">
+       <div class="modal-content">
+           <h4 class="center">Adicionar novo Lembrete</h4>
+           <input id="lembrete" type="text" class="validate" placeholder="Escreva aqui seu Lembrete">
+           <blockquote id="add-paciente"></blockquote>
+       </div>
+       <div class="modal-footer">
+           <button id="salvaLembrete" onclick="newElement()" class="btn blue lighten-1 waves-effect waves-light modal-close">
+               Salvar
+           </button>
+           <button id="cancelarLembrete" onclick="clearText()" class="btn-flat waves-effect waves-red modal-close acao-limpar">
+               Cancelar
+           </button>
+       </div>
+   </div>
+
+    <div id="confirmarRemov" class="modal modal-fixed-footer">
+       <div class="modal-header">
+           <h4 class="center">Tem certeza que quer remover esse lembrete?</h4>
+       </div>
+       <div class="modal-body">
+
+       </div>
+
+       <div class="modal-footer">
+           <button id="simDelete" onclick="removeElement()" class="btn-flat lighten-1 right waves-effect waves-light modal-close">
+               Sim
+           </button>
+           <button id="naoDelete" class="btn-flat waves-effect left waves-red modal-close acao-limpar">
+               Não
+           </button>
+       </div>
+   </div>
+
+    <script src="js/jquery.min.js"></script>
+    <script src="js/materialize.min.js"></script>
+    <script src="js/lembretes.js"></script>
 
 
 </body>
