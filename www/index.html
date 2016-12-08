@@ -1,6 +1,6 @@
 <!DOCTYPE html>
-<html lang="en">
-<body>
+
+
 <!-----------------------Codigo de Pacientes---------------------------------------------->
 <head>
 
@@ -9,18 +9,22 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0"/>
 
   <title>
-Lista de Pacientes
+MEDICOSPIBIC
 </title>
-<div data-role ="content">
+
  <link rel="stylesheet" href="icons/material.css">
   
 <link rel="stylesheet" href="css\materialize-src\js\bin\materialize.min.css">
 
   <link rel="stylesheet" href="css\estilos.css">
-
+    <script	src="css\materialize-src\jquery.min.js"></script>
+    <script	src="css\materialize-src\js\bin\materialize.min.js"></script>
 </head>
 
+<div data-role="page" id="paciente" >
 
+
+    <div data-role ="content">
   <nav>
     <div class="nav-wrapper blue lighten-1">
    
@@ -29,8 +33,10 @@ Lista de Pacientes
    
   <ul id="nav-mobile" class="right hide-on-med-and-down">
       
-   <li> <a href="EdicaoPerfilPaciente.html" class="right btn-floating btn-large waves-effect waves-light blue"><i class="material-icons">add</i></a>
- </a></li> </ul>
+   <li> <a href="EdicaoPerfilPaciente.html" class="right btn-floating btn-large waves-effect waves-light blue"><i class="material-icons">
+       add</i></a>
+   </li>
+  </ul>
       
     </div>
   </nav>
@@ -75,31 +81,31 @@ Lista de Pacientes
 
  </div>
 
-<div data-role="footer" blue-text data-id="foot" data-position="fixed" >
+<div data-role="footer"  data-id="foot" data-position="fixed" >
 <div data-role="navbar">
 <ul>
-<li> <a href=AppPIBIC_2016-17-master\www\Pacientes1.html></a></li>
-<li> <a href=AppPIBIC_2016-17-master\www\perfilMedico.html></a></li>
-<li> <a href=AppPIBIC_2016-17-master\www\Recados1.html></a></li>
+<li> <a class="ui-btn-active" href="#paciente">
+</a>
+</li>
+<li> <a href="#medico">
+
+</a>
+</li>
+<li>
+    <a href="#lembrete">
+    </a>
+</li>
 </ul>
 </div>
+</div>
+</div>
+
 <!--- Codigo de Medicos--------->
-<head>
- <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0"/>
-  
-<title>Perfil do M�dico (ESQUELETO)
-</title>
-  <!-- CSS  -->
-<link rel="stylesheet" href="icons/material.css">
-
-  <link rel="stylesheet" href="css\materialize-src\js\bin\materialize.min.css">
-  <link rel="stylesheet" href="css\estilos.css">
-
-</head>
 
 
- 
+
+ <div data-role="page" id="medico">
+
 
 <div data-role="content">
 <nav>
@@ -108,9 +114,11 @@ Lista de Pacientes
 
 
 
-     <a href="#" class="brand-logo center">Perfil do M�dico</a>
-  </div>
+     <a href="#" class="brand-logo center">Perfil do Médico</a>
+    </div>
   </nav>
+
+
 
   	<div class="icon-block">
  		<h2 class="center light-blue-text"><i class="material-icons">group</i></h2>
@@ -130,52 +138,36 @@ Lista de Pacientes
       </div>
       <br><br>
      <h5 class="left">Estat�sticas</h5>
-
     </div>
  </div> 
 
 
 </div>
+ </div>
 
-<div data-role="footer" blue-text data-id="foot" data-position="fixed" >
+<div data-role="footer"  data-id="foot" data-position="fixed" >
 <div data-role="navbar">
 <ul>
-<li> <a href=AppPIBIC_2016-17-master\www\Pacientes1.html></a></li>
-<li> <a href=AppPIBIC_2016-17-master\www\perfilMedico.html></a></li>
-<li> <a href=AppPIBIC_2016-17-master\www\Recados1.html></a></li>
+<li> <a href="#AppPIBIC_2016-17-master\www\Pacientes1.html"></a></li>
+<li> <a  class="ui-btn-active" href="#AppPIBIC_2016-17-master\www\perfilMedico.html"></a></li>
+<li> <a href="#AppPIBIC_2016-17-master\www\Recados1.html"></a></li>
 
 </ul>
 </div>
+</div>
+</div>
 
 
-<head>
+
 
  
- <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
- 
- <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0"/>
- 
-
-
- <title>Lista de Lembretes</title>
-
-  <!-- CSS  -->
-  
-
-<link rel="stylesheet" href="icons/material.css">
-  <link rel="stylesheet" href="css\materialize-src\js\bin\materialize.min.css">
-  <link rel="stylesheet" href="css\estilos.css">
-
-</head>
-
- 
-
+<div data-role="page" id="lembrete">
 
 <div data-role="content">
  <nav>
     <div class="nav-wrapper blue lighten-1">
       <a href="#" class="brand-logo center">Lista de Lembretes</a>
-  <ul id="nav-mobile" class="right hide-on-med-and-down">
+  <ul id="1nav-mobile" class="right hide-on-med-and-down">
 
 <li> <a href="#" class="right btn-floating btn-large waves-effect waves-light blue"><i class="material-icons">add</i></a> 
 </li>
@@ -192,17 +184,18 @@ Lista de Pacientes
         <a href="#!" class="collection-item">Lembrete #4</a>
     </div>
 <div data-role="footer" blue-text data-id="foot" data-position="fixed" >
-<div data-role="navbar">
+<data-role="navbar">
 <ul>
-<li> <a href=AppPIBIC_2016-17-master\www\Pacientes1.html></a></li>
-<li> <a href=AppPIBIC_2016-17-master\www\perfilMedico.html></a></li>
-<li> <a href=AppPIBIC_2016-17-master\www\Recados1.html></a></li>
+<li> <a href="#paciente"></a></li>
+<li> <a href="#medico"></a></li>
+<li> <a class="#lembrete"></a></li>
 </ul>
 </div>
-<script	src="css\materialize-src\jquery.min.js"></script>
-				<script	src="css\materialize-src\js\bin\materialize.min.js"></script>
+</div>
 
-</body>
+</div>
+</div>
+
 
 
 </html>
