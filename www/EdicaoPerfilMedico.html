@@ -1,61 +1,63 @@
-
-
+<!DOCTYPE html>
+<html>
 
 <head>
 
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0"/>
-  <title>Cadastro</title>
+  <title>Cadastro Médico</title>
 
   <link rel="stylesheet" href="icons/material.css">
   <link rel="stylesheet" href="css\materialize-src\js\bin\materialize.min.css">
   <link rel="stylesheet" href="css\estilos.css">
-	<div class="well bg-white box-login">
-		<h1 class="ls-login-logo">MEDICOSPIBIC</h1>
 		
- </head>
+</head>
 
 <body>
 
-
- <!-----------------------------Confirmacao ou cancelamento de modificacoes---------------->
-  <ul id="nav-mobile" class="right hide-on-med-and-down">
+  <!-- Nav bar no topo  -->
+  <nav>
+    <div class="nav-wrapper blue lighten-2">
+      <a class="brand-logo center">Editar Perfil</a>
+      <ul class="right">
+        <li><a href="perfilMedico.html" class="waves-effect waves-light"><i class="material-icons">done</i></a></li>
+      </ul>
       
-   <li> <a href="#" class="right btn-floating btn-large waves-effect waves-light blue">Confirmar</a>
- </a></li> </ul>
-      
+    </div>
+  </nav>
 
- <ul id="nav-mobile" class="left hide-on-med-and-down">
-      
-   <li> <a href="#" class="left btn-floating btn-large waves-effect waves-light blue">Cancelar</a>
- </a></li> </ul>
-      
+	<!-- Opcoes para mudar -->
+	<div class="form-group black-text ls-login-user">
+		<label for="userLogin">Nome</label>
+			<input class="form-control ls-login-bg-user input-lg" id="nomeMD" type="text">
+	</div>
 
+	<div class="form-group black-text ls-login-user">
+		<label for="userLogin">CRM</label>
+			<input class="form-control ls-login-bg-user input-lg" id="crm_MD" type="number">
+	</div>	
 
-<!-----------------------------------Opcoes para mudar------------------------------------------------>
-<div class="form-group black-text ls-login-user">
-					<label for="userLogin">Nome de Usuario</label>
-					<input class="form-control ls-login-bg-user input-lg" id="userLogin" type="text">
-				</div>
+	<div class="form-group black-text ls-login-user">
+		<label for="userLogin">Telefone</label>
+			<input class="form-control ls-login-bg-user input-lg" id="telMD" type="tel">
+	</div>
 
-				<div class="form-group black-text ls-login-user">
-					<label for="userLogin">Especialidade</label>
-					<input class="form-control ls-login-bg-user input-lg" id="userLogin" type="text">
-				</div>
+	<div class="form-group black-text ls-login-user">
+		<label for="userLogin">Email</label>
+			<input class="form-control ls-login-bg-user input-lg" id="emailMD" type="email">
+	</div>
+
+	<div class="form-group black-text ls-login-user">
+		<label for="userLogin">Especialidade</label>
+			<input class="form-control ls-login-bg-user input-lg" id="especMD" type="text">
+	</div>
+
+	<div class="row center">
+        <a href="perfilMedico.html" id="cancel-button" class="btn-large waves-effect waves-light blue lighten-2">Cancelar</a>
+    </div>
  
+	<script	src="css\materialize-src\jquery.min.js"></script>
+	<script	src="css\materialize-src\js\bin\materialize.min.js"></script>
 
-
-
-				<div class="form-group black-text ls-login-user">
-					<label for="userLogin">Contato</label>
-					<input class="form-control ls-login-bg-user input-lg" id="userLogin" type="text">
-				</div>
-
-
-
-
- 
-<script	src="css\materialize-src\jquery.min.js"></script>
-				<script	src="css\materialize-src\js\bin\materialize.min.js"></script>
 </body>
  
