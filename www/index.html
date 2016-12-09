@@ -1,47 +1,60 @@
+
+
 <!DOCTYPE html>
+<html>
 
-
-<!-----------------------Codigo de Pacientes---------------------------------------------->
+<!--------------------------------------------Estilo unico das páginas---------------------------------------->
 <head>
 
-  
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0"/>
 
-  <title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0"/>
+
+<title>
 MEDICOSPIBIC
 </title>
 
- <link rel="stylesheet" href="icons/material.css">
+<link rel="stylesheet" href="icons/material.css">
   
 <link rel="stylesheet" href="css\materialize-src\js\bin\materialize.min.css">
 
   <link rel="stylesheet" href="css\estilos.css">
     <script	src="css\materialize-src\jquery.min.js"></script>
     <script	src="css\materialize-src\js\bin\materialize.min.js"></script>
+
+
 </head>
+<!------------------------------------------conteudo da lista de pacientes------------------------------------------>
 
-<div data-role="page" id="paciente" >
+  <nav class="nav-extended">
+<div class="nav-wrapper blue lighten-1">
+    <a href="#" class="brand-logo center">Lista de Pacientes</a>
 
 
-    <div data-role ="content">
-  <nav>
-    <div class="nav-wrapper blue lighten-1">
-   
-   <a href="#" class="brand-logo center">Lista de Pacientes</a>
-  
-   
-  <ul id="nav-mobile" class="right hide-on-med-and-down">
-      
-   <li> <a href="EdicaoPerfilPaciente.html" class="right btn-floating btn-large waves-effect waves-light blue"><i class="material-icons">
-       add</i></a>
-   </li>
-  </ul>
-      
-    </div>
-  </nav>
+    <ul id="nav-mobile1" class="right hide-on-med-and-down">
 
-  <ul class="collection">
+        <li> <a href="EdicaoPerfilPaciente.html" class="right btn-floating btn-large waves-effect waves-light blue"><i class="material-icons">
+            add</i></a>
+        </li>
+    </ul>
+
+
+
+<!---------------------------------------------------rodapé------------------------------------------------------->
+    <ul class="tabs tabs-transparent">
+        <li class="tab"><a  class="active" href="#paciente">Pacientes</a></li>
+        <li class="tab"><a href="#medico">Perfil</a></li>
+        <li class="tab"><a href="#lembrete">Lembretes</a></li>
+
+    </ul>
+</div>
+
+</nav>
+<!-----------------------------------------------------pagina dos pacientes-------------------------------->
+<div id="paciente" class="cool s12">
+
+
+    <ul class="collection">
     <li class="collection-item avatar">
       <a href="perfilPaciente.html"><i class="material-icons circle yellow">grade</i></a>
       <span class="title">Paciente #1</span>
@@ -75,48 +88,34 @@ MEDICOSPIBIC
       <a href="#!" class="secondary-content"><i class="small material-icons">grade</i></a>
     </li>
   </ul>
+        </div>
 
-
-
-
- </div>
-
-<div data-role="footer"  data-id="foot" data-position="fixed" >
-<div data-role="navbar">
-<ul>
-<li> <a class="ui-btn-active" href="#paciente">
-</a>
-</li>
-<li> <a href="#medico">
-
-</a>
-</li>
-<li>
-    <a href="#lembrete">
-    </a>
-</li>
-</ul>
-</div>
-</div>
-</div>
 
 <!--- Codigo de Medicos--------->
 
 
 
- <div data-role="page" id="medico">
 
 
-<div data-role="content">
-<nav>
+<nav class="nav-extended">
     <div class="nav-wrapper blue lighten-1">
- 
 
 
+        <a href="#" class="brand-logo center">Perfil do Médico</a>
 
-     <a href="#" class="brand-logo center">Perfil do Médico</a>
-    </div>
+
+<!-------------------------------------rodapé-------------------------------------------------------------------------->
+    <ul class="tabs tabs-transparent">
+        <li class="tab"><a href="#paciente">Pacientes</a></li>
+        <li class="tab"><a class="active" href="#medico">Perfil</a></li>
+        <li class="tab"><a href="#lembrete">Lembretes</a></li>
+
+    </ul>
+</div>
+
   </nav>
+<!------------------------------------------------------conteudo do perfil de medico----------------------------------------->
+<div id="Medico" class="cool s12">
 
 
 
@@ -136,65 +135,61 @@ MEDICOSPIBIC
       <div class="row center">
         <a href="EdicaoPerfilMedico.html" id="download-button" class="btn-large waves-effect waves-light blue">Editar</a>
       </div>
-      <br><br>
-     <h5 class="left">Estat�sticas</h5>
+<br><br>
+     <h5 class="left">Estatísticas</h5>
     </div>
  </div> 
 
 
 </div>
- </div>
 
-<div data-role="footer"  data-id="foot" data-position="fixed" >
-<div data-role="navbar">
-<ul>
-<li> <a href="#AppPIBIC_2016-17-master\www\Pacientes1.html"></a></li>
-<li> <a  class="ui-btn-active" href="#AppPIBIC_2016-17-master\www\perfilMedico.html"></a></li>
-<li> <a href="#AppPIBIC_2016-17-master\www\Recados1.html"></a></li>
-
-</ul>
-</div>
-</div>
-</div>
 
 
 
 
  
-<div data-role="page" id="lembrete">
 
-<div data-role="content">
- <nav>
-    <div class="nav-wrapper blue lighten-1">
-      <a href="#" class="brand-logo center">Lista de Lembretes</a>
-  <ul id="1nav-mobile" class="right hide-on-med-and-down">
 
-<li> <a href="#" class="right btn-floating btn-large waves-effect waves-light blue"><i class="material-icons">add</i></a> 
-</li>
- </ul>
-                         <i class="material-icons">menu</i></a></li>
-      </ul>
-  </ul>
+<!------------------------------------------------codigo de lembretes-------------------------------------------->
+
+    <nav class="nav-extended">
+        <div class="nav-wrapper blue lighten-1">
+
+            <a href="#" class="brand-logo center">Lista de Lembretes</a>
+
+
+            <ul id="nav-mobile" class="right hide-on-med-and-down">
+
+                <li> <a href="#" class="right btn-floating btn-large waves-effect waves-light blue"><i class="material-icons">
+                    add</i></a>
+                </li>
+            </ul>
+
+
+            <!----------------------------rodapé--------------------------------------------------->
+            <ul class="tabs tabs-transparent">
+                <li class="tab"><a href="#paciente">Pacientes</a></li>
+                <li class="tab"><a href="#Medico">Perfil</a></li>
+                <li class="tab"><a class="active" href="#lembrete">Lembretes</a></li>
+
+            </ul>
     </div>
-  </nav>
+    </nav>
+<!------------------------------------------------------------conteudo da lista de lembretes---------------------------------->
+<div id="lembrete" class="cool s12">
+
     <div class="collection">
         <a href="#!" class="collection-item">Lembrete #1</a>
         <a href="#!" class="collection-item">Lembrete #2</a>
         <a href="#!" class="collection-item">Lembrete #3</a>
         <a href="#!" class="collection-item">Lembrete #4</a>
     </div>
-<div data-role="footer" blue-text data-id="foot" data-position="fixed" >
-<data-role="navbar">
-<ul>
-<li> <a href="#paciente"></a></li>
-<li> <a href="#medico"></a></li>
-<li> <a class="#lembrete"></a></li>
-</ul>
-</div>
-</div>
+
+
+
 
 </div>
-</div>
+
 
 
 
