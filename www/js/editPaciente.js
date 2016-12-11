@@ -1,7 +1,6 @@
-$('.modal-trigger').leanModal();
 
 // Funções que salvam as alterações feitas na edição do perfil
-function nome() {
+function nome() { // Função responsável por alterar o nome do paciente.
   var li = document.createElement('li');
   var li_class = li.setAttribute('class', 'collection-item');
   var inputValue = document.getElementById("nomePaciente").value;    // Seta o texto colocado pelo usuário
@@ -31,7 +30,7 @@ function nome() {
   }
 };
 
-function idade() {
+function idade() { // Função responsável por alterar a idade do paciente.
 
   var li = document.createElement('li');
   var li_class = li.setAttribute('class', 'collection-item');
@@ -40,7 +39,7 @@ function idade() {
   li.appendChild(t);
 
   if(inputValue = ''){
-    alert("O campo - Nome - é obrigatório");
+    alert("O campo - Idade - é obrigatório");
   } else {
     document.getElementById("idadePaciente").appendChild(li);
   }
@@ -63,7 +62,7 @@ function idade() {
 
 };
 
-function prontuario() {
+function prontuario() { // Função responsável por alterar o prontuário do paciente.
 
   var li = document.createElement('li');
   var li_class = li.setAttribute('class', 'collection-item');
@@ -72,7 +71,7 @@ function prontuario() {
   li.appendChild(t);
 
   if(inputValue = ''){
-    alert("O campo - Nome - é obrigatório");
+    alert("O campo - Prontuário - é obrigatório");
   } else {
     document.getElementById("idPaciente").appendChild(li);
   }
@@ -95,7 +94,7 @@ function prontuario() {
 
 };
 
-function internacao() {
+function internacao() { // Função responsável por alterar a causa de internação do paciente.
 
   var li = document.createElement('li');
   var li_class = li.setAttribute('class', 'collection-item');
@@ -104,7 +103,7 @@ function internacao() {
   li.appendChild(t);
 
   if(inputValue = ''){
-    alert("O campo - Nome - é obrigatório");
+    alert("O campo - Causa de internação - é obrigatório");
   } else {
     document.getElementById("causaPaciente").appendChild(li);
   }
@@ -129,7 +128,7 @@ function internacao() {
 
 function del() {};
 
-function add() {
+function add() { // Função responsável por adicionar um novo paciente na lista, ocntendo todos os dados necessários.
 
   nome();
   idade();
