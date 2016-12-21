@@ -1,6 +1,13 @@
 /*
+Código fonte Back end do PIBIC de Pulseiras Inteligentes
+Faculdade de Tecnologia - UnB
+
 Módulo setupOptionVariables
-contém objetos javascript literais para testes às apis endpoint nativas do projeto das pulseiras inteligentes.
+Contém objetos javascript literais para testes às apis endpoint nativas do projeto das pulseiras inteligentes.
+O pacote npm usado para executar requests http é chamado Request, e este permite por meio dos objetos literais 
+Javascript passados à função que chama a requisição, um nível de customização razoável para fins do projeto.
+Ex: configurar headers e corpos bem como o método usado no request http.
+
 */
 
 module.exports = function(app) {
@@ -10,12 +17,12 @@ module.exports = function(app) {
 		method:'POST',
 		url:'http://127.0.0.1:3000/api/paciente/geral',
 		form:{ 
-			nomePaciente: 'Alcides Guimarães',
-			causaDaInternacao: 'Dor de cabeça',
-			numeroDoProntuario: 133545,
-			telefone: 33449369,
-			foto: 000100010101,
-			dataDeNascimento: '1993-07-03'
+			nomePaciente: 'Alfredo Guimarães',
+			causaDaInternacao: 'Congestão nasal',
+			numeroDoProntuario: 1234,
+			telefone: 33457070,
+			foto: 0001000101011111,
+			dataDeNascimento: '1989-11-12'
 		}
 	};
 	app.optionsPutTestRequestPaciente = {
