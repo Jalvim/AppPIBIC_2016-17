@@ -7,29 +7,47 @@
     <title>Login</title>
 
     <link rel="stylesheet" href="icons/material.css">
-    <link rel="stylesheet" href="css\materialize-src\js\bin\materialize.min.css">
-    <link rel="stylesheet" href="css\estilos.css">
+    <link rel="stylesheet" href="css/materialize-src/js/bin/materialize.min.css">
+    <link rel="stylesheet" href="css/estilos.css">
+
+<!--------------script para validar o código----------------------------->
+    <script	language="javascript" src="js/confirmacao.js">
+
+
+
+    </script>
+
 
 </head>
 <body>
 <!--------------------------------pedido de código---------------------------------------------->
-<div class="form-group black-text ls-login-user">
-    <label for="userLogin">Enviaremos um código ao seu e-mail. Digite-o aqui.</label>
-    <input class="form-control ls-login-bg-user input-lg" id="userLogin" type="text">
-</div>
+
+    <form role="form" action="index.html" name="confi" method="post">
+
+            <p class="txt-center ls-login-signup">Enviaremos um código ao seu e-mail.
+                Digite-o aqui.
+
+            </p>
+
+            Codigo
+            <input name="codigo" type="text"><br /><br />
 <p class="txt-center ls-login-signup">Não recebeu o e-mail?
     <a href="#">Clique aqui</a>
-
 </p>
+
+
+
 <!---------------------botao para enviar o código--------------------------------->
-<div class="row center">
-    <a href="index.html" id="download-button" class="btn-large waves-effect waves-light blue">Enviar</a>
-</div>
-<br><br>
+<input type="submit" value="Enviar"  onclick="return conf()" class="btn btn-primary btn-lg btn-block">
+</form>
+
+
 
 <!---------------------------------scripts--------------------------------------------------->
-<script	src="css\materialize-src\jquery.min.js"></script>
-<script	src="css\materialize-src\js\bin\materialize.min.js"></script>
+<script	src="css/materialize-src/jquery.min.js"></script>
+<script	src="css/materialize-src/js/bin/materialize.min.js"></script>
+
+
 
 </body>
 </html>
