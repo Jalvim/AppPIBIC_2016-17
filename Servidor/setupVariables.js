@@ -22,14 +22,15 @@ module.exports = function(app) {
 			numeroDoProntuario: 1234,
 			telefone: 33457070,
 			foto: 0001000101011111,
-			dataDeNascimento: '1989-11-12'
+			dataDeNascimento: '1989-11-12',
+			crmMedicoResponsavel: '111111111'
 		}
 	};
 	app.optionsPutTestRequestPaciente = {
 		method:'PUT',
 		url:'http://127.0.0.1:3000/api/paciente/geral',
 		headers: {
-			'numeroDoProntuario': '0'
+			'idPaciente': '12'
 		},
 		form:{ 
 			nomePaciente: 'Mauricio Nunes',
@@ -38,6 +39,7 @@ module.exports = function(app) {
 			foto: 000100100101010010,
 			causaDaInternacao: 'Diareia',
 			dataDeNascimento: '1999-06-14',
+			crmMedicoResponsavel:'111111111111',
 			isNewPatient: false
 		}
 	}
@@ -45,9 +47,11 @@ module.exports = function(app) {
 		method:'DELETE',
 		url:'http://127.0.0.1:3000/api/paciente/geral',
 		form:{ 
-			numeroDoProntuario: 133545
+			idPaciente: 17
 		}
 	}
+	/*
+	Não útil
 	app.optionsGetTestRequestPaciente = {
 		method:'GET',
 		url:'http://127.0.0.1:3000/api/paciente/geral',
@@ -55,6 +59,7 @@ module.exports = function(app) {
 			numeroDoProntuario: 133545
 		}
 	}
+	*/
 	
 	//Opções de teste de request http para médicos
 	app.optionsPostTestRequestMedico = {

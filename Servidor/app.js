@@ -22,7 +22,7 @@ var express = require('express'),
 var connection = mysql.createConnection({
 	host : '79.170.40.183',
 	user : 'cl19-dbpipibic',
-	password : 'XXXXXXXXXXX',
+	password : 'XXXXXXXXXX',
 	database : 'cl19-dbpipibic'
 });
 connection.connect();
@@ -30,11 +30,11 @@ connection.connect();
 //setando todas as variáveis de options nos requests http de teste
 setupOptionsVariables(app);
 
-//request(app.optionsPostTestRequestMedico, function(err, httpResponse, body) { 
-	//console.log(err);
+/*request(app.optionsDeleteTestRequestPaciente, function(err, httpResponse, body) { 
+	console.log(err);
 	//console.log(httpResponse);
-	//console.log(body);
-//});
+	console.log(body);
+});*/
 
 //Fazer request GET para puxar dados de HR meus da API da FitBit	
 
@@ -53,7 +53,8 @@ var optionsGetHR = {
 };
 
 //request(optionsGetHR, getHRCallback);
-getStaticHealthParams(0);
+getStaticHealthParams(0, 19);
+//console.log(getTodayDate());
 
 /* 
 getHRCallback é a função que trata a resposta advinda da chamada à API da FitBit com relação a
@@ -68,6 +69,7 @@ function getHRCallback(errors, response, body) {
 	console.log(response.statusCode);
 	if (!errors && response.statusCode == 200) {
 		info = JSON.parse(body);
+		console.log(info);
 		fs.writeFile('./test2.txt', body, function(err) {
 			if (err) { console.log('Ocorreu um erro e dados de HR não foram escritos em test2.txt'); }
 			else { console.log('Dados de HR foram escritos com sucesso em test2.txt'); }
@@ -80,16 +82,29 @@ function getHRCallback(errors, response, body) {
 	}
 }
 
+function getTodayDate() {
+	var today = new Date(),
+		dd = today.getDate(),
+		mm = today.getMonth() + 1,
+		yyyy = today.getFullYear();
+		
+	if (mm < 10) mm = '0' + mm;
+	if (dd < 10) dd = '0' + dd;
+		
+	today = `${yyyy}-${mm}-${dd}`;
+	return today;
+}
+
 /*
 getStaticParams é uma função que puxa dados de saúde estáticos (não necessitam acompanhamento em tempo real)
 da API da FitBit de maneira recursiva, a necessidade do uso da recursão veio da natureza assíncrona da função
-request, que torna complexa a implementação usando for loop. Ao chamar, dê sempre um 0 como argumento para 
+request, que torna complexa a implementação usando for loop. Ao chamar, dê sempre um 0 como argumento i para 
 resgatar os dados corretamente.
 
 TO DO:
-	=>Armazenar dados de saúde estáticos puxados da internet na base de dados
+	=>Nova tabela criada com data como chave única. Associar ids como foreign keys sem aspecto de chave única.
 */
-function getStaticHealthParams(i) {
+function getStaticHealthParams(i, id) {
 
 	if (i == 4) return;
 
@@ -102,14 +117,43 @@ function getStaticHealthParams(i) {
 			'Authorization': hrAuthorizationHeader,
 		}
 	}
-	request(newStaticParamOption, function(errors, response, body){
+	request(newStaticParamOption, function getStaticHealthParamsCallback(errors, response, body){
 		//console.log(errors);
-		//console.log(body['activities-steps']);//activities-calories activities-calories
-		var dummy = JSON.parse(body);
-		var property = 'activities-' + staticParamsArray[i];
-		console.log(dummy[property][0]);
-		console.log(staticParamsArray[i]);
-		getStaticHealthParams(i+1);
+		if (response.statusCode == 401) {
+			refreshOAuthToken(newStaticParamOption, getStaticHealthParamsCallback);
+		} else if (!errors && response.statusCode == 200) {
+			var activity = JSON.parse(body);
+			var property = 'activities-' + staticParamsArray[i];
+			if (staticParamsArray[i] == 'steps') {
+				newStaticQuery = {
+					sql: `INSERT INTO SaudeParamsEstaticos (idPaciente, data, steps) VALUES (${id}, '${activity[property][0].dateTime}', ${activity[property][0].value})`,
+					timeout: 10000
+				}
+				connection.query(newStaticQuery, function(err, rows, fields) {
+					if(err) {
+						newStaticQuery = {
+							sql: `UPDATE SaudeParamsEstaticos SET steps=${activity[property][0].value} WHERE data='${activity[property][0].dateTime}'`,
+							timeout: 10000
+						}
+						connection.query(newStaticQuery);
+					}
+					console.log(err);
+				});
+			} else {
+				//console.log(staticParamsArray[i] + ' ' + activity[property][0].value);
+				staticQuery = {
+					sql: `UPDATE SaudeParamsEstaticos SET ${staticParamsArray[i]}=${activity[property][0].value} WHERE data='${activity[property][0].dateTime}'`,
+					timeout: 10000
+				}
+				connection.query(staticQuery, function(err, rows, fields) {
+					//console.log(err);
+					//console.log(rows);
+				});
+			}
+			console.log(activity[property][0]);
+			console.log(staticParamsArray[i]);
+			getStaticHealthParams(i+1, id);
+		}
 	});
 	
 }
@@ -124,7 +168,7 @@ TO DO:
 */
 function refreshOAuthToken(options, callback) {
 	//Adicionado código de automação para refresh de token de acesso
-	var tokenRefreshAuthorization = 'Basic ' + new Buffer("XXXXXXXX:XXXXXXXXXXXXXXXXXXXXX").toString('base64');
+	var tokenRefreshAuthorization = 'Basic ' + new Buffer("XXXXXXXX:XXXXXXXXXXXXXXXXXXXXXXXXXX").toString('base64');
 	console.log(tokenRefreshAuthorization);
 	
 	var	optionsRefreshToken = {
@@ -151,7 +195,7 @@ function refreshOAuthToken(options, callback) {
 					console.log('Novo fitbitAccess.json atualizado e pronto para uso!'); 
 					fitbitAccess = JSON.parse(body);
 					hrAuthorizationHeader = `Bearer ${fitbitAccess.access_token}`;
-					optionsGetHR.headers['Authorization'] = hrAuthorizationHeader;
+					options.headers['Authorization'] = hrAuthorizationHeader;
 				}
 			});
 			request(options, callback);

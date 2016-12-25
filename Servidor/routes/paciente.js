@@ -6,19 +6,19 @@ Este arquivo contém o módulo javascript de roteamento para as chamadas à API 
 
 FUNCIONAMENTO:
 1)API geral de pacientes "url/api/paciente/geral"
-	GET -> Recebe em seu query string o número de prontuário do perfil desejado e retorna as informações
-		do paciente ao cliente autor da requisição. 
+	GET -> Recebe em seu query string o número do crm do médico responsável pelo perfil de paciente desejado e 
+		retorna as informações do paciente ao cliente autor da requisição. 
 		(ex query string "url/api/paciente/geral/[numero de prontuário]")
 	POST -> Recebe todas as informações do perfil a serem colocadas no corpo/form da requisição http e 
 		acrescenta o novo paciente à base de dados. Obrigatório preenchimento de todos os campos para que
 		a adição à base de dados seja finalizada.
-	PUT -> Recebe o número de prontuário identificando o paciente a ser editado no header da requisição
+	PUT -> Recebe o id identificando o paciente a ser editado no header da requisição
 		enquanto as novas informações de perfil devem estar no corpo/form. Chamada flexível aceita as 
 		informações novas e mantém as que não estão citadas no corpo do POST.
 		ADICIONAL PUT: Em caso de alta do paciente usuário da pulseira e o PUT for executado para mudança
 		de pacientes, parâmetro adicional isNewPatient pode ser acrescentado com valor "true" para limpar
 		dados de saúde do paciente antigo. <---- AINDA NÃO IMPLEMENTADO
-	DELETE -> Remove o perfil de paciente cujo número de prontuário bate com o presente no corpo/form 
+	DELETE -> Remove o perfil de paciente cujo id bate com o presente no corpo/form 
 		da requisição.
 		
 2)API saúde de pacientes "url/api/paciente/health"
@@ -27,6 +27,7 @@ FUNCIONAMENTO:
 TO DO: 
 	=>Implementar api paciente focada em health
 	=>Terminar PUT da parte genérica implementando isNewPatient
+	=>Implementar api paciente voltada para dados de authenticação
 
 */
 
@@ -38,7 +39,7 @@ var router = express.Router();
 var connection = mysql.createConnection({
 	host : '79.170.40.183',
 	user : 'cl19-dbpipibic',
-	password : 'XXXXXXXXXXXXX',
+	password : 'XXXXXXXXXXX',
 	database : 'cl19-dbpipibic'
 });
 connection.connect();
@@ -52,17 +53,19 @@ router.route('/geral')
 			req.body.hasOwnProperty('numeroDoProntuario') &&
 			req.body.hasOwnProperty('telefone') &&
 			req.body.hasOwnProperty('foto') &&
+			req.body.hasOwnProperty('crmMedicoResponsavel') &&
 			req.body.hasOwnProperty('dataDeNascimento')){	
 			var query = {
-				sql:`INSERT INTO Paciente (nomePaciente, numeroDoProntuario, telefone, foto, causaDaInternacao, dataDeNascimento) VALUES (${connection.escape(req.body.nomePaciente)}, ${connection.escape(req.body.numeroDoProntuario)}, ${connection.escape(req.body.telefone)}, ${connection.escape(req.body.foto)}, ${connection.escape(req.body.causaDaInternacao)}, ${connection.escape(req.body.dataDeNascimento)})`,
+				sql:`INSERT INTO Paciente (nomePaciente, numeroDoProntuario, telefone, foto, causaDaInternacao, dataDeNascimento, crmMedicoResponsavel) VALUES (${connection.escape(req.body.nomePaciente)}, ${connection.escape(req.body.numeroDoProntuario)}, ${connection.escape(req.body.telefone)}, ${connection.escape(req.body.foto)}, ${connection.escape(req.body.causaDaInternacao)}, ${connection.escape(req.body.dataDeNascimento)}, ${connection.escape(req.body.crmMedicoResponsavel)})`,
 				timeout: 10000
 			}
 			connection.query(query, function(err, rows, fields) {
 				console.log(err);
 				console.log(rows);
 				console.log(fields);
+				
+				res.send('Paciente adicionado com sucesso!');
 			});
-			res.send('Paciente adicionado com sucesso!');
 		} else {
 			throw new Error('Parâmetros POST inválidos ou inexistentes para adicionar paciente');
 			res.send('Error: Parâmetros POST inválidos ou inexistentes para adicionar paciente');
@@ -73,7 +76,7 @@ router.route('/geral')
 		//TO DO: editar paciente pré existente
 		//		 separar edições corriqueiras a um perfil de paciente de troca de pacientes na pulseira
 		var selector = {
-			sql:`SELECT * FROM Paciente WHERE numeroDoProntuario = ${connection.escape(req.headers.numerodoprontuario)} LIMIT 1`,
+			sql:`SELECT * FROM Paciente WHERE idtable1 = ${connection.escape(req.headers.idpaciente)} LIMIT 1`,
 			timeout: 10000
 		}
 		
@@ -81,8 +84,8 @@ router.route('/geral')
 			
 			if (err != null) console.log('Erro ao selecionar perfil a ser editado na base de dados.');
 			else if (rows.length < 1) {
-				console.log('O número de prontuário no header de sua requisição não existe na base de dados.');
-				res.send('O número de prontuário no header de sua requisição não existe na base de dados.');
+				console.log('O id no header de sua requisição não existe na base de dados.');
+				res.send('O id no header de sua requisição não existe na base de dados.');
 			}
 			else {
 			
@@ -91,7 +94,8 @@ router.route('/geral')
 					novoTelefone,
 					novaFoto,
 					novaCausa,
-					novaData;
+					novaData,
+					novoCrmMedicoResponsável;
 				
 				if (req.body.hasOwnProperty('nomePaciente')) {
 					nomePacienteNovo = req.body.nomePaciente;
@@ -111,14 +115,19 @@ router.route('/geral')
 				if (req.body.hasOwnProperty('dataDeNascimento')){
 					novaData = req.body.dataDeNascimento;
 				} else { novaData = rows[0].dataDeNascimento; }
+				if (req.body.hasOwnProperty('crmMedicoResponsavel')) {
+					novoCrmMedicoResponsável = req.body.crmMedicoResponsavel;
+				} else { novoCrmMedicoResponsável = rows[0].crmMedicoResponsavel; }
 		
 				connection.query(
-				'UPDATE Paciente SET nomePaciente=?, numeroDoProntuario=?, telefone=?, foto=?, causaDaInternacao=?, dataDeNascimento=? WHERE idtable1=?',
-				[nomePacienteNovo,novoProntuario,novoTelefone,novaFoto,novaCausa,novaData,rows[0].idtable1], 
+				'UPDATE Paciente SET nomePaciente=?, numeroDoProntuario=?, telefone=?, foto=?, causaDaInternacao=?, dataDeNascimento=?, crmMedicoResponsavel=? WHERE idtable1=?',
+				[nomePacienteNovo,novoProntuario,novoTelefone,novaFoto,novaCausa,novaData,  novoCrmMedicoResponsável,rows[0].idtable1], 
 				function(error, results){
 					if (error != null) {
 						console.log('Erro ao alterar perfil de paciente na base de dados');
+						res.send('Erro ao alterar perfil de paciente na base de dados');
 					} else {
+						console.log('Paciente editado com sucesso.');
 						//Log: bug aparentemente resolvido, permanecer alerta neste ponto mesmo assim
 						if (req.body.isNewPatient == 'true') {
 							//TO DO: chamar put em api/paciente/health para deletar dados do paciente anterior
@@ -131,28 +140,27 @@ router.route('/geral')
 		
 	})
 	.delete(function(req, res) {
-		console.log(req.body.hasOwnProperty('numeroDoProntuario'));
-		if (req.body.hasOwnProperty('numeroDoProntuario')) {
+		console.log(req.body.hasOwnProperty('idPaciente'));
+		if (req.body.hasOwnProperty('idPaciente')) {
 			var deletePatientQuery = {
-				sql: `DELETE FROM Paciente WHERE numeroDoProntuario = ${connection.escape(req.body.numeroDoProntuario)} LIMIT 1`,
+				sql: `DELETE FROM Paciente WHERE idtable1 = ${connection.escape(req.body.idPaciente)} LIMIT 1`,
 				timeout: 10000	
 			}
 			connection.query(deletePatientQuery, function(err, rows, fields) {
 				if(err) {
 					res.send('Houve um erro ao se tentar remover paciente da base de dados.');
-				}
+				} else { res.send('O paciente de id especificado pôde ser removido com sucesso.'); }
 			});
-			res.send('Um paciente de numero de prontuário 0 removido');
 		} else {
 			res.send('Indique o número de prontuário do paciente a ser removido da base.');			
 		}
 	});
 	
-router.get('/geral/:numeroDoProntuario', function(req, res){
-	console.log(req.params.hasOwnProperty('numeroDoProntuario'));
-	if (req.params.hasOwnProperty('numeroDoProntuario')) {
+router.get('/geral/:crmMedicoResponsavel', function(req, res){
+	console.log(req.params.hasOwnProperty('crmMedicoResponsavel'));
+	if (req.params.hasOwnProperty('crmMedicoResponsavel')) {
 		var getPatientQuery = {
-			sql: `SELECT * FROM Paciente WHERE numeroDoProntuario = ${connection.escape(req.params.numeroDoProntuario)}`,
+			sql: `SELECT * FROM Paciente WHERE crmMedicoResponsavel = ${connection.escape(req.params.crmMedicoResponsavel)}`,
 			timeout: 10000	
 		}
 		connection.query(getPatientQuery, function(err, rows, fields) {
