@@ -14,52 +14,87 @@
 
     <body>
 
+    <!-- Cabeçalho com opções de gráficos -->
+
+    <div class="navbar-fixed">
+        <nav>
+            <div class="nav-wrapper blue-grey lighten-3">
+                <ul class="col s12"> <!-- center hide-on-med-and-down -->
+                    <li><a href="dadosPaciente.html">Passos</a></li>
+                    <li><a href="dadosPaciente2.html">Pressão</a></li>
+                    <li><a href="dadosPaciente3.html">Batimentos</a></li>
+                    <li><a href="dadosPaciente4.html">Oximetria</a></li>
+                </ul>
+            </div>
+        </nav>
+    </div>
+
     <!-- Início da interface do gráfico -->
 
-    <canvas id="myChartPassos" width="400" height="400"></canvas>
+    <canvas id="myChart" width="400" height="400"></canvas>
+    <script>
+        var ctx = document.getElementById("myChart");
+        var myChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: ["Red", "Blue", "Yellow", "Green", "Purple", "Orange"],
+            datasets: [{
+                label: '# of Votes',
+                data: [12, 19, 3, 5, 2, 3],
+                backgroundColor: [
+                    'rgba(255, 99, 132, 0.2)',
+                    'rgba(54, 162, 235, 0.2)',
+                    'rgba(255, 206, 86, 0.2)',
+                    'rgba(75, 192, 192, 0.2)',
+                    'rgba(153, 102, 255, 0.2)',
+                    'rgba(255, 159, 64, 0.2)'
+                ],
+                borderColor: [
+                    'rgba(255,99,132,1)',
+                    'rgba(54, 162, 235, 1)',
+                    'rgba(255, 206, 86, 1)',
+                    'rgba(75, 192, 192, 1)',
+                    'rgba(153, 102, 255, 1)',
+                    'rgba(255, 159, 64, 1)'
+                ],
+                borderWidth: 1
+            }]
+        },
+        options: {
+            scales: {
+                yAxes: [{
+                    ticks: {
+                        beginAtZero:true
+                    }
+                }]
+            }
+        }
+    });
+    </script>
 
-    <!-- Fim do script de gráfico -->
+    <!-- Fim do script de gráfico --
 
-        <!-- Escrever aqui o desenvolvimento do código -->
-        <!-- Cabeçalho com opções de gráficos -->
 
-        <div class="navbar-fixed">
-            <nav>
-                <div class="nav-wrapper blue-grey lighten-3">
-                    <ul class="col s12"> <!-- center hide-on-med-and-down -->
-                        <li><a href="dadosPaciente.html">Passos</a></li>
-                        <li><a href="dadosPaciente2.html">Pressão</a></li>
-                        <li><a href="dadosPaciente3.html">Batimentos</a></li>
-                        <li><a href="dadosPaciente4.html">Oximetria</a></li>
+    <!-- Rodapé com links para outras páginas  -->
+    <div class="navbar-fixed" id="bottom-nav">
+        <nav>
+            <div class="nav-wrapper blue-grey lighten-3">
+                <div class="col s12">
+                    <ul>
+                        <li class="col s3 footer-buttons waves-effect waves-light"><a href="Pacientes1.html"><i class="material-icons ">group</i></a></li>
+                        <li class="col s3 footer-buttons waves-effect waves-light"><a href="Recados1.html"><i class="material-icons">view_list</i></a></li>
+                        <li class="col s3 footer-buttons waves-effect waves-light active"><a href="perfilMedico.html"><i class="material-icons">perm_identity</i></a></li>
+                        <li class="col s3 footer-buttons waves-effect waves-light"><a href="Config.html"><i class="material-icons">settings</i></a></li>
                     </ul>
                 </div>
-            </nav>
-        </div>
+            </div>
+        </nav>
+    </div>
 
 
-        <!-- Inserir conteúdo gráfico da página aqui -->
-
-
-        <!-- Rodapé com links para outras páginas  -->
-        <div class="navbar-fixed" id="bottom-nav">
-            <nav>
-                <div class="nav-wrapper blue-grey lighten-3">
-                    <div class="col s12">
-                        <ul>
-                            <li class="col s3 footer-buttons waves-effect waves-light"><a href="Pacientes1.html"><i class="material-icons ">group</i></a></li>
-                            <li class="col s3 footer-buttons waves-effect waves-light"><a href="Recados1.html"><i class="material-icons">view_list</i></a></li>
-                            <li class="col s3 footer-buttons waves-effect waves-light active"><a href="perfilMedico.html"><i class="material-icons">perm_identity</i></a></li>
-                            <li class="col s3 footer-buttons waves-effect waves-light"><a href="Config.html"><i class="material-icons">settings</i></a></li>
-                        </ul>
-                    </div>
-                </div>
-            </nav>
-        </div>
-
-
-        <!-- Scripts  -->
-        <script src="js/jquery.min.js"></script>
-        <script src="js/materialize.min.js"></script>
-        <script src="js/dadosPaciente.js"></script>
+    <!-- Scripts  -->
+    <script src="js/jquery.min.js"></script>
+    <script src="js/materialize.min.js"></script>
+    <script src="js/dadosPaciente.js"></script>
     </body>
 </html>
