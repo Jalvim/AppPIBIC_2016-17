@@ -39,7 +39,7 @@ var router = express.Router();
 var connection = mysql.createConnection({
 	host : '79.170.40.183',
 	user : 'cl19-dbpipibic',
-	password : 'XXXXXXXXXXX',
+	password : 'XXXXXXXXXX',
 	database : 'cl19-dbpipibic'
 });
 connection.connect();
@@ -178,7 +178,7 @@ router.get('/geral/:crmMedicoResponsavel', function(req, res){
 }); 
 
 //Ações com tabelas de parâmetros de saúde dos pacientes
-router.route('/health')
+router.route('/health/static')
 	.post(function(req, res) {
 		//TO DO:
 	})
@@ -189,8 +189,40 @@ router.route('/health')
 		//TO DO: 
 	});
 	
-router.get('/health/:idPaciente/:data', function(req, res){
-	//TO DO: 
+router.get('/health/static/:idPaciente/:data', function(req, res){
+	
+	connection.query(
+	  'SELECT * FROM SaudeParamsEstaticos where idPaciente=? AND data=?',
+	  [req.params.idPaciente, req.params.data],
+	  function(err, rows, fields) {
+		if (err) res.send('Error: não foi possível puxar dados do paciente especificado na data especificada.');
+		else {
+			if(rows.length < 1){
+				res.send('Id ou data Inválidos');
+			} else {
+				dados = rows[0];
+				res.json(dados);
+			}
+		}
+	});
+	
+});
+router.get('/health/static/:idPaciente', function(req, res){
+	
+	connection.query(
+	  'SELECT * FROM SaudeParamsEstaticos where idPaciente=?',
+	  [req.params.idPaciente],
+	  function(err, rows, fields) {
+		if (err) res.send('Error: não foi possível puxar dados do paciente especificado.');
+		else {
+			if(rows.length < 1){
+				res.send('Id Inválido');
+			} else {
+				res.json(rows);
+			}
+		}
+	});
+	
 });
 
 module.exports = router;

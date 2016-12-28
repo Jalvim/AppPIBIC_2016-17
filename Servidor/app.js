@@ -22,7 +22,7 @@ var express = require('express'),
 var connection = mysql.createConnection({
 	host : '79.170.40.183',
 	user : 'cl19-dbpipibic',
-	password : 'XXXXXXXXXX',
+	password : 'XXXXXXXXXXX',
 	database : 'cl19-dbpipibic'
 });
 connection.connect();
@@ -102,7 +102,6 @@ request, que torna complexa a implementação usando for loop. Ao chamar, dê se
 resgatar os dados corretamente.
 
 TO DO:
-	=>Nova tabela criada com data como chave única. Associar ids como foreign keys sem aspecto de chave única.
 */
 function getStaticHealthParams(i, id) {
 
@@ -137,7 +136,7 @@ function getStaticHealthParams(i, id) {
 						}
 						connection.query(newStaticQuery);
 					}
-					console.log(err);
+					//console.log(err);
 				});
 			} else {
 				//console.log(staticParamsArray[i] + ' ' + activity[property][0].value);
@@ -150,8 +149,8 @@ function getStaticHealthParams(i, id) {
 					//console.log(rows);
 				});
 			}
-			console.log(activity[property][0]);
-			console.log(staticParamsArray[i]);
+			//console.log(activity[property][0]);
+			//console.log(staticParamsArray[i]);
 			getStaticHealthParams(i+1, id);
 		}
 	});
@@ -164,11 +163,10 @@ permitir chamadas à mesma. Pelo protocolo OAuth2, o token de acesso expira a ca
 sendo então necessário o uso desta função.
 
 TO DO:
-	=>refreshOAuthToken chamada multiplas vezes em getHRCallback antes do refresh, debugar isso
 */
 function refreshOAuthToken(options, callback) {
 	//Adicionado código de automação para refresh de token de acesso
-	var tokenRefreshAuthorization = 'Basic ' + new Buffer("XXXXXXXX:XXXXXXXXXXXXXXXXXXXXXXXXXX").toString('base64');
+	var tokenRefreshAuthorization = 'Basic ' + new Buffer("XXXXXXX:XXXXXXXXXXXXXXXXXXXXXXXXX").toString('base64');
 	console.log(tokenRefreshAuthorization);
 	
 	var	optionsRefreshToken = {
@@ -197,8 +195,8 @@ function refreshOAuthToken(options, callback) {
 					hrAuthorizationHeader = `Bearer ${fitbitAccess.access_token}`;
 					options.headers['Authorization'] = hrAuthorizationHeader;
 				}
+				request(options, callback);
 			});
-			request(options, callback);
 		}
 		
 	});
