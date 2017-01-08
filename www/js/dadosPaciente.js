@@ -1,4 +1,8 @@
-var canvas = document.getElementById('myChart');
+var canvas1 = document.getElementById('myChart1');
+var canvas2 = document.getElementById('myChart2');
+var canvas3 = document.getElementById('myChart3');
+var canvas4 = document.getElementById('myChart4');
+
 var data = {
   labels: ["Domingo", "Segunda", "Terça", "Quarta", "Quinta", "Sexta", "Sábado"],
   datasets: [
@@ -14,7 +18,18 @@ var data = {
   ]
 };
 
-var myBarChart = Chart.Bar(canvas,{
+var myBarChart = Chart.Bar(canvas1,{
   data:data
 });
 
+var myLineChart = Chart.line(canvas2,{
+  data:data
+});
+
+var myBarChart = Chart.Bar(canvas3,{
+  data:data
+});
+
+var myBarChart = Chart.Bar(canvas4,{
+  data:data
+});
