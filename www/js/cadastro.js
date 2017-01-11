@@ -48,3 +48,8 @@ function validar() {
     }
     return true;
 }
+
+// TODO Função responsável por se comunicar com o servidor via AJAX
+function salvar(){
+    //TODO Escrever aqui o desenvolvimento --> UTILIZAÇÃO DO MÉTODO POST
+}
