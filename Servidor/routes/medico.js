@@ -58,6 +58,64 @@ router.route('/')
 	})
 	.put(function(req, res){
 		//TO DO: editar perfil médico pré existente
+		if (req.hasOwnProperty('body') && 
+			req.body.hasOwnProperty('CRM')){
+			var selector = {
+				sql:`SELECT * FROM Medico WHERE CRM = ${connection.escape(req.body.CRM)} LIMIT 1`,
+				timeout: 10000
+				}
+			connection.query(selector, function(err, rows, fields) {
+			
+			if (err != null) console.log('Erro ao selecionar perfil a ser editado na base de dados.');
+			else if (rows.length < 1) {
+				console.log('Medico nao encontrado.');
+				res.send('Medico nao encontrado.');
+			}
+			else {
+			
+				var idMedico,
+					nome,
+					especialidade,
+					telefone;
+				
+				if (req.body.hasOwnProperty('idMedico')) {
+					idMedico = req.body.idMedico;
+				} else { idMedico = rows[0].idMedico; }
+				if (req.body.hasOwnProperty('nome')){
+					nome = req.body.nome;
+				} else { nome = rows[0].nome; }
+				if (req.body.hasOwnProperty('especialidade')){
+					especialidade = req.body.especialidade;
+				} else { especialidade = rows[0].especialidade; }
+				if (req.body.hasOwnProperty('telefone')){
+					telefone = req.body.telefone;
+				} else { telefone = rows[0].telefone; }
+				
+		
+				connection.query(
+				'UPDATE Medico SET nome=?, idMedico=?, especialidade=?, telefone=? WHERE CRM=?',
+				[idMedico, nome, especialidade, telefone, req.body.CRM], 
+				function(error, results){
+					if (error != null) {
+						console.log('Erro ao alterar perfil de medico na base de dados');
+						res.send('Erro ao alterar perfil de medico na base de dados');
+					} else {
+						console.log('Medico editado com sucesso.');
+						//Log: bug aparentemente resolvido, permanecer alerta neste ponto mesmo assim
+						if (req.body.isNewPatient == 'true') {
+							//TO DO: chamar put em api/paciente/health para deletar dados do paciente anterior
+							console.log('Novo medico, deletar dados antigos de saúde');
+						}
+					}
+				});
+			}
+		});
+
+
+		}
+		else{
+			res.send('Error: Parâmetros PUT inválidos, escolha perfil pelo CRM do médico a ser alterado');
+		}
 	})
 	.delete(function(req, res) {
 		//TO DO: remover perfil médico da base de dados
