@@ -33,7 +33,26 @@
 
 <!-- Inserir conteúdo gráfico da página aqui -->
 
-<canvas id="myChart" width="400" height="400"></canvas>
+<canvas id="myChart4" width="400" height="400"></canvas>
+
+<script>
+        var chrt = getElementById("myChart4").getContext("2d");
+        var data = {
+            labels: ["Domingo", "Segunda", "Terça", "Quarta", "Quinta", "Sexta", "Sábado"],
+            datasets: [
+                [
+                    label: "Dados de número de passos",
+                    backgroundColor: "rgba:(255, 99, 132, 0.2)",
+                    borderColor: "rgba:(255, 99, 132, 1)",
+                    borderWidth: 5,
+                    hoverBackgroundColor: "rgba(255, 99, 132, 0.4)",
+                    hoverBorderColor: "rgba:(255, 99, 132, 1)",
+                    data: [10, 20, 30, 40, 50], // AJUSTAR PARA ALTERAÇÃO DINÂMICA COM DB.
+                ]
+            ]
+        };
+        var myBigChart1 = new Chart(chrt).Bubble(data);
+    </script>
 
 <!-- Rodapé com links para outras páginas  -->
 <div class="navbar-fixed" id="bottom-nav">
@@ -53,9 +72,9 @@
 
 
 <!-- Scripts  -->
-<script src="js/chart.min.js"></script>
+<script src="js/Chart.min.js"></script>
+<script src="js/Chart.js"></script>
 <script src="js/jquery.min.js"></script>
-<script src="js/materialize.min.js"></script>
-<script src="js/dadosPaciente.js"></script>
+<!-- <script src="js/materialize.min.js"></script> -->
 </body>
 </html>
