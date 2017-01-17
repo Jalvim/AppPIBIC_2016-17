@@ -29,6 +29,9 @@ function atualizaPaciente() { // Função responsável por alterar o nome do pac
       dataDeNascimento: "#dataPaciente",
       codigoOAuth: "#oAuthPaciente", //TODO DAR UM JEITO NESSA JOÇA.
       redirectUri: //TODO Encontrar a URL de retorno própria.
+    },
+    function (data, status){
+      alert("Data: " + data + "\nStatus: " + status);
     });
   }
   //document.getElementById("nomePaciente").value = ""; //TODO --> averiguar utilidade.
