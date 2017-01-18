@@ -30,11 +30,11 @@ connection.connect();
 //setando todas as variáveis de options nos requests http de teste
 setupOptionsVariables(app);
 
-/*request(app.optionsPostTestRequestPaciente, function(err, httpResponse, body) { 
+request(app.optionsPostTestRequestMedico, function(err, httpResponse, body) { 
 	console.log(err);
 	//console.log(httpResponse);
 	console.log(body);
-});*/
+});
 
 //Fazer request GET para puxar dados de HR meus da API da FitBit	
 
@@ -53,7 +53,7 @@ var optionsGetHR = {
 };
 
 //request(optionsGetHR, getHRCallback);
-getStaticHealthParams(0, 38);
+//getStaticHealthParams(0, 38);
 //getStaticHealthParams(0, 18);
 //console.log(getTodayDate());
 
