@@ -16,13 +16,14 @@ var express = require('express'),
 	bodyParser = require('body-parser'),
 	setupOptionsVariables = require('./setupVariables.js'),
 	pacienteRouter = require('./routes/paciente.js'),
+	lembreteRouter = require('./routes/lembrete.js'),
 	medicoRouter = require('./routes/medico.js');
 	
 //Setup inicial de conecção com a base de dados 	
 var connection = mysql.createConnection({
 	host : '79.170.40.183',
 	user : 'cl19-dbpipibic',
-	password : 'XXXXXXXXXXX',
+	password : 'XXXXXXXXXX',
 	database : 'cl19-dbpipibic'
 });
 connection.connect();
@@ -30,30 +31,18 @@ connection.connect();
 //setando todas as variáveis de options nos requests http de teste
 setupOptionsVariables(app);
 
-/*request(app.optionsPostTestRequestPaciente, function(err, httpResponse, body) { 
+request(app.optionsPutTestRequestLembrete, function(err, httpResponse, body) { 
 	console.log(err);
 	//console.log(httpResponse);
 	console.log(body);
-});*/
-
-//Fazer request GET para puxar dados de HR meus da API da FitBit	
+});
 
 //info vai conter dados HR de chamada bem sucedida à API fitbit
 var info = {};
-//fitbitAccess contem dados sobre autenticação OAuth 2.0
-var fitbitAccess = JSON.parse(fs.readFileSync('./fitbitAccess.json','utf8'));
-var hrAuthorizationHeader = `Bearer ${fitbitAccess.access_token}`;
-
-//Preparando parâmetros para executar o request de batimentos cardíacos da FitBit
-var optionsGetHR = {
-	url:'https://api.fitbit.com/1/user/4Z3ZH3/activities/heart/date/today/1d/1sec/time/00:00/00:01.json',
-	headers: {
-		'Authorization': hrAuthorizationHeader,
-	}
-};
 
 //request(optionsGetHR, getHRCallback);
-getStaticHealthParams(0, 38);
+//getDynamicHealthParams(38);
+//getStaticHealthParams(0, 44);
 //getStaticHealthParams(0, 18);
 //console.log(getTodayDate());
 
@@ -63,25 +52,44 @@ batimentos cardíacos.
 
 TO DO:
 	=>Caso o Heroku faça a request pra refresh o key token, perdemos acesso a este,
-	pensar em uma maneira de armazenar esses dados de autenticação além de localmente
+	pensar em uma maneira de armazenar esses dados de autenticação além de localmente  TESTAR/DEBUGAR
 	=>Armazenar dados de batimento cardíaco recebidos na base de dados
 	=>Implementar funcionalidade similar ao da função de parametros estáticos (puxar dados de autenticação da bd)
 */ 
-function getHRCallback(errors, response, body) {
-	console.log(response.statusCode);
-	if (!errors && response.statusCode == 200) {
-		info = JSON.parse(body);
-		console.log(info);
-		fs.writeFile('./test2.txt', body, function(err) {
-			if (err) { console.log('Ocorreu um erro e dados de HR não foram escritos em test2.txt'); }
-			else { console.log('Dados de HR foram escritos com sucesso em test2.txt'); }
-		});
+function getDynamicHealthParams(id) {
+
+	connection.query(`SELECT * FROM Autenticacao WHERE idPaciente=${id}`, 
+	  function(err, result, fields){
+	  	console.log(result);
+		if (result.length < 1 || err) { console.log('Erro ao puxar info de autenticação da base de dados para parâmetros dinâmicos.'); return; }
+		else {
+			
+			var authorizationHeader = `Bearer ${result[0].accessToken}`;
+			
+			var optionsGetHR = {
+				url:`https://api.fitbit.com/1/user/${result[0].userID}/activities/heart/date/today/1d/1sec/time/00:00/00:01.json`,
+				headers: {
+					'Authorization': authorizationHeader,
+				}
+			};
+	
+			request(optionsGetHR,function getHRCallback(errors, response, body) {
+				console.log(response.statusCode);
+				if (!errors && response.statusCode == 200) {
+					info = JSON.parse(body);
+					console.log(info);
+					
+					
+					
+				} 
+				//tokens em OAuth valem por 1 hora, caso tenham expirado, refresh
+				else if (response.statusCode == 401) {
+					refreshOAuthToken(optionsGetHR, getHRCallback, result);
+				}
+			});
+		}
+	})
 		
-	} 
-	//tokens em OAuth valem por 1 hora, caso tenham expirado, refresh
-	else if (response.statusCode == 401) {
-		refreshOAuthToken(optionsGetHR, getHRCallback);
-	}
 }
 
 function getTodayDate() {
@@ -104,8 +112,6 @@ request, que torna complexa a implementação usando for loop. Ao chamar, dê se
 resgatar os dados corretamente para o paciente de id especificado.
 
 TO DO:
-	=> Testar se a adaptação da função para funcionar puxando dados de autenticação ao invés de com o arquivo txt
-		está livre de erros.
 */
 function getStaticHealthParams(i, id) {
 
@@ -114,7 +120,7 @@ function getStaticHealthParams(i, id) {
 	connection.query('SELECT * FROM Autenticacao WHERE idPaciente=?', [id],
 	  function(erro, result, fields){
 	  	console.log(result);
-	  	if (result.length < 1 || erro) { console.log('Erro ao puxar info de autenticação da base de dados.'); return; }
+	  	if (result.length < 1 || erro) { console.log('Erro ao puxar info de autenticação da base de dados para parâmetros estáticos.'); return; }
 	  
 	  	var authorizationHeader = `Bearer ${result[0].accessToken}`;
 	  	
@@ -176,7 +182,7 @@ TO DO:
 */
 function refreshOAuthToken(options, callback, auth) {
 	//Adicionado código de automação para refresh de token de acesso
-	var tokenRefreshAuthorization = 'Basic ' + new Buffer("XXXXXXXXX:XXXXXXXXXXXXXXXXXXXXXXXX").toString('base64');
+	var tokenRefreshAuthorization = 'Basic ' + new Buffer("XXXXXXX:XXXXXXXXXXXXXXXXXXXXXXXX").toString('base64');
 	console.log(tokenRefreshAuthorization);	
 	console.log(auth[0].refreshToken);
 	
@@ -232,6 +238,9 @@ app.use('/api/paciente', pacienteRouter);
 	
 //Ações para alterar tabela Médico na base de dados, usar módulo local ./router/medico.js
 app.use('/api/medico', medicoRouter);
+
+//Ações para alterar tabela Lembrete na base de dados, usar módulo local ./router/lembrete.js
+app.use('/api/lembrete', lembreteRouter);
 
 port = process.env.PORT || 3000
 

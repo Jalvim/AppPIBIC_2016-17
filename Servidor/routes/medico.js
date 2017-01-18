@@ -17,7 +17,7 @@ var router = express.Router();
 var connection = mysql.createConnection({
 	host : '79.170.40.183',
 	user : 'cl19-dbpipibic',
-	password : 'XXXXXXXXXXXX',
+	password : 'XXXXXXXXX',
 	database : 'cl19-dbpipibic'
 });
 connection.connect();
@@ -35,14 +35,13 @@ router.route('/')
 	}) 
 	.post(function(req, res) {
 		//TO DO: adicionar novo médico
-		if (req.hasOwnProperty('body') && 
-			req.body.hasOwnProperty('idMedico') &&
-			req.body.hasOwnProperty('nome') && 
+		if (req.hasOwnProperty('body') &&
+			req.body.hasOwnProperty('nomeMedico') && 
 			req.body.hasOwnProperty('especialidade') &&
 			req.body.hasOwnProperty('CRM') &&
 			req.body.hasOwnProperty('telefone')){	
 			var query = {
-				sql:`INSERT INTO Medico (idMedico, nome, especialidade, CRM, telefone) VALUES (${connection.escape(req.body.idMedico)}, ${connection.escape(req.body.nome)}, ${connection.escape(req.body.especialidade)}, ${connection.escape(req.body.CRM)}, ${connection.escape(req.body.telefone)})`,
+				sql:`INSERT INTO Medico (idMedico, nome, especialidade, CRM, telefone) VALUES (${connection.escape(req.body.idMedico)}, ${connection.escape(req.body.nomeMedico)}, ${connection.escape(req.body.especialidade)}, ${connection.escape(req.body.CRM)}, ${connection.escape(req.body.telefone)})`,
 				timeout: 10000
 			}
 			connection.query(query, function(err, rows, fields) {
@@ -106,7 +105,7 @@ router.route('/')
 		//Enviar código de erro http
 		res.send('Médico não encontrado.');			
 	}
-	}) 
+	});
 
 
-module.exports = router
+module.exports = router;
