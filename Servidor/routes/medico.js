@@ -17,7 +17,7 @@ var router = express.Router();
 var connection = mysql.createConnection({
 	host : '79.170.40.183',
 	user : 'cl19-dbpipibic',
-	password : 'XXXXXXXXXX',
+	password : 'KkXmnqC^D',
 	database : 'cl19-dbpipibic'
 });
 connection.connect();
@@ -41,11 +41,11 @@ router.route('/')
 			req.body.hasOwnProperty('CRM') &&
 			req.body.hasOwnProperty('telefone')){	
 			var query = {
-				sql:`INSERT INTO Medico (nome, especialidade, CRM, telefone) VALUES ${connection.escape(req.body.nomeMedico)}, ${connection.escape(req.body.especialidade)}, ${connection.escape(req.body.CRM)}, ${connection.escape(req.body.telefone)}`,
+				sql:`INSERT INTO Medico (nome, especialidade, CRM, telefone) VALUES (${connection.escape(req.body.nomeMedico)}, ${connection.escape(req.body.especialidade)}, ${connection.escape(req.body.CRM)}, ${connection.escape(req.body.telefone)})`,
 				timeout: 10000
 
 			}
-			console.log(query);
+			console.log(query.sql);
 			connection.query(query, function(err, rows, fields) {
 				console.log(err);
 				console.log(rows);
@@ -96,9 +96,11 @@ router.route('/')
 					telefone = req.body.telefone;
 				} else { telefone = rows[0].telefone; }
 				
-		
+				queryString = 'UPDATE Medico SET nome=' + nome +' especialidade='+ especialidade +', telefone=' + telefone +' WHERE CRM= ' + req.body.CRM + ' LIMIT 1';
+
+				console.log(queryString)
 				connection.query(
-				'UPDATE Medico SET nome=? especialidade=?, telefone=? WHERE CRM=? LIMIT 1',
+				'UPDATE Medico SET nome=?, especialidade=?, telefone=? WHERE CRM=? LIMIT 1',
 				[nome, especialidade, telefone, req.body.CRM], 
 				function(error, results){
 					if (error != null) {

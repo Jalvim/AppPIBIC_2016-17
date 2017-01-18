@@ -22,7 +22,7 @@ var express = require('express'),
 var connection = mysql.createConnection({
 	host : '79.170.40.183',
 	user : 'cl19-dbpipibic',
-	password : 'XXXXXXXXXX',
+	password : 'KkXmnqC^D',
 	database : 'cl19-dbpipibic'
 });
 connection.connect();
@@ -30,7 +30,7 @@ connection.connect();
 //setando todas as variáveis de options nos requests http de teste
 setupOptionsVariables(app);
 
-request(app.optionsPutTestRequestMedico, function(err, httpResponse, body) { 
+request(app.optionsPostTestRequestMedico, function(err, httpResponse, body) { 
 	console.log(err);
 	//console.log(httpResponse);
 	console.log(body);
