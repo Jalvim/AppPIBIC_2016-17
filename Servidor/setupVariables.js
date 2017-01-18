@@ -68,6 +68,29 @@ module.exports = function(app) {
 		method:'POST',
 		url:'http://127.0.0.1:3000/api/medico',
 		form:{ 
+			nomeMedico: 'Ney Matogrosso',
+			especialidade: 'Urologista',
+			CRM: 12345624,
+			telefone: 33449369
+		}
+	};
+	
+	app.optionsPutTestRequestMedico = {
+		method:'PUT',
+		url:'http://127.0.0.1:3000/api/medico',
+		form:{ 
+			nomeMedico: 'Ney Matogrosso',
+			especialidade: 'Urologista',
+			CRM: 133545,
+			telefone: 33449388
+		}
+	};
+
+	app.optionsDeleteTestRequestMedico = {
+		method:'DELETE',
+		url:'http://127.0.0.1:3000/api/medico',
+		form:{
+			idMedico: 7,
 			nomeMedico: 'Alcides Guimarães',
 			especialidade: 'Anestesista',
 			CRM: 133545,
@@ -106,8 +129,6 @@ module.exports = function(app) {
 		}
 	};
 }
-
-
 
 
 
