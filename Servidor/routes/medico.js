@@ -17,7 +17,7 @@ var router = express.Router();
 var connection = mysql.createConnection({
 	host : '79.170.40.183',
 	user : 'cl19-dbpipibic',
-	password : 'XXXXXXXXXXXX',
+	password : 'XXXXXXXXXX',
 	database : 'cl19-dbpipibic'
 });
 connection.connect();
@@ -36,21 +36,26 @@ router.route('/')
 	.post(function(req, res) {
 		//TO DO: adicionar novo médico
 		if (req.hasOwnProperty('body') && 
-			req.body.hasOwnProperty('idMedico') &&
-			req.body.hasOwnProperty('nome') && 
+			req.body.hasOwnProperty('nomeMedico') && 
 			req.body.hasOwnProperty('especialidade') &&
 			req.body.hasOwnProperty('CRM') &&
 			req.body.hasOwnProperty('telefone')){	
 			var query = {
-				sql:`INSERT INTO Medico (idMedico, nome, especialidade, CRM, telefone) VALUES (${connection.escape(req.body.idMedico)}, ${connection.escape(req.body.nome)}, ${connection.escape(req.body.especialidade)}, ${connection.escape(req.body.CRM)}, ${connection.escape(req.body.telefone)})`,
+				sql:`INSERT INTO Medico (nome, especialidade, CRM, telefone) VALUES ${connection.escape(req.body.nomeMedico)}, ${connection.escape(req.body.especialidade)}, ${connection.escape(req.body.CRM)}, ${connection.escape(req.body.telefone)}`,
 				timeout: 10000
+
 			}
+			console.log(query);
 			connection.query(query, function(err, rows, fields) {
 				console.log(err);
 				console.log(rows);
 				console.log(fields);
+				if(err == null)
+					res.send('Novo perfil médico adicionado com sucesso!');
+				else
+					res.send('Erro ao adicionar o médico');
 			});
-			res.send('Novo perfil médico adicionado com sucesso!');
+			
 		} else {
 			throw new Error('Parâmetros POST inválidos ou inexistentes para tabela Medico');
 			res.send('Error: Parâmetros POST inválidos ou inexistentes para adicionar perfil médico');
@@ -146,7 +151,7 @@ router.route('/')
 	
 	router.route('/busca/CRM/:crmMedico')
 	.get(function(req, res){
-		if (req.params.hasOwnProperty('nomeMedico')) {
+		
 		var getPatientQuery = {
 			sql: `SELECT * FROM Medico WHERE CRM = ${connection.escape(req.params.crMedico)}`,
 			timeout: 10000	
@@ -155,15 +160,16 @@ router.route('/')
 			if(err) {
 				res.send('Houve um erro ao se tentar encontrar o medico da base de dados.');
 			}
+			else {
+		//Enviar código de erro http
+		res.send('Médico não encontrado.');			
+	}
 			console.log(err);
 			console.log(rows);
 			//console.log(fields);
 			res.json(rows);
 		});
-	} else {
-		//Enviar código de erro http
-		res.send('Médico não encontrado.');			
-	}
+	
 	}) 
 
 

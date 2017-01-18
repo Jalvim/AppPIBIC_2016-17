@@ -22,7 +22,7 @@ var express = require('express'),
 var connection = mysql.createConnection({
 	host : '79.170.40.183',
 	user : 'cl19-dbpipibic',
-	password : 'XXXXXXXXXXX',
+	password : 'XXXXXXXXXX',
 	database : 'cl19-dbpipibic'
 });
 connection.connect();
@@ -104,8 +104,8 @@ request, que torna complexa a implementação usando for loop. Ao chamar, dê se
 resgatar os dados corretamente para o paciente de id especificado.
 
 TO DO:
-	=> Testar se a adaptação da função para funcionar puxando dados de autenticação ao invés de com o arquivo txt
-		está livre de erros.
+	=> Otimizar velocidade da função, eliminando dados IntraDay da chamada à API da Fitbit.(Entrar em contato com a Fitbit).
+
 */
 function getStaticHealthParams(i, id) {
 

@@ -66,9 +66,9 @@ module.exports = function(app) {
 		method:'POST',
 		url:'http://127.0.0.1:3000/api/medico',
 		form:{ 
-			nomeMedico: 'Alcides Guimarães',
-			especialidade: 'Anestesista',
-			CRM: 133545,
+			nomeMedico: 'Ney Matogrosso',
+			especialidade: 'Urologista',
+			CRM: 12345624,
 			telefone: 33449369
 		}
 	};
