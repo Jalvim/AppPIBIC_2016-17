@@ -17,13 +17,15 @@ module.exports = function(app) {
 		method:'POST',
 		url:'http://127.0.0.1:3000/api/paciente/geral',
 		form:{ 
-			nomePaciente: 'Alfredo Guimarães',
-			causaDaInternacao: 'Congestão nasal',
-			numeroDoProntuario: 1234,
-			telefone: 33457070,
+			nomePaciente: 'Jorge Mendes',
+			causaDaInternacao: 'Overdose de Dota',
+			numeroDoProntuario: 5555555,
+			telefone: 9823738,
 			foto: 0001000101011111,
-			dataDeNascimento: '1989-11-12',
-			crmMedicoResponsavel: '111111111'
+			dataDeNascimento: '1994-05-17',
+			crmMedicoResponsavel: '111111111',
+			codigoOAuth:'8d0a6213f00ab776d6769d2df8822471f96e7e94',
+			redirectUri:'https://pibicfitbit.herokuapp.com/'
 		}
 	};
 	app.optionsPutTestRequestPaciente = {
@@ -47,7 +49,7 @@ module.exports = function(app) {
 		method:'DELETE',
 		url:'http://127.0.0.1:3000/api/paciente/geral',
 		form:{ 
-			idPaciente: 17
+			idPaciente: 36
 		}
 	}
 	/*
@@ -95,4 +97,43 @@ module.exports = function(app) {
 			telefone: 33449369
 		}
 	};
+	
+	//Opções de teste de request http para lembretes
+	app.optionsPostTestRequestLembrete = {
+		method:'POST',
+		url:'http://127.0.0.1:3000/api/lembrete/',
+		form:{ 
+			idMedico: '2',
+			data: '2017-01-14',
+			mensagem: 'Este é um sample lembrete.',
+			tarefa: 1,
+			dataLimite: '2017-01-25'
+		}
+	};
+	app.optionsPutTestRequestLembrete = {
+		method:'PUT',
+		url:'http://127.0.0.1:3000/api/lembrete/',
+		headers: {
+			'idLembrete':'11'
+		},
+		form:{ 
+			mensagem: 'Este é um novo sample lembrete!',
+			dataLimite: '2017-01-27'
+		}
+	};
+	app.optionsDeleteTestRequestLembrete = {
+		method:'DELETE',
+		url:'http://127.0.0.1:3000/api/lembrete/',
+		form:{ 
+			idLembrete: 12
+		}
+	};
 }
+
+
+
+
+
+
+
+

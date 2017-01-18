@@ -17,7 +17,7 @@ var router = express.Router();
 var connection = mysql.createConnection({
 	host : '79.170.40.183',
 	user : 'cl19-dbpipibic',
-	password : 'KkXmnqC^D',
+	password : 'XXXXXXXXX',
 	database : 'cl19-dbpipibic'
 });
 connection.connect();
@@ -35,7 +35,7 @@ router.route('/')
 	}) 
 	.post(function(req, res) {
 		//TO DO: adicionar novo médico
-		if (req.hasOwnProperty('body') && 
+		if (req.hasOwnProperty('body') &&
 			req.body.hasOwnProperty('nomeMedico') && 
 			req.body.hasOwnProperty('especialidade') &&
 			req.body.hasOwnProperty('CRM') &&
@@ -166,8 +166,11 @@ router.route('/')
 			//console.log(fields);
 			
 		});
-	
-	}) 
+	} else {
+		//Enviar código de erro http
+		res.send('Médico não encontrado.');			
+	}
+	});
 
 
-module.exports = router
+module.exports = router;
