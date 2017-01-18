@@ -105,7 +105,7 @@ resgatar os dados corretamente para o paciente de id especificado.
 
 TO DO:
 	=> Otimizar velocidade da função, eliminando dados IntraDay da chamada à API da Fitbit.(Entrar em contato com a Fitbit).
-
+	
 */
 function getStaticHealthParams(i, id) {
 

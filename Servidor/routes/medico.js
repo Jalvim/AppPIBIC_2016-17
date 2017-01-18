@@ -153,21 +153,21 @@ router.route('/')
 	.get(function(req, res){
 		
 		var getPatientQuery = {
-			sql: `SELECT * FROM Medico WHERE CRM = ${connection.escape(req.params.crMedico)}`,
+			sql: `SELECT * FROM Medico WHERE CRM = ${connection.escape(req.params.crmMedico)}`,
 			timeout: 10000	
 		}
 		connection.query(getPatientQuery, function(err, rows, fields) {
-			if(err) {
-				res.send('Houve um erro ao se tentar encontrar o medico da base de dados.');
+			if(err == null) {
+				res.json(rows);
 			}
 			else {
-		//Enviar código de erro http
-		res.send('Médico não encontrado.');			
-	}
+			//Enviar código de erro http
+				res.send('Erro ao realizar a busca na base de dados por CRM');
+			}
 			console.log(err);
 			console.log(rows);
 			//console.log(fields);
-			res.json(rows);
+			
 		});
 	
 	}) 
