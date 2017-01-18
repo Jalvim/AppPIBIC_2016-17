@@ -18,12 +18,13 @@ var express = require('express'),
 	pacienteRouter = require('./routes/paciente.js'),
 	lembreteRouter = require('./routes/lembrete.js'),
 	medicoRouter = require('./routes/medico.js');
+	loginRouter = require('./routes/login.js');
 	
 //Setup inicial de conecção com a base de dados 	
 var connection = mysql.createConnection({
 	host : '79.170.40.183',
 	user : 'cl19-dbpipibic',
-	password : 'KkXmnqC^D',
+	password : 'XXXXXXXXX',
 	database : 'cl19-dbpipibic'
 });
 connection.connect();
@@ -31,7 +32,7 @@ connection.connect();
 //setando todas as variáveis de options nos requests http de teste
 setupOptionsVariables(app);
 
-request(app.optionsPostTestRequestMedico, function(err, httpResponse, body) { 
+request(app.optionsPostTestRequestLogin, function(err, httpResponse, body) { 
 	console.log(err);
 	//console.log(httpResponse);
 	console.log(body);
@@ -243,6 +244,9 @@ app.use('/api/medico', medicoRouter);
 
 //Ações para alterar tabela Lembrete na base de dados, usar módulo local ./router/lembrete.js
 app.use('/api/lembrete', lembreteRouter);
+
+//Ações para alterar tabela Login na base de dados, usar módulo local ./router/lembrete.js
+app.use('/api/login', loginRouter);
 
 port = process.env.PORT || 3000
 

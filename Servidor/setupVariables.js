@@ -71,7 +71,9 @@ module.exports = function(app) {
 			nomeMedico: 'Ney Matogrosso',
 			especialidade: 'Urologista',
 			CRM: 12345624,
-			telefone: 33449369
+			telefone: 33449369,
+			email: 'email2@gmail.com',
+			senha: '123456'
 		}
 	};
 	
@@ -128,10 +130,20 @@ module.exports = function(app) {
 			idLembrete: 12
 		}
 	};
+
+	app.optionsPostTestRequestLogin = {
+		method:'POST',
+		url:'http://127.0.0.1:3000/api/login/',
+		form:{ 
+			email: 'email@gmail.com',
+			senha: '123456'
+		}
+	};
+
 }
 
 
-
+	
 
 
 

@@ -39,7 +39,9 @@ router.route('/')
 			req.body.hasOwnProperty('nomeMedico') && 
 			req.body.hasOwnProperty('especialidade') &&
 			req.body.hasOwnProperty('CRM') &&
-			req.body.hasOwnProperty('telefone')){	
+			req.body.hasOwnProperty('telefone') &&
+			req.body.hasOwnProperty('email') &&
+			req.body.hasOwnProperty('senha')){	
 			var query = {
 				sql:`INSERT INTO Medico (nome, especialidade, CRM, telefone) VALUES (${connection.escape(req.body.nomeMedico)}, ${connection.escape(req.body.especialidade)}, ${connection.escape(req.body.CRM)}, ${connection.escape(req.body.telefone)})`,
 				timeout: 10000
@@ -50,11 +52,34 @@ router.route('/')
 				console.log(err);
 				console.log(rows);
 				console.log(fields);
-				if(err == null)
-					res.send('Novo perfil médico adicionado com sucesso!');
-				else
+				idMedico = rows.insertId;
+				if(err == null){
+					var query = {
+						sql:`INSERT INTO logins (email, senha, idMedico) VALUES (${connection.escape(req.body.email)}, ${connection.escape(req.body.senha)}, ${connection.escape(idMedico)})`,
+						timeout: 10000
+						}
+						connection.query(query, function(err, rows, fields) {
+							console.log(err);
+							if (err == null){
+								res.send("Novo login e médico criado com sucesso.");
+							}
+							else {
+								res.send("Médico criado com sucesso, mas erro ao criar login");
+
+								connection.query(`DELETE FROM Medico WHERE idMedico =${connection.escape(idMedico)}`, function(err, rows, fields){
+
+								});
+							}
+
+						});
+					}
+				else{
+					
 					res.send('Erro ao adicionar o médico');
+
+				}
 			});
+
 			
 		} else {
 			throw new Error('Parâmetros POST inválidos ou inexistentes para tabela Medico');
