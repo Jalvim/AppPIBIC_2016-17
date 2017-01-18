@@ -18,7 +18,7 @@ var router = express.Router();
 var connection = mysql.createConnection({
 	host : '79.170.40.183',
 	user : 'cl19-dbpipibic',
-	password : 'XXXXXXXXX',
+	password : 'XXXXXXXXXX',
 	database : 'cl19-dbpipibic'
 });
 connection.connect();
@@ -64,10 +64,10 @@ router.route('/')
 	.put(function(req, res){
 		//TO DO: adicionar conclusão de tarefa caso seja uma tarefa
 		var selector = {
-			sql:`SELECT * FROM Lembrete WHERE id = ${connection.escape(req.header.idlembrete)} LIMIT 1`,
+			sql:`SELECT * FROM Lembrete WHERE id = ${connection.escape(req.body.idLembrete)} LIMIT 1`,
 			timeout: 10000
 		}
-		console.log(req.header.idlembrete);
+		console.log(req.body.idLembrete);
 		
 		connection.query(selector, function(err, rows, fields) {
 			
@@ -76,7 +76,6 @@ router.route('/')
 				res.send('O id no header de sua requisição não existe na base de dados.');
 			}
 			else {
-			
 				var mensagemNova,
 					dataLimiteNova;
 				
@@ -88,11 +87,11 @@ router.route('/')
 				} else { dataLimiteNova = rows[0].dataLimite; }
 		
 				connection.query(
-				'UPDATE Lembrete SET mensagemNova=?, dataLimiteNova=? WHERE id=?',
+				'UPDATE Lembrete SET mensagem=?, dataLimite=? WHERE id=?',
 				[mensagemNova, dataLimiteNova, rows[0].id], 
 				function(error, results){
+				console.log(error);
 					if (error != null) {
-						console.log('Erro ao alterar lembrete na base de dados');
 						res.send('Erro ao alterar lembrete na base de dados');
 					} else {
 						console.log('Lembrete editado com sucesso.');

@@ -166,10 +166,6 @@ router.route('/')
 			//console.log(fields);
 			
 		});
-	} else {
-		//Enviar código de erro http
-		res.send('Médico não encontrado.');			
-	}
 	});
 
 
