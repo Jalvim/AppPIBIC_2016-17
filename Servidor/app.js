@@ -30,7 +30,7 @@ connection.connect();
 //setando todas as variáveis de options nos requests http de teste
 setupOptionsVariables(app);
 
-request(app.optionsPostTestRequestMedico, function(err, httpResponse, body) { 
+request(app.optionsPutTestRequestMedico, function(err, httpResponse, body) { 
 	console.log(err);
 	//console.log(httpResponse);
 	console.log(body);
@@ -105,7 +105,7 @@ resgatar os dados corretamente para o paciente de id especificado.
 
 TO DO:
 	=> Otimizar velocidade da função, eliminando dados IntraDay da chamada à API da Fitbit.(Entrar em contato com a Fitbit).
-	
+
 */
 function getStaticHealthParams(i, id) {
 

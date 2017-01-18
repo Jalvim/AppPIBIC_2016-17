@@ -77,7 +77,7 @@ router.route('/')
 				res.send('Medico nao encontrado.');
 			}
 			else {
-			
+				console.log(rows);
 				var idMedico,
 					nome,
 					especialidade,
@@ -98,10 +98,11 @@ router.route('/')
 				
 		
 				connection.query(
-				'UPDATE Medico SET nome=?, idMedico=?, especialidade=?, telefone=? WHERE CRM=?',
-				[idMedico, nome, especialidade, telefone, req.body.CRM], 
+				'UPDATE Medico SET nome=? especialidade=?, telefone=? WHERE CRM=? LIMIT 1',
+				[nome, especialidade, telefone, req.body.CRM], 
 				function(error, results){
 					if (error != null) {
+						console.log(error);
 						console.log('Erro ao alterar perfil de medico na base de dados');
 						res.send('Erro ao alterar perfil de medico na base de dados');
 					} else {
@@ -123,26 +124,20 @@ router.route('/')
 		}
 	})
 	.delete(function(req, res) {
-		//TO DO: remover perfil médico da base de dados
+		//TO DO: Tratar remoção de médicos não existentes.
 		console.log(req.body.hasOwnProperty('idMedico'));
 		if (req.body.hasOwnProperty('idMedico')) {
 			connection.query(
-			  'DELETE FROM Medico WHERE idMedico=?',
+			  'DELETE FROM Medico WHERE idMedico=? LIMIT 1',
 			  [req.body.idMedico],
-			  function(err){
-			  	if (err) {
-			  		console.log('Error ao remover perfil de Medico');
-			  		return;
-			  	}
-			  	var deleteMedicoQuery = {
-					sql: `DELETE FROM Medico WHERE idMedico = ${connection.escape(req.body.idMedico)} LIMIT 1`,
-					timeout: 10000	
-				}
-				connection.query(deleteMedicoQuery, function(err, rows, fields) {
-					if(err) {
-						res.send('Houve um erro ao se tentar remover Medico da base de dados.');
-					} else { res.send('O Medico de id especificado pôde ser removido com sucesso.'); }
-				});
+			  	function(err){
+				  	if (err != null) {
+				  		console.log('Error ao remover perfil de Medico');
+				  		return;
+				  	}
+				 	else{
+				 		console.log('Médico removido com sucesso');
+				 	}
 			  });
 		} else {
 			res.send('Indique o id únicod e medico a ser removido da base.');			
