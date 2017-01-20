@@ -1,0 +1,98 @@
+<ons-page>
+<ons-navigator id="medicoNav" page="medico.html"></ons-navigator>
+
+<ons-template id="medico.html">
+  <ons-page id="medico">
+  <ons-toolbar>
+    <div class="center">Perfil Médico</div>
+    <div class="right">
+    <ons-toolbar-button id="push-button">
+        <ons-icon icon="md-edit" size="24px"></ons-icon>
+    </ons-toolbar-button>
+  </div>
+  </ons-toolbar>
+
+
+      <div class="profile-card">
+
+        <img src="https://pbs.twimg.com/profile_images/1608370290/VivaRio_MedicoDeFamilia_400x400.jpg" class="profile-image">
+        <div class="profile-name">John Doe</div>
+        <div class="profile-desc">CRM 4356</div>
+        <div class="profile-desc">Médico Oncologista</div>
+
+      </div>
+
+      <ons-list modifier="inset">
+        <ons-list-header>
+          Email
+        </ons-list-header>
+        <ons-list-item id="email-medico">
+          johndoe@gmail.com
+        </ons-list-item>
+
+        <ons-list-header>
+          Telefone
+        </ons-list-header>
+        <ons-list-item>
+          +55 61 3436 6345
+        </ons-list-item>
+
+        <ons-list-item tappable>
+          Sair da Conta
+        </ons-list-item>
+
+      </ons-list>
+
+      <br>
+
+  </ons-page>
+</ons-template>
+
+<ons-template id="editar-medico.html">
+  <ons-page id="editar-medico">
+    <ons-toolbar>
+      <div class="left"><ons-back-button>Cancelar</ons-back-button></div>
+      <div class="center"></div>
+    </ons-toolbar>
+
+  <ons-list modifier="inset">
+    <ons-list-header>
+      Nome
+    </ons-list-header>
+    <ons-list-item>
+      <ons-input id="nome-medico" placeholder="Nome" float></ons-input>
+    </ons-list-item>
+    <ons-list-header>
+      CRM
+    </ons-list-header>
+    <ons-list-item>
+      <ons-input id="crm-medico" placeholder="CRM" float></ons-input>
+    </ons-list-item>
+    <ons-list-header>
+      Especialidade
+    </ons-list-header>
+    <ons-list-item>
+      <ons-input id="esp-medico" placeholder="Especialidade" float></ons-input>
+    </ons-list-item>
+    <ons-list-header>
+      Email
+    </ons-list-header>
+    <ons-list-item>
+      <ons-input id="email-medico" type="email" placeholder="Email" float></ons-input>
+    </ons-list-item>
+    <ons-list-header>
+      Telefone
+    </ons-list-header>
+    <ons-list-item>
+      <ons-input id="tel-medico" type="tel" placeholder="Telefone" float></ons-input>
+    </ons-list-item>
+  </ons-list>
+    <p style="text-align: center; margin-top: 30px;">
+      <ons-button id="salvar-med">Salvar</ons-button>
+    </p>
+  </div>
+
+  </ons-page>
+</ons-template>
+
+</ons-page>

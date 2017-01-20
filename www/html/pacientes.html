@@ -1,0 +1,120 @@
+<ons-page>
+<ons-navigator id="pacienteNav" page="pacientes.html"></ons-navigator>
+
+<ons-template id="pacientes.html">
+  <ons-page id="pacientes">
+    <ons-toolbar>
+      <div class="center">Pacientes</div>
+      <div class="left">
+      <ons-toolbar-button>
+      	  <ons-icon icon="md-search" size="24px">
+	  </ons-icon></ons-toolbar-button>
+	  </div>
+	  <div class="right">
+      <ons-toolbar-button id="adicionar">
+          <ons-icon icon="md-account-add" size="24px"></ons-icon>
+      </ons-toolbar-button>
+      </div>
+    </ons-toolbar>
+
+	<ons-list>
+
+	<ons-list-item>
+      <div class="left">
+        <img class="list__item__thumbnail" src="http://placekitten.com/g/40/40">
+      </div>
+      <div class="center">
+        <span class="list__item__title">Paciente #1</span>
+        <span class="list__item__subtitle">Prontuário:</span>
+        <span class="list__item__subtitle">Causa da internação:</span>
+      </div>
+      <div class="right">        
+      	<ons-icon icon="star-o" class="list__item__icon"></ons-icon>
+      </div>
+    </ons-list-item>
+	<ons-list-item>
+      <div class="left">
+        <img class="list__item__thumbnail" src="http://placekitten.com/g/40/40">
+      </div>
+      <div class="center">
+        <span class="list__item__title">Paciente #2</span>
+        <span class="list__item__subtitle">Prontuário:</span>
+        <span class="list__item__subtitle">Causa da internação:</span>
+      </div>
+      <div class="right">        
+      	<ons-icon icon="star-o" class="list__item__icon"></ons-icon>
+      </div>
+    </ons-list-item>
+	<ons-list-item>
+      <div class="left">
+        <img class="list__item__thumbnail" src="http://placekitten.com/g/40/40">
+      </div>
+      <div class="center">
+        <span class="list__item__title">Paciente #3</span>
+        <span class="list__item__subtitle">Prontuário:</span>
+        <span class="list__item__subtitle">Causa da internação:</span>      
+      </div>
+      <div class="right">        
+      	<ons-icon icon="star-o" class="list__item__icon"></ons-icon>
+      </div>      
+    </ons-list-item>
+
+	</ons-list>
+  </ons-page>
+</ons-template>
+
+<ons-template id="editar1.html">
+  <ons-page id="editar">
+    <ons-toolbar>
+      <div class="left"><ons-back-button>Voltar</ons-back-button></div>
+      <div class="center"></div>
+    </ons-toolbar>
+
+   <ons-list modifier="inset">
+    <ons-list-header>
+     Nome do Paciente
+    </ons-list-header>
+    <ons-list-item>
+      <ons-input id="nome-paciente" placeholder="Nome do Paciente" float></ons-input>
+    </ons-list-item>
+    <ons-list-header>
+     Idade
+    </ons-list-header>
+    <ons-list-item>
+      <ons-input id="idade-paciente" placeholder="Idade" float></ons-input>
+    </ons-list-item>
+    <ons-list-header>
+     Prontuário
+    </ons-list-header>
+    <ons-list-item>
+      <ons-input id="prontuario-paciente" placeholder="Prontuário" float></ons-input>
+    </ons-list-item>
+    <ons-list-header>
+     Email do Paciente
+    </ons-list-header>
+    <ons-list-item>
+      <ons-input id="email-paciente" type="email" placeholder="Email" float></ons-input>
+    </ons-list-item>
+    <ons-list-header>
+     Telefone do Paciente
+    </ons-list-header>
+    <ons-list-item>
+      <ons-input id="telefone-paciente" type="tel" placeholder="Telefone" float></ons-input>
+    </ons-list-item>
+    <ons-list-header>
+     Causa da Internação
+    </ons-list-header>
+    <ons-list-item>
+      <ons-input id="causa-paciente" placeholder="Causa da Internação" float></ons-input>
+    </ons-list-item>
+  </ons-list>
+    <p style="text-align: center; margin-top: 30px;">
+      <ons-button id="salvar-add">Salvar</ons-button>
+      <ons-button id="cancelar-add">Cancelar</ons-button>
+    </p>
+  </div>
+
+  </ons-page>
+</ons-template>
+
+</ons-page>

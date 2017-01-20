@@ -1,0 +1,29 @@
+tabs.indicator{
+background.color:white
+
+
+
+}
+
+body{
+background-color:#e0e0e0
+}
+
+#bottom-nav {
+
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background-color: #333;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+}
+
+.footer-buttons {
+
+    display: inline;
+    position:fixed
+    bottom: 0;
+    width: 25%;
+}

@@ -1,55 +1,40 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE HTML>
 <html>
 
 <head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  <meta http-equiv="Content-Security-Policy" content="default-src * data:; style-src * 'unsafe-inline'; script-src * 'unsafe-inline' 'unsafe-eval'">
+  <script src="components/loader.js"></script>
+  <script src="lib/onsenui/js/onsenui.min.js"></script>
+  <script src="js/medico.js"></script>
+  <script src="js/pacientes.js"></script>
+  <script src="js/lembretes.js"></script>
 
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0"/>
-<title>Login</title>
+  <link rel="stylesheet" href="components/loader.css">
+  <link rel="stylesheet" href="lib/onsenui/css/onsenui.css">
+  <link rel="stylesheet" href="lib/onsenui/css/onsen-css-components.css">
+  <link rel="stylesheet" href="css/profile.css">
 
-<link rel="stylesheet" href="icons/material.css">
-<link rel="stylesheet" href="css\materialize-src\js\bin\materialize.min.css">
-<link rel="stylesheet" href="css\estilos.css">
-
+  <script>
+    ons.ready(function() {
+      console.log("Onsen UI is ready!");
+    });
+  </script>
 </head>
 
 <body>
 
-	<form role="form" action="Pacientes1.html">
-			
-		<fieldset>
-			<div class="form-group black-text ls-login-user">
-				<label for="userLogin">Usuário</label>
-					<input class="form-control ls-login-bg-user input-lg" id="userLogin" type="text" aria-label="Usuário" placeholder="Usuário">
-			</div>
- 
-			<div class="form-group black-text ls-login-password">
-				<label for="userPassword">Senha</label>
-					<input class="form-control ls-login-bg-password input-lg" id="userPassword" type="password" aria-label="Senha" placeholder="Senha">
-			</div>
- 
-			<a href="Senha.html" class="ls-login-forgot">Esqueci minha senha</a>
- 
-					<input type="submit" value="Entrar" class="btn btn-primary btn-lg btn-block">
-
-			<p class="txt-center ls-login-signup">Não possui uma conta no MEDICOSPIBIC?
-					<a href="Cadastro.html">Cadastre-se agora</a>
-
-
-			</p>
-<p>
-	<a href="www.facebook.com.br" class="btn btn-primary blue-icon">Cadastrar-se com o facebook </a>
-</p>
-
-			</fieldset>
-
-
-	</form>
-
- 
-	<script	src="css\materialize-src\jquery.min.js"></script>
-	<script	src="css\materialize-src\js\bin\materialize.min.js"></script>
+<ons-tabbar>
+  <ons-tab icon="group" page="html/pacientes.html" active>
+  </ons-tab>
+  <ons-tab icon="list" page="html/lembretes.html">
+  </ons-tab>
+  <ons-tab icon="user" page="html/medico.html">
+  </ons-tab>
+  <ons-tab icon="cog" page="html/config.html">
+  </ons-tab>
+</ons-tabbar>
 
 </body>
-
 </html>
