@@ -21,15 +21,15 @@
 
     <ons-list modifier="inset">
       <ons-list-item id="email-medico"  modifier="chevron">
-        Dados do Paciente
+          <button onclick="app.slidingMenu.setMainPage(html/medico.html, {closeMenu: true})" class="gmhomebutton gmhomebutton--outline">Dados do Médico</button>  <!--ANTES: Dados do Paciente -->
       </ons-list-item>
 
       <ons-list-item  modifier="chevron">
-        Dados de Saúde
+          <button onclick="app.slidingMenu.setMainPage(html/dadossaude1.html, {closeMenu: true})" class="gmhomebutton gmhomebutton--outline">Dados de Saúde</button><!--ANTES:  Dados de Saúde -->
       </ons-list-item>
 
       <ons-list-item  modifier="chevron">
-        Opções
+          <button onclick="app.slidingMenu.setMainPage(html/editar1.html, {closeMenu: true})" class="gmhomebutton gmhomebutton--outline">Configurações</button><!--ANTES: Opções -->
       </ons-list-item>
 
     </ons-list>
