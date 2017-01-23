@@ -19,17 +19,17 @@
 
     </div>
 
-    <ons-list modifier="inset">
-      <ons-list-item id="email-medico"  modifier="chevron">
-          <button onclick="app.slidingMenu.setMainPage(html/medico.html, {closeMenu: true})" class="gmhomebutton gmhomebutton--outline">Dados do Médico</button>  <!--ANTES: Dados do Paciente -->
+    <ons-list modifier="inset" class="menu-list"> <!-- ANTES: sem 'menu-list' e fçs 'ng-click' -->
+      <ons-list-item id="email-medico"  modifier="chevron" ng-click="email-medico.pushPage('html/medico.html'); menu.closeMenu()">
+          Dados do Paciente
       </ons-list-item>
 
-      <ons-list-item  modifier="chevron">
-          <button onclick="app.slidingMenu.setMainPage(html/dadossaude1.html, {closeMenu: true})" class="gmhomebutton gmhomebutton--outline">Dados de Saúde</button><!--ANTES:  Dados de Saúde -->
+      <ons-list-item id="graf1" modifier="chevron" ng-click="graf1.pushPage('html/dadossaude1.html'); menu.closeMenu()">
+          Dados de Saúde
       </ons-list-item>
 
-      <ons-list-item  modifier="chevron">
-          <button onclick="app.slidingMenu.setMainPage(html/editar1.html, {closeMenu: true})" class="gmhomebutton gmhomebutton--outline">Configurações</button><!--ANTES: Opções -->
+      <ons-list-item id="config" modifier="chevron" ng-click="config.pushPage('html/editar1.html'); menu.closeMenu()">
+          Configurações
       </ons-list-item>
 
     </ons-list>
