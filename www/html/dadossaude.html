@@ -1,0 +1,170 @@
+<ons-page>
+
+    <!-- Scripts utilizados na página -->
+    <script src="js/Chart.js"></script>
+    <script src="js/Chart.min.js"></script>
+    <!-- Fim dos Scripts -->
+
+    <ons-navigator id="pacienteSaude1" page="dadossaude1.html"></ons-navigator>
+
+    <!-- Header de trânsito entre as interfaces dos gráficos -->
+    <ons-tabbar>
+        <ons-tab label="Calorias" page="dadossaude1.html" active>
+        </ons-tab>
+        <ons-tab label="Passos" page="dadossaude2.html">
+        </ons-tab>
+        <ons-tab label="Pulso" page="dadossaude3.html">
+        </ons-tab>
+        <ons-tab label="Pressão" page="dadossaude4.html"> <!-- TODO Averiguar possibilidade de implementação. -->
+        </ons-tab>
+    </ons-tabbar>
+
+    <!-- Template da página com primeira informação gráfica -->
+    <ons-template id="dadossaude1.html">
+        <ons-page>
+            <ons-toolbar>
+                <div class="center">Calorias perdidas diariamente</div>
+            </ons-toolbar>
+
+            <p style="text-align: center;">
+
+            <!-- Início da interface do gráfico -->
+
+            <canvas id="myChart1" width="400" height="400"></canvas>
+
+            <script>
+                var chrt = getElementById("myChart1").getContext("2d");
+                var data = {
+                    labels: ["Domingo", "Segunda", "Terça", "Quarta", "Quinta", "Sexta", "Sábado"],
+                    datasets: [
+                        [
+                            label: "Calorias perdidas",
+                            backgroundColor: "rgba:(255, 99, 132, 0.2)",
+                            borderColor: "rgba:(255, 99, 132, 1)",
+                            borderWidth: 5,
+                            hoverBackgroundColor: "rgba(255, 99, 132, 0.4)",
+                            hoverBorderColor: "rgba:(255, 99, 132, 1)",
+                            data: [10, 20, 30, 40, 50, 50, 40], // AJUSTAR PARA ALTERAÇÃO DINÂMICA COM DB.
+                        ]
+                    ]
+                }; //TODO implrmrntação da comunicação de dados com o servidor.
+                var myBigChart1 = new Chart(chrt).Bar(data);
+            </script>
+
+            <!-- Fim do script de gráfico -->
+            </p>
+        </ons-page>
+    </ons-template>
+
+    <!-- Template da página com segunda informação gráfica -->
+    <ons-template id="dadossaude2.html">
+        <ons-page>
+            <ons-toolbar>
+                <div class="center">Passos dados diariamente</div>
+            </ons-toolbar>
+
+            <p style="text-align: center;">
+
+                <!-- Início da interface do gráfico -->
+
+                <canvas id="myChart2" width="400" height="400"></canvas>
+
+                <script>
+                var chrt = getElementById("myChart2").getContext("2d");
+                var data = {
+                    labels: ["Domingo", "Segunda", "Terça", "Quarta", "Quinta", "Sexta", "Sábado"],
+                    datasets: [
+                        [
+                            label: "Número de passos",
+                            backgroundColor: "rgba:(255, 99, 132, 0.2)",
+                            borderColor: "rgba:(255, 99, 132, 1)",
+                            borderWidth: 5,
+                            hoverBackgroundColor: "rgba(255, 99, 132, 0.4)",
+                            hoverBorderColor: "rgba:(255, 99, 132, 1)",
+                            data: [10, 7, 10, 70, 450, 20, 40], // AJUSTAR PARA ALTERAÇÃO DINÂMICA COM DB.
+                        ]
+                    ]
+                }; //TODO implrmrntação da comunicação de dados com o servidor.
+                var myBigChart1 = new Chart(chrt).Line(data);
+            </script>
+
+                <!-- Fim do script de gráfico -->
+            </p>
+        </ons-page>
+    </ons-template>
+
+    <!-- Template da página com terceira informação gráfica -->
+    <ons-template id="dadossaude1.html">
+        <ons-page>
+            <ons-toolbar>
+                <div class="center">Pulsação ao longo do dia</div>
+            </ons-toolbar>
+
+            <p style="text-align: center;">
+
+                <!-- Início da interface do gráfico -->
+
+                <canvas id="myChart3" width="400" height="400"></canvas>
+
+                <script>
+                var chrt = getElementById("myChart3").getContext("2d");
+                var data = {
+                    labels: ["Domingo", "Segunda", "Terça", "Quarta", "Quinta", "Sexta", "Sábado"],
+                    datasets: [
+                        [
+                            label: "Pulsação",
+                            backgroundColor: "rgba:(255, 99, 132, 0.2)",
+                            borderColor: "rgba:(255, 99, 132, 1)",
+                            borderWidth: 5,
+                            hoverBackgroundColor: "rgba(255, 99, 132, 0.4)",
+                            hoverBorderColor: "rgba:(255, 99, 132, 1)",
+                            data: [10, 20, 37, 60, 40, 70, 40], // AJUSTAR PARA ALTERAÇÃO DINÂMICA COM DB.
+                        ]
+                    ]
+                }; //TODO implrmrntação da comunicação de dados com o servidor.
+                var myBigChart1 = new Chart(chrt).Bubble(data);
+            </script>
+
+                <!-- Fim do script de gráfico -->
+            </p>
+        </ons-page>
+    </ons-template>
+
+    <!-- Template da página com quarta informação gráfica -->
+    <ons-template id="dadossaude1.html">
+        <ons-page>
+            <ons-toolbar>
+                <div class="center">Pressão instantânea</div>
+            </ons-toolbar>
+
+            <p style="text-align: center;">
+
+                <!-- Início da interface do gráfico -->
+
+                <canvas id="myChart4" width="400" height="400"></canvas>
+
+                <script>
+                var chrt = getElementById("myChart4").getContext("2d");
+                var data = {
+                    labels: ["Domingo", "Segunda", "Terça", "Quarta", "Quinta", "Sexta", "Sábado"],
+                    datasets: [
+                        [
+                            label: "Pressão",
+                            backgroundColor: "rgba:(255, 99, 132, 0.2)",
+                            borderColor: "rgba:(255, 99, 132, 1)",
+                            borderWidth: 5,
+                            hoverBackgroundColor: "rgba(255, 99, 132, 0.4)",
+                            hoverBorderColor: "rgba:(255, 99, 132, 1)",
+                            data: [10, 20, 30, 40, 50, 50, 40], // AJUSTAR PARA ALTERAÇÃO DINÂMICA COM DB.
+                        ]
+                    ]
+                }; //TODO implrmrntação da comunicação de dados com o servidor.
+                var myBigChart1 = new Chart(chrt).Bar(data);
+            </script>
+
+                <!-- Fim do script de gráfico -->
+            </p>
+        </ons-page>
+    </ons-template>
+
+</ons-page>
