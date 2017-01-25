@@ -14,11 +14,35 @@ document.addEventListener('init', function(event) {
 document.addEventListener('init', function(event) {
   var page = event.target;
 
-  if (page.id === 'pacientes') {
-    page.querySelector('#adicionar').onclick = function() {
-      document.querySelector('#pacienteNav').pushPage('editar1.html', {data: {title: 'Adicionar Paciente'}});
-    };
-  } else if (page.id === 'editar1') {
-    page.querySelector('ons-toolbar .center').innerHTML = page.data.title;
-  }
+  page.querySelector('#adicionar').onclick = function() {
+    document.querySelector('#pacienteNav').pushPage('editar1.html');
+  };
+
+});
+
+document.addEventListener('init', function(event) {
+  var page = event.target;
+
+  page.querySelector('#login-button').onclick = function() {
+    document.querySelector('#loginNav').pushPage('inicial.html');
+  };
+
+});
+
+document.addEventListener('init', function(event) {
+  var page = event.target;
+
+  page.querySelector('#cadastro-button').onclick = function() {
+    document.querySelector('#loginNav').pushPage('cadastro.html');
+  };
+
+});
+
+document.addEventListener('init', function(event) {
+  var page = event.target;
+
+  page.querySelector('#cadastrar-med').onclick = function() {
+    document.querySelector('#loginNav').popPage();
+  };
+  
 });
