@@ -20,3 +20,13 @@ document.addEventListener('init', function(event) {
 
 });
 
+document.addEventListener('init', function(event) {
+  var page = event.target;
+
+  page.querySelector('#logoff').onclick = function() {
+    document.querySelector('#loginNav').popPage( {options: {animation: 'fade'}});
+  };
+
+});
+
+

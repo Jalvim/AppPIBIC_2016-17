@@ -16,6 +16,7 @@
   <link rel="stylesheet" href="lib/onsenui/css/onsenui.css">
   <link rel="stylesheet" href="lib/onsenui/css/onsen-css-components.css">
   <link rel="stylesheet" href="css/profile.css">
+  <link rel="stylesheet" href="css/login.css">
 
   <script>
     ons.ready(function() {
@@ -26,16 +27,49 @@
 
 <body>
 
-<ons-tabbar>
-  <ons-tab icon="group" page="html/pacientes.html" active>
-  </ons-tab>
-  <ons-tab icon="list" page="html/lembretes.html">
-  </ons-tab>
-  <ons-tab icon="user" page="html/medico.html">
-  </ons-tab>
-  <ons-tab icon="cog" page="html/config.html">
-  </ons-tab>
-</ons-tabbar>
+
+  <ons-navigator id="loginNav" page="login.html">
+  </ons-navigator>
+
+  <ons-template id="login.html">
+  <ons-page id="login">
+      <ons-toolbar>
+        <div class="center">MEDICOSPIBIC</div>
+        <div class="right"><ons-toolbar-button>Fechar</ons-toolbar-button></div>
+      </ons-toolbar>
+
+      <div class="login-form">
+
+        <input type="email" class="text-input--underbar" placeholder="Email" value="">
+        <input type="password" class="text-input--underbar" placeholder="Senha" value="">
+        <br>
+        <ons-button modifier="quiet" class="forgot-password">Esqueci minha senha</ons-button>
+        <br>
+        <ons-button modifier="large" class="login-button" id="login-button">Entrar</ons-button>
+        <br><br>
+        <div class="center">Não possui um usuário no MEDICOSPIBIC?</div>
+        <br>
+        <ons-button modifier="quiet" class="cadastrar">Cadastrar-se agora</ons-button>
+        <br>
+        <ons-button modifier="quiet" class="cadastrar-facebook">Cadastrar-se com o Facebook</ons-button>
+      </div>
+	</ons-page>
+	</ons-template>
+
+<ons-template id="inicial.html">
+<ons-page id="inicial" >
+  <ons-tabbar>
+    <ons-tab icon="group" page="html/pacientes.html" active>
+    </ons-tab>
+    <ons-tab icon="list" page="html/lembretes.html">
+    </ons-tab>
+    <ons-tab icon="user" page="html/medico.html">
+    </ons-tab>
+    <ons-tab icon="cog" page="html/config.html">
+    </ons-tab>
+  </ons-tabbar>
+</ons-page>
+</ons-template>
 
 </body>
 </html>

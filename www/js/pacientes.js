@@ -22,3 +22,15 @@ document.addEventListener('init', function(event) {
     page.querySelector('ons-toolbar .center').innerHTML = page.data.title;
   }
 });
+
+document.addEventListener('init', function(event) {
+  var page = event.target;
+
+  if (page.id === 'login') {
+    page.querySelector('#login-button').onclick = function() {
+      document.querySelector('#loginNav').pushPage('inicial.html');
+    };
+  } else if (page.id === 'inicial') {
+    page.querySelector('ons-toolbar .center').innerHTML = page.data.title;
+  }
+});
