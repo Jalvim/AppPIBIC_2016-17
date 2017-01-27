@@ -7,10 +7,10 @@
   <meta http-equiv="Content-Security-Policy" content="default-src * data:; style-src * 'unsafe-inline'; script-src * 'unsafe-inline' 'unsafe-eval'">
   <script src="components/loader.js"></script>
   <script src="lib/onsenui/js/onsenui.min.js"></script>
+  <script src="js/jquery.min.js"></script>
   <script src="js/medico.js"></script>
   <script src="js/pacientes.js"></script>
   <script src="js/lembretes.js"></script>
-  <script src="js/jquery.min.js"></script>
 
   <link rel="stylesheet" href="components/loader.css">
   <link rel="stylesheet" href="lib/onsenui/css/onsenui.css">
@@ -40,8 +40,8 @@
 
       <div class="login-form">
 
-        <input type="email" class="text-input--underbar" placeholder="Email" value="">
-        <input type="password" class="text-input--underbar" placeholder="Senha" value="">
+        <input id="email-login" type="email" class="text-input--underbar" placeholder="Email">
+        <input id="senha-login" type="password" class="text-input--underbar" placeholder="Senha">
         <br>
         <ons-button modifier="quiet" class="forgot-password">Esqueci minha senha</ons-button>
         <br>
@@ -63,7 +63,7 @@
     </ons-tab>
     <ons-tab icon="list" page="html/lembretes.html">
     </ons-tab>
-    <ons-tab icon="user" page="html/medico.html">
+    <ons-tab id="tab-medico" icon="user" page="html/medico.html">
     </ons-tab>
     <ons-tab icon="cog" page="html/config.html">
     </ons-tab>
@@ -84,43 +84,43 @@
       Nome
     </ons-list-header>
     <ons-list-item>
-      <ons-input placeholder="Nome" float></ons-input>
+      <ons-input id="nome-cadastro" placeholder="Nome"></ons-input>
     </ons-list-item>
     <ons-list-header>
       CRM
     </ons-list-header>
     <ons-list-item>
-      <ons-input placeholder="CRM" float></ons-input>
+      <ons-input id="crm-cadastro" placeholder="CRM"></ons-input>
     </ons-list-item>
     <ons-list-header>
       Especialidade
     </ons-list-header>
     <ons-list-item>
-      <ons-input placeholder="Especialidade" float></ons-input>
+      <ons-input id="esp-cadastro" placeholder="Especialidade"></ons-input>
     </ons-list-item>
     <ons-list-header>
       Email
     </ons-list-header>
     <ons-list-item>
-      <ons-input type="email" placeholder="Email" float></ons-input>
+      <ons-input id="email-cadastro" type="email" placeholder="Email"></ons-input>
     </ons-list-item>
     <ons-list-header>
       Telefone
     </ons-list-header>
     <ons-list-item>
-      <ons-input type="tel" placeholder="Telefone" float></ons-input>
+      <ons-input id="telefone-cadastro" type="tel" placeholder="Telefone"></ons-input>
     </ons-list-item>
     <ons-list-header>
       Senha
     </ons-list-header>
     <ons-list-item>
-      <ons-input type="password" float></ons-input>
+      <ons-input id="senha-cadastro" type="password"></ons-input>
     </ons-list-item>
     <ons-list-header>
       Repetir Senha
     </ons-list-header>
     <ons-list-item>
-      <ons-input type="password" float></ons-input>
+      <ons-input id="senha-confirm" type="password"></ons-input>
     </ons-list-item>
 
   </ons-list>

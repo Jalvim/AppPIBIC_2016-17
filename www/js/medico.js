@@ -1,13 +1,13 @@
 document.addEventListener('init', function(event) {
   var page = event.target;
 
-  if (page.id === 'medico') {
-    page.querySelector('#push-button').onclick = function() {
-      document.querySelector('#medicoNav').pushPage('editar-medico.html', {data: {title: 'Editar Perfil'}});
-    };
-  } else if (page.id === 'editar-medico') {
-    page.querySelector('ons-toolbar .center').innerHTML = page.data.title;
-  }
+  page.querySelector('#push-button').onclick = function() {
+    document.querySelector('#medicoNav').pushPage('editar-medico.html');
+    $.get('https://pibicfitbit.herokuapp.com/api/medico/busca/ID/' + medicoId.idAtual)
+        .done(function(data) {
+          document.getElementById('esp-perfil').innerHTML = data[0].especialidade;
+        });
+  };
 
 });
 
@@ -24,6 +24,9 @@ document.addEventListener('init', function(event) {
   var page = event.target;
 
   page.querySelector('#logoff').onclick = function() {
+
+    medicoId.deleteIdMedico();
+    console.log('Id apagado '+ medicoId.idAtual);
     document.querySelector('#loginNav').popPage( {options: {animation: 'fade'}});
   };
 
