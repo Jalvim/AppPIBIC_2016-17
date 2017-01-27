@@ -53,6 +53,8 @@ document.addEventListener('init', function(event) {
 
           } else {
 
+            alert("Senha ou E-mail errados, por favor refaça o Log-In");
+
             console.log('deu errado');
 
           };
