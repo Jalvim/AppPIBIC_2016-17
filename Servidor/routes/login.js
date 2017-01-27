@@ -17,7 +17,7 @@ var router = express.Router();
 var connection = mysql.createConnection({
 	host : '79.170.40.183',
 	user : 'cl19-dbpipibic',
-	password : 'XXXXXXXXX',
+	password : 'XXXXXXXXXX',
 	database : 'cl19-dbpipibic'
 });
 connection.connect();
@@ -35,17 +35,21 @@ router.route('/')
 			req.body.hasOwnProperty('email') && 
 			req.body.hasOwnProperty('senha')){
 			getPatientQuery = {
-			sql: `SELECT idMedico FROM logins WHERE (email= ${connection.escape(req.body.email)} AND senha= ${connection.escape(req.body.senha)}) `,
-			timeout: 10000	
-		}
-		connection.query(getPatientQuery, function(err, rows, fields) {
-			res.json(rows);
-			console.log(err);
-			console.log(rows);
-			//console.log(fields);
+				sql: `SELECT idMedico FROM logins WHERE (email= ${connection.escape(req.body.email)} AND senha= ${connection.escape(req.body.senha)}) `,
+				timeout: 10000	
+			}
+			connection.query(getPatientQuery, function(err, rows, fields) {
 			
-		});
-	}
+				if (rows.length != 1) {res.send('Email ou senha incorretos ou algo a mais deu errado.');}
+				else {
+					res.json(rows[0]);
+					console.log(err);
+					console.log(rows);
+					//console.log(fields);
+				}
+			
+			});
+		} 
 	});
 
 

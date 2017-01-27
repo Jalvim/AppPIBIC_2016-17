@@ -17,7 +17,7 @@ var router = express.Router();
 var connection = mysql.createConnection({
 	host : '79.170.40.183',
 	user : 'cl19-dbpipibic',
-	password : 'XXXXXXXXX',
+	password : 'XXXXXXXXXX',
 	database : 'cl19-dbpipibic'
 });
 connection.connect();
@@ -191,6 +191,30 @@ router.route('/')
 			//console.log(fields);
 			
 		});
+	});
+	
+	router.route('/busca/ID/:idMedico')
+	.get(function(req, res){
+		if (req.params.idMedico < 0) { res.send('Ids de medicos são estritamente positivos.'); }
+		else {
+			var getMedicQuery = {
+				sql: `SELECT * FROM Medico WHERE idMedico = ${connection.escape(req.params.idMedico)}`,
+				timeout: 10000	
+			}
+			connection.query(getMedicQuery, function(err, rows, fields) {
+				if(err == null) {
+					res.json(rows);
+				}
+				else {
+				//Enviar código de erro http
+					res.send('Erro ao realizar a busca na base de dados por id do medico');
+				}
+				console.log(err);
+				console.log(rows);
+				//console.log(fields);
+			
+			});
+		}
 	});
 
 

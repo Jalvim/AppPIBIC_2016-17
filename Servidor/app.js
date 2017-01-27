@@ -24,7 +24,7 @@ var express = require('express'),
 var connection = mysql.createConnection({
 	host : '79.170.40.183',
 	user : 'cl19-dbpipibic',
-	password : 'XXXXXXXXX',
+	password : 'XXXXXXXXXXX',
 	database : 'cl19-dbpipibic'
 });
 connection.connect();
@@ -32,11 +32,11 @@ connection.connect();
 //setando todas as variáveis de options nos requests http de teste
 setupOptionsVariables(app);
 
-request(app.optionsPostTestRequestLogin, function(err, httpResponse, body) { 
-	console.log(err);
-	//console.log(httpResponse);
-	console.log(body);
-});
+// request(app.optionsPostTestRequestLogin, function(err, httpResponse, body) { 
+// 	console.log(err);
+// 	//console.log(httpResponse);
+// 	console.log(body);
+// });
 
 //info vai conter dados HR de chamada bem sucedida à API fitbit
 var info = {};
@@ -185,7 +185,7 @@ TO DO:
 */
 function refreshOAuthToken(options, callback, auth) {
 	//Adicionado código de automação para refresh de token de acesso
-	var tokenRefreshAuthorization = 'Basic ' + new Buffer("XXXXXXX:XXXXXXXXXXXXXXXXXXXXXXXX").toString('base64');
+	var tokenRefreshAuthorization = 'Basic ' + new Buffer("XXXXXXXX:XXXXXXXXXXXXXXXXXXXXXX").toString('base64');
 	console.log(tokenRefreshAuthorization);	
 	console.log(auth[0].refreshToken);
 	
@@ -230,6 +230,13 @@ function refreshOAuthToken(options, callback, auth) {
 //Setup para uso do módulo body parser para possibilitar extração de parâmetros do corpo do request http
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+
+//Tentativa de corrigir CORS para interação com front end
+app.use(function(req, res, next) {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  next();
+});
 
 // ROUTING DO SERVIDOR E API's nativas da aplicação
 app.get('/', function(req, res) {
