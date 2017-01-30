@@ -5,11 +5,23 @@ ons.redy (function(){
 
         $.get('https://pibicfitbit.herokuapp.com/api/paciente/geral/' + medicoCrm)//TODO --> Setar var medicoCrm.
         .done(function(data){
-            console.log('Retorno do request: ' + data);
-            //TODO --> Organizar o array em variáveis do html.
+
+            if(data.hasOwnProperty('nomePaciente')){
+                console.log('Retorno do request: ' + data);
+                var dadosPacientes = data;
+            } else {
+                console.log('Request mal sucedido');
+            }
+
         });
     });
 
+    //TODO --> Organizar o array em variáveis do html.
+
+    page.querySelesctor('#Paciente[i]').onclick = function(){ //TODO --> Colocar variável adequda no lugar de paciente
+        pacienteId.setIdPaciente(dadosPaciente[i].idPaciente);
+        pushPage();
+    }
 
 });
 
