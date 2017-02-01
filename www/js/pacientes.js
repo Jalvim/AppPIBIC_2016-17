@@ -64,51 +64,6 @@ document.addEventListener('init', function(event) {
 
 });
 
-document.addEventListener('init', function(event) {
-  var page = event.target;
-
-  page.querySelector('#cadastro-button').onclick = function() {
-    document.querySelector('#loginNav').pushPage('cadastro.html');
-  };
-
-});
-
-document.addEventListener('init', function(event) {
-  var page = event.target;
-
-  page.querySelector('#cadastrar-med').onclick = function() {
-    
-    var pass = $('#senha-cadastro').val();
-    var confirm = $('#senha-confirm').val();
-
-    if ( pass === confirm ) {
-
-      $.post('https://pibicfitbit.herokuapp.com/api/medico/',
-      {
-        nomeMedico: $('#nome-cadastro').val(),
-        especialidade: $('#esp-cadastro').val(),
-        CRM: $('#crm-cadastro').val(),
-        telefone: $('#telefone-cadastro').val(),
-        email: $('#email-cadastro').val(),
-        senha: $('#senha-cadastro').val()
-      })
-        .done(function(data) {
-          console.log(data);
-        });
-
-    } else {
-
-      console.log('errado');
-
-    }
-    console.log(pass);
-    document.querySelector('#loginNav').popPage();
-  };
-  
-});
-
-});
-
 var medicoId = {
 
   idAtual: -1,
