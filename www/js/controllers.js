@@ -77,7 +77,8 @@ medApp.controllers = {
 
       };
 
-      if ( pass === confirm ) {
+      console.log(medApp.services.checkEmptyField(inputs));
+      if ( pass === confirm && !medApp.services.checkEmptyField(inputs) ) {
 
         $.post('https://pibicfitbit.herokuapp.com/api/medico/',
         {
@@ -93,7 +94,7 @@ medApp.controllers = {
             document.querySelector('#loginNav').popPage();
           });
 
-      } else {
+      } else if(!medApp.services.checkEmptyField(inputs)) {
 
         alert("As senhas não conferem!");
 

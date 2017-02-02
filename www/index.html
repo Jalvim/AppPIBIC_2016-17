@@ -7,6 +7,9 @@
   <meta http-equiv="Content-Security-Policy" content="default-src * data:; style-src * 'unsafe-inline'; script-src * 'unsafe-inline' 'unsafe-eval'">
   <script src="components/loader.js"></script>
   <script src="lib/onsenui/js/onsenui.min.js"></script>
+  <script>
+    ons.platform.select('android');
+  </script>
   <script src="js/jquery.min.js"></script>
   <script src="js/Chart.min.js"></script>
   <script src="js/app.js"></script>
@@ -93,31 +96,31 @@
       Nome
     </ons-list-header>
     <ons-list-item>
-      <ons-input id="nome-cadastro" placeholder="Nome"></ons-input>
+      <ons-input id="nome-cadastro"></ons-input>
     </ons-list-item>
     <ons-list-header>
       CRM
     </ons-list-header>
     <ons-list-item>
-      <ons-input id="crm-cadastro" placeholder="CRM"></ons-input>
+      <ons-input id="crm-cadastro"></ons-input>
     </ons-list-item>
     <ons-list-header>
       Especialidade
     </ons-list-header>
     <ons-list-item>
-      <ons-input id="esp-cadastro" placeholder="Especialidade"></ons-input>
+      <ons-input id="esp-cadastro"></ons-input>
     </ons-list-item>
     <ons-list-header>
       Email
     </ons-list-header>
     <ons-list-item>
-      <ons-input id="email-cadastro" type="email" placeholder="Email"></ons-input>
+      <ons-input id="email-cadastro" type="email"></ons-input>
     </ons-list-item>
     <ons-list-header>
       Telefone
     </ons-list-header>
     <ons-list-item>
-      <ons-input id="telefone-cadastro" type="tel" placeholder="Telefone"></ons-input>
+      <ons-input id="telefone-cadastro" type="tel"></ons-input>
     </ons-list-item>
     <ons-list-header>
       Senha
@@ -135,7 +138,7 @@
   </ons-list>
     <br>
     <p>
-      <ons-button id="cadastrar-med">Enviar Consulta</ons-button>
+      <ons-button position="center" id="cadastrar-med">Enviar Consulta</ons-button>
     </p>
   </div>
 

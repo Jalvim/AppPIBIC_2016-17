@@ -1,26 +1,24 @@
-<ons-page id='dadossaude'>
+<ons-page>
 
-    <ons-navigator id="pacienteSaude1" page="dadossaude1.html"></ons-navigator>
+    <ons-toolbar position="top">
+        <div class="center">Dados de Saúde</div>
+        <div class="left"><ons-back-button>Voltar</ons-back-button></div>
+    </ons-toolbar>
 
-    <ons-tabbar position="top">
-        <ons-tab label="Calorias" page="dadossaude1.html" active>
-        </ons-tab>
-        <ons-tab label="Passos" page="dadossaude2.html">
-        </ons-tab>
-        <ons-tab label="Pulso" page="dadossaude3.html">
-        </ons-tab>
-        <ons-tab label="Pressão" page="dadossaude4.html"> <!-- TODO Averiguar possibilidade de implementação. -->
-        </ons-tab>
-    </ons-tabbar>
+            <ons-tabbar position="top">
+                <ons-tab label="Calorias" page="dadossaude1.html" active>
+                </ons-tab>
+                <ons-tab label="Passos" page="dadossaude2.html">
+                </ons-tab>
+                <ons-tab label="Pulso" page="dadossaude3.html">
+                </ons-tab>
+                <ons-tab label="Pressão" page="dadossaude4.html"> <!-- TODO Averiguar possibilidade de implementação. -->
+                </ons-tab>
+            </ons-tabbar>
 
     <!-- Template da página com primeira informação gráfica -->
     <ons-template id="dadossaude1.html">
         <ons-page>
-            <ons-toolbar position="top">
-                <div class="center">Calorias perdidas diariamente</div>
-                <div class="left"><ons-back-button>Voltar</ons-back-button></div>
-            </ons-toolbar>
-
             <!-- Header de trânsito entre as interfaces dos gráficos -->
     
 
@@ -37,10 +35,6 @@
     <!-- Template da página com segunda informação gráfica -->
     <ons-template id="dadossaude2.html">
         <ons-page>
-            <ons-toolbar>
-                <div class="center">Passos dados diariamente</div>
-                <div class="left"><ons-back-button>Voltar</ons-back-button></div>
-            </ons-toolbar>
 
             <p style="text-align: center;">
 
@@ -55,10 +49,6 @@
     <!-- Template da página com terceira informação gráfica -->
     <ons-template id="dadossaude3.html">
         <ons-page>
-            <ons-toolbar>
-                <div class="center">Pulsação ao longo do dia</div>
-                <div class="left"><ons-back-button>Voltar</ons-back-button></div>
-            </ons-toolbar>
 
             <p style="text-align: center;">
 
@@ -73,11 +63,6 @@
     <!-- Template da página com quarta informação gráfica -->
     <ons-template id="dadossaude4.html">
         <ons-page>
-            <ons-toolbar>
-                <div class="center">Pressão instantânea</div>
-                <div class="left"><ons-back-button>Voltar</ons-back-button></div>
-            </ons-toolbar>
-
             <p style="text-align: center;">
 
                 <!-- Início da interface do gráfico -->
