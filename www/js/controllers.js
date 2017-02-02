@@ -17,6 +17,8 @@ medApp.controllers = {
     // Tenta realizar o login
     page.querySelector('#login-button').onclick = function() {
 
+    var modal = document.querySelector('ons-modal');
+    modal.show();
     var emailLogin = $('#email-login').val();
     var senhaLogin = $('#senha-login').val();
 
@@ -33,6 +35,9 @@ medApp.controllers = {
         senha: senhaLogin
       })
         .done(function(data) {
+
+          modal.hide();
+
           if ( data.hasOwnProperty('idMedico') ) {
 
             $('#email-login').val("");
@@ -62,46 +67,17 @@ medApp.controllers = {
 
     // Registra novo médico caso as senhas sejam válidas
     page.querySelector('#cadastrar-med').onclick = function() {
+    
+      var pass = $('#senha-cadastro').val();
+      var confirm = $('#senha-confirm').val();
+      var inputs = page.getElementsByTagName('input');
+      if(medApp.services.checkEmptyField(inputs)){
 
+        alert("Preencha todos os campos!");
 
-   var i=0;
+      };
 
-       var   nomeMedico= $('#nome-cadastro').val();
-      var    especialidade= $('#esp-cadastro').val();
- var         CRM= $('#crm-cadastro').val();
-var          telefone= $('#telefone-cadastro').val();
- var         email= $('#email-cadastro').val();
-   var       pass= $('#senha-cadastro').val();
-   var confirm=$('#senha-confirm').val();
-
-   if(nomeMedico===''){
-   alert ('nome inválido');
-  i=1;
-   }
-
-
-   if(especialidade==='' && i===0){
-      alert ('especialidade inecessário');
-     i=1;
-      }
-
-   if(email==='' && i===0){
-      alert ('email invalido');
-     i=1;
-      }
-
-
-      if(telfone==='' && i===0){
-         alert ('telefone inválido');
-        i=1;
-         }
-
-         if(CRM===''&& i===0){
-            alert ('CRM inválido');
-      i=1;
-            }
       if ( pass === confirm ) {
-      if(i===0){
 
         $.post('https://pibicfitbit.herokuapp.com/api/medico/',
         {
@@ -114,17 +90,15 @@ var          telefone= $('#telefone-cadastro').val();
         })
           .done(function(data) {
             alert(data);
+            document.querySelector('#loginNav').popPage();
           });
 
-      }
-      }
-       else {
+      } else {
 
         alert("As senhas não conferem!");
 
-      }
+      };
 
-      document.querySelector('#loginNav').popPage();
     };
   
   },
@@ -232,6 +206,18 @@ var          telefone= $('#telefone-cadastro').val();
     page.querySelector('#causa-perfil').innerHTML = page.data.causa;
     page.querySelector('.profile-image').src = page.data.img;
 
+    // Chama página de dados de saúde
+    page.querySelector('#graf1').onclick = function() {
+
+      document.querySelector('#pacienteNav').pushPage('html/dadossaude.html');
+    };
+
+    // Chama página de edição de dados do paciente
+    page.querySelector('#pacienteeditar').onclick = function() {
+
+      document.querySelector('#pacienteNav').pushPage('html/editarpaciente.html');
+    };
+
   },
 
   /////////////////////////////////////
@@ -279,6 +265,15 @@ var          telefone= $('#telefone-cadastro').val();
       document.querySelector('#medicoNav').popPage();
     };
 
-  }
+  },
+
+  ///////////////////////////////////////
+  // Controlador de edição de Paciente //
+  ///////////////////////////////////////
+
+  editarpaciente: function(page) {
+
+
+  } 
 
 };
