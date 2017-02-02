@@ -17,7 +17,7 @@ var router = express.Router();
 var connection = mysql.createConnection({
 	host : '79.170.40.183',
 	user : 'cl19-dbpipibic',
-	password : 'XXXXXXXXXX',
+	password : 'XXXXXXXXX',
 	database : 'cl19-dbpipibic'
 });
 connection.connect();
@@ -197,23 +197,48 @@ router.route('/')
 	.get(function(req, res){
 		if (req.params.idMedico < 0) { res.send('Ids de medicos são estritamente positivos.'); }
 		else {
+			//Request para encontrar médico na tabela
 			var getMedicQuery = {
 				sql: `SELECT * FROM Medico WHERE idMedico = ${connection.escape(req.params.idMedico)}`,
 				timeout: 10000	
 			}
+			var response;
 			connection.query(getMedicQuery, function(err, rows, fields) {
 				if(err == null) {
-					res.json(rows);
+					response = rows;
 				}
 				else {
 				//Enviar código de erro http
 					res.send('Erro ao realizar a busca na base de dados por id do medico');
 				}
 				console.log(err);
-				console.log(rows);
+				//console.log(rows);
 				//console.log(fields);
 			
 			});
+
+			var getEmailQuery = {
+				sql: `SELECT email FROM logins WHERE idMedico = ${connection.escape(req.params.idMedico)} LIMIT 1`,
+				timeout: 1000
+			}
+			// Query final que envia a resposta dos dados do medico e email
+			connection.query(getEmailQuery, function(err, rows, fields) {
+				if(err == null) {
+					response[0].email = rows[0].email;
+					console.log(response);
+					res.json(response);
+				}
+				else {
+				//Enviar código de erro http
+					res.send('Erro ao realizar a busca na base de dados por id do medico');
+				}
+				console.log(err);
+				console.log(rows[0].email);
+				//console.log(fields);
+			
+			});
+			
+			
 		}
 	});
 
