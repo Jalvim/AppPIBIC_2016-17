@@ -62,11 +62,46 @@ medApp.controllers = {
 
     // Registra novo médico caso as senhas sejam válidas
     page.querySelector('#cadastrar-med').onclick = function() {
-    
-      var pass = $('#senha-cadastro').val();
-      var confirm = $('#senha-confirm').val();
 
+
+   var i=0;
+
+       var   nomeMedico= $('#nome-cadastro').val();
+      var    especialidade= $('#esp-cadastro').val();
+ var         CRM= $('#crm-cadastro').val();
+var          telefone= $('#telefone-cadastro').val();
+ var         email= $('#email-cadastro').val();
+   var       pass= $('#senha-cadastro').val();
+   var confirm=$('#senha-confirm').val();
+
+   if(nomeMedico===''){
+   alert ('nome inválido');
+  i=1;
+   }
+
+
+   if(especialidade==='' && i===0){
+      alert ('especialidade inecessário');
+     i=1;
+      }
+
+   if(email==='' && i===0){
+      alert ('email invalido');
+     i=1;
+      }
+
+
+      if(telfone==='' && i===0){
+         alert ('telefone inválido');
+        i=1;
+         }
+
+         if(CRM===''&& i===0){
+            alert ('CRM inválido');
+      i=1;
+            }
       if ( pass === confirm ) {
+      if(i===0){
 
         $.post('https://pibicfitbit.herokuapp.com/api/medico/',
         {
@@ -81,7 +116,9 @@ medApp.controllers = {
             alert(data);
           });
 
-      } else {
+      }
+      }
+       else {
 
         alert("As senhas não conferem!");
 
