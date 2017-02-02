@@ -47,24 +47,28 @@ medApp.services = {
      // Template de paciente
      var template = document.createElement('div');
      template.innerHTML =
-       '<ons-list-item class="paciente-lista" modifier="chevron" tappable>' +
+       '<ons-list-item class="paciente-lista" modifier="chevron">' +
        '<div class="left">' + 
-       '<img class="list__item__thumbnail" src="' + data.img + '">' +
+       '<img class="list__item__thumbnail" src="' + 'http://www.clker.com/cliparts/A/Y/O/m/o/N/placeholder-md.png' + '">' +
        '</div>' +
        '<div class="center">' +
-       '<span class="list__item__title">' +  data.nome + '</span>' +
-       '<span class="list__item__subtitle">Prontuário:' + data.pront + '</span>' +
-       '<span class="list__item__subtitle">Causa da internação: <span class="causa">' + data.causa + '</span></span>' +
+       '<span class="list__item__title">' +  'Paciente Novo' + '</span>' +
+       '<span class="list__item__subtitle">Prontuário: ' + '12345' + '</span>' +
+       '<span class="list__item__subtitle">Causa da internação: <span class="causa">' + 'Doenca nova' + '</span></span>' +
        '</div>' +
        '<div class="right">' +       
        '<ons-icon icon="star-o" class="list__item__icon"></ons-icon>'+
        '</div>';
 
-      // Insert urgent tasks at the top and non urgent tasks at the bottom.
-     var pendingList = document.querySelector('#pending-list');
-     pendingList.insertBefore(taskItem, taskItem.data.urgent ? pendingList.firstChild : null);
+      var pacienteItem = template.firstChild;
+
+    // Insert urgent tasks at the top and non urgent tasks at the bottom.
+     var pacientesLista = document.querySelector('#lista-pacientes');
+     pacientesLista.appendChild(pacienteItem);
+
     },
 
+    // Verifica se houve algum campo em branco nos formulários
     checkEmptyField: function(fields) {
 
       for (var i = 0, len = fields.length; i < len; i++) {
@@ -79,6 +83,28 @@ medApp.services = {
 
       return false;
 
-    }
+    },
+
+    // Cria um novo lembrete
+    createLembrete: function(data) {
+     // Template de paciente
+     var template = document.createElement('div');
+     template.innerHTML =
+      '<ons-list-item>'+
+      '<div class="right">' +
+      '<ons-icon icon="star-o" class="list__item__icon"></ons-icon>' + 
+      '<ons-icon icon="md-delete" class="list__item__icon"></ons-icon>' +
+      '</div>' +
+      '<div>' +
+       'Lembrete #' + Math.random() +
+      '</div>' +
+      '</ons-list-item>';
+
+    var lembreteItem = template.firstChild;
+
+    // Insert urgent tasks at the top and non urgent tasks at the bottom.
+     var lembretesLista = document.querySelector('#lista-lembretes');
+     lembretesLista.insertBefore(lembreteItem, null);
+    },
 
 };

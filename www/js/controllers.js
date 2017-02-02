@@ -190,6 +190,17 @@ medApp.controllers = {
                   causa: causaPaciente,
                   img: imgPaciente }});
       };
+      pacientes[i].querySelector('.list__item__icon').onclick = function() {
+        this.setAttribute("icon", "star");
+      };
+    };
+
+    // Adiciona um novo paciente à lista
+    page.querySelector('#adicionar').onclick = function() {
+
+      medApp.services.createPaciente();
+      var pacientes = page.querySelectorAll(".paciente-lista");
+
     };
       
   },
@@ -274,6 +285,18 @@ medApp.controllers = {
   editarpaciente: function(page) {
 
 
-  } 
+  },
+
+  ///////////////////////////////////////
+  // Controlador da Lista de Lembretes //
+  ///////////////////////////////////////
+
+  lembretes: function(page) {
+
+    page.querySelector('#add-lembrete').onclick = function() {
+
+      medApp.services.createLembrete();
+    };
+  }
 
 };
