@@ -297,6 +297,39 @@ medApp.controllers = {
 
       medApp.services.createLembrete();
     };
-  }
+  },
+
+  ///////////////////////////////////////
+    // Controlador Gráficos de Dados Est.//
+    ///////////////////////////////////////
+
+     /*dadossaude: function(page) {
+
+      page.querySelector('#dadossaude1').onClick = function(){
+        var chrt = $("#myChart1");
+        var data = {
+          labels: ["Domingo", "Segunda", "Terça", "Quarta", "Quinta", "Sexta", "Sábado"],
+          datasets: [
+            [
+              label: "Calorias perdidas",
+              backgroundColor: "rgba:(255, 99, 132, 0.2)",
+              borderColor: "rgba:(255, 99, 132, 1)",
+              borderWidth: 5,
+              hoverBackgroundColor: "rgba(255, 99, 132, 0.4)",
+              hoverBorderColor: "rgba:(255, 99, 132, 1)",
+              data: [10, 20, 30, 40, 50, 50, 40], // AJUSTAR PARA ALTERAÇÃO DINÂMICA COM DB.
+            ]
+          ]
+        }; //TODO implrmrntação da comunicação de dados com o servidor.
+        var myBigChart1 = new Chart(chrt, {
+          type: 'bar',
+          data: data,
+          options: {
+            responsive: true
+          }
+        });
+      };*/
+
+    }
 
 };
