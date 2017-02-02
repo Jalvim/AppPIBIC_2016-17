@@ -221,6 +221,42 @@ medApp.controllers = {
     page.querySelector('#graf1').onclick = function() {
 
       document.querySelector('#pacienteNav').pushPage('html/dadossaude.html');
+
+      //Evento que carrega o primeiro gráfico assim que a aba 1 está carregada.
+      $('#dadossaude1').ready( function() {
+
+        //Interface gráfica interativa dos dados estáticos de saúde.
+
+        var chrt = document.getElementById("myChart1");
+        var data = {
+          labels: ["Domingo", "Segunda", "Terça", "Quarta", "Quinta", "Sexta", "Sábado"],
+          datasets: [
+            {
+              label: "Calorias perdidas",
+              backgroundColor: "rgba:(255, 99, 132, 0.2)",
+              borderColor: "rgba:(255, 99, 132, 1)",
+              borderWidth: 5,
+              hoverBackgroundColor: "rgba(255, 99, 132, 0.4)",
+              hoverBorderColor: "rgba:(255, 99, 132, 1)",
+              data: [10, 20, 30, 40, 50, 50, 40], // AJUSTAR PARA ALTERAÇÃO DINÂMICA COM DB.
+            }
+          ]
+        }; //TODO implementação da comunicação de dados com o servidor.
+        var myChart1 = new Chart(chrt, {
+          type: 'bar',
+          data: data,
+          options: {
+            responsive: true
+          }
+        });
+
+        // Fim da interface gráfica 1. TODO --> Implementar outros gráficos.
+
+      });
+
+
+
+
     };
 
     // Chama página de edição de dados do paciente
@@ -297,39 +333,5 @@ medApp.controllers = {
 
       medApp.services.createLembrete();
     };
-  },
-
-  ///////////////////////////////////////
-    // Controlador Gráficos de Dados Est.//
-    ///////////////////////////////////////
-
-     /*dadossaude: function(page) {
-
-      page.querySelector('#dadossaude1').onClick = function(){
-        var chrt = $("#myChart1");
-        var data = {
-          labels: ["Domingo", "Segunda", "Terça", "Quarta", "Quinta", "Sexta", "Sábado"],
-          datasets: [
-            [
-              label: "Calorias perdidas",
-              backgroundColor: "rgba:(255, 99, 132, 0.2)",
-              borderColor: "rgba:(255, 99, 132, 1)",
-              borderWidth: 5,
-              hoverBackgroundColor: "rgba(255, 99, 132, 0.4)",
-              hoverBorderColor: "rgba:(255, 99, 132, 1)",
-              data: [10, 20, 30, 40, 50, 50, 40], // AJUSTAR PARA ALTERAÇÃO DINÂMICA COM DB.
-            ]
-          ]
-        }; //TODO implrmrntação da comunicação de dados com o servidor.
-        var myBigChart1 = new Chart(chrt, {
-          type: 'bar',
-          data: data,
-          options: {
-            responsive: true
-          }
-        });
-      };*/
-
-    }
-
+  }
 };
