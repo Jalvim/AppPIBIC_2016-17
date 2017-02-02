@@ -1,14 +1,8 @@
-<ons-page>
-
-    <!-- Scripts utilizados na página -->
-    <script src="js/Chart.js"></script>
-    <script src="js/Chart.min.js"></script>
-    <!-- Fim dos Scripts -->
+<ons-page id='dadossaude'>
 
     <ons-navigator id="pacienteSaude1" page="dadossaude1.html"></ons-navigator>
 
-    <!-- Header de trânsito entre as interfaces dos gráficos -->
-    <ons-tabbar>
+    <ons-tabbar position="top">
         <ons-tab label="Calorias" page="dadossaude1.html" active>
         </ons-tab>
         <ons-tab label="Passos" page="dadossaude2.html">
@@ -22,9 +16,13 @@
     <!-- Template da página com primeira informação gráfica -->
     <ons-template id="dadossaude1.html">
         <ons-page>
-            <ons-toolbar>
+            <ons-toolbar position="top">
                 <div class="center">Calorias perdidas diariamente</div>
+                <div class="left"><ons-back-button>Voltar</ons-back-button></div>
             </ons-toolbar>
+
+            <!-- Header de trânsito entre as interfaces dos gráficos -->
+    
 
             <p style="text-align: center;">
 
@@ -61,6 +59,7 @@
         <ons-page>
             <ons-toolbar>
                 <div class="center">Passos dados diariamente</div>
+                <div class="left"><ons-back-button>Voltar</ons-back-button></div>
             </ons-toolbar>
 
             <p style="text-align: center;">
@@ -94,10 +93,11 @@
     </ons-template>
 
     <!-- Template da página com terceira informação gráfica -->
-    <ons-template id="dadossaude1.html">
+    <ons-template id="dadossaude3.html">
         <ons-page>
             <ons-toolbar>
                 <div class="center">Pulsação ao longo do dia</div>
+                <div class="left"><ons-back-button>Voltar</ons-back-button></div>
             </ons-toolbar>
 
             <p style="text-align: center;">
@@ -131,10 +131,11 @@
     </ons-template>
 
     <!-- Template da página com quarta informação gráfica -->
-    <ons-template id="dadossaude1.html">
+    <ons-template id="dadossaude4.html">
         <ons-page>
             <ons-toolbar>
                 <div class="center">Pressão instantânea</div>
+                <div class="left"><ons-back-button>Voltar</ons-back-button></div>
             </ons-toolbar>
 
             <p style="text-align: center;">
