@@ -40,7 +40,7 @@ var router = express.Router();
 var connection = mysql.createConnection({
 	host : '79.170.40.183',
 	user : 'cl19-dbpipibic',
-	password : 'XXXXXXXXX',
+	password : 'XXXXXXXXXX',
 	database : 'cl19-dbpipibic'
 });
 connection.connect();
@@ -218,6 +218,55 @@ router.get('/geral/:crmMedicoResponsavel', function(req, res){
 		res.send('Indique o número de prontuário do paciente a ser puxado da base.');			
 	}
 }); 
+
+// Busca na API por pacientes pelo ID do médico
+router.get('/geral/id/:idMedico', function(req, res){
+	console.log(req.params.hasOwnProperty('idMedico'));
+		//Primeiramente, o id do Médico é buscado na tabela de Médicos para obter o seu CRM
+		if (req.params.hasOwnProperty('idMedico')) {
+			var getMedicoQuery = {
+			sql: `SELECT * FROM Medico WHERE idMedico = ${connection.escape(req.params.idMedico)}`,
+			timeout: 10000	
+		}
+		var CRMMedico;
+		connection.query(getMedicoQuery, function(err, rows, fields) {
+			if(err) {
+				res.send('Houve um erro ao se tentar encontrar o médico com o ID desejado.');
+			}
+			if(rows.length < 1)	{
+				res.send('Não existe médico com esta ID na base de dados');
+			}
+			else{
+				CRMMedico = rows[0].CRM;
+			}
+			console.log(err);
+			console.log(rows);
+			//console.log(fields);
+			//Utilizamos o primeiro médico encontrado com o ID único para a próxima etapa
+			
+		});
+
+		//A próxima etapa é idêntica a busca por CRM. Apenas é executado caso exista um CRM encontrado na etapa anterior.
+		console.log(CRMMedico);
+		//if (typeof CRMMedico != "undefined"){ //Não funciona pois a etapa anterior é assíncrona. A verificação de tipo ocorre antes da variavel ser setada na etapa anterior
+			var getPatientQuery = {
+				sql: `SELECT * FROM Paciente WHERE crmMedicoResponsavel = ${connection.escape(CRMMedico)}`,
+				timeout: 10000	
+			}
+			connection.query(getPatientQuery, function(err, rows, fields) {
+				if(err) {
+					res.send('Houve um erro ao se tentar puxar pacientes da base de dados.');
+				}
+				console.log(err);
+				console.log(rows);
+				//console.log(fields);
+				res.json(rows);
+			});
+		//}
+	} else {
+		res.send('Indique o ID único do médico a ser puxado da base.');			
+	}
+});
 
 //Ações com tabelas de parâmetros de saúde dos pacientes
 router.route('/health/static')
