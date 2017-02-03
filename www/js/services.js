@@ -2,27 +2,61 @@
 
 medApp.services = {
 
-  idAtual: -1,  // ID do médico no login atual 
+  idAtualMedico: -1,  // ID do médico no login atual
 
   // Função que seta o ID atual a cada login
   setIdMedico: function(novaId) {
 
-    this.idAtual = novaId;
+    this.idAtualMedico = novaId;
 
   },
 
   // Função que retorna o ID do login atual
   getIdMedico: function() {
     
-    return this.idAtual;
+    return this.idAtualMedico;
 
   },
 
   // Função que limpa o ID no logoff
   deleteIdMedico: function() {
 
-    this.idAtual = -1;
+    this.idAtualMedico = -1;
 
+  },
+
+  idAtualPaciente: -1, //ID 'default' do paciente.
+
+  //Função que seta o ID do paciente de interesse do médico --> 'onclick' no ícone.
+  setIdPaciente: function(novaId) {
+    this.idAtualPaciente = novaId;
+  },
+
+  //Função que retorna o ID do paciente de interesse.
+  getIdPaciente: function() {
+    return this.idAtualPaciente;
+  },
+
+  //Função que limpa o ID do paciente quando já consultados os dados de saúde;
+  deleteIdPaciente: function() {
+    this.idAtualPaciente = -1;
+  },
+
+  dadosEstaticos: -1, //Seta os dados estaticos do pacientes como 'default'.
+
+  //Função que armazena novos dados estáticos.
+  setDadosEstaticos: function(data) {
+    this.dadosEstaticos = data;
+  },
+
+  //Função que retorna os dados estáticos do paciente atual.
+  getDadosEstaticos: function() {
+    return this.dadosEstaticos;
+  },
+
+  //Função que torna os dados estáticos para o formato default.
+  deleteDadosEstaticos: function() {
+    this.dadosEstaticos = -1;
   },
 
   // Função que verifica se os dados do médico foram editados 

@@ -113,7 +113,7 @@ medApp.controllers = {
     // Atualiza os dados do perfil do médico a partir do servidor
     page.addEventListener('show', function(event) {
 
-      $.get('https://pibicfitbit.herokuapp.com/api/medico/busca/ID/' + medApp.services.idAtual)
+      $.get('https://pibicfitbit.herokuapp.com/api/medico/busca/ID/' + medApp.services.idAtualMedico)
       .done(function(data) {
         page.querySelector('#nome-perfil').innerHTML = data[0].nome;
         page.querySelector('#crm-perfil').innerHTML = data[0].CRM;
@@ -217,11 +217,26 @@ medApp.controllers = {
     page.querySelector('.profile-name').innerHTML = page.data.nome;
     page.querySelector('#causa-perfil').innerHTML = page.data.causa;
     page.querySelector('.profile-image').src = page.data.img;
+    medApp.services.setIdPaciente($('#idPaciente')); //TODO --> ver se prontuário é retornado e faz papel de ID.
 
     // Chama página de dados de saúde
     page.querySelector('#graf1').onclick = function() {
 
       document.querySelector('#pacienteNav').pushPage('html/dadossaude.html');
+
+
+      // Request feito quando a interface gráfica carregar para obter os dados estáticos do paciente.
+      $('#dadossaude').ready( function() { //POR HORA COMENTADO POIS A API AINDA N ESTÁ COMPLETA!
+        /*$.get('https://pibicfitbit.herokuapp.com/api/paciente/health/static/' + medApp.services.idAtualPaciente)
+                   .done(function(data) {
+                     medApp.services.setDadosEstaticos(data);
+                     console.log('Os dados retornados são: ' + medApp.services.getDadosEstaticos());
+                   });*/
+      });
+
+      /////////////////////////////////////
+      ///Controle dos Gráficos de saúde ///
+      /////////////////////////////////////
 
       //Evento que carrega o primeiro gráfico assim que a aba 1 está carregada.
       $('#dadossaude1').ready( function() {
@@ -239,7 +254,7 @@ medApp.controllers = {
               borderWidth: 5,
               hoverBackgroundColor: "rgba(255, 99, 132, 0.4)",
               hoverBorderColor: "rgba:(255, 99, 132, 1)",
-              data: [10, 20, 30, 40, 50, 50, 40], // AJUSTAR PARA ALTERAÇÃO DINÂMICA COM DB.
+              data: [10, 20, 30, 40, 50, 50, 40] // medApp.services.getDadosEstaticos().calorias;
             }
           ]
         }; //TODO implementação da comunicação de dados com o servidor.
@@ -270,7 +285,7 @@ medApp.controllers = {
                     borderWidth: 5,
                     hoverBackgroundColor: "rgba(255, 99, 132, 0.4)",
                     hoverBorderColor: "rgba:(255, 99, 132, 1)",
-                    data: [10, 20, 30, 40, 50, 50, 40], // AJUSTAR PARA ALTERAÇÃO DINÂMICA COM DB.
+                    data: [10, 20, 30, 40, 50, 50, 40] // medApp.services.getDadosEstaticos().passos
                   }
                 ]
               }; //TODO implementação da comunicação de dados com o servidor.
@@ -301,7 +316,7 @@ medApp.controllers = {
                     borderWidth: 5,
                     hoverBackgroundColor: "rgba(255, 99, 132, 0.4)",
                     hoverBorderColor: "rgba:(255, 99, 132, 1)",
-                    data: [10, 20, 30, 40, 50, 50, 40], // AJUSTAR PARA ALTERAÇÃO DINÂMICA COM DB.
+                    data: [10, 20, 30, 40, 50, 50, 40] // medApp.services.getDadosEstaticos().
                   }
                 ]
               }; //TODO implementação da comunicação de dados com o servidor.
@@ -332,7 +347,7 @@ medApp.controllers = {
                     borderWidth: 5,
                     hoverBackgroundColor: "rgba(255, 99, 132, 0.4)",
                     hoverBorderColor: "rgba:(255, 99, 132, 1)",
-                    data: [10, 20, 30, 40, 50, 50, 40], // AJUSTAR PARA ALTERAÇÃO DINÂMICA COM DB.
+                    data: [10, 20, 30, 40, 50, 50, 40] // medApp.services.getDadosEstaticos().
                   }
                 ]
               }; //TODO implementação da comunicação de dados com o servidor.
@@ -346,7 +361,7 @@ medApp.controllers = {
 
               // Fim da interface gráfica 4. TODO --> Implementar outros gráficos.
 
-            });
+      });
 
 
 
