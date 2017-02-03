@@ -228,8 +228,8 @@ medApp.controllers = {
 
         //Interface gráfica interativa dos dados estáticos de saúde.
 
-        var chrt = document.getElementById("myChart1");
-        var data = {
+        var chrt1 = document.getElementById("myChart1");
+        var data1 = {
           labels: ["Domingo", "Segunda", "Terça", "Quarta", "Quinta", "Sexta", "Sábado"],
           datasets: [
             {
@@ -243,9 +243,9 @@ medApp.controllers = {
             }
           ]
         }; //TODO implementação da comunicação de dados com o servidor.
-        var myChart1 = new Chart(chrt, {
+        var myChart1 = new Chart(chrt1, {
           type: 'bar',
-          data: data,
+          data: data1,
           options: {
             responsive: true
           }
@@ -254,6 +254,99 @@ medApp.controllers = {
         // Fim da interface gráfica 1. TODO --> Implementar outros gráficos.
 
       });
+
+      $('#dadossaude2').ready( function() {
+
+              //Interface gráfica interativa dos dados estáticos de saúde.
+
+              var chrt2 = document.getElementById("myChart2");
+              var data2 = {
+                labels: ["Domingo", "Segunda", "Terça", "Quarta", "Quinta", "Sexta", "Sábado"],
+                datasets: [
+                  {
+                    label: "Calorias perdidas",
+                    backgroundColor: "rgba:(255, 99, 132, 0.2)",
+                    borderColor: "rgba:(255, 99, 132, 1)",
+                    borderWidth: 5,
+                    hoverBackgroundColor: "rgba(255, 99, 132, 0.4)",
+                    hoverBorderColor: "rgba:(255, 99, 132, 1)",
+                    data: [10, 20, 30, 40, 50, 50, 40], // AJUSTAR PARA ALTERAÇÃO DINÂMICA COM DB.
+                  }
+                ]
+              }; //TODO implementação da comunicação de dados com o servidor.
+              var myChart2 = new Chart(chrt2, {
+                type: 'bar',
+                data: data2,
+                options: {
+                  responsive: true
+                }
+              });
+
+              // Fim da interface gráfica 2. TODO --> Implementar outros gráficos.
+
+            });
+
+      $('#dadossaude3').ready( function() {
+
+              //Interface gráfica interativa dos dados estáticos de saúde.
+
+              var chrt3 = document.getElementById("myChart3");
+              var data3 = {
+                labels: ["Domingo", "Segunda", "Terça", "Quarta", "Quinta", "Sexta", "Sábado"],
+                datasets: [
+                  {
+                    label: "Calorias perdidas",
+                    backgroundColor: "rgba:(255, 99, 132, 0.2)",
+                    borderColor: "rgba:(255, 99, 132, 1)",
+                    borderWidth: 5,
+                    hoverBackgroundColor: "rgba(255, 99, 132, 0.4)",
+                    hoverBorderColor: "rgba:(255, 99, 132, 1)",
+                    data: [10, 20, 30, 40, 50, 50, 40], // AJUSTAR PARA ALTERAÇÃO DINÂMICA COM DB.
+                  }
+                ]
+              }; //TODO implementação da comunicação de dados com o servidor.
+              var myChart3 = new Chart(chrt3, {
+                type: 'bar',
+                data: data3,
+                options: {
+                  responsive: true
+                }
+              });
+
+              // Fim da interface gráfica 3. TODO --> Implementar outros gráficos.
+
+            });
+
+      $('#dadossaude3').ready( function() {
+
+              //Interface gráfica interativa dos dados estáticos de saúde.
+
+              var chrt4 = document.getElementById("myChart4");
+              var data4 = {
+                labels: ["Domingo", "Segunda", "Terça", "Quarta", "Quinta", "Sexta", "Sábado"],
+                datasets: [
+                  {
+                    label: "Calorias perdidas",
+                    backgroundColor: "rgba:(255, 99, 132, 0.2)",
+                    borderColor: "rgba:(255, 99, 132, 1)",
+                    borderWidth: 5,
+                    hoverBackgroundColor: "rgba(255, 99, 132, 0.4)",
+                    hoverBorderColor: "rgba:(255, 99, 132, 1)",
+                    data: [10, 20, 30, 40, 50, 50, 40], // AJUSTAR PARA ALTERAÇÃO DINÂMICA COM DB.
+                  }
+                ]
+              }; //TODO implementação da comunicação de dados com o servidor.
+              var myChart4 = new Chart(chrt4, {
+                type: 'bar',
+                data: data4,
+                options: {
+                  responsive: true
+                }
+              });
+
+              // Fim da interface gráfica 4. TODO --> Implementar outros gráficos.
+
+            });
 
 
 
