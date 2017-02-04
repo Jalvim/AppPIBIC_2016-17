@@ -20,7 +20,7 @@
   <link rel="stylesheet" href="lib/onsenui/css/onsenui.css">
   <link rel="stylesheet" href="lib/onsenui/css/onsen-css-components.css">
   <link rel="stylesheet" href="css/profile.css">
-  <link rel="stylesheet" href="css/login.css">
+  <link rel="stylesheet" href="css/style.css">
 
   <script>
     ons.ready(function() {
@@ -37,25 +37,25 @@
 
   <ons-template id="login.html">
   <ons-page id="login">
-      <ons-toolbar>
+      <ons-toolbar class="toolbar">
         <div class="center">MEDICOSPIBIC</div>
         <div class="right"><ons-toolbar-button>Fechar</ons-toolbar-button></div>
       </ons-toolbar>
 
       <div class="login-form">
 
-        <input id="email-login" type="email" class="text-input--underbar" placeholder="Email">
-        <input id="senha-login" type="password" class="text-input--underbar" placeholder="Senha">
+        <input id="email-login" type="email" class="text-input--underbar login-input" placeholder="Email">
+        <input id="senha-login" type="password" class="text-input--underbar login-input" placeholder="Senha">
         <br>
         <ons-button modifier="quiet" class="forgot-password">Esqueci minha senha</ons-button>
         <br>
         <ons-button modifier="large" class="login-button" id="login-button">Entrar</ons-button>
         <br><br>
-        <div class="center">Não possui um usuário no MEDICOSPIBIC?</div>
+        <div class="center" style="margin-top: 20px;">Não possui um usuário no MEDICOSPIBIC?</div>
         <br>
-        <ons-button id="cadastro-button" modifier="quiet" class="cadastrar">Cadastrar-se agora</ons-button>
+        <ons-button id="cadastro-button" modifier="quiet" class="register">Cadastrar-se agora</ons-button>
         <br>
-        <ons-button modifier="quiet" class="cadastrar-facebook">Cadastrar-se com o Facebook</ons-button>
+        <ons-button modifier="quiet" class="register">Cadastrar-se com o Facebook</ons-button>
       </div>
 
       <ons-modal direction="up">
@@ -70,7 +70,7 @@
 
 <ons-template id="inicial.html">
 <ons-page id="inicial" >
-  <ons-tabbar>
+  <ons-tabbar class="tabbar">
     <ons-tab icon="group" page="html/pacientes.html" active>
     </ons-tab>
     <ons-tab icon="list" page="html/lembretes.html">
@@ -85,61 +85,43 @@
 
 <ons-template id="cadastro.html">
 <ons-page id="cadastro" >
-    <ons-toolbar>
+    <ons-toolbar class="toolbar">
       <div class="left"><ons-back-button>Cancelar</ons-back-button></div>
       <div class="center"> Cadastro</div>
     </ons-toolbar>
 
   <br>
-  <ons-list modifier="inset">
-    <ons-list-header>
-      Nome
-    </ons-list-header>
-    <ons-list-item>
-      <ons-input id="nome-cadastro"></ons-input>
+  <div class="register-form">
+  <ons-list disable-auto-styling>
+    <ons-list-item class="register-input" disable-auto-styling>
+      <ons-input id="nome-cadastro" placeholder="Nome" style="width: 100%;" disable-auto-styling></ons-input>
     </ons-list-item>
-    <ons-list-header>
-      CRM
-    </ons-list-header>
-    <ons-list-item>
-      <ons-input id="crm-cadastro"></ons-input>
+    <ons-list-item class="register-input" disable-auto-styling>
+      <ons-input id="crm-cadastro" placeholder="CRM" style="width: 100%;" disable-auto-styling></ons-input>
     </ons-list-item>
-    <ons-list-header>
-      Especialidade
-    </ons-list-header>
-    <ons-list-item>
-      <ons-input id="esp-cadastro"></ons-input>
+    <ons-list-item class="register-input" disable-auto-styling>
+      <ons-input id="esp-cadastro" placeholder="Especialidade" style="width: 100%;" disable-auto-styling></ons-input>
     </ons-list-item>
-    <ons-list-header>
-      Email
-    </ons-list-header>
-    <ons-list-item>
-      <ons-input id="email-cadastro" type="email"></ons-input>
+    <ons-list-item class="register-input" disable-auto-styling>
+      <ons-input id="email-cadastro" type="email" placeholder="Email" style="width: 100%;" disable-auto-styling></ons-input>
     </ons-list-item>
-    <ons-list-header>
-      Telefone
-    </ons-list-header>
-    <ons-list-item>
-      <ons-input id="telefone-cadastro" type="tel"></ons-input>
+    <ons-list-item class="register-input" disable-auto-styling>
+      <ons-input id="telefone-cadastro" type="tel" placeholder="Telefone" style="width: 100%;" disable-auto-styling></ons-input>
     </ons-list-item>
-    <ons-list-header>
-      Senha
-    </ons-list-header>
-    <ons-list-item>
-      <ons-input id="senha-cadastro" type="password"></ons-input>
+    <ons-list-item class="register-input" disable-auto-styling>
+      <ons-input id="senha-cadastro" type="password" placeholder="Senha" style="width: 100%;" disable-auto-styling></ons-input>
     </ons-list-item>
-    <ons-list-header>
-      Repetir Senha
-    </ons-list-header>
-    <ons-list-item>
-      <ons-input id="senha-confirm" type="password"></ons-input>
+    <ons-list-item class="register-input" disable-auto-styling>
+      <ons-input id="senha-confirm" type="password" placeholder="Repetir Senha" style="width: 100%;" disable-auto-styling></ons-input>
     </ons-list-item>
-
   </ons-list>
+
     <br>
+
     <p>
       <ons-button position="center" id="cadastrar-med">Enviar Consulta</ons-button>
     </p>
+
   </div>
 
 </ons-page>
