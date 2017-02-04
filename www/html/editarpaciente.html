@@ -1,44 +1,44 @@
 <ons-page id="editarpaciente">
-  <ons-toolbar>
+  <ons-toolbar class="toolbar">
       <div class="left"><ons-back-button>Cancelar</ons-back-button></div>
       <div class="center"></div>
     </ons-toolbar>
 
   <br>
-  <ons-list modifier="inset">
-    <ons-list-header>
+  <ons-list modifier="noborder" disable-auto-styling>
+    <ons-list-header modifier="nodivider">
       Nome
     </ons-list-header>
-    <ons-list-item>
-      <ons-input input-id="nome-pac"></ons-input>
+    <ons-list-item modifier="nodivider" class="register-input" disable-auto-styling>
+      <ons-input input-id="nome-pac" style="width: 100%;" disable-auto-styling></ons-input>
     </ons-list-item>
-    <ons-list-header>
+    <ons-list-header modifier="nodivider">
       Prontuário
     </ons-list-header>
-    <ons-list-item>
-      <ons-input input-id="pront-pac"></ons-input>
+    <ons-list-item modifier="nodivider" class="register-input" disable-auto-styling>
+      <ons-input input-id="pront-pac" style="width: 100%;" disable-auto-styling></ons-input>
     </ons-list-item>
-    <ons-list-header>
+    <ons-list-header modifier="nodivider">
       Causa da Internação
     </ons-list-header>
-    <ons-list-item>
-      <ons-input input-id="causa-pac"></ons-input>
+    <ons-list-item modifier="nodivider" class="register-input" disable-auto-styling>
+      <ons-input input-id="causa-pac" style="width: 100%;" disable-auto-styling></ons-input>
     </ons-list-item>
-    <ons-list-header>
+    <ons-list-header modifier="nodivider">
       Email
     </ons-list-header>
-    <ons-list-item>
-      <ons-input input-id="email-pac" type="email"></ons-input>
+    <ons-list-item modifier="nodivider" class="register-input" disable-auto-styling>
+      <ons-input input-id="email-pac" type="email" style="width: 100%;" disable-auto-styling></ons-input>
     </ons-list-item>
-    <ons-list-header>
+    <ons-list-header modifier="nodivider">
       Telefone
     </ons-list-header>
-    <ons-list-item>
-      <ons-input input-id="tel-pac" type="tel"></ons-input>
+    <ons-list-item modifier="nodivider" class="register-input" disable-auto-styling>
+      <ons-input input-id="tel-pac" type="tel" style="width: 100%;" disable-auto-styling></ons-input>
     </ons-list-item>
   </ons-list>
     <p style="text-align: center; margin-top: 30px;">
-      <ons-button id="editar-pac">Salvar</ons-button>
+      <ons-button id="editar-pac" class="button-send">Salvar</ons-button>
     </p>
 
 </ons-page>

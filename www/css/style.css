@@ -20,6 +20,13 @@
   background-color: #008080;
 }
 
+.logoff-button {
+  width: 100%;
+  margin: 0 auto;
+  background-color:#f43838;
+  text-align: center; 
+}
+
 .forgot-password {
   display: block;
   margin: 8px auto 0 auto;
@@ -52,7 +59,13 @@
   width: 100%;
 }
 
-#cadastrar-med {
+.button-send {
   background-color: #008080;
+}
+
+.profile-list {
+  text-align: center;
+  width: 95%;
+  margin: 10px auto 0;
 }
 

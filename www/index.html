@@ -44,8 +44,8 @@
 
       <div class="login-form">
 
-        <input id="email-login" type="email" class="text-input--underbar login-input" placeholder="Email">
-        <input id="senha-login" type="password" class="text-input--underbar login-input" placeholder="Senha">
+        <input id="email-login" type="email" class="text-input login-input" placeholder="Email">
+        <input id="senha-login" type="password" class="text-input login-input" placeholder="Senha">
         <br>
         <ons-button modifier="quiet" class="forgot-password">Esqueci minha senha</ons-button>
         <br>
@@ -70,14 +70,14 @@
 
 <ons-template id="inicial.html">
 <ons-page id="inicial" >
-  <ons-tabbar class="tabbar">
-    <ons-tab icon="group" page="html/pacientes.html" active>
+  <ons-tabbar>
+    <ons-tab icon="group" class="tabbar" page="html/pacientes.html" active>
     </ons-tab>
-    <ons-tab icon="list" page="html/lembretes.html">
+    <ons-tab icon="list" class="tabbar" page="html/lembretes.html">
     </ons-tab>
-    <ons-tab icon="user" page="html/medico.html">
+    <ons-tab icon="user" class="tabbar" page="html/medico.html">
     </ons-tab>
-    <ons-tab icon="cog" page="html/config.html">
+    <ons-tab icon="cog" class="tabbar" page="html/config.html">
     </ons-tab>
   </ons-tabbar>
 </ons-page>
@@ -92,26 +92,26 @@
 
   <br>
   <div class="register-form">
-  <ons-list disable-auto-styling>
-    <ons-list-item class="register-input" disable-auto-styling>
+  <ons-list modifier="noborder" disable-auto-styling>
+    <ons-list-item modifier="nodivider" class="register-input" disable-auto-styling>
       <ons-input id="nome-cadastro" placeholder="Nome" style="width: 100%;" disable-auto-styling></ons-input>
     </ons-list-item>
-    <ons-list-item class="register-input" disable-auto-styling>
+    <ons-list-item modifier="nodivider" class="register-input" disable-auto-styling>
       <ons-input id="crm-cadastro" placeholder="CRM" style="width: 100%;" disable-auto-styling></ons-input>
     </ons-list-item>
-    <ons-list-item class="register-input" disable-auto-styling>
+    <ons-list-item modifier="nodivider" class="register-input" disable-auto-styling>
       <ons-input id="esp-cadastro" placeholder="Especialidade" style="width: 100%;" disable-auto-styling></ons-input>
     </ons-list-item>
-    <ons-list-item class="register-input" disable-auto-styling>
+    <ons-list-item modifier="nodivider" class="register-input" disable-auto-styling>
       <ons-input id="email-cadastro" type="email" placeholder="Email" style="width: 100%;" disable-auto-styling></ons-input>
     </ons-list-item>
-    <ons-list-item class="register-input" disable-auto-styling>
+    <ons-list-item modifier="nodivider" class="register-input" disable-auto-styling>
       <ons-input id="telefone-cadastro" type="tel" placeholder="Telefone" style="width: 100%;" disable-auto-styling></ons-input>
     </ons-list-item>
-    <ons-list-item class="register-input" disable-auto-styling>
+    <ons-list-item modifier="nodivider" class="register-input" disable-auto-styling>
       <ons-input id="senha-cadastro" type="password" placeholder="Senha" style="width: 100%;" disable-auto-styling></ons-input>
     </ons-list-item>
-    <ons-list-item class="register-input" disable-auto-styling>
+    <ons-list-item modifier="nodivider" class="register-input" disable-auto-styling>
       <ons-input id="senha-confirm" type="password" placeholder="Repetir Senha" style="width: 100%;" disable-auto-styling></ons-input>
     </ons-list-item>
   </ons-list>
@@ -119,7 +119,7 @@
     <br>
 
     <p>
-      <ons-button position="center" id="cadastrar-med">Enviar Consulta</ons-button>
+      <ons-button position="center" class="button-send" id="cadastrar-med">Enviar Consulta</ons-button>
     </p>
 
   </div>

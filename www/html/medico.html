@@ -3,7 +3,7 @@
 
 <ons-template id="medico.html">
   <ons-page id="medico">
-  <ons-toolbar>
+  <ons-toolbar class="toolbar">
     <div class="center">Perfil Médico</div>
     <div class="right">
     <ons-toolbar-button id="edit-med">
@@ -27,7 +27,8 @@
 
       <br>
       
-      <ons-list modifier="inset">
+      <div class="profile-list">
+      <ons-list>
         <ons-list-header>
           Email
         </ons-list-header>
@@ -46,59 +47,57 @@
 
       <br>
       
-      <ons-button style="text-align: center; margin-top: 30px; background-color:#f43838" id="logoff" class="login-button">
+      <p>
+        <ons-button position="center" id="logoff" class="logoff-button">
           Sair da Conta
-      </ons-list-item>
-
-      
-
-      <br>
+        </ons-button>
+      </p>
 
   </ons-page>
 </ons-template>
 
 <ons-template id="editarmedico.html">
   <ons-page id="editarmedico">
-    <ons-toolbar>
+    <ons-toolbar class="toolbar">
       <div class="left"><ons-back-button>Cancelar</ons-back-button></div>
       <div class="center">Editar Perfil</div>
     </ons-toolbar>
 
   <br>
-  <ons-list modifier="inset">
-    <ons-list-header>
+  <ons-list modifier="noborder" disable-auto-styling>
+    <ons-list-header modifier="nodivider">
       Nome
     </ons-list-header>
-    <ons-list-item>
-      <ons-input input-id="nome-medico"></ons-input>
+    <ons-list-item modifier="nodivider" class="register-input" disable-auto-styling>
+      <ons-input input-id="nome-medico" style="width: 100%;" disable-auto-styling></ons-input>
     </ons-list-item>
-    <ons-list-header>
+    <ons-list-header modifier="nodivider">
       CRM
     </ons-list-header>
-    <ons-list-item>
-      <ons-input input-id="crm-medico"></ons-input>
+    <ons-list-item modifier="nodivider" class="register-input" disable-auto-styling>
+      <ons-input input-id="crm-medico" style="width: 100%;" disable-auto-styling></ons-input>
     </ons-list-item>
-    <ons-list-header>
+    <ons-list-header modifier="nodivider">
       Especialidade
     </ons-list-header>
-    <ons-list-item>
-      <ons-input input-id="esp-medico"></ons-input>
+    <ons-list-item modifier="nodivider" class="register-input" disable-auto-styling>
+      <ons-input input-id="esp-medico" style="width: 100%;" disable-auto-styling></ons-input>
     </ons-list-item>
-    <ons-list-header>
+    <ons-list-header modifier="nodivider">
       Email
-    </ons-list-header>
-    <ons-list-item>
-      <ons-input input-id="email-medico" type="email"></ons-input>
+    </ons-list-header modifier="nodivider">
+    <ons-list-item modifier="nodivider" class="register-input" disable-auto-styling>
+      <ons-input input-id="email-medico" type="email" style="width: 100%;" disable-auto-styling></ons-input>
     </ons-list-item>
     <ons-list-header>
       Telefone
-    </ons-list-header>
-    <ons-list-item>
-      <ons-input input-id="tel-medico" type="tel"></ons-input>
+    </ons-list-header modifier="nodivider">
+    <ons-list-item modifier="nodivider" class="register-input" disable-auto-styling>
+      <ons-input input-id="tel-medico" type="tel" style="width: 100%;" disable-auto-styling></ons-input>
     </ons-list-item>
   </ons-list>
     <p style="text-align: center; margin-top: 30px;">
-      <ons-button id="salvar-med">Salvar</ons-button>
+      <ons-button class="button-send" id="salvar-med">Salvar</ons-button>
     </p>
 
   </ons-page>

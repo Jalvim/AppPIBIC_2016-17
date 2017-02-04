@@ -3,7 +3,7 @@
 
 <ons-template id="pacientes.html">
   <ons-page id="pacientes">
-    <ons-toolbar>
+    <ons-toolbar class="toolbar">
       <div class="center">Pacientes</div>
       <div class="left">
       <ons-toolbar-button>
@@ -69,13 +69,13 @@
 
 <ons-template id="editar1.html">
   <ons-page id="editar">
-    <ons-toolbar>
+    <ons-toolbar class="toolbar">
       <div class="left"><ons-back-button>Voltar</ons-back-button></div>
       <div class="center"></div>
     </ons-toolbar>
 
   <br>
-   <ons-list modifier="inset">
+   <ons-list modifier="noborder" disable-auto-styling>
     <ons-list-header>
      Nome do Paciente
     </ons-list-header>
@@ -114,8 +114,8 @@
     </ons-list-item>
   </ons-list>
     <p style="text-align: center; margin-top: 30px;">
-      <ons-button id="salvar-add">Salvar</ons-button>
-      <ons-button id="cancelar-add">Cancelar</ons-button>
+      <ons-button class="button-send" id="salvar-add">Salvar</ons-button>
+      <ons-button class="button-send" id="cancelar-add">Cancelar</ons-button>
     </p>
   </div>
 
