@@ -199,7 +199,7 @@ medApp.controllers = {
     // Adiciona um novo paciente à lista
     page.querySelector('#adicionar').onclick = function() {
 
-      medApp.services.createPaciente();
+      medApp.services.createPaciente();// TODO --> adicionar argumentos retornados por request.
       var pacientes = page.querySelectorAll(".paciente-lista");
 
     };
@@ -227,11 +227,11 @@ medApp.controllers = {
 
       // Request feito quando a interface gráfica carregar para obter os dados estáticos do paciente.
       $('#dadossaude').ready( function() { //POR HORA COMENTADO POIS A API AINDA N ESTÁ COMPLETA!
-        /*$.get('https://pibicfitbit.herokuapp.com/api/paciente/health/static/' + medApp.services.idAtualPaciente)
-                   .done(function(data) {
-                     medApp.services.setDadosEstaticos(data);
-                     console.log('Os dados retornados são: ' + medApp.services.getDadosEstaticos());
-                   });*/
+        $.get('https://pibicfitbit.herokuapp.com/api/paciente/health/static/' + medApp.services.idAtualPaciente)
+          .done(function(data) {
+          medApp.services.setDadosEstaticos(data);
+          console.log('Os dados retornados são: ' + medApp.services.getDadosEstaticos());
+          });
       });
 
       /////////////////////////////////////
@@ -248,18 +248,31 @@ medApp.controllers = {
           labels: ["Domingo", "Segunda", "Terça", "Quarta", "Quinta", "Sexta", "Sábado"],
           datasets: [
             {
-              label: "Calorias perdidas",
-              backgroundColor: "rgba:(255, 99, 132, 0.2)",
-              borderColor: "rgba:(255, 99, 132, 1)",
-              borderWidth: 5,
-              hoverBackgroundColor: "rgba(255, 99, 132, 0.4)",
-              hoverBorderColor: "rgba:(255, 99, 132, 1)",
-              data: [10, 20, 30, 40, 50, 50, 40] // medApp.services.getDadosEstaticos().calorias;
+              label: "Calorias perdidas ao longo da semana",
+              fill: false,
+              lineTension: 0.1,
+              backgroundColor: "rgba(75,192,192,0.4)",
+              borderColor: "rgba(75,192,192,1)",
+              borderCapStyle: 'butt',
+              borderDash: [],
+              borderDashOffset: 0.0,
+              borderJoinStyle: 'miter',
+              pointBorderColor: "rgba(75,192,192,1)",
+              pointBackgroundColor: "#fff",
+              pointBorderWidth: 1,
+              pointHoverRadius: 5,
+              pointHoverBackgroundColor: "rgba(75,192,192,1)",
+              pointHoverBorderColor: "rgba(220,220,220,1)",
+              pointHoverBorderWidth: 2,
+              pointRadius: 1,
+              pointHitRadius: 10,
+              data: [65, 59, 80, 81, 56, 55, 40], // medApp.services.getDadosEstaticos().calorias;
+              spanGaps: false,
             }
           ]
         }; //TODO implementação da comunicação de dados com o servidor.
         var myChart1 = new Chart(chrt1, {
-          type: 'bar',
+          type: 'line',
           data: data1,
           options: {
             responsive: true
@@ -272,94 +285,107 @@ medApp.controllers = {
 
       $('#dadossaude2').ready( function() {
 
-              //Interface gráfica interativa dos dados estáticos de saúde.
+        //Interface gráfica interativa dos dados estáticos de saúde.
 
-              var chrt2 = document.getElementById("myChart2");
-              var data2 = {
-                labels: ["Domingo", "Segunda", "Terça", "Quarta", "Quinta", "Sexta", "Sábado"],
-                datasets: [
-                  {
-                    label: "Calorias perdidas",
-                    backgroundColor: "rgba:(255, 99, 132, 0.2)",
-                    borderColor: "rgba:(255, 99, 132, 1)",
-                    borderWidth: 5,
-                    hoverBackgroundColor: "rgba(255, 99, 132, 0.4)",
-                    hoverBorderColor: "rgba:(255, 99, 132, 1)",
-                    data: [10, 20, 30, 40, 50, 50, 40] // medApp.services.getDadosEstaticos().passos
-                  }
-                ]
-              }; //TODO implementação da comunicação de dados com o servidor.
-              var myChart2 = new Chart(chrt2, {
-                type: 'bar',
-                data: data2,
-                options: {
-                  responsive: true
-                }
-              });
+        var chrt2 = document.getElementById("myChart2");
+        var data2 = {
+          labels: ["Domingo", "Segunda", "Terça", "Quarta", "Quinta", "Sexta", "Sábado"],
+            datasets: [
+              {
+                label: "Número de passos dados na última semana",
+                fill: false,
+                lineTension: 0.1,
+                backgroundColor: "rgba(75,192,192,0.4)",
+                borderColor: "rgba(75,192,192,1)",
+                borderCapStyle: 'butt',
+                borderDash: [],
+                borderDashOffset: 0.0,
+                borderJoinStyle: 'miter',
+                pointBorderColor: "rgba(75,192,192,1)",
+                pointBackgroundColor: "#fff",
+                pointBorderWidth: 1,
+                pointHoverRadius: 5,
+                pointHoverBackgroundColor: "rgba(75,192,192,1)",
+                pointHoverBorderColor: "rgba(220,220,220,1)",
+                pointHoverBorderWidth: 2,
+                pointRadius: 1,
+                pointHitRadius: 10,
+                data: [65, 59, 80, 81, 56, 55, 40], //medApp.services.getDadosEstaticos().passos
+                spanGaps: false,
+              }
+            ]
+          }; //TODO implementação da comunicação de dados com o servidor.
+          var myChart2 = new Chart(chrt2, {
+            type: 'line',
+            data: data2,
+            options: {
+              responsive: true
+            }
+          });
 
-              // Fim da interface gráfica 2. TODO --> Implementar outros gráficos.
+          // Fim da interface gráfica 2. TODO --> Implementar outros gráficos.
 
-            });
-
-      $('#dadossaude3').ready( function() {
-
-              //Interface gráfica interativa dos dados estáticos de saúde.
-
-              var chrt3 = document.getElementById("myChart3");
-              var data3 = {
-                labels: ["Domingo", "Segunda", "Terça", "Quarta", "Quinta", "Sexta", "Sábado"],
-                datasets: [
-                  {
-                    label: "Calorias perdidas",
-                    backgroundColor: "rgba:(255, 99, 132, 0.2)",
-                    borderColor: "rgba:(255, 99, 132, 1)",
-                    borderWidth: 5,
-                    hoverBackgroundColor: "rgba(255, 99, 132, 0.4)",
-                    hoverBorderColor: "rgba:(255, 99, 132, 1)",
-                    data: [10, 20, 30, 40, 50, 50, 40] // medApp.services.getDadosEstaticos().
-                  }
-                ]
-              }; //TODO implementação da comunicação de dados com o servidor.
-              var myChart3 = new Chart(chrt3, {
-                type: 'bar',
-                data: data3,
-                options: {
-                  responsive: true
-                }
-              });
-
-              // Fim da interface gráfica 3. TODO --> Implementar outros gráficos.
-
-            });
+        });
 
       $('#dadossaude3').ready( function() {
 
-              //Interface gráfica interativa dos dados estáticos de saúde.
+        //Interface gráfica interativa dos dados estáticos de saúde.
 
-              var chrt4 = document.getElementById("myChart4");
-              var data4 = {
-                labels: ["Domingo", "Segunda", "Terça", "Quarta", "Quinta", "Sexta", "Sábado"],
-                datasets: [
-                  {
-                    label: "Calorias perdidas",
-                    backgroundColor: "rgba:(255, 99, 132, 0.2)",
-                    borderColor: "rgba:(255, 99, 132, 1)",
-                    borderWidth: 5,
-                    hoverBackgroundColor: "rgba(255, 99, 132, 0.4)",
-                    hoverBorderColor: "rgba:(255, 99, 132, 1)",
-                    data: [10, 20, 30, 40, 50, 50, 40] // medApp.services.getDadosEstaticos().
-                  }
-                ]
-              }; //TODO implementação da comunicação de dados com o servidor.
-              var myChart4 = new Chart(chrt4, {
-                type: 'bar',
-                data: data4,
-                options: {
-                  responsive: true
-                }
-              });
+        var chrt3 = document.getElementById("myChart3");
+        var data3 = {
+          labels: ["Domingo", "Segunda", "Terça", "Quarta", "Quinta", "Sexta", "Sábado"],
+          datasets: [
+            {
+              label: "Calorias perdidas",
+              backgroundColor: "rgba:(255, 99, 132, 0.2)",
+              borderColor: "rgba:(255, 99, 132, 1)",
+              borderWidth: 5,
+              hoverBackgroundColor: "rgba(255, 99, 132, 0.4)",
+              hoverBorderColor: "rgba:(255, 99, 132, 1)",
+              data: [10, 20, 30, 40, 50, 50, 40] // medApp.services.getDadosEstaticos().
+            }
+          ]
+        }; //TODO implementação da comunicação de dados com o servidor.
+        var myChart3 = new Chart(chrt3, {
+          type: 'bar',
+          data: data3,
+          options: {
+            responsive: true
+          }
+        });
 
-              // Fim da interface gráfica 4. TODO --> Implementar outros gráficos.
+        // Fim da interface gráfica 3. TODO --> Implementar outros gráficos.
+
+      });
+
+      $('#dadossaude3').ready( function() {
+
+        //Interface gráfica interativa dos dados estáticos de saúde.
+
+        var chrt4 = document.getElementById("myChart4");
+        var data4 = {
+          labels: ["Domingo", "Segunda", "Terça", "Quarta", "Quinta", "Sexta", "Sábado"],
+          datasets: [
+            {
+              label: "Calorias perdidas",
+              backgroundColor: "rgba:(255, 99, 132, 0.2)",
+              borderColor: "rgba:(255, 99, 132, 1)",
+              borderWidth: 5,
+              hoverBackgroundColor: "rgba(255, 99, 132, 0.4)",
+              hoverBorderColor: "rgba:(255, 99, 132, 1)",
+              data: [10, 20, 30, 40, 50, 50, 40] // medApp.services.getDadosEstaticos().
+            }
+          ]
+        }; //TODO implementação da comunicação de dados com o servidor.
+        var myChart4 = new Chart(chrt4, {
+          type: 'bar',
+          data: data4,
+          options: {
+            responsive: true
+          }
+        });
+
+        // Fim da interface gráfica 4. TODO --> Implementar outros gráficos.
 
       });
 
