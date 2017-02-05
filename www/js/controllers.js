@@ -461,25 +461,34 @@ medApp.controllers = {
       nomeEdit: page.data.nome,
       causaEdit: page.data.causa,
       prontEdit: page.data.pront,
-      obsEdit: page.data.obs
-
+      obsEdit: page.data.obs,
+      idadeEdit: page.data.idade,
+emailEdit: page.data.email
     };
 
     $('#nome-pac').val(dadosEdit.nomeEdit);
+
     $('#causa-pac').val(dadosEdit.causaEdit);
+
     $('#obs-pac').val(dadosEdit.obsEdit);
+
     $('#prontuario-pac').val(dadosEdit.prontEdit);
+
+ $('#idade-pac').val(dadosEdit.idadeEdit);
+
+  $('#email-pac').val(dadosEdit.emailEdit);
 
     // Botão salvar altera os dados no servidor se houve mudanças
     page.querySelector('#salvar-pac').onclick = function() {
 
       var novoEdit = {
 
-        nomeEdit: $('#nome-medico').val(),
-        crmEdit: $('#crm-medico').val(),
-        espEdit: $('#esp-medico').val(),
-        telEdit: $('#tel-medico').val()
-
+        nomeEdit: $('#nome-pac').val(),
+        causaEdit: $('#causa-pac').val(),
+        obsEdit: $('#obs-pac').val(),
+        prontEdit: $('#pront-pac').val(),
+         idadeEdit: $('#idade-pac').val(),
+   emailEdit: $('#email-pac').val(),
       };
 
       if (medApp.services.checkEdit(novoEdit, dadosEdit)) {
