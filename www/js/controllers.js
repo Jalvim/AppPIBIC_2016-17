@@ -119,8 +119,9 @@ medApp.controllers = {
         page.querySelector('#crm-perfil').innerHTML = data[0].CRM;
         page.querySelector('#esp-perfil').innerHTML = data[0].especialidade;
         page.querySelector('#tel-perfil').innerHTML = data[0].telefone;
-        page.querySelector('#email-perfil').innerHTML = data[0].email;
       });
+
+      page.querySelector('#email-perfil').innerHTML = Math.random();
 
     });
 
@@ -128,11 +129,11 @@ medApp.controllers = {
     page.querySelector('#edit-med').onclick = function() {
 
       document.querySelector('#medicoNav').pushPage('editarmedico.html', 
-        {data: {nome: page.querySelector('.profile-name').innerHTML, 
-                CRM: page.querySelector('#crm-perfil').innerHTML,
-                esp: page.querySelector('#esp-perfil').innerHTML,
-                tel: page.querySelector('#tel-perfil').innerHTML,
-                email: page.querySelector('#email-perfil').innerHTML
+        {data:
+        {nome: page.querySelector('.profile-name').innerHTML,
+         CRM: page.querySelector('#crm-perfil').innerHTML,
+         esp: page.querySelector('#esp-perfil').innerHTML,
+         tel: page.querySelector('#tel-perfil').innerHTML
                 }});
 
     };
@@ -167,6 +168,7 @@ medApp.controllers = {
 
     pullHook.onAction = function(done) {
       setTimeout(done, 1000);
+      page.querySelector('#email-perfil').innerHTML = Math.random();
     };
 
   },
@@ -218,12 +220,6 @@ medApp.controllers = {
     page.querySelector('.profile-image').src = page.data.img;
     medApp.services.setIdPaciente($('#idPaciente')); //TODO --> ver se prontuário é retornado e faz papel de ID.
 
-    // Chama página de edição de dados do paciente
-    page.querySelector('#pacienteeditar').onclick = function() {
-
-      document.querySelector('#pacienteNav').pushPage('html/editarpaciente.html');
-    };
-    
     // Chama página de dados de saúde
     page.querySelector('#graf1').onclick = function() {
 
@@ -399,6 +395,12 @@ medApp.controllers = {
 
     };
 
+    // Chama página de edição de dados do paciente
+    page.querySelector('#pacienteeditar').onclick = function() {
+
+      document.querySelector('#pacienteNav').pushPage('html/editarpaciente.html');
+    };
+
   },
 
   /////////////////////////////////////
@@ -413,8 +415,7 @@ medApp.controllers = {
       nomeEdit: page.data.nome,
       crmEdit: page.data.CRM,
       espEdit: page.data.esp, 
-      telEdit: page.data.tel,
-      emailEdit: page.data.email
+      telEdit: page.data.tel
 
     };
 
@@ -422,8 +423,6 @@ medApp.controllers = {
     $('#crm-medico').val(dadosEdit.crmEdit);
     $('#esp-medico').val(dadosEdit.espEdit);
     $('#tel-medico').val(dadosEdit.telEdit);
-    $('#email-medico').val(dadosEdit.emailEdit);
-
 
     // Botão salvar altera os dados no servidor se houve mudanças 
     page.querySelector('#salvar-med').onclick = function() {
@@ -433,8 +432,7 @@ medApp.controllers = {
         nomeEdit: $('#nome-medico').val(),
         crmEdit: $('#crm-medico').val(),
         espEdit: $('#esp-medico').val(), 
-        telEdit: $('#tel-medico').val(),
-        emailEdit: $('#email-medico').val()
+        telEdit: $('#tel-medico').val()
 
       };
 
@@ -457,6 +455,46 @@ medApp.controllers = {
   ///////////////////////////////////////
 
   editarpaciente: function(page) {
+    // Dados atuais para verificar alteração
+    var dadosEdit = {
+
+      nomeEdit: page.data.nome,
+      causaEdit: page.data.causa,
+      prontEdit: page.data.pront,
+      obsEdit: page.data.obs
+
+    };
+
+    $('#nome-pac').val(dadosEdit.nomeEdit);
+    $('#causa-pac').val(dadosEdit.causaEdit);
+    $('#obs-pac').val(dadosEdit.obsEdit);
+    $('#prontuario-pac').val(dadosEdit.prontEdit);
+
+    // Botão salvar altera os dados no servidor se houve mudanças
+    page.querySelector('#salvar-pac').onclick = function() {
+
+      var novoEdit = {
+
+        nomeEdit: $('#nome-medico').val(),
+        crmEdit: $('#crm-medico').val(),
+        espEdit: $('#esp-medico').val(),
+        telEdit: $('#tel-medico').val()
+
+      };
+
+      if (medApp.services.checkEdit(novoEdit, dadosEdit)) {
+
+        console.log('nao editou');
+
+      } else {
+
+        console.log('editou');
+      };
+
+      document.querySelector('#medicoNav').popPage();
+    };
+
+  },
 
 
   },
