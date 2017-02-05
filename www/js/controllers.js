@@ -43,7 +43,6 @@ medApp.controllers = {
             $('#email-login').val("");
             $('#senha-login').val("");
             medApp.services.setIdMedico(data.idMedico);
-            console.log('O id atual é: '+ medApp.services.getIdMedico());
             document.querySelector('#loginNav').pushPage('inicial.html');
 
           } else {
@@ -463,7 +462,8 @@ medApp.controllers = {
       prontEdit: page.data.pront,
       obsEdit: page.data.obs,
       idadeEdit: page.data.idade,
-emailEdit: page.data.email
+	  emailEdit: page.data.email
+
     };
 
     $('#nome-pac').val(dadosEdit.nomeEdit);
@@ -474,9 +474,9 @@ emailEdit: page.data.email
 
     $('#prontuario-pac').val(dadosEdit.prontEdit);
 
- $('#idade-pac').val(dadosEdit.idadeEdit);
+ 	$('#idade-pac').val(dadosEdit.idadeEdit);
 
-  $('#email-pac').val(dadosEdit.emailEdit);
+  	$('#email-pac').val(dadosEdit.emailEdit);
 
     // Botão salvar altera os dados no servidor se houve mudanças
     page.querySelector('#salvar-pac').onclick = function() {
@@ -487,8 +487,8 @@ emailEdit: page.data.email
         causaEdit: $('#causa-pac').val(),
         obsEdit: $('#obs-pac').val(),
         prontEdit: $('#pront-pac').val(),
-         idadeEdit: $('#idade-pac').val(),
-   emailEdit: $('#email-pac').val(),
+        idadeEdit: $('#idade-pac').val(),
+   		emailEdit: $('#email-pac').val(),
       };
 
       if (medApp.services.checkEdit(novoEdit, dadosEdit)) {
@@ -502,9 +502,6 @@ emailEdit: page.data.email
 
       document.querySelector('#medicoNav').popPage();
     };
-
-  },
-
 
   },
 
