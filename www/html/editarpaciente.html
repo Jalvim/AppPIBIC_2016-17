@@ -1,42 +1,57 @@
+<!-- Página de Edição de Dados do Paciente -->
 <ons-page id="editarpaciente">
+
   <ons-toolbar class="toolbar">
-      <div class="left"><ons-back-button>Cancelar</ons-back-button></div>
-      <div class="center"></div>
-    </ons-toolbar>
+    <div class="left"><ons-back-button>Cancelar</ons-back-button></div>
+    <div class="center"></div>
+  </ons-toolbar>
 
   <br>
+
+  <!-- Formulário de Edição de Paciente -->
   <ons-list modifier="noborder" disable-auto-styling>
     <ons-list-header modifier="nodivider">
       Nome
     </ons-list-header>
+
     <ons-list-item modifier="nodivider" class="register-input" disable-auto-styling>
       <ons-input input-id="nome-pac" style="width: 100%;" disable-auto-styling></ons-input>
     </ons-list-item>
+
     <ons-list-header modifier="nodivider">
       Prontuário
     </ons-list-header>
+
     <ons-list-item modifier="nodivider" class="register-input" disable-auto-styling>
       <ons-input input-id="pront-pac" style="width: 100%;" disable-auto-styling></ons-input>
     </ons-list-item>
+
     <ons-list-header modifier="nodivider">
       Causa da Internação
     </ons-list-header>
+
     <ons-list-item modifier="nodivider" class="register-input" disable-auto-styling>
       <ons-input input-id="causa-pac" style="width: 100%;" disable-auto-styling></ons-input>
     </ons-list-item>
+
     <ons-list-header modifier="nodivider">
       Email
     </ons-list-header>
+
     <ons-list-item modifier="nodivider" class="register-input" disable-auto-styling>
       <ons-input input-id="email-pac" type="email" style="width: 100%;" disable-auto-styling></ons-input>
     </ons-list-item>
+
     <ons-list-header modifier="nodivider">
       Telefone
     </ons-list-header>
+
     <ons-list-item modifier="nodivider" class="register-input" disable-auto-styling>
       <ons-input input-id="tel-pac" type="tel" style="width: 100%;" disable-auto-styling></ons-input>
     </ons-list-item>
+
   </ons-list>
+
     <p style="text-align: center; margin-top: 30px;">
       <ons-button id="editar-pac" class="button-send">Salvar</ons-button>
     </p>

@@ -1,37 +1,43 @@
+<!-- Página de Perfil do Médico -->
 <ons-page>
-<ons-navigator id="medicoNav" page="medico.html"></ons-navigator>
 
-<ons-template id="medico.html">
-  <ons-page id="medico">
-  <ons-toolbar class="toolbar">
-    <div class="center">Perfil Médico</div>
-    <div class="right">
-    <ons-toolbar-button id="edit-med">
+  <ons-navigator id="medicoNav" page="medico.html"></ons-navigator>
+
+  <ons-template id="medico.html">
+   <ons-page id="medico">
+  
+    <ons-toolbar class="toolbar">
+     <div class="center">Perfil Médico</div>
+     <div class="right">
+       <ons-toolbar-button id="edit-med">
         <ons-icon icon="md-edit" size="24px"></ons-icon>
-    </ons-toolbar-button>
+       </ons-toolbar-button>
+     </div>
+    </ons-toolbar>
+
+    <ons-pull-hook id="pull-hook">
+      Pull to refresh
+    </ons-pull-hook>
+
+    <div class="profile-card">
+
+      <img src="https://pbs.twimg.com/profile_images/1608370290/VivaRio_MedicoDeFamilia_400x400.jpg" class="profile-image">
+      <div id="nome-perfil" class="profile-name">John Doe</div>
+      <div id="crm-perfil" class="profile-desc">CRM 4356</div> <!-- Setar as vars. -->
+      <div id="esp-perfil" class="profile-desc">Médico Oncologista</div>
+
     </div>
-  </ons-toolbar>
 
-  <ons-pull-hook id="pull-hook">
-    Pull to refresh
-  </ons-pull-hook>
+    <br>
+    <!-- Lista de Dados do Médico -->
+    <div class="profile-list">
 
-      <div class="profile-card">
-
-        <img src="https://pbs.twimg.com/profile_images/1608370290/VivaRio_MedicoDeFamilia_400x400.jpg" class="profile-image">
-        <div id="nome-perfil" class="profile-name">John Doe</div>
-        <div id="crm-perfil" class="profile-desc">CRM 4356</div> <!-- Setar as vars. -->
-        <div id="esp-perfil" class="profile-desc">Médico Oncologista</div>
-
-      </div>
-
-      <br>
-      
-      <div class="profile-list">
       <ons-list>
+
         <ons-list-header>
           Email
         </ons-list-header>
+
         <ons-list-item id="email-perfil">
           johndoe@gmail.com
         </ons-list-item>
@@ -39,6 +45,7 @@
         <ons-list-header>
           Telefone
         </ons-list-header>
+
         <ons-list-item id="tel-perfil">
           +55 61 3436 6345
         </ons-list-item>
@@ -56,6 +63,7 @@
   </ons-page>
 </ons-template>
 
+<!-- Página de Edição de Dados do Médico -->
 <ons-template id="editarmedico.html">
   <ons-page id="editarmedico">
     <ons-toolbar class="toolbar">
@@ -64,38 +72,51 @@
     </ons-toolbar>
 
   <br>
+  <!-- Formulário de Edição do Médico -->  
   <ons-list modifier="noborder" disable-auto-styling>
+
     <ons-list-header modifier="nodivider">
       Nome
     </ons-list-header>
+
     <ons-list-item modifier="nodivider" class="register-input" disable-auto-styling>
       <ons-input input-id="nome-medico" style="width: 100%;" disable-auto-styling></ons-input>
     </ons-list-item>
+
     <ons-list-header modifier="nodivider">
       CRM
     </ons-list-header>
+
     <ons-list-item modifier="nodivider" class="register-input" disable-auto-styling>
       <ons-input input-id="crm-medico" style="width: 100%;" disable-auto-styling></ons-input>
     </ons-list-item>
+
     <ons-list-header modifier="nodivider">
       Especialidade
     </ons-list-header>
+
     <ons-list-item modifier="nodivider" class="register-input" disable-auto-styling>
       <ons-input input-id="esp-medico" style="width: 100%;" disable-auto-styling></ons-input>
     </ons-list-item>
+
     <ons-list-header modifier="nodivider">
       Email
     </ons-list-header modifier="nodivider">
+
     <ons-list-item modifier="nodivider" class="register-input" disable-auto-styling>
       <ons-input input-id="email-medico" type="email" style="width: 100%;" disable-auto-styling></ons-input>
     </ons-list-item>
+
     <ons-list-header>
       Telefone
     </ons-list-header modifier="nodivider">
+
     <ons-list-item modifier="nodivider" class="register-input" disable-auto-styling>
       <ons-input input-id="tel-medico" type="tel" style="width: 100%;" disable-auto-styling></ons-input>
     </ons-list-item>
+
   </ons-list>
+
     <p style="text-align: center; margin-top: 30px;">
       <ons-button class="button-send" id="salvar-med">Salvar</ons-button>
     </p>

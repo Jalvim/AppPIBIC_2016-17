@@ -65,7 +65,8 @@ medApp.services = {
     if ( novo.nomeEdit == velho.nomeEdit &&
         novo.crmEdit == velho.crmEdit &&
         novo.espEdit == velho.espEdit && 
-        novo.telEdit == velho.telEdit) {
+        novo.telEdit == velho.telEdit &&
+        novo.emailEdit == velho.emailEdit) {
 
       return true;
 

@@ -1,35 +1,39 @@
+<!-- Página de Perfil do Paciente -->
 <ons-page id="perfilpaciente">
+
  <ons-toolbar class="toolbar">
   <div class="center"></div>
   <div class="left"><ons-back-button>Voltar</ons-back-button></div>
  </ons-toolbar>
 
 
-    <div class="profile-card">
+  <div class="profile-card">
 
-      <img class="profile-image">
-      <div class="profile-name"></div>
-      <div class="profile-desc"></div>
-      <div class="profile-desc" id="causa-perfil"></div>
+    <img class="profile-image">
+    <div class="profile-name"></div>
+    <div class="profile-desc"></div>
+    <div class="profile-desc" id="causa-perfil"></div>
 
-    </div>
+  </div>
 
-    <br>
+  <br>
 
-    <ons-list modifier="inset" class="menu-list"> <!-- ANTES: sem 'menu-list' e fçs 'ng-click' -->
-      <ons-list-item id="graf1" modifier="chevron" tappable>
-          Dados de Saúde
-      </ons-list-item>
+  <ons-list class="menu-list"> 
 
-      <ons-list-item id="pacienteeditar" modifier="chevron" tappable>
-          Editar Dados
-      </ons-list-item>
+    <ons-list-item id="graf1" modifier="chevron" tappable>
+      Dados de Saúde
+    </ons-list-item>
 
-      <ons-list-item id="config" modifier="chevron" tappable>
-          Configurações
-      </ons-list-item>
+    <ons-list-item id="pacienteeditar" modifier="chevron" tappable>
+      Editar Dados
+    </ons-list-item>
 
-    </ons-list>
+    <ons-list-item id="config" modifier="chevron" tappable>
+      Configurações
+    </ons-list-item>
+
+  </ons-list>
+
   <br>
 
 </ons-page>
