@@ -128,10 +128,10 @@ medApp.services = {
       '<ons-list-item>'+
       '<div class="right">' +
       '<ons-icon icon="star-o" class="list__item__icon"></ons-icon>' + 
-      '<ons-icon icon="md-delete" class="list__item__icon"></ons-icon>' +
+      '<ons-icon icon="md-delete" class="list__item__icon delete"></ons-icon>' +
       '</div>' +
       '<div>' +
-       'Lembrete #' + Math.random() +
+       data +
       '</div>' +
       '</ons-list-item>';
 
