@@ -418,7 +418,7 @@ medApp.controllers = {
   /////////////////////////////////////
 
   editarmedico: function(page) {
-
+    console.log(page.data);
     // Dados atuais para verificar alteração 
     var dadosEdit = {
 
