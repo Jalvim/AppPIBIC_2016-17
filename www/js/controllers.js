@@ -118,9 +118,8 @@ medApp.controllers = {
         page.querySelector('#crm-perfil').innerHTML = data[0].CRM;
         page.querySelector('#esp-perfil').innerHTML = data[0].especialidade;
         page.querySelector('#tel-perfil').innerHTML = data[0].telefone;
+        page.querySelector('#email-perfil').innerHTML = data[0].email;
       });
-
-      page.querySelector('#email-perfil').innerHTML = Math.random();
 
     });
 
@@ -132,16 +131,25 @@ medApp.controllers = {
         {nome: page.querySelector('.profile-name').innerHTML,
          CRM: page.querySelector('#crm-perfil').innerHTML,
          esp: page.querySelector('#esp-perfil').innerHTML,
-         tel: page.querySelector('#tel-perfil').innerHTML
-                }});
+         tel: page.querySelector('#tel-perfil').innerHTML,
+         email: page.querySelector('#email-perfil').innerHTML
+        }});
 
     };
 
     // Realiza o logoff
     page.querySelector('#logoff').onclick = function() {
 
-      medApp.services.deleteIdMedico();
-      document.querySelector('#loginNav').resetToPage( 'login.html', {options: {animation: 'fade'}});
+      ons.notification.confirm({message: 'Tem certeza?'})
+        .then( function(confirm){
+
+          if(confirm) {
+            medApp.services.deleteIdMedico();
+            document.querySelector('#loginNav').resetToPage( 'login.html', {options: {animation: 'fade'}});
+          };
+
+        });
+
     };
 
     // Realiza a atualização do perfil com pull
@@ -167,7 +175,6 @@ medApp.controllers = {
 
     pullHook.onAction = function(done) {
       setTimeout(done, 1000);
-      page.querySelector('#email-perfil').innerHTML = Math.random();
     };
 
   },
@@ -219,29 +226,40 @@ medApp.controllers = {
     page.querySelector('.profile-image').src = page.data.img;
     medApp.services.setIdPaciente($('#idPaciente')); //TODO --> ver se prontuário é retornado e faz papel de ID.
 
+    // Chama página de edição de dados do paciente
+    page.querySelector('#pacienteeditar').onclick = function() {
+
+      document.querySelector('#pacienteNav').pushPage('html/editarpaciente.html');
+
+    };
+
+    
     // Chama página de dados de saúde
     page.querySelector('#graf1').onclick = function() {
 
       document.querySelector('#pacienteNav').pushPage('html/dadossaude.html');
 
+    };
 
-      // Request feito quando a interface gráfica carregar para obter os dados estáticos do paciente.
-      $('#dadossaude').ready( function() { //POR HORA COMENTADO POIS A API AINDA N ESTÁ COMPLETA!
-        $.get('https://pibicfitbit.herokuapp.com/api/paciente/health/static/' + medApp.services.idAtualPaciente)
-          .done(function(data) {
-          medApp.services.setDadosEstaticos(data);
-          console.log('Os dados retornados são: ' + medApp.services.getDadosEstaticos());
-          });
-      });
+  },
+  
+  /////////////////////////////////////
+  ///Controle dos Gráficos de saúde ///
+  /////////////////////////////////////
 
-      /////////////////////////////////////
-      ///Controle dos Gráficos de saúde ///
-      /////////////////////////////////////
-
-      //Evento que carrega o primeiro gráfico assim que a aba 1 está carregada.
-      $('#dadossaude1').ready( function() {
+  dadossaude1: function(page) {
 
         //Interface gráfica interativa dos dados estáticos de saúde.
+
+        //Request feito quando a interface gráfica carregar para obter os dados estáticos do paciente.
+        /*$('#dadossaude1').ready( function() { //POR HORA COMENTADO POIS A API AINDA N ESTÁ COMPLETA!
+          $.get('https://pibicfitbit.herokuapp.com/api/paciente/health/static/' + medApp.services.idAtualPaciente)
+            .done(function(data) {
+              medApp.services.setDadosEstaticos.calorias(data.calorias);
+              console.log('Os dados retornados são: ' + medApp.services.getDadosEstaticos.calorias());
+          });
+        });*/
+
 
         var chrt1 = document.getElementById("myChart1");
         var data1 = {
@@ -281,11 +299,20 @@ medApp.controllers = {
 
         // Fim da interface gráfica 1. TODO --> Implementar outros gráficos.
 
-      });
+  },
 
-      $('#dadossaude2').ready( function() {
+  dadossaude2: function(page) {
 
         //Interface gráfica interativa dos dados estáticos de saúde.
+
+        //Request
+        /*$('#dadossaude1').ready( function() { //POR HORA COMENTADO POIS A API AINDA N ESTÁ COMPLETA!
+        $.get('https://pibicfitbit.herokuapp.com/api/paciente/health/static/' + medApp.services.idAtualPaciente)
+          .done(function(data) {
+            medApp.services.setDadosEstaticos.passos(data.passos);
+            console.log('Os dados retornados são: ' + medApp.services.getDadosEstaticos.passos());
+          });
+        });*/
 
         var chrt2 = document.getElementById("myChart2");
         var data2 = {
@@ -325,20 +352,29 @@ medApp.controllers = {
 
           // Fim da interface gráfica 2. TODO --> Implementar outros gráficos.
 
-        });
+  },
 
-      $('#dadossaude3').ready( function() {
+  dadossaude3: function(page) {
 
         //Interface gráfica interativa dos dados estáticos de saúde.
+
+        //Request
+        /*$('#dadossaude1').ready( function() { //POR HORA COMENTADO POIS A API AINDA N ESTÁ COMPLETA!
+          $.get('https://pibicfitbit.herokuapp.com/api/paciente/health/static/' + medApp.services.idAtualPaciente)
+            .done(function(data) {
+              medApp.services.setDadosEstaticos.pulso(data.pulso);
+              console.log('Os dados retornados são: ' + medApp.services.getDadosEstaticos.pulso());
+          });
+        });*/
 
         var chrt3 = document.getElementById("myChart3");
         var data3 = {
           labels: ["Domingo", "Segunda", "Terça", "Quarta", "Quinta", "Sexta", "Sábado"],
           datasets: [
             {
-              label: "Calorias perdidas",
-              backgroundColor: "rgba:(255, 99, 132, 0.2)",
-              borderColor: "rgba:(255, 99, 132, 1)",
+              label: "Pulsação média durante a última semana",
+              backgroundColor: "rgba(75,192,192,0.4)",
+              borderColor: "rgba(75,192,192,1)",
               borderWidth: 5,
               hoverBackgroundColor: "rgba(255, 99, 132, 0.4)",
               hoverBorderColor: "rgba:(255, 99, 132, 1)",
@@ -356,20 +392,29 @@ medApp.controllers = {
 
         // Fim da interface gráfica 3. TODO --> Implementar outros gráficos.
 
-      });
+  },
 
-      $('#dadossaude3').ready( function() {
+  dadossaude4: function(page) {
 
         //Interface gráfica interativa dos dados estáticos de saúde.
+
+        //Request
+        /*$('#dadossaude1').ready( function() { //POR HORA COMENTADO POIS A API AINDA N ESTÁ COMPLETA!
+          $.get('https://pibicfitbit.herokuapp.com/api/paciente/health/static/' + medApp.services.idAtualPaciente)
+            .done(function(data) {
+              medApp.services.setDadosEstaticos.degrus(data.degraus);
+              console.log('Os dados retornados são: ' + medApp.services.getDadosEstaticos.degraus());
+          });
+        });*/
 
         var chrt4 = document.getElementById("myChart4");
         var data4 = {
           labels: ["Domingo", "Segunda", "Terça", "Quarta", "Quinta", "Sexta", "Sábado"],
           datasets: [
             {
-              label: "Calorias perdidas",
-              backgroundColor: "rgba:(255, 99, 132, 0.2)",
-              borderColor: "rgba:(255, 99, 132, 1)",
+              label: "Degraus 'subidos' durante a última semana",
+              backgroundColor: "rgba(75,192,192,0.4)",
+              borderColor: "rgba(75,192,192,1)",
               borderWidth: 5,
               hoverBackgroundColor: "rgba(255, 99, 132, 0.4)",
               hoverBorderColor: "rgba:(255, 99, 132, 1)",
@@ -387,19 +432,6 @@ medApp.controllers = {
 
         // Fim da interface gráfica 4. TODO --> Implementar outros gráficos.
 
-      });
-
-
-
-
-    };
-
-    // Chama página de edição de dados do paciente
-    page.querySelector('#pacienteeditar').onclick = function() {
-
-      document.querySelector('#pacienteNav').pushPage('html/editarpaciente.html');
-    };
-
   },
 
   /////////////////////////////////////
@@ -407,14 +439,15 @@ medApp.controllers = {
   /////////////////////////////////////
 
   editarmedico: function(page) {
-
+    console.log(page.data);
     // Dados atuais para verificar alteração 
     var dadosEdit = {
 
       nomeEdit: page.data.nome,
       crmEdit: page.data.CRM,
       espEdit: page.data.esp, 
-      telEdit: page.data.tel
+      telEdit: page.data.tel,
+      emailEdit: page.data.email,
 
     };
 
@@ -422,6 +455,7 @@ medApp.controllers = {
     $('#crm-medico').val(dadosEdit.crmEdit);
     $('#esp-medico').val(dadosEdit.espEdit);
     $('#tel-medico').val(dadosEdit.telEdit);
+    $('#email-medico').val(dadosEdit.emailEdit);
 
     // Botão salvar altera os dados no servidor se houve mudanças 
     page.querySelector('#salvar-med').onclick = function() {
@@ -431,7 +465,8 @@ medApp.controllers = {
         nomeEdit: $('#nome-medico').val(),
         crmEdit: $('#crm-medico').val(),
         espEdit: $('#esp-medico').val(), 
-        telEdit: $('#tel-medico').val()
+        telEdit: $('#tel-medico').val(),
+        emailEdit: $('#email-medico').val()
 
       };
 
@@ -474,7 +509,7 @@ medApp.controllers = {
 
     $('#prontuario-pac').val(dadosEdit.prontEdit);
 
- 	$('#idade-pac').val(dadosEdit.idadeEdit);
+ 	  $('#idade-pac').val(dadosEdit.idadeEdit);
 
   	$('#email-pac').val(dadosEdit.emailEdit);
 
@@ -488,7 +523,7 @@ medApp.controllers = {
         obsEdit: $('#obs-pac').val(),
         prontEdit: $('#pront-pac').val(),
         idadeEdit: $('#idade-pac').val(),
-   		emailEdit: $('#email-pac').val(),
+   		  emailEdit: $('#email-pac').val(),
       };
 
       if (medApp.services.checkEdit(novoEdit, dadosEdit)) {
@@ -513,7 +548,22 @@ medApp.controllers = {
 
     page.querySelector('#add-lembrete').onclick = function() {
 
-      medApp.services.createLembrete();
+      ons.notification.prompt({message: 'Escreva abaixo o lembrete:'})
+        .then(function(texto){
+
+          if( texto === '' ) {
+
+            ons.notification.alert('Insira algum texto!');
+
+          } else {
+
+            medApp.services.createLembrete(texto);
+
+          };
+
+        });
+      
+
     };
   }
 };
