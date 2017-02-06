@@ -57,9 +57,10 @@ router.route('/geral')
 			req.body.hasOwnProperty('crmMedicoResponsavel') &&
 			req.body.hasOwnProperty('dataDeNascimento') &&
 			req.body.hasOwnProperty('codigoOAuth') &&
-			req.body.hasOwnProperty('redirectUri')){	
+			req.body.hasOwnProperty('redirectUri') &&
+			req.body.hasOwnProperty('idMedico')){	
 			var query = {
-				sql:`INSERT INTO Paciente (nomePaciente, numeroDoProntuario, telefone, foto, causaDaInternacao, dataDeNascimento, crmMedicoResponsavel) VALUES (${connection.escape(req.body.nomePaciente)}, ${connection.escape(req.body.numeroDoProntuario)}, ${connection.escape(req.body.telefone)}, ${connection.escape(req.body.foto)}, ${connection.escape(req.body.causaDaInternacao)}, ${connection.escape(req.body.dataDeNascimento)}, ${connection.escape(req.body.crmMedicoResponsavel)})`,
+ 				sql:`INSERT INTO Paciente (nomePaciente, numeroDoProntuario, telefone, foto, causaDaInternacao, dataDeNascimento, crmMedicoResponsavel, idMedico) VALUES (${connection.escape(req.body.nomePaciente)}, ${connection.escape(req.body.numeroDoProntuario)}, ${connection.escape(req.body.telefone)}, ${connection.escape(req.body.foto)}, ${connection.escape(req.body.causaDaInternacao)}, ${connection.escape(req.body.dataDeNascimento)}, ${connection.escape(req.body.crmMedicoResponsavel)}, ${connection.escape(req.body.idMedico)})`,
 				timeout: 10000
 			}
 			connection.query(query, function(err, rows, fields) {
@@ -128,7 +129,8 @@ router.route('/geral')
 					novaFoto,
 					novaCausa,
 					novaData,
-					novoCrmMedicoResponsável;
+					novoCrmMedicoResponsável,
+					novoIdMedicoResponsável;
 				
 				if (req.body.hasOwnProperty('nomePaciente')) {
 					nomePacienteNovo = req.body.nomePaciente;
@@ -151,6 +153,9 @@ router.route('/geral')
 				if (req.body.hasOwnProperty('crmMedicoResponsavel')) {
 					novoCrmMedicoResponsável = req.body.crmMedicoResponsavel;
 				} else { novoCrmMedicoResponsável = rows[0].crmMedicoResponsavel; }
+				if (req.body.hasOwnProperty('idMedico')) { // Nova alteração
+					novoIdMedicoResponsável = req.body.idMedico;
+				} else { novoIdMedicoResponsável = rows[0].idMedico; }
 		
 				connection.query(
 				'UPDATE Paciente SET nomePaciente=?, numeroDoProntuario=?, telefone=?, foto=?, causaDaInternacao=?, dataDeNascimento=?, crmMedicoResponsavel=? WHERE idtable1=?',
@@ -222,22 +227,22 @@ router.get('/geral/:crmMedicoResponsavel', function(req, res){
 // Busca na API por pacientes pelo ID do médico
 router.get('/geral/id/:idMedico', function(req, res){
 	console.log(req.params.hasOwnProperty('idMedico'));
-		//Primeiramente, o id do Médico é buscado na tabela de Médicos para obter o seu CRM
+		//Primeiramente, o id do Médico é buscado na tabela de Pacientes para obter os seus poacientes
 		if (req.params.hasOwnProperty('idMedico')) {
 			var getMedicoQuery = {
-			sql: `SELECT * FROM Medico WHERE idMedico = ${connection.escape(req.params.idMedico)}`,
+			sql: `SELECT * FROM Paciente WHERE idMedico = ${connection.escape(req.params.idMedico)}`,
 			timeout: 10000	
 		}
-		var CRMMedico;
+		
 		connection.query(getMedicoQuery, function(err, rows, fields) {
 			if(err) {
 				res.send('Houve um erro ao se tentar encontrar o médico com o ID desejado.');
 			}
 			if(rows.length < 1)	{
-				res.send('Não existe médico com esta ID na base de dados');
+				res.send('Não existe paciente associado a este médico com esta ID na base de dados');
 			}
 			else{
-				CRMMedico = rows[0].CRM;
+				res.json(rows);
 			}
 			console.log(err);
 			console.log(rows);
@@ -246,23 +251,7 @@ router.get('/geral/id/:idMedico', function(req, res){
 			
 		});
 
-		//A próxima etapa é idêntica a busca por CRM. Apenas é executado caso exista um CRM encontrado na etapa anterior.
-		console.log(CRMMedico);
-		//if (typeof CRMMedico != "undefined"){ //Não funciona pois a etapa anterior é assíncrona. A verificação de tipo ocorre antes da variavel ser setada na etapa anterior
-			var getPatientQuery = {
-				sql: `SELECT * FROM Paciente WHERE crmMedicoResponsavel = ${connection.escape(CRMMedico)}`,
-				timeout: 10000	
-			}
-			connection.query(getPatientQuery, function(err, rows, fields) {
-				if(err) {
-					res.send('Houve um erro ao se tentar puxar pacientes da base de dados.');
-				}
-				console.log(err);
-				console.log(rows);
-				//console.log(fields);
-				res.json(rows);
-			});
-		//}
+		
 	} else {
 		res.send('Indique o ID único do médico a ser puxado da base.');			
 	}
