@@ -42,21 +42,59 @@ medApp.services = {
     this.idAtualPaciente = -1;
   },
 
-  dadosEstaticos: -1, //Seta os dados estaticos do pacientes como 'default'.
+  dadosEstaticos: {
+    calorias: -1,
+    passos: -1,
+    pulso: -1,
+    degraus: -1
+  }, //Seta os dados estaticos do pacientes como 'default'.
 
-  //Função que armazena novos dados estáticos.
-  setDadosEstaticos: function(data) {
-    this.dadosEstaticos = data;
+  //Conjunto de funções que armazenam novos dados estáticos.
+  setDadosEstaticos: {
+    calorias: function(data) {
+      this.dadosEstaticos.calorias = data;
+    },
+    passos: function(data) {
+      this.dadosEstaticos.passos = data;
+    },
+    pulso: function(data) {
+      this.dadosEstaticos.pulso = data;
+    },
+    degraus: function(data) {
+      this.dadosEstaticos.degraus = data;
+    }
   },
 
-  //Função que retorna os dados estáticos do paciente atual.
-  getDadosEstaticos: function() {
-    return this.dadosEstaticos;
+  //Conjunto de Funções que retornam os dados estáticos do paciente atual.
+  getDadosEstaticos: {
+    calorias: function() {
+      return this.dadosEstaticos.calorias;
+    },
+    passos: function() {
+      return this.dadosEstaticos.passos;
+    },
+    pulso: function() {
+      return this.dadosEstaticos.pulso;
+    },
+    degraus: function() {
+      return this.dadosEstaticos.degraus;
+    }
   },
 
   //Função que torna os dados estáticos para o formato default.
-  deleteDadosEstaticos: function() {
-    this.dadosEstaticos = -1;
+  deleteDadosEstaticos: {
+    calorias: function() {
+      this.dadosEstaticos.calorias = -1;
+    },
+    passos: function() {
+      this.dadosEstaticos.passos = -1;
+    },
+    pulso: function() {
+      this.dadosEstaticos.pulso = -1;
+    },
+    degraus: function() {
+      this.dadosEstaticos.degraus = -1;
+    }
   },
 
   // Função que verifica se os dados do médico foram editados 

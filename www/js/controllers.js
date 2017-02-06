@@ -239,16 +239,6 @@ medApp.controllers = {
 
       document.querySelector('#pacienteNav').pushPage('html/dadossaude.html');
 
-
-      /* Request feito quando a interface gráfica carregar para obter os dados estáticos do paciente.
-      $('#dadossaude').ready( function() { //POR HORA COMENTADO POIS A API AINDA N ESTÁ COMPLETA!
-        $.get('https://pibicfitbit.herokuapp.com/api/paciente/health/static/' + medApp.services.idAtualPaciente)
-          .done(function(data) {
-          medApp.services.setDadosEstaticos(data);
-          console.log('Os dados retornados são: ' + medApp.services.getDadosEstaticos());
-          });
-      });*/
-
     };
 
   },
@@ -260,6 +250,16 @@ medApp.controllers = {
   dadossaude1: function(page) {
 
         //Interface gráfica interativa dos dados estáticos de saúde.
+
+        //Request feito quando a interface gráfica carregar para obter os dados estáticos do paciente.
+        /*$('#dadossaude1').ready( function() { //POR HORA COMENTADO POIS A API AINDA N ESTÁ COMPLETA!
+          $.get('https://pibicfitbit.herokuapp.com/api/paciente/health/static/' + medApp.services.idAtualPaciente)
+            .done(function(data) {
+              medApp.services.setDadosEstaticos.calorias(data.calorias);
+              console.log('Os dados retornados são: ' + medApp.services.getDadosEstaticos.calorias());
+          });
+        });*/
+
 
         var chrt1 = document.getElementById("myChart1");
         var data1 = {
@@ -305,6 +305,15 @@ medApp.controllers = {
 
         //Interface gráfica interativa dos dados estáticos de saúde.
 
+        //Request
+        /*$('#dadossaude1').ready( function() { //POR HORA COMENTADO POIS A API AINDA N ESTÁ COMPLETA!
+        $.get('https://pibicfitbit.herokuapp.com/api/paciente/health/static/' + medApp.services.idAtualPaciente)
+          .done(function(data) {
+            medApp.services.setDadosEstaticos.passos(data.passos);
+            console.log('Os dados retornados são: ' + medApp.services.getDadosEstaticos.passos());
+          });
+        });*/
+
         var chrt2 = document.getElementById("myChart2");
         var data2 = {
           labels: ["Domingo", "Segunda", "Terça", "Quarta", "Quinta", "Sexta", "Sábado"],
@@ -349,14 +358,23 @@ medApp.controllers = {
 
         //Interface gráfica interativa dos dados estáticos de saúde.
 
+        //Request
+        /*$('#dadossaude1').ready( function() { //POR HORA COMENTADO POIS A API AINDA N ESTÁ COMPLETA!
+          $.get('https://pibicfitbit.herokuapp.com/api/paciente/health/static/' + medApp.services.idAtualPaciente)
+            .done(function(data) {
+              medApp.services.setDadosEstaticos.pulso(data.pulso);
+              console.log('Os dados retornados são: ' + medApp.services.getDadosEstaticos.pulso());
+          });
+        });*/
+
         var chrt3 = document.getElementById("myChart3");
         var data3 = {
           labels: ["Domingo", "Segunda", "Terça", "Quarta", "Quinta", "Sexta", "Sábado"],
           datasets: [
             {
-              label: "Calorias perdidas",
-              backgroundColor: "rgba:(255, 99, 132, 0.2)",
-              borderColor: "rgba:(255, 99, 132, 1)",
+              label: "Pulsação média durante a última semana",
+              backgroundColor: "rgba(75,192,192,0.4)",
+              borderColor: "rgba(75,192,192,1)",
               borderWidth: 5,
               hoverBackgroundColor: "rgba(255, 99, 132, 0.4)",
               hoverBorderColor: "rgba:(255, 99, 132, 1)",
@@ -380,14 +398,23 @@ medApp.controllers = {
 
         //Interface gráfica interativa dos dados estáticos de saúde.
 
+        //Request
+        /*$('#dadossaude1').ready( function() { //POR HORA COMENTADO POIS A API AINDA N ESTÁ COMPLETA!
+          $.get('https://pibicfitbit.herokuapp.com/api/paciente/health/static/' + medApp.services.idAtualPaciente)
+            .done(function(data) {
+              medApp.services.setDadosEstaticos.degrus(data.degraus);
+              console.log('Os dados retornados são: ' + medApp.services.getDadosEstaticos.degraus());
+          });
+        });*/
+
         var chrt4 = document.getElementById("myChart4");
         var data4 = {
           labels: ["Domingo", "Segunda", "Terça", "Quarta", "Quinta", "Sexta", "Sábado"],
           datasets: [
             {
-              label: "Calorias perdidas",
-              backgroundColor: "rgba:(255, 99, 132, 0.2)",
-              borderColor: "rgba:(255, 99, 132, 1)",
+              label: "Degraus 'subidos' durante a última semana",
+              backgroundColor: "rgba(75,192,192,0.4)",
+              borderColor: "rgba(75,192,192,1)",
               borderWidth: 5,
               hoverBackgroundColor: "rgba(255, 99, 132, 0.4)",
               hoverBorderColor: "rgba:(255, 99, 132, 1)",
