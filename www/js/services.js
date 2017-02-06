@@ -127,7 +127,7 @@ medApp.services = {
      template.innerHTML =
       '<ons-list-item>'+
       '<div class="right">' +
-      '<ons-icon icon="star-o" class="list__item__icon"></ons-icon>' + 
+      //'<ons-icon icon="star-o" class="list__item__icon"></ons-icon>' + 
       '<ons-icon icon="md-delete" class="list__item__icon delete"></ons-icon>' +
       '</div>' +
       '<div>' +
@@ -136,10 +136,14 @@ medApp.services = {
       '</ons-list-item>';
 
     var lembreteItem = template.firstChild;
+    var lembretesLista = document.querySelector('#lista-lembretes');
 
-    // Insert urgent tasks at the top and non urgent tasks at the bottom.
-     var lembretesLista = document.querySelector('#lista-lembretes');
-     lembretesLista.insertBefore(lembreteItem, null);
+    lembretesLista.appendChild(lembreteItem);
+
+    lembreteItem.querySelector('.right').onclick = function() {
+        lembretesLista.removeChild(lembreteItem);
+      };
+
     },
 
 };

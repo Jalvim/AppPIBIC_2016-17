@@ -233,30 +233,31 @@ medApp.controllers = {
 
     };
 
-    /*
+    
     // Chama página de dados de saúde
     page.querySelector('#graf1').onclick = function() {
 
       document.querySelector('#pacienteNav').pushPage('html/dadossaude.html');
 
 
-      // Request feito quando a interface gráfica carregar para obter os dados estáticos do paciente.
+      /* Request feito quando a interface gráfica carregar para obter os dados estáticos do paciente.
       $('#dadossaude').ready( function() { //POR HORA COMENTADO POIS A API AINDA N ESTÁ COMPLETA!
         $.get('https://pibicfitbit.herokuapp.com/api/paciente/health/static/' + medApp.services.idAtualPaciente)
           .done(function(data) {
           medApp.services.setDadosEstaticos(data);
           console.log('Os dados retornados são: ' + medApp.services.getDadosEstaticos());
           });
-      });
+      });*/
 
-    },
+    };
 
-      /////////////////////////////////////
-      ///Controle dos Gráficos de saúde ///
-      /////////////////////////////////////
+  },
+  
+  /////////////////////////////////////
+  ///Controle dos Gráficos de saúde ///
+  /////////////////////////////////////
 
-      //Evento que carrega o primeiro gráfico assim que a aba 1 está carregada.
-      $('#dadossaude1').ready( function() {
+  dadossaude1: function(page) {
 
         //Interface gráfica interativa dos dados estáticos de saúde.
 
@@ -298,9 +299,9 @@ medApp.controllers = {
 
         // Fim da interface gráfica 1. TODO --> Implementar outros gráficos.
 
-      });
+  },
 
-      $('#dadossaude2').ready( function() {
+  dadossaude2: function(page) {
 
         //Interface gráfica interativa dos dados estáticos de saúde.
 
@@ -342,9 +343,9 @@ medApp.controllers = {
 
           // Fim da interface gráfica 2. TODO --> Implementar outros gráficos.
 
-        });
+  },
 
-      $('#dadossaude3').ready( function() {
+  dadossaude3: function(page) {
 
         //Interface gráfica interativa dos dados estáticos de saúde.
 
@@ -373,9 +374,9 @@ medApp.controllers = {
 
         // Fim da interface gráfica 3. TODO --> Implementar outros gráficos.
 
-      });
+  },
 
-      $('#dadossaude3').ready( function() {
+  dadossaude4: function(page) {
 
         //Interface gráfica interativa dos dados estáticos de saúde.
 
@@ -404,13 +405,6 @@ medApp.controllers = {
 
         // Fim da interface gráfica 4. TODO --> Implementar outros gráficos.
 
-      });
-
-
-
-      
-    };
-    */
   },
 
   /////////////////////////////////////
