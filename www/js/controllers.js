@@ -63,13 +63,19 @@ medApp.controllers = {
   //////////////////////////////////////
 
   cadastro: function(page) {  
+      
+    // Máscaras dos campos de dados
+    $('#telefone-cadastro').mask('(00) 00000-0000');
+    $('#crm-cadastro').mask('0#');
 
     // Registra novo médico caso as senhas sejam válidas
     page.querySelector('#cadastrar-med').onclick = function() {
-    
+
+      console.log($('#telefone-cadastro').val());
       var pass = $('#senha-cadastro').val();
       var confirm = $('#senha-confirm').val();
       var inputs = page.getElementsByTagName('input');
+
       if(medApp.services.checkEmptyField(inputs)){
 
         alert("Preencha todos os campos!");
@@ -439,7 +445,11 @@ medApp.controllers = {
   /////////////////////////////////////
 
   editarmedico: function(page) {
-    console.log(page.data);
+
+    // Máscaras dos campos de dados
+    $('#tel-medico').mask('(00) 00000-0000');
+    $('#crm-medico').mask('0#');
+
     // Dados atuais para verificar alteração 
     var dadosEdit = {
 
@@ -514,7 +524,7 @@ medApp.controllers = {
   	$('#email-pac').val(dadosEdit.emailEdit);
 
     // Botão salvar altera os dados no servidor se houve mudanças
-    page.querySelector('#salvar-pac').onclick = function() {
+    page.querySelector('#editar-pac').onclick = function() {
 
       var novoEdit = {
 
