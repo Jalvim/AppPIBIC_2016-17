@@ -362,7 +362,7 @@ medApp.controllers = {
             ]
           }; //TODO implementação da comunicação de dados com o servidor.
           var myChart2 = new Chart(chrt2, {
-            type: 'line',
+            type: 'polarArea',
             data: data2,
             options: {
               responsive: true
@@ -442,7 +442,7 @@ medApp.controllers = {
           ]
         }; //TODO implementação da comunicação de dados com o servidor.
         var myChart4 = new Chart(chrt4, {
-          type: 'bar',
+          type: 'radar',
           data: data4,
           options: {
             responsive: true
