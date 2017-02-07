@@ -9,6 +9,14 @@ medApp.controllers = {
   ///////////////////////////////////
   login: function(page) {
     
+    // Botão de mostrar o texto da senha
+    page.querySelector('#olho').ontouchstart = function() {
+      $('#senha-login').attr('type', 'text');
+    };
+    page.querySelector('#olho').ontouchend = function() {
+      $('#senha-login').attr('type', 'password');
+    };
+
     // Chama página de cadastro
     page.querySelector('#cadastro-button').onclick = function() {
       document.querySelector('#loginNav').pushPage('html/cadastromedico.html');
