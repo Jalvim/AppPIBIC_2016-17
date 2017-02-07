@@ -120,6 +120,7 @@ medApp.controllers = {
 
       $.get('https://pibicfitbit.herokuapp.com/api/medico/busca/ID/' + medApp.services.idAtualMedico)
       .done(function(data) {
+        //console.log(data); //dummie
         page.querySelector('#nome-perfil').innerHTML = data[0].nome;
         page.querySelector('#crm-perfil').innerHTML = data[0].CRM;
         page.querySelector('#esp-perfil').innerHTML = data[0].especialidade;
@@ -325,7 +326,7 @@ medApp.controllers = {
           labels: ["Domingo", "Segunda", "Terça", "Quarta", "Quinta", "Sexta", "Sábado"],
             datasets: [
               {
-                label: "Número de passos dados na última semana",
+                label: "Número de passos dados ao longo da semana",
                 fill: false,
                 lineTension: 0.1,
                 backgroundColor: "rgba(75,192,192,0.4)",
@@ -343,13 +344,13 @@ medApp.controllers = {
                 pointHoverBorderWidth: 2,
                 pointRadius: 1,
                 pointHitRadius: 10,
-                data: [65, 59, 80, 81, 56, 55, 40], //medApp.services.getDadosEstaticos().passos
+                data: [500, 590, 870, 817, 565, 557, 409], // medApp.services.getDadosEstaticos().calorias;
                 spanGaps: false,
               }
             ]
           }; //TODO implementação da comunicação de dados com o servidor.
           var myChart2 = new Chart(chrt2, {
-            type: 'line',
+            type: 'polarArea',
             data: data2,
             options: {
               responsive: true
@@ -429,7 +430,7 @@ medApp.controllers = {
           ]
         }; //TODO implementação da comunicação de dados com o servidor.
         var myChart4 = new Chart(chrt4, {
-          type: 'bar',
+          type: 'radar',
           data: data4,
           options: {
             responsive: true
