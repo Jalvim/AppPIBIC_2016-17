@@ -500,6 +500,10 @@ medApp.controllers = {
   ///////////////////////////////////////
 
   editarpaciente: function(page) {
+
+    // Máscaras dos campos de dados
+    $('#tel-pac').mask('(00) 00000-0000');
+    
     // Dados atuais para verificar alteração
     var dadosEdit = {
 
