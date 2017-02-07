@@ -1,0 +1,66 @@
+<ons-page id="cadastromedico" >
+    <ons-toolbar class="toolbar">
+      <div class="left"><ons-back-button>Cancelar</ons-back-button></div>
+      <div class="center">Cadastro</div>
+    </ons-toolbar>
+
+    <br>
+
+  <!-- Formulário de Cadastro de Médico -->
+  <div class="register-form">
+    <ons-row class="profile-wrapper">
+        
+      <ons-col width="60px" class="profile-image-wrapper">
+        <img src="http://www.clker.com/cliparts/A/Y/O/m/o/N/placeholder-md.png" class="profile-image">
+      </ons-col>
+
+      <ons-col>
+        <ons-input input-id="nome-cadastro" placeholder="Nome" disable-auto-styling></ons-input>
+      </ons-col>
+
+    </ons-row>
+
+  
+    <ons-list modifier="noborder" disable-auto-styling>
+
+      <ons-row>
+        <ons-col>
+          <ons-list-item modifier="nodivider" class="register-input" disable-auto-styling>
+            <ons-input input-id="crm-cadastro" placeholder="CRM" style="width: 100%;" disable-auto-styling></ons-input>
+          </ons-list-item>
+        </ons-col>
+
+        <ons-col>
+          <ons-list-item modifier="nodivider" class="register-input" disable-auto-styling>
+            <ons-input input-id="esp-cadastro" placeholder="Especialidade" style="width: 100%;" disable-auto-styling></ons-input>
+          </ons-list-item>
+        </ons-col>
+      </ons-row>
+
+      <ons-list-item modifier="nodivider" class="register-input" disable-auto-styling>
+        <ons-input input-id="email-cadastro" type="email" placeholder="Email" style="width: 100%;" disable-auto-styling></ons-input>
+      </ons-list-item>
+
+      <ons-list-item modifier="nodivider" class="register-input" disable-auto-styling>
+        <ons-input input-id="telefone-cadastro" type="tel" placeholder="Telefone" style="width: 100%;" disable-auto-styling></ons-input>
+      </ons-list-item>
+
+      <ons-list-item modifier="nodivider" class="register-input" disable-auto-styling>
+        <ons-input input-id="senha-cadastro" type="password" placeholder="Senha" style="width: 100%;" disable-auto-styling></ons-input>
+      </ons-list-item>
+
+      <ons-list-item modifier="nodivider" class="register-input" disable-auto-styling>
+        <ons-input input-id="senha-confirm" type="password" placeholder="Repetir Senha" style="width: 100%;" disable-auto-styling></ons-input>
+      </ons-list-item>
+
+    </ons-list>
+
+    <br>
+
+    <p>
+      <ons-button position="center" class="button-send" id="cadastrar-med">Enviar Consulta</ons-button>
+    </p>
+
+  </div>
+
+  </ons-page>

@@ -11,7 +11,7 @@ medApp.controllers = {
     
     // Chama página de cadastro
     page.querySelector('#cadastro-button').onclick = function() {
-      document.querySelector('#loginNav').pushPage('cadastro.html');
+      document.querySelector('#loginNav').pushPage('html/cadastromedico.html');
     };
 
     // Tenta realizar o login
@@ -62,7 +62,7 @@ medApp.controllers = {
   // Controlador da página de Cadastro //
   //////////////////////////////////////
 
-  cadastro: function(page) {  
+  cadastromedico: function(page) {  
       
     // Máscaras dos campos de dados
     $('#telefone-cadastro').mask('(00) 00000-0000');
@@ -71,7 +71,6 @@ medApp.controllers = {
     // Registra novo médico caso as senhas sejam válidas
     page.querySelector('#cadastrar-med').onclick = function() {
 
-      console.log($('#telefone-cadastro').val());
       var pass = $('#senha-cadastro').val();
       var confirm = $('#senha-confirm').val();
       var inputs = page.getElementsByTagName('input');
@@ -82,7 +81,6 @@ medApp.controllers = {
 
       };
 
-      console.log(medApp.services.checkEmptyField(inputs));
       if ( pass === confirm && !medApp.services.checkEmptyField(inputs) ) {
 
         $.post('https://pibicfitbit.herokuapp.com/api/medico/',
@@ -120,7 +118,6 @@ medApp.controllers = {
 
       $.get('https://pibicfitbit.herokuapp.com/api/medico/busca/ID/' + medApp.services.idAtualMedico)
       .done(function(data) {
-        //console.log(data); //dummie
         page.querySelector('#nome-perfil').innerHTML = data[0].nome;
         page.querySelector('#crm-perfil').innerHTML = data[0].CRM;
         page.querySelector('#esp-perfil').innerHTML = data[0].especialidade;
@@ -326,7 +323,7 @@ medApp.controllers = {
           labels: ["Domingo", "Segunda", "Terça", "Quarta", "Quinta", "Sexta", "Sábado"],
             datasets: [
               {
-                label: "Número de passos dados ao longo da semana",
+                label: "Número de passos dados na última semana",
                 fill: false,
                 lineTension: 0.1,
                 backgroundColor: "rgba(75,192,192,0.4)",
@@ -344,13 +341,13 @@ medApp.controllers = {
                 pointHoverBorderWidth: 2,
                 pointRadius: 1,
                 pointHitRadius: 10,
-                data: [500, 590, 870, 817, 565, 557, 409], // medApp.services.getDadosEstaticos().calorias;
+                data: [65, 59, 80, 81, 56, 55, 40], //medApp.services.getDadosEstaticos().passos
                 spanGaps: false,
               }
             ]
           }; //TODO implementação da comunicação de dados com o servidor.
           var myChart2 = new Chart(chrt2, {
-            type: 'polarArea',
+            type: 'line',
             data: data2,
             options: {
               responsive: true
@@ -430,7 +427,7 @@ medApp.controllers = {
           ]
         }; //TODO implementação da comunicação de dados com o servidor.
         var myChart4 = new Chart(chrt4, {
-          type: 'radar',
+          type: 'bar',
           data: data4,
           options: {
             responsive: true
@@ -503,7 +500,7 @@ medApp.controllers = {
 
     // Máscaras dos campos de dados
     $('#tel-pac').mask('(00) 00000-0000');
-    
+
     // Dados atuais para verificar alteração
     var dadosEdit = {
 
@@ -512,20 +509,15 @@ medApp.controllers = {
       prontEdit: page.data.pront,
       obsEdit: page.data.obs,
       idadeEdit: page.data.idade,
-	  emailEdit: page.data.email
+	    emailEdit: page.data.email
 
     };
 
     $('#nome-pac').val(dadosEdit.nomeEdit);
-
     $('#causa-pac').val(dadosEdit.causaEdit);
-
     $('#obs-pac').val(dadosEdit.obsEdit);
-
     $('#prontuario-pac').val(dadosEdit.prontEdit);
-
  	  $('#idade-pac').val(dadosEdit.idadeEdit);
-
   	$('#email-pac').val(dadosEdit.emailEdit);
 
     // Botão salvar altera os dados no servidor se houve mudanças
