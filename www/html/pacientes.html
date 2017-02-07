@@ -7,14 +7,9 @@
     <ons-page id="pacientes">
       <ons-toolbar class="toolbar">
         <div class="center">Pacientes</div>
-        <div class="left">
-        <ons-toolbar-button>
-      	  <ons-icon icon="md-search" size="24px"></ons-icon>
-        </ons-toolbar-button>
-	      </div>
 	      <div class="right">
-        <ons-toolbar-button id="adicionar">
-          <ons-icon icon="md-account-add" size="24px"></ons-icon>
+        <ons-toolbar-button>
+          <ons-icon icon="md-search" size="24px"></ons-icon>
         </ons-toolbar-button>
         </div>
       </ons-toolbar>
@@ -80,6 +75,18 @@
     </ons-list-item>
 
 	 </ons-list>
+
+  <ons-speed-dial position="bottom right" direction="up">
+    <ons-fab>
+      <ons-icon icon="md-plus"></ons-icon>
+    </ons-fab>
+    <ons-speed-dial-item id="adicionar-pac">
+      <ons-icon icon="md-account-add"></ons-icon>
+    </ons-speed-dial-item>
+    <ons-speed-dial-item>
+      <ons-icon icon="md-accounts-add"></ons-icon>
+    </ons-speed-dial-item>
+  </ons-speed-dial>
 
   </ons-page>
 </ons-template>

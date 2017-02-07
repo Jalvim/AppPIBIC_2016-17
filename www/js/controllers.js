@@ -216,7 +216,7 @@ medApp.controllers = {
     };
 
     // Adiciona um novo paciente à lista
-    page.querySelector('#adicionar').onclick = function() {
+    page.querySelector('#adicionar-pac').onclick = function() {
 
       medApp.services.createPaciente();// TODO --> adicionar argumentos retornados por request.
       var pacientes = page.querySelectorAll(".paciente-lista");
