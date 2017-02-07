@@ -245,6 +245,13 @@ medApp.controllers = {
 
     };
 
+    //Chama página de lembretes do Paciente
+    page.querySelector('#lemb').onclick = function() {
+
+      document.querySelector('#pacienteNav').pushPage('lembretes.html');
+
+    }
+
     
     // Chama página de dados de saúde
     page.querySelector('#graf1').onclick = function() {
@@ -601,35 +608,29 @@ medApp.controllers = {
         type: 'radar',
         data: dados,
           options: {
-            responsive: false
+            responsive: true
           }
       });
     },
 
-  ///////////////////////////////////////
-  // Controlador da Lista de Lembretes //
-  ///////////////////////////////////////
+    ///////////////////////////////////////
+    // Controlador da lista de lembretes //
+    ///////////////////////////////////////
 
-  lembretes: function(page) {
+    lembretes: function(page){
 
-    page.querySelector('#add-lembrete').onclick = function() {
+      page.querySelector('#add-lembrete').onclick = function() {
+        ons.notification.prompt({message: 'Escreva abaixo o lembrete:'})
+          .then(function(texto){
 
-      ons.notification.prompt({message: 'Escreva abaixo o lembrete:'})
-        .then(function(texto){
-
-          if( texto === '' ) {
-
-            ons.notification.alert('Insira algum texto!');
-
-          } else {
-
-            medApp.services.createLembrete(texto);
-
-          };
+            if( texto === '' ) {
+              ons.notification.alert('Insira algum texto!');
+            } else {
+              medApp.services.createLembrete(texto);
+            };
 
         });
-      
+      };
 
-    };
-  }
+     }
 };

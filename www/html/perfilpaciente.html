@@ -31,19 +31,52 @@
       Configurações
     </ons-list-item>
 
+    <ons-list-item id="lemb" modifier="chevron" tappable>
+      Lembretes
+    </ons-list-item>
+
   </ons-list>
 
-  <br>
+  <ons-template id="lembretes.html">
+      <ons-page id="lembretes">
+
+          <ons-toolbar class="toolbar">
+              <div class="center">Lembretes</div>
+              <div class="left"><ons-back-button>Voltar</ons-back-button></div>
+              <div class="right">
+                  <ons-toolbar-button>
+                      <ons-icon icon="md-plus" class="right" size="24px" id="add-lembrete"></ons-icon>
+                  </ons-toolbar-button>
+              </div>
+          </ons-toolbar>
+
+              <ons-list id="lista-lembretes">
+
+                  <ons-list-item>
+                      <div class="right">
+                          <ons-icon icon="md-delete" class="list__item__icon delete"></ons-icon>
+                      </div>
+                      <div>
+                          Lembrete #1
+                      </div>
+                  </ons-list-item>
+
+              </ons-list>
+
+      </ons-page>
+  </ons-template>
+
+  <!--<br>
 
   <div id="lembretes-pac">
 
-    <ons-list class="menu-list"> 
+    <ons-list class="menu-list" class="menu-list" id="lista-lembretes">
 
     <div class="block-container">
       <ons-list-header style="width: 100%;">
-          Lembretes
+        <div class="left">Lembretes</div>
         <div class="right">
-          <ons-icon icon="md-plus" class="right" size="24px"></ons-icon>
+          <ons-icon icon="md-plus" class="right" size="24px" id="add-lembrete"></ons-icon>
         </div>
       </ons-list-header>
     </div>
@@ -61,7 +94,7 @@
 
   </div>
 
-  <br>
+  <br> -->
 
 </ons-page>
 
