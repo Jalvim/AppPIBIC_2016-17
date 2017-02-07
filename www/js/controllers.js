@@ -547,6 +547,57 @@ medApp.controllers = {
 
   },
 
+    ///////////////////////////////////////
+    // Controlador do feed de notícias   //
+    ///////////////////////////////////////
+
+    feed: function(page) {
+      // Realiza a atualização do feed com pull --> TODO: funcionalidade.
+        var pullHook = document.getElementById('pull-hook-feed');
+        pullHook.addEventListener('changestate', function(event) {
+          var message = '';
+          switch (event.state) {
+            case 'initial':
+              message = 'Pull to refresh';
+              break;
+            case 'preaction':
+              message = 'Release';
+              break;
+            case 'action':
+              message = 'Loading...';
+              break;
+          }
+          pullHook.innerHTML = message;
+        });
+        pullHook.onAction = function(done) {
+          setTimeout(done, 1000);
+        };
+
+      //Implementação de gráfico aparente no feed.
+      var ctx = document.getElementById("myChart");
+      var dados = {
+        labels: ["Domingo", "Segunda", "Terça", "Quarta", "Quinta", "Sexta", "Sábado"],
+        datasets: [
+          {
+            label: "Degraus 'subidos' durante a última semana",
+            backgroundColor: "rgba(75,192,192,0.4)",
+            borderColor: "rgba(75,192,192,1)",
+            borderWidth: 5,
+            hoverBackgroundColor: "rgba(255, 99, 132, 0.4)",
+            hoverBorderColor: "rgba:(255, 99, 132, 1)",
+            data: [10, 20, 30, 40, 50, 50, 40] // medApp.services.getDadosEstaticos().
+          }
+        ]
+      };
+      var myChart = new Chart(ctx, {
+        type: 'radar',
+        data: dados,
+          options: {
+            responsive: false
+          }
+      });
+    },
+
   ///////////////////////////////////////
   // Controlador da Lista de Lembretes //
   ///////////////////////////////////////

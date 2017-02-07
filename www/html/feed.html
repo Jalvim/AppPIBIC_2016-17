@@ -3,19 +3,44 @@
   <ons-toolbar class="toolbar">
     <div class="center">Feed de Atualizações</div>
     <div class="right">
-    <ons-toolbar-button id="add-lembrete">
-    	  <ons-icon icon="md-plus" size="24px"></ons-icon>
-    </ons-toolbar-button>
+      <ons-toolbar-button id="add-lembrete">
+        <ons-icon icon="md-plus" size="24px"></ons-icon>
+      </ons-toolbar-button>
     </div>
   </ons-toolbar>
 
-  <ons-pull-hook>
+  <ons-pull-hook id="pull-hook-feed">
     Puxe para atualizar
   </ons-pull-hook>
-  
-	<ons-list id="lista-lembretes">
 
-  </ons-list>
+  <ons-list id="lista-lembretes">
+    <ons-list-item class="lembretes-lista" modifier="chevron">
+      <div class="left">
+        <img class="list__item__thumbnail" src="http://blogs.diariodepernambuco.com.br/espacodaprevidencia/wp-content/uploads/2012/10/Doente2.jpg">
+      </div>
+
+      <div class="center">
+        <span class="list__item__title">Paciente #1</span>
+        <span class="list__item__subtitle">Lembrete: Fim dos antibióticos! Recuperação garantida.</span>
+      </div>
+    </ons-list-item>
+
+    <ons-list-item class="lembretes-lista" modifier="chevron">
+      <div class="left">
+        <img class="list__item__thumbnail" src="http://cdn.xl.thumbs.canstockphoto.com/canstock16594519.jpg">
+      </div>
+
+      <div class="center">
+        <span class="list__item__title">Paciente #3</span>
+        <span class="list__item__subtitle">Última atualização</span>
+        <canvas id="myChart" width="250" height="250"></canvas>
+      </div>
+    </ons-list-item>
+
+    <!-- <ons-list-item class="grafico-lista">
+      <canvas id="myChart" width="200" height="200"></canvas>
+    </ons-list-item>
+  </ons-list> -->
 
 </ons-page>
 
