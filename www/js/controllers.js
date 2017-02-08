@@ -248,7 +248,7 @@ medApp.controllers = {
     //Chama página de lembretes do Paciente
     page.querySelector('#lemb').onclick = function() {
 
-      document.querySelector('#pacienteNav').pushPage('lembretes.html');
+      document.querySelector('#pacienteNav').pushPage('html/lembretes.html');
 
     }
 
@@ -539,7 +539,7 @@ medApp.controllers = {
     // Botão salvar altera os dados no servidor se houve mudanças
     page.querySelector('#editar-pac').onclick = function() {
 
-      var novoEdit = {
+      /*var novoEdit = {
 
         nomeEdit: $('#nome-pac').val(),
         causaEdit: $('#causa-pac').val(),
@@ -556,9 +556,9 @@ medApp.controllers = {
       } else {
 
         console.log('editou');
-      };
+      };*/
 
-      document.querySelector('#medicoNav').popPage();
+      document.querySelector('#pacienteNav').popPage();
     };
 
   },
