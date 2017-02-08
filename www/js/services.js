@@ -106,11 +106,11 @@ medApp.services = {
         novo.telEdit == velho.telEdit &&
         novo.emailEdit == velho.emailEdit) {
 
-      return true;
+      return false;
 
     } else {
 
-      return false;
+      return true;
     }; 
 
   },

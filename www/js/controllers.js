@@ -495,14 +495,15 @@ medApp.controllers = {
 
       if (medApp.services.checkEdit(novoEdit, dadosEdit)) {
 
-        console.log('nao editou');
+        console.log('editou');
+        document.querySelector('#medicoNav').popPage();
 
       } else {
 
-        console.log('editou');
+        document.querySelector('#medicoNav').popPage();
+
       };
 
-      document.querySelector('#medicoNav').popPage();
     };
 
   },
