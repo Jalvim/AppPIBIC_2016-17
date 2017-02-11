@@ -333,7 +333,7 @@ medApp.controllers = {
 
         //Request
         /*$('#dadossaude1').ready( function() { //POR HORA COMENTADO POIS A API AINDA N ESTÁ COMPLETA!
-        $.get('https://pibicfitbit.herokuapp.com/api/paciente/health/static/' + medApp.services.idAtualPaciente)
+        $.get('https://pibicfitbit.herokuapp.com/api/paciente/health/static/' + medApp.services.idAtualPaciente + '/passos')
           .done(function(data) {
             medApp.services.setDadosEstaticos.passos(data.passos);
             console.log('Os dados retornados são: ' + medApp.services.getDadosEstaticos.passos());
@@ -426,7 +426,7 @@ medApp.controllers = {
 
         //Request
         /*$('#dadossaude1').ready( function() { //POR HORA COMENTADO POIS A API AINDA N ESTÁ COMPLETA!
-          $.get('https://pibicfitbit.herokuapp.com/api/paciente/health/static/' + medApp.services.idAtualPaciente)
+          $.get('https://pibicfitbit.herokuapp.com/api/paciente/health/static/' + medApp.services.idAtualPaciente + '/degraus')
             .done(function(data) {
               medApp.services.setDadosEstaticos.degrus(data.degraus);
               console.log('Os dados retornados são: ' + medApp.services.getDadosEstaticos.degraus());
