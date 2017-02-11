@@ -198,7 +198,14 @@ medApp.controllers = {
   pacientes: function(page) {
 
     // Chama o perfil com os dados do paciente selecionado 
-    var pacientes = page.querySelectorAll(".paciente-lista");
+    var pacientes = page.querySelectorAll(".paciente-lista"); //TODO --> TESTE DE CONEXÂO
+
+    //Request de lista de pacientes do médico AINDA A SE IMPLEMENTAR.
+    $.get('https://pibicfitbit.herokuapp.com/api/paciente/geral/id/' + medApp.services.getIdAtualMedico)
+      .done(function(data) {
+        console.log(data);
+        pacientes = data;//TODO --> Verificar se a setagem está apropriado (conflito de variável...)
+      });
 
     for (var i = 0, len = pacientes.length; i < len; i++) {
       pacientes[i].onclick = function() {
@@ -272,12 +279,12 @@ medApp.controllers = {
 
         //Request feito quando a interface gráfica carregar para obter os dados estáticos do paciente.
         /*$('#dadossaude1').ready( function() { //POR HORA COMENTADO POIS A API AINDA N ESTÁ COMPLETA!
-          $.get('https://pibicfitbit.herokuapp.com/api/paciente/health/static/' + medApp.services.idAtualPaciente)
+          $.get('https://pibicfitbit.herokuapp.com/api/paciente/health/static/' + medApp.services.idAtualPaciente + '/calorias')
             .done(function(data) {
               medApp.services.setDadosEstaticos.calorias(data.calorias);
               console.log('Os dados retornados são: ' + medApp.services.getDadosEstaticos.calorias());
           });
-        });*/
+        }); */
 
 
         var chrt1 = document.getElementById("myChart1");
