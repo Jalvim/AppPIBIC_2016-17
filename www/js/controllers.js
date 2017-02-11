@@ -57,7 +57,7 @@ medApp.controllers = {
 
             $('#email-login').val("");
             $('#senha-login').val("");
-            alert("Senha ou E-mail errados, por favor refaça o Log-In");
+            ons.notification.alert("Senha ou E-mail errados, por favor refaça o Log-In");
 
           };
       });
@@ -101,7 +101,7 @@ medApp.controllers = {
           senha: $('#senha-cadastro').val()
         })
           .done(function(data) {
-            alert(data);
+            ons.notification.alert(data);
             document.querySelector('#loginNav').popPage();
           });
 
@@ -198,24 +198,28 @@ medApp.controllers = {
   pacientes: function(page) {
 
     // Chama o perfil com os dados do paciente selecionado 
-    var pacientes = page.querySelectorAll(".paciente-lista"); //TODO --> TESTE DE CONEXÂO
+    //ANTES: var pacientes = page.querySelectorAll(".paciente-lista"); //TODO --> TESTE DE CONEXÂO
+    var pacientesInfo;
 
     //Request de lista de pacientes do médico AINDA A SE IMPLEMENTAR.
     $.get('https://pibicfitbit.herokuapp.com/api/paciente/geral/id/' + medApp.services.getIdAtualMedico)
       .done(function(data) {
-        console.log(data);
-        pacientes = data;//TODO --> Verificar se a setagem está apropriado (conflito de variável...)
+        //console.log(data);
+        pacientesInfo = data;
+        console.log(pacientesInfo);
       });
 
-    for (var i = 0, len = pacientes.length; i < len; i++) {
+    for (var i = 0, len = pacientesInfo.length; i < len; i++) {
+      medApp.services.createPaciente(pacientesInfo[i]); // DEPOIS, apagar caso falha
       pacientes[i].onclick = function() {
-        var nomePaciente = this.querySelector(".list__item__title").innerHTML;
-        var causaPaciente = this.querySelector(".causa").innerHTML;
-        var imgPaciente = this.querySelector('.list__item__thumbnail').src;
+        //Funcionalização da função com acesso do servidor, comentarizado --> ANTERIOR
+        //ANTES: var nomePaciente = this.querySelector(".list__item__title").innerHTML;
+        //ANTES: var causaPaciente = this.querySelector(".causa").innerHTML;
+        //ANTES: var imgPaciente = this.querySelector('.list__item__thumbnail').src;
         document.querySelector('#pacienteNav').pushPage('html/perfilpaciente.html', 
-          {data: {nome: nomePaciente, 
-                  causa: causaPaciente,
-                  img: imgPaciente }});
+          {data: {nome: pacientesInfo[i].nome, // ANTES: nomePaciente,
+                  causa: pacientesInfo[i].causa, // ANTES: causaPaciente,
+                  img: pacientesInfo[i].foto }});// ANTES: imgPaciente }});
       };
       pacientes[i].querySelector('.list__item__icon').onclick = function() {
         this.setAttribute("icon", "star");

@@ -125,9 +125,9 @@ medApp.services = {
        '<img class="list__item__thumbnail" src="' + 'http://www.clker.com/cliparts/A/Y/O/m/o/N/placeholder-md.png' + '">' +
        '</div>' +
        '<div class="center">' +
-       '<span class="list__item__title">' +  'Paciente Novo' + '</span>' +
-       '<span class="list__item__subtitle">Prontuário: ' + '12345' + '</span>' +
-       '<span class="list__item__subtitle">Causa da internação: <span class="causa">' + 'Doenca nova' + '</span></span>' +
+       '<span class="list__item__title">' + data.nome + '</span>' +
+       '<span class="list__item__subtitle">Prontuário: ' + data.id + '</span>' +
+       '<span class="list__item__subtitle">Causa da internação: <span class="causa">' + data.causa + '</span></span>' +
        '</div>' +
        '<div class="right">' +       
        '<ons-icon icon="star-o" class="list__item__icon"></ons-icon>'+
