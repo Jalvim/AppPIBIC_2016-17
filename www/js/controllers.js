@@ -216,6 +216,7 @@ medApp.controllers = {
         //ANTES: var nomePaciente = this.querySelector(".list__item__title").innerHTML;
         //ANTES: var causaPaciente = this.querySelector(".causa").innerHTML;
         //ANTES: var imgPaciente = this.querySelector('.list__item__thumbnail').src;
+        medApp.services.setIdPaciente(pacientesInfo.numeroDoProntuario);
         document.querySelector('#pacienteNav').pushPage('html/perfilpaciente.html', 
           {data: {nome: pacientesInfo[i].nome, // ANTES: nomePaciente,
                   causa: pacientesInfo[i].causa, // ANTES: causaPaciente,
@@ -247,7 +248,7 @@ medApp.controllers = {
     page.querySelector('.profile-name').innerHTML = page.data.nome;
     page.querySelector('#causa-perfil').innerHTML = page.data.causa;
     page.querySelector('.profile-image').src = page.data.img;
-    medApp.services.setIdPaciente($('#idPaciente')); //TODO --> ver se prontuário é retornado e faz papel de ID.
+    //medApp.services.setIdPaciente($('#')); //TODO --> ver se prontuário é retornado e faz papel de ID.
 
     // Chama página de edição de dados do paciente
     page.querySelector('#pacienteeditar').onclick = function() {
@@ -534,9 +535,10 @@ medApp.controllers = {
       nomeEdit: page.data.nome,
       causaEdit: page.data.causa,
       prontEdit: page.data.pront,
-      obsEdit: page.data.obs,
+      fotoEdit: page.data.img,
       idadeEdit: page.data.idade,
-	    emailEdit: page.data.email
+	  emailEdit: page.data.email,
+	  ativoEdit: page.data.ativo // TODO --> PEDIR PARA IMPLEMENTAÇÃO DE CAMPOS NA API.
 
     };
 
@@ -544,8 +546,9 @@ medApp.controllers = {
     $('#causa-pac').val(dadosEdit.causaEdit);
     $('#obs-pac').val(dadosEdit.obsEdit);
     $('#prontuario-pac').val(dadosEdit.prontEdit);
- 	  $('#idade-pac').val(dadosEdit.idadeEdit);
+ 	$('#idade-pac').val(dadosEdit.idadeEdit);
   	$('#email-pac').val(dadosEdit.emailEdit);
+  	$('#pacienteAtivo').val(dadosEdit.ativoEdit);
 
     // Botão salvar altera os dados no servidor se houve mudanças
     page.querySelector('#editar-pac').onclick = function() {
@@ -569,7 +572,27 @@ medApp.controllers = {
         console.log('editou');
       };*/
 
+      //Request PUT responsável pela edição de pacientes diretamente na base de dados.
+      $.ajax({
+        type: 'put',
+        url: 'https://pibicfitbit.herokuapp.com/api/paciente/geral/' + medApp.services.getIdPaciente(),
+        data: dadosEdit,
+        cache: false,
+        successs: function () {
+          ons.notification.prompt({message: 'Alterações Efetuadas com Sucesso!'});
+        },
+        error: function () {
+          ons.notification.prompt({message: 'Alterações Não Efetuadas.'});
+        }
+      }).done(function (data) {
+        console.log(data);
+      });
+
       document.querySelector('#pacienteNav').popPage();
+    };
+
+    document.querySelector('#pacienteAtivo').onclick = function() {
+      dadosEdit.ativoEdit = !(dadosEdit.ativoEdit);
     };
 
   },
