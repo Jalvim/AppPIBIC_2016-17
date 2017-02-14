@@ -15,15 +15,15 @@
 }
 
 .login-button {
-  width: 100%;
-  margin: 0 auto;
+  margin: 3px auto 0 auto;
+  font-size: 14px;
   background-color: #008080;
 }
 
 .logoff-button {
   width: 100%;
   margin: 0 auto;
-  background-color:#f43838;
+  background-color:#F43838;
   text-align: center; 
 }
 
@@ -31,21 +31,28 @@
   display: block;
   margin: 8px auto 0 auto;
   font-size: 14px;
-  color: #329999;
+  color: #009ACD;
 }
 
 .register {
   margin: 3px auto 0 auto;
   font-size: 14px;
-  color: #329999;
+  color: #009ACD;
+}
+
+.face-register {
+  margin: 3px auto 0 auto;
+  font-size: 14px;
+  color: #FFFFF0;
+  background-color:#1874CD;
 }
 
 .toolbar {
-  background-color: #198c8c;
+  background-color: #8B4513;
 }
 
 .tabbar {
-  background-color: #198c8c;
+  background-color: #00868B;
 }
 
 .register-form {
@@ -60,7 +67,7 @@
 }
 
 .button-send {
-  background-color: #008080;
+  background-color: #CD0000;
 }
 
 .profile-list {
