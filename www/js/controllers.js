@@ -149,6 +149,37 @@ medApp.controllers = {
          email: page.querySelector('#email-perfil').innerHTML
         }});
 
+        //Objeto contendo as variáveis alteradas para .put no servidor
+
+        var dadosNovos = {
+          novoNome: page.data.nome,
+          novoCrm: page.data.CRM, // TODO --> acrescentar na API (.put).
+          novaEsp: page.data.esp,
+          novoTel: page.data.tel,
+          novoEmail: page.data.email, //TODO --> acrescentar na API (.put).
+          novoCpf: 1234 //dummie TODO --> acrescentar na API (.put).
+        };
+
+        $('#nome-medico').val(dadosNovos.novoNome);
+        $('#crm-medico').val(dadosNovos.novoCrm);
+        $('#esp-medico').val(dadosNovos.novaEsp);
+        $('#tel-medico').val(dadosNovos.novoTel);
+        $('#email-medico').val(dadosNovos.novoEmail);
+        $('#cpf-medico').val(dadosNovos.novoCpf);
+
+        //Método PUT, responsável por alterar os dados do médico no servidor.
+
+        $.put('https://pibicfitbit.herokuapp.com/api/medico/' + medApp.services.getIdAtualMedico, {
+          idMedico: dadosNovos.novoCrm, //TODO --> verificar com o Jorge se foi alterado id-CRM.
+          nome: dadosNovos.novoNome,
+          especialidade: dadosNovos.novaEsp,
+          telefone: dadosNovos.novoTel // TODO --> PEDIR PRO BACK ACRESCENTAR OS NOVOS CAMPOS!!
+        }).fail(function() {
+          ons.notification.prompt({message: 'Edição não efetuada.'});
+        }).done(function(data) {
+          console.log(data);
+        });
+
     };
 
     // Realiza o logoff
@@ -549,7 +580,7 @@ medApp.controllers = {
     $('#causa-pac').val(dadosEdit.causaEdit);
     $('#obs-pac').val(dadosEdit.obsEdit);
     $('#prontuario-pac').val(dadosEdit.prontEdit);
- 	  $('#idade-pac').val(dadosEdit.idadeEdit);
+ 	$('#idade-pac').val(dadosEdit.idadeEdit);
   	$('#email-pac').val(dadosEdit.emailEdit);
   	$('#pacienteAtivo').val(dadosEdit.ativoEdit);
 
@@ -576,19 +607,20 @@ medApp.controllers = {
       };*/
 
       //Request PUT responsável pela edição de pacientes diretamente na base de dados.
-      $.ajax({
-        type: 'put',
-        url: 'https://pibicfitbit.herokuapp.com/api/paciente/geral/' + medApp.services.getIdPaciente(),
-        data: dadosEdit,
-        cache: false,
-        successs: function () {
-          ons.notification.prompt({message: 'Alterações Efetuadas com Sucesso!'});
-        },
-        error: function () {
+      $.put('https://pibicfitbit.herokuapp.com/api/paciente/geral/' + medApp.services.getIdPaciente(),
+      {
+        nomePacienteNovo: dadosEdit.nomeEdit,
+        novoProntuario: dadosEdit.prontEdit,
+        novaFoto: dadosEdit.fotoEdit,
+        novaCausa: dadosEdit.causaEdit,
+        novaData: dadosEdit.idadeEdit
+        //TODO --> PEDIR PARA O JORGE INSERIR CAMPOS EXTRAS NA API.
+      })
+        .fail( function(data){
           ons.notification.prompt({message: 'Alterações Não Efetuadas.'});
-        }
-      }).done(function (data) {
-        console.log(data);
+        })
+        .done(function (data) {
+          console.log(data);
       });
 
       document.querySelector('#pacienteNav').popPage();
