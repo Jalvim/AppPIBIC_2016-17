@@ -167,18 +167,27 @@ medApp.controllers = {
         $('#email-medico').val(dadosNovos.novoEmail);
         $('#cpf-medico').val(dadosNovos.novoCpf);
 
-        //Método PUT, responsável por alterar os dados do médico no servidor.
+        //Onclick event do botão salvar.
 
-        $.put('https://pibicfitbit.herokuapp.com/api/medico/' + medApp.services.getIdAtualMedico, {
-          idMedico: dadosNovos.novoCrm, //TODO --> verificar com o Jorge se foi alterado id-CRM.
-          nome: dadosNovos.novoNome,
-          especialidade: dadosNovos.novaEsp,
-          telefone: dadosNovos.novoTel // TODO --> PEDIR PRO BACK ACRESCENTAR OS NOVOS CAMPOS!!
-        }).fail(function() {
-          ons.notification.prompt({message: 'Edição não efetuada.'});
-        }).done(function(data) {
-          console.log(data);
-        });
+        document.querySelector('#salvar-med').onclick = function() {
+
+          //Método PUT, responsável por alterar os dados do médico no servidor.
+
+          $.put('https://pibicfitbit.herokuapp.com/api/medico/' + medApp.services.getIdAtualMedico, {
+            idMedico: dadosNovos.novoCrm, //TODO --> verificar com o Jorge se foi alterado id-CRM.
+            nome: dadosNovos.novoNome,
+            especialidade: dadosNovos.novaEsp,
+            telefone: dadosNovos.novoTel // TODO --> PEDIR PRO BACK ACRESCENTAR OS NOVOS CAMPOS!!
+          }).fail(function() {
+            ons.notification.prompt({message: 'Edição não efetuada.'});
+          ).done(function(data) {
+            console.log(data);
+          });
+
+          //Retorna para a página de perfil do médico
+
+          document.querySelector('#medicoNav').popPage();
+        };
 
     };
 
@@ -476,7 +485,7 @@ medApp.controllers = {
           labels: ["Domingo", "Segunda", "Terça", "Quarta", "Quinta", "Sexta", "Sábado"],
           datasets: [
             {
-              label: "Degraus 'subidos' durante a última semana",
+              label: "Últimas medições de Oximetria do Paciente",
               backgroundColor: "rgba(75,192,192,0.4)",
               borderColor: "rgba(75,192,192,1)",
               borderWidth: 5,
