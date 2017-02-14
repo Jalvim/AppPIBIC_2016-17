@@ -75,6 +75,7 @@ medApp.controllers = {
     // Máscaras dos campos de dados
     $('#telefone-cadastro').mask('(00) 00000-0000');
     $('#crm-cadastro').mask('0#');
+    $('#cpf-cadastro').mask('000.000.000-00', {reverse: true});
 
     // Registra novo médico caso as senhas sejam válidas
     page.querySelector('#cadastrar-med').onclick = function() {
@@ -94,6 +95,7 @@ medApp.controllers = {
         $.post('https://pibicfitbit.herokuapp.com/api/medico/',
         {
           nomeMedico: $('#nome-cadastro').val(),
+          cpfMedico: $('#cpf-cadastro').val(),
           especialidade: $('#esp-cadastro').val(),
           CRM: $('#crm-cadastro').val(),
           telefone: $('#telefone-cadastro').val(),
@@ -474,6 +476,7 @@ medApp.controllers = {
     // Máscaras dos campos de dados
     $('#tel-medico').mask('(00) 00000-0000');
     $('#crm-medico').mask('0#');
+    $('#cpf-medico').mask('000.000.000-00', {reverse: true});
 
     // Dados atuais para verificar alteração 
     var dadosEdit = {
@@ -546,7 +549,7 @@ medApp.controllers = {
     $('#causa-pac').val(dadosEdit.causaEdit);
     $('#obs-pac').val(dadosEdit.obsEdit);
     $('#prontuario-pac').val(dadosEdit.prontEdit);
- 	$('#idade-pac').val(dadosEdit.idadeEdit);
+ 	  $('#idade-pac').val(dadosEdit.idadeEdit);
   	$('#email-pac').val(dadosEdit.emailEdit);
   	$('#pacienteAtivo').val(dadosEdit.ativoEdit);
 
