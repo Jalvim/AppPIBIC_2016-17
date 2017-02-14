@@ -180,7 +180,7 @@ medApp.controllers = {
             telefone: dadosNovos.novoTel // TODO --> PEDIR PRO BACK ACRESCENTAR OS NOVOS CAMPOS!!
           }).fail(function() {
             ons.notification.prompt({message: 'Edição não efetuada.'});
-          ).done(function(data) {
+          }).done(function(data) {
             console.log(data);
           });
 

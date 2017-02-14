@@ -128,8 +128,8 @@ medApp.services = {
        '<span class="list__item__title">' + data.nome + '</span>' +
        '<span class="list__item__subtitle">Prontuário: ' + data.id + '</span>' +
        '<span class="list__item__subtitle">Causa da internação: <span class="causa">' + data.causa + '</span></span>' +
-       '<span class="list__item__subtitle">Médico responsavel:' + data.medicoResponsavel + '</span>' // TODO --> Acrescentar na API
-       '<span class="list__item__subtitle">Hospital e andar:' + data.andar + data.hospital '</span>' // TODO --> Acrescentar na API
+       '<span class="list__item__subtitle">Médico responsavel:' + data.medicoResponsavel + '</span>' +
+       '<span class="list__item__subtitle">Hospital e andar:' + data.andar + data.hospital + '</span>' +
        '</div>' +
        '<div class="right">' +       
        '<ons-icon icon="star-o" class="list__item__icon"></ons-icon>'+
