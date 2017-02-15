@@ -1,43 +1,8 @@
-.login-form {
-  text-align: center;
-  width: 80%;
-  margin: 60px auto 0;
-}
-
-.login-input {
-  display: block;
-  width: 100%;
-  margin: 0 auto;
-  outline: none;
-  height: 100%;
-  padding-top: 15px;
-  padding-bottom: 16px;
-}
-
-.login-button {
-  margin: 3px auto 0 auto;
-  font-size: 14px;
-  background-color: #008080;
-}
-
 .logoff-button {
   width: 100%;
   margin: 0 auto;
   background-color:#F43838;
   text-align: center; 
-}
-
-.forgot-password {
-  display: block;
-  margin: 8px auto 0 auto;
-  font-size: 14px;
-  color: #009ACD;
-}
-
-.register {
-  margin: 3px auto 0 auto;
-  font-size: 14px;
-  color: #009ACD;
 }
 
 .face-register {
@@ -48,11 +13,11 @@
 }
 
 .toolbar {
-  background-color: #8B4513;
+  background-color: #29B6F6;
 }
 
 .tabbar {
-  background-color: #00868B;
+  background-color: #29B6F6;
 }
 
 .register-form {
@@ -67,7 +32,7 @@
 }
 
 .button-send {
-  background-color: #CD0000;
+  background-color: #0288D1;
 }
 
 .profile-list {
@@ -78,4 +43,8 @@
 
 .block_container {
     text-align:center;
+}
+
+.spd-dial {
+  background-color: #0288D1;
 }

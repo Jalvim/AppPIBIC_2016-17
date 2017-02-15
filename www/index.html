@@ -22,6 +22,7 @@
   <link rel="stylesheet" href="lib/onsenui/css/onsenui.css">
   <link rel="stylesheet" href="lib/onsenui/css/onsen-css-components.css">
   <link rel="stylesheet" href="css/profile.css">
+  <link rel="stylesheet" href="css/login.css">
   <link rel="stylesheet" href="css/style.css">
   <link rel="stylesheet" href="css/edit.css">
 
@@ -41,40 +42,45 @@
 
   <ons-template id="login.html">
     <ons-page id="login">
-      <ons-toolbar class="toolbar">
-        <div class="center">MEDICOSPIBIC</div>
-        <div class="right"><ons-toolbar-button>Fechar</ons-toolbar-button></div>
-      </ons-toolbar>
 
       <!-- Formulário de Login -->
       <div class="login-form">
 
-        <div style="margin-right: 30px;">
-        <input id="email-login" type="email" class="text-input--underbar login-input" placeholder="Email">
+        <h1>MEDICOSPIBIC</h1>
+
+        <br>
+
+        <div style="background-color: #E4F6F8; padding: 20px;" >
+
+          <div style="margin-right: 30px;">
+            <input id="email-login" type="email" class="text-input--underbar login-input" placeholder="Email">
+          </div>
+          <ons-icon id="olho" style="float: right; margin-top: 14px" icon="md-eye" size="24px"></ons-icon>
+          <div style="overflow: hidden; padding-right: .5em;">
+            <input id="senha-login" type="password" style="width: 100%;" class="text-input--underbar login-input" placeholder="Senha">
+          </div>​
+
+          <br>
+
+          <ons-button modifier="large" id="login-button">Entrar</ons-button>
+
+          <br>
+
+          <ons-button modifier="quiet" class="forgot-password">Esqueci minha senha</ons-button>        
+
         </div>
-        <ons-icon id="olho" style="float: right; margin-top: 14px" icon="md-eye" size="24px"></ons-icon>
-        <div style="overflow: hidden; padding-right: .5em;">
-          <input id="senha-login" type="password" style="width: 100%;" class="text-input--underbar login-input" placeholder="Senha">
-        </div>​
+
+      <br><br>
+
+      <div class="center" style="margin-top: 20px;">Não possui um usuário no MEDICOSPIBIC?</div>
 
         <br>
 
-        <ons-button modifier="quiet" class="forgot-password">Esqueci minha senha</ons-button>
-        <br>
-
-        <ons-button modifier="large" class="login-button" id="login-button" style="background-color:#CD0000">Entrar</ons-button>
-
-        <br><br>
-
-        <div class="center" style="margin-top: 20px;">Não possui um usuário no MEDICOSPIBIC?</div>
+        <ons-button id="cadastro-button" modifier="quiet" style="color: black;" >Cadastrar-se agora</ons-button>
 
         <br>
 
-        <ons-button id="cadastro-button" modifier="quiet" class="register"  >Cadastrar-se agora</ons-button>
-
-        <br>
-
-        <ons-button modifier="light" class="face-register"  >Cadastrar-se com o Facebook</ons-button>
+        <ons-button modifier="light" class="face-register">Cadastrar-se com o Facebook</ons-button>
 
       </div>
 
