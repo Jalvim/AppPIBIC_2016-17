@@ -4,73 +4,68 @@
       <div class="center">Cadastro</div>
     </ons-toolbar>
 
-    <br>
-
   <!-- Formulário de Cadastro de Médico -->
-  <div class="register-form">
+  <div class="registro-form">
 
-    <ons-list modifier="inset" disable-auto-styling>
-      <ons-list-item>
-        <ons-row class="edit-wrapper">
-
-          <ons-col width="60px" class="profile-image-wrapper1">
-            <img src="http://www.clker.com/cliparts/A/Y/O/m/o/N/placeholder-md.png" class="edit-image">
-          </ons-col>
-
-          <ons-col class="edit-input" >
-            <ons-input input-id="nome-cadastro" placeholder="Nome" disable-auto-styling></ons-input>
-          </ons-col>
-
-        </ons-row>
+    <ons-list modifier="noborder" disable-auto-styling>
+      <ons-list-item modifier="nodivider">
+        <div class="left registro-image">
+          <img src="http://www.clker.com/cliparts/A/Y/O/m/o/N/placeholder-md.png" class="editar-image">
+        </div>
+        <div class="center">
+          <ons-input input-id="nome-cadastro" placeholder="Nome" class="text-input--underbar registro-input-top" disable-auto-styling></ons-input>
+          <ons-input input-id="cpf-cadastro" placeholder="CPF" class="text-input--underbar registro-input-top" disable-auto-styling></ons-input>
+        </div>
       </ons-list-item>
+
+      <ons-list-item modifier="nodivider" disable-auto-styling>
+        <div class="left registro-icone">
+          <ons-icon icon="fa-medkit" class="list__item__icon"></ons-icon>
+        </div>
+        <div class="center">
+          <ons-input input-id="crm-cadastro" placeholder="CRM" class="text-input--underbar registro-input-icon" disable-auto-styling></ons-input>
+        </div>  
+      </ons-list-item>
+
+      <ons-list-item modifier="nodivider" disable-auto-styling>
+        <ons-input input-id="esp-cadastro" placeholder="Especialidade" class="text-input--underbar registro-input" disable-auto-styling></ons-input>
+      </ons-list-item>
+
+      <ons-list-item modifier="nodivider" disable-auto-styling>
+        <div class="left registro-icone">
+          <ons-icon icon="md-email" class="list__item__icon"></ons-icon>
+        </div>
+        <div class="center">
+          <ons-input input-id="email-cadastro" type="email" placeholder="Email" class="text-input--underbar registro-input-icon" disable-auto-styling></ons-input>
+        </div>
+      </ons-list-item>
+
+      <ons-list-item modifier="nodivider" disable-auto-styling>
+        <div class="left registro-icone">
+          <ons-icon icon="md-phone" class="list__item__icon"></ons-icon>
+        </div>
+        <div class="center">
+          <ons-input input-id="telefone-cadastro" type="tel" placeholder="Telefone" class="text-input--underbar registro-input-icon" disable-auto-styling></ons-input>
+        </div>
+      </ons-list-item>
+
+      <ons-list-item modifier="nodivider" disable-auto-styling>
+        <div class="left registro-icone">
+          <ons-icon icon="md-lock-outline" class="list__item__icon"></ons-icon>
+        </div>
+        <div class="center">
+          <ons-input input-id="senha-cadastro" type="password" placeholder="Senha" class="text-input--underbar registro-input-icon" disable-auto-styling></ons-input>
+        </div>
+      </ons-list-item>
+
+      <ons-list-item modifier="nodivider" disable-auto-styling>
+        <ons-input input-id="senha-confirm" type="password" placeholder="Repetir Senha" class="text-input--underbar registro-input" disable-auto-styling></ons-input>
+      </ons-list-item>
+
     </ons-list>
 
-    <br>
-    
-    <ons-list modifier="inset" disable-auto-styling>
-
-      <ons-list-item modifier="nodivider" class="register-input" disable-auto-styling>
-        <ons-input input-id="cpf-cadastro" placeholder="CPF" style="width: 100%;" disable-auto-styling></ons-input>
-      </ons-list-item>
-
-      <ons-row>
-        <ons-col>
-          <ons-list-item modifier="nodivider" class="register-input" disable-auto-styling>
-            <ons-input input-id="crm-cadastro" placeholder="CRM" style="width: 100%;" disable-auto-styling></ons-input>
-          </ons-list-item>
-        </ons-col>
-
-        <ons-col>
-          <ons-list-item modifier="nodivider" class="register-input" disable-auto-styling>
-            <ons-input input-id="esp-cadastro" placeholder="Especialidade" style="width: 100%;" disable-auto-styling></ons-input>
-          </ons-list-item>
-        </ons-col>
-      </ons-row>
-
-      <ons-list-item modifier="nodivider" class="register-input" disable-auto-styling>
-        <ons-input input-id="email-cadastro" type="email" placeholder="Email" style="width: 100%;" disable-auto-styling></ons-input>
-      </ons-list-item>
-
-      <ons-list-item modifier="nodivider" class="register-input" disable-auto-styling>
-        <ons-input input-id="telefone-cadastro" type="tel" placeholder="Telefone" style="width: 100%;" disable-auto-styling></ons-input>
-      </ons-list-item>
-
-      <ons-list-item modifier="nodivider" class="register-input" disable-auto-styling>
-        <ons-input input-id="senha-cadastro" type="password" placeholder="Senha" style="width: 100%;" disable-auto-styling></ons-input>
-      </ons-list-item>
-
-      <ons-list-item modifier="nodivider" class="register-input" disable-auto-styling>
-        <ons-input input-id="senha-confirm" type="password" placeholder="Repetir Senha" style="width: 100%;" disable-auto-styling></ons-input>
-      </ons-list-item>
-
-    </ons-list>
-
-    <br>
-
-    <p>
-      <ons-button position="center" class="button-send" id="cadastrar-med">Enviar Consulta</ons-button>
-    </p>
+    <ons-button position="center" class="button-send" id="cadastrar-med">Enviar Consulta</ons-button>
 
   </div>
 
-  </ons-page>
+</ons-page>
