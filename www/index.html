@@ -43,40 +43,42 @@
   <ons-template id="login.html">
     <ons-page id="login">
 
+    <div class="login-top">
+
+      <h1 align="center" style="color: white;">MEDICOSPIBIC</h1>
+
+    </div>
+
       <!-- Formulário de Login -->
       <div class="login-form">
 
-        <h1>MEDICOSPIBIC</h1>
+        <div>
 
-        <br>
-
-        <div style="background-color: #E4F6F8; padding: 20px;" >
-
-          <div style="margin-right: 30px;">
-            <input id="email-login" type="email" class="text-input--underbar login-input" placeholder="Email">
+          <div style="margin-bottom: 25px;">
+            <input id="email-login" type="email" style="width: 100%;" class="text-input--underbar login-input" placeholder="Email">
           </div>
-          <ons-icon id="olho" style="float: right; margin-top: 14px" icon="md-eye" size="24px"></ons-icon>
-          <div style="overflow: hidden; padding-right: .5em;">
+          <ons-icon id="olho" icon="md-eye" size="24px"></ons-icon>
+          <div >
             <input id="senha-login" type="password" style="width: 100%;" class="text-input--underbar login-input" placeholder="Senha">
           </div>​
 
           <br>
 
-          <ons-button modifier="large" id="login-button">Entrar</ons-button>
+          <ons-button modifier="quiet" class="forgot-password">Esqueci minha senha</ons-button>
 
           <br>
 
-          <ons-button modifier="quiet" class="forgot-password">Esqueci minha senha</ons-button>        
+          <ons-button modifier="large" id="login-button">Entrar</ons-button>       
 
         </div>
 
       <br><br>
 
-      <div class="center" style="margin-top: 20px;">Não possui um usuário no MEDICOSPIBIC?</div>
+      <div class="center"><p class="registro"><span style="font-size: 16px; color: #039BE5;">Não possui um usuário no MEDICOSPIBIC?</span></div>
 
         <br>
 
-        <ons-button id="cadastro-button" modifier="quiet" style="color: black;" >Cadastrar-se agora</ons-button>
+        <ons-button id="cadastro-button" modifier="quiet" class="registro">Cadastrar-se agora</ons-button>
 
         <br>
 
