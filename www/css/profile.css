@@ -8,7 +8,7 @@
   color: white;
   padding: 30px 0;
   line-height: 1.4;
-  background-color: #33393c;
+  background-color: #263238;
   text-shadow: rgba(0, 0, 0, 0.4) 0px 1px 0px;
 }
 
@@ -24,9 +24,9 @@
 }
 
 .profile-name {
-  margin: 20px 0 0 0;
+  margin: 15px 0 0 0;
   font-weight: 600;
-  font-size: 17px;
+  font-size: 25px;
 }
 
 .profile-id {
@@ -36,27 +36,9 @@
 }
 
 .profile-desc {
-  font-size: 15px;
-  opacity: 0.6;
+  font-size: 17px;
   width: 90%;
   text-align: center;
   margin: 0 auto;
-}
-
-.info-col {
-  height: 60px;
-  line-height: 1;
-  padding: 12px 0 12px 4px;
-}
-
-.info-num {
-  font-size: 16px;
-  font-weight: 500;
-  opacity: 0.8;
-}
-
-.info-unit {
-  margin-top: 6px;
-  font-size: 14px;
-  opacity: 0.4;
+  color: white;
 }
