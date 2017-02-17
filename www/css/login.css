@@ -1,8 +1,5 @@
 #login .page__background { 
   background-color: white;
-  background-image:url(simbolomed.png);
-  background-repeat:no-repeat;
-  background-position:center;
 }
 
 .login-top{
@@ -48,8 +45,38 @@
   color: #039BE5;
 }
 
+#fb-registro {
+  margin: 3px auto 10px auto;
+  padding-left: 30px;
+  width: 75%;
+  font-size: 14px;
+  color: white;
+  background-color: #3b5998;
+}
+
+#google-registro {
+  margin: 3px auto 0 auto;
+  padding-left: 30px;
+  width: 75%;
+  font-size: 14px;
+  color: white;
+  background-color: #d34836;
+}
+
 #olho {
   position:absolute;
   right:25px;
   top: 280px;
+}
+
+#gp-icon {
+  position: absolute;
+  left: 5px;
+  top: 6px;
+}
+
+#fb-icon {
+  position: absolute;
+  left: 7px;
+  top: 6px;
 }
