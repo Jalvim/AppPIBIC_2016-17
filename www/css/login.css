@@ -1,5 +1,9 @@
-#login .page__background { 
+#login .page__background {
+
   background-color: white;
+  background-image:url(simbolomed.png);
+  background-repeat:no-repeat;
+  background-position:center;
 }
 
 .login-top{
