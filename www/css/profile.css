@@ -18,7 +18,7 @@
   border-radius: 50%;
   -webkit-border-radius: 50%;
   background-color: black;
-  border 1px solid white;
+  border: 1px solid white;
   box-shadow:rgba(0, 0, 0, 0.2) 0px 2px 0px 0px;
   -webkit-box-shadow:rgba(0, 0, 0, 0.2) 0px 2px 0px 0px;
 }

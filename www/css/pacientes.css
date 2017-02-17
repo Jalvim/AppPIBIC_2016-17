@@ -1,0 +1,25 @@
+.paciente-lista {
+
+}
+.paciente-header {
+	width: 100%;
+	margin-bottom: 8px;
+	padding: 3px 0 3px 5px;
+}
+
+.ativo {
+	background-color: #76FF03;
+}
+
+.inativo {
+	background-color: #607D8B;
+}
+
+.paciente-detalhes {
+	margin-bottom: 5px;
+}
+
+.paciente-img {
+
+
+}

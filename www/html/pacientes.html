@@ -21,62 +21,117 @@
     <!-- Lista de Pacientes -->
 	   <ons-list id="lista-pacientes">
 
-	    <ons-list-item class="paciente-lista" modifier="chevron">
+	   <ons-list-item class="paciente-lista" modifier="longdivider">
 
-        <div class="left">
+        <div class="left ativo">
           <img class="list__item__thumbnail" src="http://blogs.diariodepernambuco.com.br/espacodaprevidencia/wp-content/uploads/2012/10/Doente2.jpg">
         </div>
 
         <div class="center">
-          <span class="list__item__title">Paciente #1</span>
-          <span class="list__item__subtitle">Prontuário:</span>
-          <span class="list__item__subtitle">Causa da internação: <span class="causa">Resfriado</span></span>
-          <span class="list__item__subtitle">Médico responsavel: </span>
-          <span class="list__item__subtitle">Hospital e andar: </span>
+
+          <ons-row class="paciente-header ativo">
+            <span class="list__item__title">Paciente #1</span>
+          </ons-row>
+
+          <ons-row>
+            <ons-col class="paciente-detalhes">
+              <ons-icon icon="md-calendar" class="list__item__icon"></ons-icon>
+              <span class="list__item__subtitle">01/01/2017</span>  
+            </ons-col>
+            <ons-col class="paciente-detalhes">
+              <ons-icon icon="md-plaster" class="list__item__icon"></ons-icon>
+              <span class="list__item__subtitle">Resfriado</span>  
+            </ons-col>
+          </ons-row>
+
+          <ons-row>
+            <ons-col class="paciente-detalhes">
+              <ons-icon icon="user-md" class="list__item__icon"></ons-icon>
+              <span class="list__item__subtitle">John Doe</span>
+            </ons-col>
+            <ons-col class="paciente-detalhes">
+              <ons-icon icon="hospital-o" class="list__item__icon"></ons-icon>
+              <span class="list__item__subtitle">Hospital/1</span>
+            </ons-col>
+          </ons-row>
+
         </div>
 
-        <div class="right">        
-      	 <ons-icon icon="star-o" class="list__item__icon"></ons-icon>
-        </div>
       </ons-list-item>
 
-	   <ons-list-item class="paciente-lista" modifier="chevron">
+	 <ons-list-item class="paciente-lista" modifier="longdivider">
 
-      <div class="left">
-        <img class="list__item__thumbnail" src="http://dfpc6aroe7sxj.cloudfront.net/wp-content/uploads/2011/09/Sick-Man.jpg">
-      </div>
+        <div class="left ativo">
+          <img class="list__item__thumbnail" src="http://dfpc6aroe7sxj.cloudfront.net/wp-content/uploads/2011/09/Sick-Man.jpg">
+        </div>
 
-      <div class="center">
-        <span class="list__item__title">Paciente #2</span>
-        <span class="list__item__subtitle">Prontuário:</span>
-        <span class="list__item__subtitle">Causa da internação: <span class="causa">Gripe</span></span>
-        <span class="list__item__subtitle">Médico responsavel: </span>
-        <span class="list__item__subtitle">Hospital e andar: </span>
-      </div>
+        <div class="center">
 
-      <div class="right">        
-      	<ons-icon icon="star-o" class="list__item__icon"></ons-icon>
-      </div>
+          <ons-row class="paciente-header ativo">
+            <span class="list__item__title">Paciente #2</span>
+          </ons-row>
 
-    </ons-list-item>
+          <ons-row>
+            <ons-col class="paciente-detalhes">
+              <ons-icon icon="md-calendar" class="list__item__icon"></ons-icon>
+              <span class="list__item__subtitle">02/02/2017</span>  
+            </ons-col>
+            <ons-col class="paciente-detalhes">
+              <ons-icon icon="md-plaster" class="list__item__icon"></ons-icon>
+              <span class="list__item__subtitle">Gripe</span>  
+            </ons-col>
+          </ons-row>
 
-	   <ons-list-item class="paciente-lista" modifier="chevron">
+          <ons-row>
+            <ons-col class="paciente-detalhes">
+              <ons-icon icon="user-md" class="list__item__icon"></ons-icon>
+              <span class="list__item__subtitle">John Doe</span>
+            </ons-col>
+            <ons-col class="paciente-detalhes">
+              <ons-icon icon="hospital-o" class="list__item__icon"></ons-icon>
+              <span class="list__item__subtitle">Hospital/2</span>
+            </ons-col>
+          </ons-row>
 
-      <div class="left">
-        <img class="list__item__thumbnail" src="http://cdn.xl.thumbs.canstockphoto.com/canstock16594519.jpg">
-      </div>
+        </div>
 
-      <div class="center">
-        <span class="list__item__title">Paciente #3</span>
-        <span class="list__item__subtitle">Prontuário:</span>
-        <span class="list__item__subtitle">Causa da internação: <span class="causa">Virose</span></span>
-        <span class="list__item__subtitle">Médico responsavel: </span>
-        <span class="list__item__subtitle">Hospital e andar: </span>
-      </div>
+      </ons-list-item>
 
-      <div class="right">        
-      	<ons-icon icon="star-o" class="list__item__icon"></ons-icon>
-      </div>    
+  	<ons-list-item class="paciente-lista" modifier="longdivider">
+
+        <div class="left inativo">
+          <img class="list__item__thumbnail" src="http://cdn.xl.thumbs.canstockphoto.com/canstock16594519.jpg">
+        </div>
+
+        <div class="center">
+
+          <ons-row class="paciente-header inativo">
+            <span class="list__item__title">Paciente #3</span>
+          </ons-row>
+
+          <ons-row>
+            <ons-col class="paciente-detalhes">
+              <ons-icon icon="md-calendar" class="list__item__icon"></ons-icon>
+              <span class="list__item__subtitle">03/03/2017</span>  
+            </ons-col>
+            <ons-col class="paciente-detalhes">
+              <ons-icon icon="md-plaster" class="list__item__icon"></ons-icon>
+              <span class="list__item__subtitle">Virose</span>  
+            </ons-col>
+          </ons-row>
+
+          <ons-row>
+            <ons-col class="paciente-detalhes">
+              <ons-icon icon="user-md" class="list__item__icon"></ons-icon>
+              <span class="list__item__subtitle">Jane Doe</span>
+            </ons-col>
+            <ons-col class="paciente-detalhes">
+              <ons-icon icon="hospital-o" class="list__item__icon"></ons-icon>
+              <span class="list__item__subtitle">Hospital/3</span>
+            </ons-col>
+          </ons-row>
+
+        </div>
 
     </ons-list-item>
 
