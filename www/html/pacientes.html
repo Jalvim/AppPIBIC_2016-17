@@ -19,18 +19,24 @@
       </ons-pull-hook>
 
     <!-- Lista de Pacientes -->
-	   <ons-list id="lista-pacientes">
+	   <ons-list modifier="inset" style="padding-top: 10px;" id="lista-pacientes">
 
-	   <ons-list-item class="paciente-lista" modifier="longdivider">
+	   <ons-list-item class="paciente-lista ativo" modifier="longdivider" tappable>
 
-        <div class="left ativo">
+        <div class="left">
           <img class="list__item__thumbnail" src="http://blogs.diariodepernambuco.com.br/espacodaprevidencia/wp-content/uploads/2012/10/Doente2.jpg">
         </div>
 
         <div class="center">
 
-          <ons-row class="paciente-header ativo">
-            <span class="list__item__title">Paciente #1</span>
+          <ons-row class="paciente-header">
+            <ons-col>
+              <span class="list__item__title">Paciente #1</span>
+            </ons-col>
+            <ons-col>
+              <ons-icon icon="heartbeat" class="list__item__icon"></ons-icon>
+              <span class="list__item__title">100 bpm</span>
+            </ons-col>
           </ons-row>
 
           <ons-row>
@@ -59,16 +65,22 @@
 
       </ons-list-item>
 
-	 <ons-list-item class="paciente-lista" modifier="longdivider">
+	 <ons-list-item class="paciente-lista ativo" modifier="longdivider" tappable>
 
-        <div class="left ativo">
+        <div class="left">
           <img class="list__item__thumbnail" src="http://dfpc6aroe7sxj.cloudfront.net/wp-content/uploads/2011/09/Sick-Man.jpg">
         </div>
 
         <div class="center">
 
-          <ons-row class="paciente-header ativo">
-            <span class="list__item__title">Paciente #2</span>
+          <ons-row class="paciente-header">
+            <ons-col>
+              <span class="list__item__title">Paciente #2</span>
+            </ons-col>
+            <ons-col>
+              <ons-icon icon="heartbeat" class="list__item__icon"></ons-icon>
+              <span class="list__item__title">60 bpm</span>
+            </ons-col>
           </ons-row>
 
           <ons-row>
@@ -97,16 +109,22 @@
 
       </ons-list-item>
 
-  	<ons-list-item class="paciente-lista" modifier="longdivider">
+  	<ons-list-item class="paciente-lista inativo" modifier="longdivider" tappable>
 
-        <div class="left inativo">
+        <div class="left">
           <img class="list__item__thumbnail" src="http://cdn.xl.thumbs.canstockphoto.com/canstock16594519.jpg">
         </div>
 
         <div class="center">
 
-          <ons-row class="paciente-header inativo">
-            <span class="list__item__title">Paciente #3</span>
+          <ons-row class="paciente-header">
+            <ons-col>
+              <span class="list__item__title">Paciente #3</span>
+            </ons-col>
+            <ons-col>
+              <ons-icon icon="heartbeat" class="list__item__icon"></ons-icon>
+              <span class="list__item__title">-- bpm</span>
+            </ons-col>
           </ons-row>
 
           <ons-row>

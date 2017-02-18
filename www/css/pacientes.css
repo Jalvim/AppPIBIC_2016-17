@@ -8,11 +8,15 @@
 }
 
 .ativo {
-	background-color: #76FF03;
+	background-color: #8BC34A; 
+	margin-bottom: 7px;
+	border-radius: 5px;
 }
 
 .inativo {
 	background-color: #607D8B;
+	margin-bottom: 7px; 
+	border-radius: 5px;
 }
 
 .paciente-detalhes {
