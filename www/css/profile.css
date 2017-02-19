@@ -17,7 +17,7 @@
   width: 100px;
   border-radius: 50%;
   -webkit-border-radius: 50%;
-  background-color: black;
+  background-color: white;
   border: 1px solid white;
   box-shadow:rgba(0, 0, 0, 0.2) 0px 2px 0px 0px;
   -webkit-box-shadow:rgba(0, 0, 0, 0.2) 0px 2px 0px 0px;
@@ -41,4 +41,10 @@
   text-align: center;
   margin: 0 auto;
   color: white;
+}
+
+.info-col {
+  height: 60px;
+  line-height: 1;
+  padding: 12px 0 12px 4px;
 }

@@ -243,6 +243,7 @@ medApp.controllers = {
     //ANTES: var pacientes = page.querySelectorAll(".paciente-lista"); //TODO --> TESTE DE CONEXÂO
     var pacientesInfo;
 
+    /*
     //Request de lista de pacientes do médico AINDA A SE IMPLEMENTAR.
     $.get('https://pibicfitbit.herokuapp.com/api/paciente/geral/id/' + medApp.services.getIdAtualMedico)
       .done(function(data) {
@@ -268,14 +269,23 @@ medApp.controllers = {
         this.setAttribute("icon", "star");
       };
     };
+    */
 
-    // Adiciona um novo paciente à lista
-    page.querySelector('#adicionar-pac').onclick = function() {
+    // Página para adicionar um novo paciente à lista
+    page.querySelector('#add-pac').onclick = function() {
 
-      medApp.services.createPaciente();// TODO --> adicionar argumentos retornados por request.
-      var pacientes = page.querySelectorAll(".paciente-lista");
+      document.querySelector('#pacienteNav').pushPage('html/addpaciente.html');
 
     };
+
+    // Página para adicionar um novo grupo de pacientes
+    page.querySelector('#add-grupo').onclick = function() {
+
+      document.querySelector('#pacienteNav').pushPage('html/addgrupo.html');
+
+    };
+
+    //
       
   },
 

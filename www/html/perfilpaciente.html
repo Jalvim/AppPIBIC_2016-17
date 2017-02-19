@@ -8,35 +8,122 @@
 
   <div class="profile-card">
 
-    <img class="profile-image">
-    <div class="profile-name"></div>
+    <img class="profile-image" src="http://www.clker.com/cliparts/A/Y/O/m/o/N/placeholder-md.png">
+    <div class="profile-name">Paciente Genérico</div>
     <div class="profile-desc"></div>
-    <div class="profile-desc" id="causa-perfil"></div>
-    <div class="profile-desc" id="ativo-perfil"></div>
+    <div class="profile-desc"></div>
 
   </div>
 
+  <div class="profile-list" style="margin-bottom: 10px">
+
+    <ons-list>
+
+      <ons-list-header>
+        Dados do Paciente
+      </ons-list-header>
+
+      <ons-list-item>
+        <div class="left registro-icone">
+          <ons-icon icon="md-calendar" class="list__item__icon"></ons-icon>
+        </div>
+        <div class="center">
+          Data de Internação:
+        </div>
+        <div class="right">
+          01/01/2017
+        </div>
+      </ons-list-item>
+
+      <ons-list-item>
+        <div class="left registro-icone">
+          <ons-icon icon="user-md" class="list__item__icon"></ons-icon>
+        </div>
+        <div class="center">
+          Médico Responsável:
+        </div>
+        <div class="right">
+          John Doe
+        </div>
+      </ons-list-item>
+
+      <ons-list-item>
+        <div class="left registro-icone">
+          <ons-icon icon="md-plaster" class="list__item__icon"></ons-icon>
+        </div>
+        <div class="center">
+          <ons-row style="margin-bottom: 5px">
+            Causa da Internação:
+          </ons-row>
+          <ons-row>
+            Resfriado e Infecção
+          </ons-row>  
+        </div>
+      </ons-list-item>
+
+      <ons-list-item>
+        <div class="left registro-icone">
+          <ons-icon icon="hospital-o" class="list__item__icon"></ons-icon>
+        </div>
+        <div class="center">
+          <ons-row style="margin-bottom: 5px">
+            Hospital e Andar:
+          </ons-row>
+          <ons-row>
+            Hospital Genérico, 1º andar
+          </ons-row>  
+        </div>
+      </ons-list-item>
+
+    </ons-list>
+
   <br>
 
-  <ons-list class="menu-list"> 
+    <ons-list class="menu-list"> 
 
-    <ons-list-item id="graf1" modifier="chevron" tappable>
-      Dados de Saúde
-    </ons-list-item>
+      <ons-list-header>
+        Opções
+      </ons-list-header>
 
-    <ons-list-item id="pacienteeditar" modifier="chevron" tappable>
-      Editar Dados
-    </ons-list-item>
+      <ons-list-item id="graf1" modifier="chevron" tappable>
+        <div class="left registro-icone">
+          <ons-icon icon="stethoscope" class="list__item__icon"></ons-icon>
+        </div>
+        <div class="center">
+          Dados de Saúde
+        </div>
+      </ons-list-item>
 
-    <ons-list-item id="config" modifier="chevron" tappable>
-      Configurações
-    </ons-list-item>
+      <ons-list-item id="pacienteeditar" modifier="chevron" tappable>
+        <div class="left registro-icone">
+          <ons-icon icon="md-edit" class="list__item__icon"></ons-icon>
+        </div>
+        <div class="center">
+          Editar Dados
+        </div>
+      </ons-list-item>
 
-    <ons-list-item id="lemb" modifier="chevron" tappable>
-      Lembretes
-    </ons-list-item>
+      <ons-list-item id="config" modifier="chevron" tappable>
+        <div class="left registro-icone">
+          <ons-icon icon="md-settings" class="list__item__icon"></ons-icon>
+        </div>
+        <div class="center">
+          Configurações
+        </div>
+      </ons-list-item>
 
-  </ons-list>
+      <ons-list-item id="lemb" modifier="chevron" tappable>
+        <div class="left registro-icone">
+          <ons-icon icon="md-assignment" class="list__item__icon"></ons-icon>
+        </div>
+        <div class="center">
+          Lembretes
+        </div>
+      </ons-list-item>
+
+    </ons-list>
+
+  </div>
 
   <ons-template id="lembretes.html">
       <ons-page id="lembretes">
