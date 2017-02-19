@@ -14,14 +14,10 @@
         </div>
       </ons-toolbar>
 
-      <ons-pull-hook>
-        Pull to refresh
-      </ons-pull-hook>
-
     <!-- Lista de Pacientes -->
 	   <ons-list modifier="inset" style="padding-top: 10px;" id="lista-pacientes">
 
-	   <ons-list-item class="paciente-lista ativo" modifier="longdivider" tappable>
+	   <ons-list-item class="paciente-lista ativo" modifier="longdivider" id="pac1" tappable>
 
         <div class="left">
           <img class="list__item__thumbnail" src="http://blogs.diariodepernambuco.com.br/espacodaprevidencia/wp-content/uploads/2012/10/Doente2.jpg">
@@ -65,7 +61,7 @@
 
       </ons-list-item>
 
-	 <ons-list-item class="paciente-lista alerta" modifier="longdivider" tappable>
+	 <ons-list-item class="paciente-lista alerta" modifier="longdivider" id="pac2" tappable>
 
         <div class="left">
           <img class="list__item__thumbnail" src="http://dfpc6aroe7sxj.cloudfront.net/wp-content/uploads/2011/09/Sick-Man.jpg">
@@ -109,7 +105,7 @@
 
       </ons-list-item>
 
-  	<ons-list-item class="paciente-lista inativo" modifier="longdivider" tappable>
+  	<ons-list-item class="paciente-lista inativo" modifier="longdivider" id="pac3" tappable>
 
         <div class="left">
           <img class="list__item__thumbnail" src="http://cdn.xl.thumbs.canstockphoto.com/canstock16594519.jpg">
@@ -159,7 +155,7 @@
     <ons-fab class="spd-dial">
       <ons-icon icon="md-plus"></ons-icon>
     </ons-fab>
-    <ons-speed-dial-item id="add-pac" class="spd-dial">
+    <ons-speed-dial-item id="buscar-pac" class="spd-dial">
       <ons-icon icon="md-account-add"></ons-icon>
     </ons-speed-dial-item>
     <ons-speed-dial-item id="add-grupo" class="spd-dial">

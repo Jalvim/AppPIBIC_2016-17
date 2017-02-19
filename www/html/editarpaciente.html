@@ -1,80 +1,60 @@
 <ons-page id="editarpaciente">
 
-  <ons-toolbar class="toolbar">
-    <div class="left"><ons-back-button>Cancelar</ons-back-button></div>
-    <div class="center">Editar Paciente</div>
-  </ons-toolbar>
-
-  <br>
+    <ons-toolbar class="toolbar">
+      <div class="left"><ons-back-button>Cancelar</ons-back-button></div>
+      <div class="center">Editar Paciente</div>
+    </ons-toolbar>
 
   <!-- Formulário de Edição de Paciente -->
-  <div class="register-form">
-  <ons-list modifier="inset" disable-auto-styling>
-    <ons-list-item>
-      <ons-row class="edit-wrapper">
 
-        <ons-col width="60px" class="profile-image-wrapper1">
-          <img src="http://www.clker.com/cliparts/A/Y/O/m/o/N/placeholder-md.png" class="edit-image">
-        </ons-col>
+  <div class="editar-form">
 
-        <ons-col class="edit-input" >
-          <ons-input input-id="nome-pac" placeholder="Nome" style="width: 100%;" disable-auto-styling></ons-input>
-        </ons-col>
+    <ons-list modifier="noborder" disable-auto-styling>
+      <ons-list-item modifier="nodivider">
+        <div class="left registro-image">
+          <img src="http://www.clker.com/cliparts/A/Y/O/m/o/N/placeholder-md.png" class="editar-image">
+        </div>
+        <div class="center">
+          <ons-input placeholder="Nome" class="text-input--underbar registro-input-top" disable-auto-styling></ons-input>
+          <ons-input placeholder="Médico Responsável" class="text-input--underbar registro-input-top" disable-auto-styling></ons-input>
+        </div>
+      </ons-list-item>
+      
+      <ons-list-header>
+        Data de Internação
+      </ons-list-header>
 
-        </ons-row>
-    </ons-list-item>
-  </ons-list>
+      <ons-list-item modifier="nodivider" disable-auto-styling>
+        <div class="left registro-icone">
+          <ons-icon icon="md-calendar" class="list__item__icon"></ons-icon>
+        </div>
+        <div class="center">
+          <ons-input class="text-input--underbar registro-input-icon" type="date" disable-auto-styling></ons-input>
+        </div>  
+      </ons-list-item>
 
-  <br>
+      <ons-list-item modifier="nodivider" disable-auto-styling>
+        <div class="left registro-icone">
+          <ons-icon icon="md-plaster" class="list__item__icon"></ons-icon>
+        </div>
+        <div class="center">
+          <ons-input placeholder="Causa da Internação" class="text-input--underbar registro-input-icon" disable-auto-styling></ons-input>
+        </div>
+      </ons-list-item>
 
-  <ons-list modifier="inset" disable-auto-styling>
+      <ons-list-item modifier="nodivider" disable-auto-styling>
+        <div class="left registro-icone">
+          <ons-icon icon="hospital-o" class="list__item__icon"></ons-icon>
+        </div>
+        <div class="center">
+          <ons-input placeholder="Hospital e Andar" class="text-input--underbar registro-input-icon" disable-auto-styling></ons-input>
+        </div>
+      </ons-list-item>
 
-    <ons-list-header modifier="nodivider">
-      Prontuário
-    </ons-list-header>
+    </ons-list>
 
-    <ons-list-item modifier="nodivider" class="register-input" disable-auto-styling>
-      <ons-input input-id="pront-pac" style="width: 100%;" disable-auto-styling></ons-input>
-    </ons-list-item>
+    <ons-button position="center" class="button-send">Enviar Cadastro</ons-button>
 
-    <ons-list-header modifier="nodivider">
-      Causa da Internação
-    </ons-list-header>
-
-    <ons-list-item modifier="nodivider" class="register-input" disable-auto-styling>
-      <ons-input input-id="causa-pac" style="width: 100%;" disable-auto-styling></ons-input>
-    </ons-list-item>
-
-    <ons-list-header modifier="nodivider">
-      Email
-    </ons-list-header>
-
-    <ons-list-item modifier="nodivider" class="register-input" disable-auto-styling>
-      <ons-input input-id="email-pac" type="email" style="width: 100%;" disable-auto-styling></ons-input>
-    </ons-list-item>
-
-    <ons-list-header modifier="nodivider">
-      Telefone
-    </ons-list-header>
-
-    <ons-list-item modifier="nodivider" class="register-input" disable-auto-styling>
-      <ons-input input-id="tel-pac" type="tel" style="width: 100%;" disable-auto-styling></ons-input>
-    </ons-list-item>
-
-    <ons-list-item modifier="nodivider">
-      <div class="center">
-        Paciente Ativo
-      </div>
-      <div class="rigth">
-        <ons-switch id="pacienteAtivo" checked></ons-switch>
-      </div>
-    </ons-list-item>
-
-  </ons-list>
-
-    <p style="text-align: center; margin-top: 30px;">
-      <ons-button id="editar-pac" class="button-send">Salvar</ons-button>
-    </p>
   </div>
 
 </ons-page>

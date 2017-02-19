@@ -272,9 +272,9 @@ medApp.controllers = {
     */
 
     // Página para adicionar um novo paciente à lista
-    page.querySelector('#add-pac').onclick = function() {
+    page.querySelector('#buscar-pac').onclick = function() {
 
-      document.querySelector('#pacienteNav').pushPage('html/addpaciente.html');
+      document.querySelector('#pacienteNav').pushPage('html/buscarpaciente.html');
 
     };
 
@@ -285,7 +285,25 @@ medApp.controllers = {
 
     };
 
-    //
+    // GAMBIARRA PARA O TESTE DE UX !!!RETIRAR!!!
+
+    page.querySelector('#pac1').onclick = function() {
+
+      document.querySelector('#pacienteNav').pushPage('html/perfilpaciente.html');
+
+    };
+
+    page.querySelector('#pac2').onclick = function() {
+
+      document.querySelector('#pacienteNav').pushPage('html/perfilpaciente.html');
+
+    };
+
+    page.querySelector('#pac3').onclick = function() {
+
+      document.querySelector('#pacienteNav').pushPage('html/perfilpaciente.html');
+
+    };
       
   },
 
@@ -296,12 +314,13 @@ medApp.controllers = {
   perfilpaciente: function(page) {
 
     // Preenche os dados do perfil do paciente atual
-    page.querySelector('ons-toolbar .center').innerHTML = 'Perfil' + ' ' + page.data.nome;
+    /*page.querySelector('ons-toolbar .center').innerHTML = 'Perfil' + ' ' + page.data.nome;
     page.querySelector('.profile-name').innerHTML = page.data.nome;
     page.querySelector('#causa-perfil').innerHTML = page.data.causa;
     page.querySelector('.profile-image').src = page.data.img;
     //medApp.services.setIdPaciente($('#')); //TODO --> ver se prontuário é retornado e faz papel de ID.
-
+    */
+    
     // Chama página de edição de dados do paciente
     page.querySelector('#pacienteeditar').onclick = function() {
 
@@ -318,7 +337,7 @@ medApp.controllers = {
 
     
     // Chama página de dados de saúde
-    page.querySelector('#graf1').onclick = function() {
+    page.querySelector('#graf').onclick = function() {
 
       document.querySelector('#pacienteNav').pushPage('html/dadossaude.html');
 
@@ -599,7 +618,7 @@ medApp.controllers = {
     $('#causa-pac').val(dadosEdit.causaEdit);
     $('#obs-pac').val(dadosEdit.obsEdit);
     $('#prontuario-pac').val(dadosEdit.prontEdit);
- 	$('#idade-pac').val(dadosEdit.idadeEdit);
+ 	  $('#idade-pac').val(dadosEdit.idadeEdit);
   	$('#email-pac').val(dadosEdit.emailEdit);
   	$('#pacienteAtivo').val(dadosEdit.ativoEdit);
 
@@ -721,5 +740,34 @@ medApp.controllers = {
         });
       };
 
-     }
+    },
+
+    ///////////////////////////////////////
+    // Controlador da busca de pacientes //
+    ///////////////////////////////////////
+
+    buscarpaciente: function(page){
+
+      page.querySelector('#add-pac').onclick = function() {
+        
+        document.querySelector('#pacienteNav').pushPage('html/addpaciente.html');
+
+      };
+
+    },
+
+    /////////////////////////////////////////
+    // Controlador do cadastro de paciente //
+    /////////////////////////////////////////
+
+    addpaciente: function(page) {
+
+      page.querySelector('#cadastrar-pac').onclick = function() {
+        
+        document.querySelector('#pacienteNav').popPage();
+
+      };
+
+    }
+
 };
