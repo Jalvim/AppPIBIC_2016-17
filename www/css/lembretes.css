@@ -1,5 +1,47 @@
 .lembrete-container {
   text-align: center;
   width: 90%;
-  margin: 20px auto 0;
+  margin: 15px auto 0;
+}
+
+.lembrete-header {
+	font-weight: 600;
+  	font-size: 25px;
+    position: relative;
+    top: 50%;
+    left: 50%;
+    transform: translateX(-50%) translateY(-50%);
+}
+
+
+.lembrete-header-icon {
+	position: absolute;
+	left: 20px;
+	top: 20px;
+}
+
+.lembrete-description {
+	float: right;
+	font-size: 17px;
+	padding-top: 3px;
+}
+
+.lembrete-description-icon {
+	float: left;
+	margin-right: 10px;
+}
+
+.lembrete-text {
+	padding: 10px 10px 10px 10px;
+	height: 200px;
+	border: 1px solid #90A4AE;
+	font-size: 16px;
+}
+
+.CBC {
+	float: right;
+}
+
+.BMP {
+	float: left;
 }
