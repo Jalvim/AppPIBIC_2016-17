@@ -25,6 +25,7 @@
   <link rel="stylesheet" href="css/login.css">
   <link rel="stylesheet" href="css/registro.css">
   <link rel="stylesheet" href="css/pacientes.css">
+  <link rel="stylesheet" href="css/lembretes.css">
   <link rel="stylesheet" href="css/style.css">
 
   <script>
@@ -46,7 +47,7 @@
 
     <div class="login-top">
 
-      <h1 align="center" style="color: white;">MEDICOSPIBIC</h1>
+      <h1 align="center" style="color: white;">Pulseiras Inteligentes</h1>
 
     </div>
 
@@ -64,23 +65,24 @@
           </div>​
 
           <br>
+          <br>
 
-          <ons-button modifier="quiet" class="forgot-password">Esqueci minha senha</ons-button>
+          <ons-button modifier="large" id="login-button">Entrar</ons-button>
 
           <br>
 
-          <ons-button modifier="large" id="login-button">Entrar</ons-button>       
+          <ons-button modifier="quiet" class="forgot-password">Esqueci minha senha</ons-button>  
 
         </div>
 
-      <br>
-
-      <div class="center"><p class="registro"><span style="font-size: 16px; color: #039BE5;">Não possui um usuário no MEDICOSPIBIC?</span></div>
-
         <br>
 
-        <ons-button id="cadastro-button" modifier="quiet" class="registro">Cadastrar-se agora</ons-button>
+        <ons-button id="cadastro-button">
+          <ons-icon icon="md-email" id="email-icon" class="list__item__icon"></ons-icon>
+          Cadastrar-se com email
+        </ons-button>
 
+        <!-- TODO: Registro via Facebook e Google+ (botões omitidos sem a implementação da funcionalidade)
         <br>
 
         <ons-button id="fb-registro">
@@ -92,6 +94,7 @@
           <ons-icon icon="md-google-plus" id="gp-icon" class="list__item__icon"></ons-icon>
           Cadastrar-se com o Google+
         </ons-button>
+        -->
 
       </div>
 
@@ -113,13 +116,13 @@
 <ons-template id="inicial.html">
   <ons-page id="inicial" >
     <ons-tabbar>
-      <ons-tab label="Feed" icon="list" class="tabbar" page="html/feed.html" active>
+      <ons-tab label="Feed" icon="list" class="tabbar" page="html/verlembrete.html" active>
       </ons-tab>
       <ons-tab label="Pacientes" icon="group" class="tabbar" page="html/pacientes.html">
       </ons-tab>
       <ons-tab label="Perfil" icon="user" class="tabbar" page="html/medico.html">
       </ons-tab>
-      <ons-tab label="Configurações" icon="cog" class="tabbar" page="html/config.html">
+      <ons-tab label="Configurações" icon="cog" class="tabbar" page="html/configuracoes.html">
       </ons-tab>
     </ons-tabbar>
   </ons-page>

@@ -1,0 +1,94 @@
+<ons-page>
+
+  <ons-navigator id="configuracoesNav" page="configuracoes.html"></ons-navigator>
+
+  <ons-template id="configuracoes.html">
+    <ons-page id="configuracoes">
+  
+      <ons-toolbar class="toolbar">
+        <div class="center">Configurações</div>
+      </ons-toolbar>
+
+      <br>
+  
+      <ons-list>
+
+        <ons-list-header>Opções</ons-list-header>
+
+        <ons-list-item id="manage-pulseiras" tappable>
+          <div class="left">
+            <ons-icon icon="md-watch" class="list__item__icon"></ons-icon>
+          </div>
+          <div class="center">
+            Gerenciar Pulseiras
+          </div>
+        </ons-list-item>
+    
+      </ons-list>
+  
+      <br>
+  
+      <ons-list>
+        <ons-list-header>Sobre a Aplicação</ons-list-header>
+        <ons-list-item>
+          <div class="left">
+            <ons-icon icon="md-info-outline" class="list__item__icon"></ons-icon>
+          </div>
+          <div class="center">
+            Teste de UX (Versão 0.0.0.1)
+          </div>
+        </ons-list-item>
+      </ons-list>
+
+    </ons-page>
+  </ons-template>
+
+  <ons-template id="pulseiras.html">
+    <ons-page id="pulseiras">
+
+      <ons-toolbar class="toolbar">
+        <div class="left"><ons-back-button>Voltar</ons-back-button></div>
+        <div class="center">Gerenciar Pulseiras</div>
+      </ons-toolbar>
+
+      <br>
+  
+      <ons-list>
+        <ons-list-header>Pulseiras Conectadas</ons-list-header>
+        <ons-list-item>
+          <div class="center">
+            Pulseira #1
+          </div>
+          <div class="right">
+            <ons-switch checked></ons-switch>
+          </div>
+        </ons-list-item>
+        <ons-list-item>
+          <div class="center">
+            Pulseira #2
+          </div>
+          <div class="right">
+            <ons-switch></ons-switch>
+          </div>
+        </ons-list-item>
+        <ons-list-item>
+          <div class="center">
+            Pulseira #3
+          </div>
+          <div class="right">
+            <ons-switch></ons-switch>
+          </div>
+        </ons-list-item>
+        <ons-list-item tappable>
+          <div class="center">
+            Adicionar nova pulseira
+          </div>
+        </ons-list-item>
+      </ons-list>
+
+  </ons-page>
+  </ons-template>
+
+</ons-page>
+
+<!-- Página de Configurações -->

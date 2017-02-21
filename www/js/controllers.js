@@ -727,6 +727,7 @@ medApp.controllers = {
 
     lembretes: function(page){
 
+      /* Funcionalidade Antiga (adaptar)
       page.querySelector('#add-lembrete').onclick = function() {
         ons.notification.prompt({message: 'Escreva abaixo o lembrete:'})
           .then(function(texto){
@@ -738,6 +739,19 @@ medApp.controllers = {
             };
 
         });
+      };
+      */
+
+      page.querySelector('#add-lembrete').onclick = function() {
+        
+        document.querySelector('#pacienteNav').pushPage('html/addlembrete.html');
+
+      };
+
+      page.querySelector('#ver-lembrete').onclick = function() {
+        
+        document.querySelector('#pacienteNav').pushPage('html/verlembrete.html');
+
       };
 
     },
@@ -765,6 +779,16 @@ medApp.controllers = {
       page.querySelector('#cadastrar-pac').onclick = function() {
         
         document.querySelector('#pacienteNav').popPage();
+
+      };
+
+    },
+
+    configuracoes: function(page) {
+
+      page.querySelector('#manage-pulseiras').onclick = function() {
+        
+        document.querySelector('#configuracoesNav').pushPage('pulseiras.html');
 
       };
 
