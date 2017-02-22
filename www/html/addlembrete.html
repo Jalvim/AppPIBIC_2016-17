@@ -8,62 +8,119 @@
     <br>
 
     <div class="lembrete-container">
-    	<ons-icon icon="md-assignment" size="35px" class="lembrete-header-icon"></ons-icon>
+        <ons-icon icon="md-assignment" size="35px" class="lembrete-header-icon"></ons-icon>
         <div class="lembrete-header">Paciente Genérico</div>
     </div>
 
     <div class="lembrete-container">
-    	<div style="float: left;">
-    		<ons-icon icon="md-calendar" size="25px" class="lembrete-description-icon"></ons-icon>
+        <div style="float: left;">
+            <ons-icon icon="md-calendar" size="25px" class="lembrete-description-icon"></ons-icon>
             <div class="lembrete-description">01/01/2017</div>
-    	</div>
-    	<div style="float: right;">
-    		<ons-icon icon="user-md" size="25px" class="lembrete-description-icon"></ons-icon>
+        </div>
+        <div style="float: right;">
+            <ons-icon icon="user-md" size="25px" class="lembrete-description-icon"></ons-icon>
             <div class="lembrete-description">John Doe</div>
-    	</div>
-    </div>
- 
-    <div class="lembrete-container" style="margin-top: 20px;">
-    	<div class="lembrete-text" style="width: 100%; margin-top: 20px;">
-    		<ons-input placeholder="Escreva seu Lembrete Aqui" style="width: 100%; height: 100%;" disable-auto-styling></ons-input>
-    	</div>
+        </div>
     </div>
 
     <br>
+    
+    <div class="lembrete-container">
+    	<div class="lembrete-input">
+      		<textarea class="textarea" placeholder="Escreva seu lembrete aqui" style="width: 100%; height: 200px;"></textarea>
+    	</div>
+    </div>
 
-    <ons-row class="lembrete-container">
 
-    	<ons-col>
+    <br>
+    <!--
+    <div class="lembrete-container">
 
-    		<p>BMP</p>
+    <ons-row>
 
-    		<ons-input placeholder="NA" disable-auto-styling></ons-input>
+        <ons-col>
+            <div class="BMP">
+    	       <img src="img/BMP.png" width="150" height="50">
 
-    		<ons-input placeholder="K" disable-auto-styling></ons-input>
+                <div class="dados-lembrete" style="top: 3px; left: 8px;">NA</div>
 
-    		<ons-input placeholder="Cl" disable-auto-styling></ons-input>
+                <div class="dados-lembrete" style="top: 28px; left: 13px;">K</div>
 
-    		<ons-input placeholder="Co2" disable-auto-styling></ons-input>
+                <div class="dados-lembrete" style="top: 3px; left: 50px;">Cl</div>
 
-    		<ons-input placeholder="Bun" disable-auto-styling></ons-input>
+                <div class="dados-lembrete" style="top: 28px; left: 43px;">Co2</div>
 
-    		<ons-input placeholder="Creat" disable-auto-styling></ons-input>
+                <div class="dados-lembrete" style="top: 3px; right: 48px;">Bun</div>
 
-    		<ons-input placeholder="Gluc" disable-auto-styling></ons-input>
+                <div class="dados-lembrete" style="top: 29px; right: 43px; font-size: 14px">Creat</div>
+
+                <div class="dados-lembrete" style="top: 15px; right: 0px;">Gluc</div>
+            </div>
+        </ons-col>
+
+        <ons-col>
+            <div class="CBC">
+
+    	       <img src="img/CBC.png" width="100" height="50">
+
+                <div class="dados-lembrete" style="top: 15px; left: 0px;">wbc</div>
+
+                <div class="dados-lembrete" style="top: 3px; right: 50px;">HgB</div>
+
+                <div class="dados-lembrete" style="top: 30px; right: 53px;">Hct</div>
+
+                <div class="dados-lembrete" style="top: 15px; right: 5px;">Plt</div>
+            </div>
+	    </ons-col>
+
+    </ons-row>
+    </div>
+
+    <br>
+	-->
+    <ons-row class="lembrete-container" style="margin-bottom: 25px;">
+
+    	<ons-col class="dados-lembrete-container">
+
+    		<div style="font-size: 17px; margin: 8px auto 8px;">BMP</div>
+
+    			<ons-row>
+
+    				<ons-col>
+
+    					<ons-input placeholder="NA" class="dados-add-lembrete" disable-auto-styling></ons-input>
+    					<br>
+    					<ons-input placeholder="Cl" class="dados-add-lembrete" disable-auto-styling></ons-input>
+    					<br>
+    					<ons-input placeholder="Bun" class="dados-add-lembrete" disable-auto-styling></ons-input>
+    					<br>
+    					<ons-input placeholder="Gluc" class="dados-add-lembrete" disable-auto-styling></ons-input>
+
+    				</ons-col>
+
+    				<ons-col>
+
+    					<ons-input placeholder="K" class="dados-add-lembrete" disable-auto-styling></ons-input>
+    					<br>
+    					<ons-input placeholder="Co2" class="dados-add-lembrete" disable-auto-styling></ons-input>
+    					<br>
+    					<ons-input placeholder="Creat" class="dados-add-lembrete" disable-auto-styling></ons-input>
+
+    				</ons-col>
 
     	</ons-col>
 
-    	<ons-col>
+    	<ons-col class="dados-lembrete-container">
 
-    		<p>CBC</p>
+    		<div style="font-size: 17px; margin: 8px auto 8px;">CBC</div>
 
-    		<ons-input placeholder="wbc" disable-auto-styling></ons-input>
-
-    		<ons-input placeholder="HgB" disable-auto-styling></ons-input>
-
-    		<ons-input placeholder="Hct" disable-auto-styling></ons-input>
-
-    		<ons-input placeholder="Plt" disable-auto-styling></ons-input>
+    		<ons-input placeholder="wbc" class="dados-add-lembrete" disable-auto-styling></ons-input>
+    		<br>
+    		<ons-input placeholder="HgB" class="dados-add-lembrete" disable-auto-styling></ons-input>
+			<br>
+    		<ons-input placeholder="Hct" class="dados-add-lembrete" disable-auto-styling></ons-input>
+			<br>
+    		<ons-input placeholder="Plt" class="dados-add-lembrete" disable-auto-styling></ons-input>
 
     	</ons-col>
 

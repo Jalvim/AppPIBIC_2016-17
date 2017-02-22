@@ -1,12 +1,13 @@
 .lembrete-container {
   text-align: center;
   width: 90%;
-  margin: 15px auto 0;
+  margin: 10px auto 0;
 }
 
 .lembrete-header {
 	font-weight: 600;
   	font-size: 25px;
+  	padding-top: 20px;
     position: relative;
     top: 50%;
     left: 50%;
@@ -32,16 +33,43 @@
 }
 
 .lembrete-text {
-	padding: 10px 10px 10px 10px;
+	padding: 5px 10px 10px 10px;
 	height: 200px;
 	border: 1px solid #90A4AE;
 	font-size: 16px;
 }
 
+.lembrete-input {
+	padding: 5px 10px 10px 10px;
+	height: 200px;
+	font-size: 16px;
+}
+
 .CBC {
 	float: right;
+	position: relative;
+	padding-right: 15px;
+	padding-left: 15px;
 }
 
 .BMP {
 	float: left;
+	position: relative;
+	padding-right: 15px;
+}
+
+.dados-lembrete {
+	position: absolute; 
+	color: #BDBDBD;
+}
+
+.dados-lembrete-container {
+	border: 1px solid #90A4AE;
+	padding: 0 10px 10px 10px;
+	margin-right: 10px;
+}
+
+.dados-add-lembrete {
+	width: 50px;
+	border-bottom: 1px solid #9E9E9E;
 }
