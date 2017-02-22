@@ -113,7 +113,7 @@ router.get('/:idPaciente', function(req, res){
 	console.log(req.params.hasOwnProperty('idPaciente'));
 	if (req.params.hasOwnProperty('idPaciente')) {
 		var getPatientQuery = {
-			sql: `SELECT M.nome, L.mensagem, L.data FROM  Lembrete L,  Medico M WHERE L.idMedico = M.idMedico AND L.idPaciente = ${connection.escape(req.params.idPaciente)}`,
+			sql: `SELECT M.nome, L.mensagem, L.data, L.id FROM  Lembrete L,  Medico M WHERE L.idMedico = M.idMedico AND L.idPaciente = ${connection.escape(req.params.idPaciente)}`,
 			timeout: 10000	
 		}
 		connection.query(getPatientQuery, function(err, rows, fields) {

@@ -41,9 +41,10 @@ router.route('/')
 			req.body.hasOwnProperty('CRM') &&
 			req.body.hasOwnProperty('telefone') &&
 			req.body.hasOwnProperty('email') &&
-			req.body.hasOwnProperty('senha')){	
+			req.body.hasOwnProperty('senha') &&
+			req.body.hasOwnProperty('CPF')){	
 			var query = {
-				sql:`INSERT INTO Medico (nome, especialidade, CRM, telefone) VALUES (${connection.escape(req.body.nomeMedico)}, ${connection.escape(req.body.especialidade)}, ${connection.escape(req.body.CRM)}, ${connection.escape(req.body.telefone)})`,
+				sql:`INSERT INTO Medico (nome, especialidade, CRM, telefone, CPF) VALUES (${connection.escape(req.body.nomeMedico)}, ${connection.escape(req.body.especialidade)}, ${connection.escape(req.body.CRM)}, ${connection.escape(req.body.telefone)}, ${connection.escape(req.body.CPF)} )`,
 				timeout: 10000
 
 			}
@@ -89,9 +90,9 @@ router.route('/')
 	.put(function(req, res){
 		//TO DO: editar perfil médico pré existente
 		if (req.hasOwnProperty('body') && 
-			req.body.hasOwnProperty('CRM')){
+			req.body.hasOwnProperty('idMedico')){
 			var selector = {
-				sql:`SELECT * FROM Medico WHERE CRM = ${connection.escape(req.body.CRM)} LIMIT 1`,
+				sql:`SELECT * FROM Medico WHERE idMedico = ${connection.escape(req.body.idMedico)} LIMIT 1`,
 				timeout: 10000
 				}
 			connection.query(selector, function(err, rows, fields) {
@@ -106,7 +107,8 @@ router.route('/')
 				var idMedico,
 					nome,
 					especialidade,
-					telefone;
+					telefone,
+					CPF;
 				
 				if (req.body.hasOwnProperty('idMedico')) {
 					idMedico = req.body.idMedico;
@@ -120,13 +122,16 @@ router.route('/')
 				if (req.body.hasOwnProperty('telefone')){
 					telefone = req.body.telefone;
 				} else { telefone = rows[0].telefone; }
-				
-				queryString = 'UPDATE Medico SET nome=' + nome +' especialidade='+ especialidade +', telefone=' + telefone +' WHERE CRM= ' + req.body.CRM + ' LIMIT 1';
+				if (req.body.hasOwnProperty('CPF')){
+					CPF = req.body.CPF;
+				} else { CPF = rows[0].CPF; }
+
+				queryString = 'UPDATE Medico SET nome=' + nome +' especialidade='+ especialidade +', telefone=' + telefone + ', CPF=' + CPF +' WHERE idMedico= ' + req.body.idMedico + ' LIMIT 1';
 
 				console.log(queryString)
 				connection.query(
-				'UPDATE Medico SET nome=?, especialidade=?, telefone=? WHERE CRM=? LIMIT 1',
-				[nome, especialidade, telefone, req.body.CRM], 
+				'UPDATE Medico SET nome=?, especialidade=?, telefone=?, CPF=? WHERE idMedico=? LIMIT 1',
+				[nome, especialidade, telefone, CPF, req.body.idMedico], 
 				function(error, results){
 					if (error != null) {
 						console.log(error);
@@ -135,6 +140,7 @@ router.route('/')
 					} else {
 						console.log('Medico editado com sucesso.');
 						//Log: bug aparentemente resolvido, permanecer alerta neste ponto mesmo assim
+						//TO DO: Adequar alta de pacientes às demandas do doutor Vitor (Persistência de pacientes mesmo após alta)
 						if (req.body.isNewPatient == 'true') {
 							//TO DO: chamar put em api/paciente/health para deletar dados do paciente anterior
 							console.log('Novo medico, deletar dados antigos de saúde');
@@ -147,7 +153,7 @@ router.route('/')
 
 		}
 		else{
-			res.send('Error: Parâmetros PUT inválidos, escolha perfil pelo CRM do médico a ser alterado');
+			res.send('Error: Parâmetros PUT inválidos, escolha perfil pelo id do médico a ser alterado');
 		}
 	})
 	.delete(function(req, res) {
@@ -167,7 +173,7 @@ router.route('/')
 				 	}
 			  });
 		} else {
-			res.send('Indique o id únicod e medico a ser removido da base.');			
+			res.send('Indique o id único de medico a ser removido da base.');			
 		}
 	});
 	
