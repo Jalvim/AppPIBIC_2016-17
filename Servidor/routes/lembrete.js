@@ -29,24 +29,14 @@ router.route('/')
 		if (req.hasOwnProperty('body') && 
 			req.body.hasOwnProperty('data') && 
 			req.body.hasOwnProperty('mensagem') &&
-			req.body.hasOwnProperty('idMedico')){	
-			if (req.body.hasOwnProperty('tarefa') && req.body.tarefa == true) {
-				var query = {
-					sql:`INSERT INTO Lembrete (idMedico, mensagem, data, tarefa, dataLimite, tarefaConcluida) VALUES (${connection.escape(req.body.idMedico)}, ${connection.escape(req.body.mensagem)}, ${connection.escape(req.body.data)}, ${connection.escape(req.body.tarefa)}, '9999-12-12', 0)`,
-					timeout: 10000
-				}
-				if (req.body.hasOwnProperty('dataLimite')) {
-					query = {
-						sql:`INSERT INTO Lembrete (idMedico, mensagem, data, tarefa, dataLimite, tarefaConcluida) VALUES (${connection.escape(req.body.idMedico)}, ${connection.escape(req.body.mensagem)}, ${connection.escape(req.body.data)}, ${connection.escape(req.body.tarefa)}, ${connection.escape(req.body.dataLimite)}, 0)`,
-						timeout: 10000
-					}
-				}
-			} else {
-				var query = {
-					sql:`INSERT INTO Lembrete (idMedico, mensagem, data, tarefa, dataLimite, tarefaConcluida) VALUES (${connection.escape(req.body.idMedico)}, ${connection.escape(req.body.mensagem)}, ${connection.escape(req.body.data)}, 0, '9999-12-12', 0)`,
-					timeout: 10000
-				}
+			req.body.hasOwnProperty('idMedico') &&
+			req.body.hasOwnProperty('idPaciente')){	
+			
+			var query = {
+				sql:`INSERT INTO Lembrete (idMedico, idPaciente, mensagem, data) VALUES (${connection.escape(req.body.idMedico)}, ${connection.escape(req.body.idPaciente)}, ${connection.escape(req.body.mensagem)}, ${connection.escape(req.body.data)})`,
+				timeout: 10000
 			}
+		
 			connection.query(query, function(err, rows, fields) {
 				//console.log(err);
 				if (err) {
@@ -62,7 +52,12 @@ router.route('/')
 	
 	})
 	.put(function(req, res){
-		//TO DO: adicionar conclusão de tarefa caso seja uma tarefa
+		
+		if(!req.body.hasOwnProperty('idLembrete'))
+		{
+			return res.send("Adicionar id do lembrete a ser editado");
+		}
+
 		var selector = {
 			sql:`SELECT * FROM Lembrete WHERE id = ${connection.escape(req.body.idLembrete)} LIMIT 1`,
 			timeout: 10000
@@ -76,19 +71,15 @@ router.route('/')
 				res.send('O id no header de sua requisição não existe na base de dados.');
 			}
 			else {
-				var mensagemNova,
-					dataLimiteNova;
+				var mensagemNova;
 				
 				if (req.body.hasOwnProperty('mensagem')) {
 					mensagemNova = req.body.mensagem;
 				} else { mensagemNova = rows[0].nomePaciente; }
-				if (req.body.hasOwnProperty('dataLimite')){
-					dataLimiteNova = req.body.dataLimite;
-				} else { dataLimiteNova = rows[0].dataLimite; }
 		
 				connection.query(
-				'UPDATE Lembrete SET mensagem=?, dataLimite=? WHERE id=?',
-				[mensagemNova, dataLimiteNova, rows[0].id], 
+				'UPDATE Lembrete SET mensagem=? WHERE id=?',
+				[mensagemNova, rows[0].id], 
 				function(error, results){
 				console.log(error);
 					if (error != null) {
@@ -118,11 +109,11 @@ router.route('/')
 		}
 	});
 	
-router.get('/:idMedico', function(req, res){
-	console.log(req.params.hasOwnProperty('idMedico'));
-	if (req.params.hasOwnProperty('idMedico')) {
+router.get('/:idPaciente', function(req, res){
+	console.log(req.params.hasOwnProperty('idPaciente'));
+	if (req.params.hasOwnProperty('idPaciente')) {
 		var getPatientQuery = {
-			sql: `SELECT * FROM Lembrete WHERE idMedico = ${connection.escape(req.params.idMedico)}`,
+			sql: `SELECT M.nome, L.mensagem, L.data FROM  Lembrete L,  Medico M WHERE L.idMedico = M.idMedico AND L.idPaciente = ${connection.escape(req.params.idPaciente)}`,
 			timeout: 10000	
 		}
 		connection.query(getPatientQuery, function(err, rows, fields) {
@@ -136,7 +127,7 @@ router.get('/:idMedico', function(req, res){
 			}
 		});
 	} else {
-		res.send('Indique o id do medico cujos lembretes devem ser puxado da base.');			
+		res.send('Indique o id do Paciente cujos lembretes devem ser puxado da base.');			
 	}
 }); 
 
