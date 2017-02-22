@@ -792,6 +792,20 @@ medApp.controllers = {
 
       };
 
+    },
+
+    ////////////////////////////////////////
+    // Controlador de adicionar lembrete //
+    ///////////////////////////////////////
+
+    addlembrete: function(page) {
+
+      page.querySelector('#pub-lembrete').onclick = function() {
+        
+        document.querySelector('#pacienteNav').popPage();
+
+      };
+
     }
 
 };
