@@ -24,7 +24,7 @@ var express = require('express'),
 var connection = mysql.createConnection({
 	host : '79.170.40.183',
 	user : 'cl19-dbpipibic',
-	password : 'XXXXXXXXXXX',
+	password : 'XXXXXXXXX',
 	database : 'cl19-dbpipibic'
 });
 connection.connect();
@@ -32,11 +32,11 @@ connection.connect();
 //setando todas as variáveis de options nos requests http de teste
 setupOptionsVariables(app);
 
-// request(app.optionsPostTestRequestLogin, function(err, httpResponse, body) { 
-// 	console.log(err);
-// 	//console.log(httpResponse);
-// 	console.log(body);
-// });
+ request(app.optionsPostTestRequestPaciente, function(err, httpResponse, body) { 
+ 	console.log(err);
+ 	//console.log(httpResponse);
+ 	console.log(body);
+ });
 
 //info vai conter dados HR de chamada bem sucedida à API fitbit
 var info = {};

@@ -23,7 +23,7 @@ module.exports = function(app) {
 			telefone: 9823738,
 			foto: 0001000101011111,
 			dataDeNascimento: '1994-05-17',
-			crmMedicoResponsavel: '111111111',
+			idMedico: 20, 
 			codigoOAuth:'8d0a6213f00ab776d6769d2df8822471f96e7e94',
 			redirectUri:'https://pibicfitbit.herokuapp.com/'
 		}

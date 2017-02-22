@@ -40,7 +40,7 @@ var router = express.Router();
 var connection = mysql.createConnection({
 	host : '79.170.40.183',
 	user : 'cl19-dbpipibic',
-	password : 'XXXXXXXXXX',
+	password : 'XXXXXXXXX',
 	database : 'cl19-dbpipibic'
 });
 connection.connect();
@@ -54,13 +54,12 @@ router.route('/geral')
 			req.body.hasOwnProperty('numeroDoProntuario') &&
 			req.body.hasOwnProperty('telefone') &&
 			req.body.hasOwnProperty('foto') &&
-			req.body.hasOwnProperty('crmMedicoResponsavel') &&
 			req.body.hasOwnProperty('dataDeNascimento') &&
 			req.body.hasOwnProperty('codigoOAuth') &&
 			req.body.hasOwnProperty('redirectUri') &&
 			req.body.hasOwnProperty('idMedico')){	
 			var query = {
- 				sql:`INSERT INTO Paciente (nomePaciente, numeroDoProntuario, telefone, foto, causaDaInternacao, dataDeNascimento, crmMedicoResponsavel, idMedico) VALUES (${connection.escape(req.body.nomePaciente)}, ${connection.escape(req.body.numeroDoProntuario)}, ${connection.escape(req.body.telefone)}, ${connection.escape(req.body.foto)}, ${connection.escape(req.body.causaDaInternacao)}, ${connection.escape(req.body.dataDeNascimento)}, ${connection.escape(req.body.crmMedicoResponsavel)}, ${connection.escape(req.body.idMedico)})`,
+ 				sql:`INSERT INTO Paciente (nomePaciente, numeroDoProntuario, telefone, foto, causaDaInternacao, dataDeNascimento) VALUES (${connection.escape(req.body.nomePaciente)}, ${connection.escape(req.body.numeroDoProntuario)}, ${connection.escape(req.body.telefone)}, ${connection.escape(req.body.foto)}, ${connection.escape(req.body.causaDaInternacao)}, ${connection.escape(req.body.dataDeNascimento)})`,
 				timeout: 10000
 			}
 			connection.query(query, function(err, rows, fields) {
@@ -93,13 +92,33 @@ router.route('/geral')
 							  'INSERT INTO Autenticacao (idPaciente, userID, refreshToken, accessToken) VALUES (?, ?, ?, ?)',
 							  [rows.insertId, temp.user_id, temp.refresh_token, temp.access_token],
 							  function(err) {
-							  	res.send('Paciente adicionado com sucesso.');
+							  	
+							  	var queryRelacao = {
+ 									sql:`INSERT INTO Paciente_Medico (idPaciente, idMedico) VALUES (${rows.insertId}, ${connection.escape(req.body.idMedico)})`,
+									timeout: 10000
+								}
+								connection.query(queryRelacao, function(err, response, body) {
+									if(err) {
+										return res.send('Erro ao adicionar relação entre medico e paciente.');
+									}
+									res.send('Paciente adicionado com sucesso.');
+									console.log(err);
+									console.log(rows);
+									//console.log(fields);
+									
+
+
+								});
 							  }
 							);
 						}
 					});
+				
+
 				}
 			});
+
+
 		} else {
 			throw new Error('Parâmetros POST inválidos ou inexistentes para adicionar paciente');
 			res.send('Error: Parâmetros POST inválidos ou inexistentes para adicionar paciente');
@@ -128,9 +147,7 @@ router.route('/geral')
 					novoTelefone,
 					novaFoto,
 					novaCausa,
-					novaData,
-					novoCrmMedicoResponsável,
-					novoIdMedicoResponsável;
+					novaData;
 				
 				if (req.body.hasOwnProperty('nomePaciente')) {
 					nomePacienteNovo = req.body.nomePaciente;
@@ -150,16 +167,10 @@ router.route('/geral')
 				if (req.body.hasOwnProperty('dataDeNascimento')){
 					novaData = req.body.dataDeNascimento;
 				} else { novaData = rows[0].dataDeNascimento; }
-				if (req.body.hasOwnProperty('crmMedicoResponsavel')) {
-					novoCrmMedicoResponsável = req.body.crmMedicoResponsavel;
-				} else { novoCrmMedicoResponsável = rows[0].crmMedicoResponsavel; }
-				if (req.body.hasOwnProperty('idMedico')) { // Nova alteração
-					novoIdMedicoResponsável = req.body.idMedico;
-				} else { novoIdMedicoResponsável = rows[0].idMedico; }
-		
+				
 				connection.query(
-				'UPDATE Paciente SET nomePaciente=?, numeroDoProntuario=?, telefone=?, foto=?, causaDaInternacao=?, dataDeNascimento=?, crmMedicoResponsavel=? WHERE idtable1=?',
-				[nomePacienteNovo,novoProntuario,novoTelefone,novaFoto,novaCausa,novaData,  novoCrmMedicoResponsável,rows[0].idtable1], 
+				'UPDATE Paciente SET nomePaciente=?, numeroDoProntuario=?, telefone=?, foto=?, causaDaInternacao=?, dataDeNascimento=? WHERE idtable1=?',
+				[nomePacienteNovo,novoProntuario,novoTelefone,novaFoto,novaCausa,novaData,rows[0].idtable1], 
 				function(error, results){
 					if (error != null) {
 						console.log('Erro ao alterar perfil de paciente na base de dados');
@@ -202,27 +213,6 @@ router.route('/geral')
 			res.send('Indique o número de prontuário do paciente a ser removido da base.');			
 		}
 	});
-	
-router.get('/geral/:crmMedicoResponsavel', function(req, res){
-	console.log(req.params.hasOwnProperty('crmMedicoResponsavel'));
-	if (req.params.hasOwnProperty('crmMedicoResponsavel')) {
-		var getPatientQuery = {
-			sql: `SELECT * FROM Paciente WHERE crmMedicoResponsavel = ${connection.escape(req.params.crmMedicoResponsavel)}`,
-			timeout: 10000	
-		}
-		connection.query(getPatientQuery, function(err, rows, fields) {
-			if(err) {
-				res.send('Houve um erro ao se tentar puxar pacientes da base de dados.');
-			}
-			console.log(err);
-			console.log(rows);
-			//console.log(fields);
-			res.json(rows);
-		});
-	} else {
-		res.send('Indique o número de prontuário do paciente a ser puxado da base.');			
-	}
-}); 
 
 // Busca na API por pacientes pelo ID do médico
 router.get('/geral/id/:idMedico', function(req, res){
@@ -230,7 +220,7 @@ router.get('/geral/id/:idMedico', function(req, res){
 		//Primeiramente, o id do Médico é buscado na tabela de Pacientes para obter os seus poacientes
 		if (req.params.hasOwnProperty('idMedico')) {
 			var getMedicoQuery = {
-			sql: `SELECT * FROM Paciente WHERE idMedico = ${connection.escape(req.params.idMedico)}`,
+			sql: `SELECT * FROM Paciente_Medico PM, Paciente P WHERE PM.idMedico = ${connection.escape(req.params.idMedico)} AND PM.idPaciente = P.idPaciente `,
 			timeout: 10000	
 		}
 		
