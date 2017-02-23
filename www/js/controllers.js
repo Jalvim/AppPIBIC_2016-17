@@ -25,7 +25,7 @@ medApp.controllers = {
     // Tenta realizar o login
     page.querySelector('#login-button').onclick = function() {
 
-    var modal = document.querySelector('ons-modal');
+    var modal = page.querySelector('ons-modal');
     modal.show();
     var emailLogin = $('#email-login').val();
     var senhaLogin = $('#senha-login').val();
@@ -80,13 +80,21 @@ medApp.controllers = {
     // Registra novo médico caso as senhas sejam válidas
     page.querySelector('#cadastrar-med').onclick = function() {
 
+      var modal = page.querySelector('ons-modal');
+      modal.show();
       var pass = $('#senha-cadastro').val();
       var confirm = $('#senha-confirm').val();
       var inputs = page.getElementsByTagName('input');
 
       if(medApp.services.checkEmptyField(inputs)){
 
-        alert("Preencha todos os campos!");
+        modal.hide();
+        ons.notification.alert("Preencha todos os campos!");
+
+      } else if(pass !== confirm) {
+
+        modal.hide();
+        ons.notification.alert("As senhas não conferem!");
 
       };
 
@@ -95,7 +103,7 @@ medApp.controllers = {
         $.post('https://pibicfitbit.herokuapp.com/api/medico/',
         {
           nomeMedico: $('#nome-cadastro').val(),
-          cpfMedico: $('#cpf-cadastro').val(),
+          CPF: $('#cpf-cadastro').val(),
           especialidade: $('#esp-cadastro').val(),
           CRM: $('#crm-cadastro').val(),
           telefone: $('#telefone-cadastro').val(),
@@ -103,13 +111,10 @@ medApp.controllers = {
           senha: $('#senha-cadastro').val()
         })
           .done(function(data) {
+            modal.hide();
             ons.notification.alert(data);
             document.querySelector('#loginNav').popPage();
           });
-
-      } else if(!medApp.services.checkEmptyField(inputs)) {
-
-        alert("As senhas não conferem!");
 
       };
 
@@ -140,54 +145,7 @@ medApp.controllers = {
     // Chama a página de editar perfil do médico
     page.querySelector('#edit-med').onclick = function() {
 
-      document.querySelector('#medicoNav').pushPage('editarmedico.html', 
-        {data:
-        {nome: page.querySelector('.profile-name').innerHTML,
-         CRM: page.querySelector('#crm-perfil').innerHTML,
-         esp: page.querySelector('#esp-perfil').innerHTML,
-         tel: page.querySelector('#tel-perfil').innerHTML,
-         email: page.querySelector('#email-perfil').innerHTML
-        }});
-
-        //Objeto contendo as variáveis alteradas para .put no servidor
-
-        var dadosNovos = {
-          novoNome: page.data.nome,
-          novoCrm: page.data.CRM, // TODO --> acrescentar na API (.put).
-          novaEsp: page.data.esp,
-          novoTel: page.data.tel,
-          novoEmail: page.data.email, //TODO --> acrescentar na API (.put).
-          novoCpf: 1234 //dummie TODO --> acrescentar na API (.put).
-        };
-
-        $('#nome-medico').val(dadosNovos.novoNome);
-        $('#crm-medico').val(dadosNovos.novoCrm);
-        $('#esp-medico').val(dadosNovos.novaEsp);
-        $('#tel-medico').val(dadosNovos.novoTel);
-        $('#email-medico').val(dadosNovos.novoEmail);
-        $('#cpf-medico').val(dadosNovos.novoCpf);
-
-        //Onclick event do botão salvar.
-
-        document.querySelector('#salvar-med').onclick = function() {
-
-          //Método PUT, responsável por alterar os dados do médico no servidor.
-
-          $.put('https://pibicfitbit.herokuapp.com/api/medico/' + medApp.services.getIdAtualMedico, {
-            idMedico: dadosNovos.novoCrm, //TODO --> verificar com o Jorge se foi alterado id-CRM.
-            nome: dadosNovos.novoNome,
-            especialidade: dadosNovos.novaEsp,
-            telefone: dadosNovos.novoTel // TODO --> PEDIR PRO BACK ACRESCENTAR OS NOVOS CAMPOS!!
-          }).fail(function() {
-            ons.notification.prompt({message: 'Edição não efetuada.'});
-          }).done(function(data) {
-            console.log(data);
-          });
-
-          //Retorna para a página de perfil do médico
-
-          document.querySelector('#medicoNav').popPage();
-        };
+      document.querySelector('#medicoNav').pushPage('editarmedico.html');
 
     };
 
@@ -553,22 +511,32 @@ medApp.controllers = {
     $('#crm-medico').mask('0#');
     $('#cpf-medico').mask('000.000.000-00', {reverse: true});
 
-    // Dados atuais para verificar alteração 
-    var dadosEdit = {
+    // Pega dados do servidor para edição (CPF não é mostrado no perfil, logo não existe seu innerHTML)
+    page.addEventListener('show', function(event) {
 
-      nomeEdit: page.data.nome,
-      crmEdit: page.data.CRM,
-      espEdit: page.data.esp, 
-      telEdit: page.data.tel,
-      emailEdit: page.data.email,
+      $.get('https://pibicfitbit.herokuapp.com/api/medico/busca/ID/' + medApp.services.idAtualMedico)
+      .done(function(data) {
+        console.log(data[0]);
+        $('#nome-medico').val(data[0].nome);
+        $('#crm-medico').val(data[0].CRM);
+        $('#esp-medico').val(data[0].especialidade);
+        $('#tel-medico').val(data[0].telefone);
+        $('#email-medico').val(data[0].email);
+        $('cpf-medico').val(data[0].CPF);
+      });
 
-    };
+    });
 
-    $('#nome-medico').val(dadosEdit.nomeEdit);
-    $('#crm-medico').val(dadosEdit.crmEdit);
-    $('#esp-medico').val(dadosEdit.espEdit);
-    $('#tel-medico').val(dadosEdit.telEdit);
-    $('#email-medico').val(dadosEdit.emailEdit);
+      var dadosEdit = {
+
+        nomeEdit: $('#nome-medico').val(),
+        crmEdit: $('#crm-medico').val(),
+        espEdit: $('#esp-medico').val(), 
+        telEdit: $('#tel-medico').val(),
+        emailEdit: $('#email-medico').val(),
+        cpfEdit: $('#cpf-medico').val()
+
+      };
 
     // Botão salvar altera os dados no servidor se houve mudanças 
     page.querySelector('#salvar-med').onclick = function() {
@@ -579,7 +547,8 @@ medApp.controllers = {
         crmEdit: $('#crm-medico').val(),
         espEdit: $('#esp-medico').val(), 
         telEdit: $('#tel-medico').val(),
-        emailEdit: $('#email-medico').val()
+        emailEdit: $('#email-medico').val(),
+        cpfEdit: $('#cpf-medico').val()
 
       };
 
@@ -588,8 +557,9 @@ medApp.controllers = {
         console.log('editou');
         document.querySelector('#medicoNav').popPage();
 
-      } else {
+      } else if (!medApp.services.checkEdit(novoEdit, dadosEdit)) {
 
+        console.log('nao editou');
         document.querySelector('#medicoNav').popPage();
 
       };
@@ -615,8 +585,8 @@ medApp.controllers = {
       prontEdit: page.data.pront,
       fotoEdit: page.data.img,
       idadeEdit: page.data.idade,
-	  emailEdit: page.data.email,
-	  ativoEdit: page.data.ativo // TODO --> PEDIR PARA IMPLEMENTAÇÃO DE CAMPOS NA API.
+	    emailEdit: page.data.email,
+	    ativoEdit: page.data.ativo // TODO --> PEDIR PARA IMPLEMENTAÇÃO DE CAMPOS NA API.
 
     };
 

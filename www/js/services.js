@@ -104,7 +104,8 @@ medApp.services = {
         novo.crmEdit == velho.crmEdit &&
         novo.espEdit == velho.espEdit && 
         novo.telEdit == velho.telEdit &&
-        novo.emailEdit == velho.emailEdit) {
+        novo.emailEdit == velho.emailEdit &&
+        novo.cpfEdit == velho.cpfEdit) {
 
       return false;
 
