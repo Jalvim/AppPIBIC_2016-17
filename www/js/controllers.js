@@ -343,6 +343,12 @@ medApp.controllers = {
 
     };
 
+    page.querySelector('#config-pac').onclick = function() {
+
+      document.querySelector('#pacienteNav').pushPage('html/configpaciente.html');
+
+    };
+
   },
   
   /////////////////////////////////////
