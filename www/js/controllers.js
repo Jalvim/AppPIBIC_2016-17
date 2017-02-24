@@ -84,21 +84,39 @@ medApp.controllers = {
       modal.show();
       var pass = $('#senha-cadastro').val();
       var confirm = $('#senha-confirm').val();
+      var email=$('#email-cadastro').val();
       var inputs = page.getElementsByTagName('input');
+      var i=0;
 
       if(medApp.services.checkEmptyField(inputs)){
-
+i=1;
         modal.hide();
         ons.notification.alert("Preencha todos os campos!");
+      }
 
-      } else if(pass !== confirm) {
-
+       if(pass !== confirm &&i===0) {
+i=1;
         modal.hide();
         ons.notification.alert("As senhas não conferem!");
 
       };
 
-      if ( pass === confirm && !medApp.services.checkEmptyField(inputs) ) {
+          if(pass.length<6  &&i===0){
+          i=1;
+            modal.hide();
+           ons.notification.alert("Senha pequena");
+      };
+
+        if((email.indexOf('@')===-1 || email.indexOf('.')===-1)&& i===0){
+      modal.hide();
+      i=1;
+            ons.notification.alert("E-mail invalido");
+      };
+
+
+
+      if (i===0){
+
 
         $.post('https://pibicfitbit.herokuapp.com/api/medico/',
         {
@@ -116,10 +134,8 @@ medApp.controllers = {
             document.querySelector('#loginNav').popPage();
           });
 
-      };
-
     };
-  
+  };
   },
 
   /////////////////////////////////////
