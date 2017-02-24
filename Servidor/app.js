@@ -31,12 +31,26 @@ connection.connect();
 
 //setando todas as variáveis de options nos requests http de teste
 setupOptionsVariables(app);
+// 
+// Paciente
+// POST - Add novo paciente à bd funcionando bem					OK!
+// PUT - Edição de perfil de paciente funcionando bem				OK!
+// GET - puxar pacuentes ligados a multiplos médicos implementado	OK!
 
- request(app.optionsPostTestRequestPaciente, function(err, httpResponse, body) { 
- 	console.log(err);
- 	//console.log(httpResponse);
- 	console.log(body);
- });
+// Lembrete
+// GET - Novo get puxando lembretes relacionados ao paciente corretamente
+// POST - adição nova de lembretes funcionando corretamente
+// PUT - Edição de lembretes testada com sucesso e funcionando corretamente
+
+// Medico
+// POST - Nova adição de médicos com cpf funcionando
+// PUT - Bug encontrados e debugados, o código agora edita perfis de medico corretamente
+// 
+ // request(app.optionsPutTestRequestLembrete, function(err, httpResponse, body) { 
+//  	console.log(err);
+//  	//console.log(httpResponse);
+//  	console.log(body);
+//  });
 
 //info vai conter dados HR de chamada bem sucedida à API fitbit
 var info = {};
@@ -185,7 +199,7 @@ TO DO:
 */
 function refreshOAuthToken(options, callback, auth) {
 	//Adicionado código de automação para refresh de token de acesso
-	var tokenRefreshAuthorization = 'Basic ' + new Buffer("XXXXXXXX:XXXXXXXXXXXXXXXXXXXXXX").toString('base64');
+	var tokenRefreshAuthorization = 'Basic ' + new Buffer("XXXXXX:XXXXXXXXXXXXXXXXXXX").toString('base64');
 	console.log(tokenRefreshAuthorization);	
 	console.log(auth[0].refreshToken);
 	

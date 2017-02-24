@@ -85,7 +85,7 @@ router.route('/')
 					if (error != null) {
 						res.send('Erro ao alterar lembrete na base de dados');
 					} else {
-						console.log('Lembrete editado com sucesso.');
+						res.send('Lembrete editado com sucesso.');
 					}
 				});
 			}
@@ -118,6 +118,7 @@ router.get('/:idPaciente', function(req, res){
 		}
 		connection.query(getPatientQuery, function(err, rows, fields) {
 			if(err) {
+				console.log(err);
 				res.send('Houve um erro ao se tentar puxar lembretes da base de dados.');
 			} else {
 				console.log(err);

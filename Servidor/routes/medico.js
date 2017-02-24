@@ -107,14 +107,15 @@ router.route('/')
 				var idMedico,
 					nome,
 					especialidade,
+					CRM,
 					telefone,
 					CPF;
 				
 				if (req.body.hasOwnProperty('idMedico')) {
 					idMedico = req.body.idMedico;
 				} else { idMedico = rows[0].idMedico; }
-				if (req.body.hasOwnProperty('nome')){
-					nome = req.body.nome;
+				if (req.body.hasOwnProperty('nomeMedico')){
+					nome = req.body.nomeMedico;
 				} else { nome = rows[0].nome; }
 				if (req.body.hasOwnProperty('especialidade')){
 					especialidade = req.body.especialidade;
@@ -125,13 +126,16 @@ router.route('/')
 				if (req.body.hasOwnProperty('CPF')){
 					CPF = req.body.CPF;
 				} else { CPF = rows[0].CPF; }
+				if (req.body.hasOwnProperty('CRM')){
+					CRM = req.body.CRM;
+				} else { CRM = rows[0].CRM; }
 
 				queryString = 'UPDATE Medico SET nome=' + nome +' especialidade='+ especialidade +', telefone=' + telefone + ', CPF=' + CPF +' WHERE idMedico= ' + req.body.idMedico + ' LIMIT 1';
 
 				console.log(queryString)
 				connection.query(
-				'UPDATE Medico SET nome=?, especialidade=?, telefone=?, CPF=? WHERE idMedico=? LIMIT 1',
-				[nome, especialidade, telefone, CPF, req.body.idMedico], 
+				'UPDATE Medico SET nome=?, especialidade=?, telefone=?, CPF=?, CRM=? WHERE idMedico=? LIMIT 1',
+				[nome, especialidade, telefone, CPF, CRM, req.body.idMedico], 
 				function(error, results){
 					if (error != null) {
 						console.log(error);

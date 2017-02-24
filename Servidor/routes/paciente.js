@@ -67,7 +67,7 @@ router.route('/geral')
 				if (err) {
 					res.send('Não foi possível adicionar dados ao perfil do paciente.');
 				} else {
-					var tokenRefreshAuthorization = 'Basic ' + new Buffer("XXXXXXXXX:XXXXXXXXXXXXXXXXXXXXXXXX").toString('base64');
+					var tokenRefreshAuthorization = 'Basic ' + new Buffer("XXXXXXX:XXXXXXXXXXXXXXXXX").toString('base64');
 					var oauthOptions = {
 						method: 'POST',
 						url: 'https://api.fitbit.com/oauth2/token',
@@ -105,8 +105,6 @@ router.route('/geral')
 									console.log(err);
 									console.log(rows);
 									//console.log(fields);
-									
-
 
 								});
 							  }
@@ -220,12 +218,13 @@ router.get('/geral/id/:idMedico', function(req, res){
 		//Primeiramente, o id do Médico é buscado na tabela de Pacientes para obter os seus poacientes
 		if (req.params.hasOwnProperty('idMedico')) {
 			var getMedicoQuery = {
-			sql: `SELECT * FROM Paciente_Medico PM, Paciente P WHERE PM.idMedico = ${connection.escape(req.params.idMedico)} AND PM.idPaciente = P.idPaciente `,
+			sql: `SELECT * FROM Paciente_Medico PM, Paciente P WHERE PM.idMedico = ${connection.escape(req.params.idMedico)} AND PM.idPaciente = P.idtable1 `,
 			timeout: 10000	
 		}
 		
 		connection.query(getMedicoQuery, function(err, rows, fields) {
 			if(err) {
+				console.log(err);
 				res.send('Houve um erro ao se tentar encontrar o médico com o ID desejado.');
 			}
 			if(rows.length < 1)	{
