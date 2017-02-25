@@ -1,35 +1,80 @@
-.logoff-button {
-  width: 100%;
-  margin: 0 auto;
-  background-color:#F43838;
-  text-align: center; 
-}
+@media screen and (orientation: portrait){
+  /*portrait orientation*/
+  
+  .logoff-button {
+    width: 100%;
+    margin: 0 auto;
+    background-color:#F43838;
+    text-align: center; 
+  }
 
-.face-register {
-  margin: 3px auto 0 auto;
-  font-size: 14px;
-  color: #FFFFF0;
-  background-color:#1874CD;
-}
+  .face-register {
+    margin: 3px auto 0 auto;
+    font-size: 14px;
+    color: #FFFFF0;
+    background-color:#1874CD;
+  }
 
-.toolbar {
-  background-color: #29B6F6;
-}
+  .toolbar {
+    background-color: #29B6F6;
+  }
 
-.tabbar {
-  background-color: #29B6F6;
-}
+  .tabbar {
+    background-color: #29B6F6;
+  }
 
-.profile-list {
-  text-align: center;
-  width: 95%;
-  margin: 10px auto 0;
-}
+  .profile-list {
+    text-align: center;
+    width: 95%;
+    margin: 10px auto 0;
+  }
 
-.block_container {
-    text-align:center;
-}
+  .block_container {
+      text-align:center;
+  }
 
-.spd-dial {
-  background-color: #29B6F6;
-}
+  .spd-dial {
+    background-color: #29B6F6;
+  }
+
+} 
+
+@media screen and (orientation: landscape){
+  
+  .logoff-button {
+    width: 100%;
+    margin: 0 auto;
+    background-color:#F43838;
+    text-align: center; 
+  }
+
+  .face-register {
+    margin: 3px auto 0 auto;
+    font-size: 14px;
+    color: #FFFFF0;
+    background-color:#1874CD;
+  }
+
+  .toolbar {
+    background-color: #29B6F6;
+  }
+
+  .tabbar {
+    background-color: #29B6F6;
+  }
+
+  .profile-list {
+    text-align: center;
+    width: 95%;
+    margin: 10px auto 0;
+  }
+
+  .block_container {
+      text-align:center;
+  }
+
+  .spd-dial {
+    background-color: #29B6F6;
+  }
+  
+} 
