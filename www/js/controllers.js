@@ -86,27 +86,27 @@ medApp.controllers = {
       var confirm = $('#senha-confirm').val();
       var email=$('#email-cadastro').val();
       var inputs = page.getElementsByTagName('input');
-      var i=0;
-
+      var i=0;//variavel seletora, para nao passar muitos alerts
+//confere os inputs
       if(medApp.services.checkEmptyField(inputs)){
 i=1;
         modal.hide();
         ons.notification.alert("Preencha todos os campos!");
       }
-
+//confere senhas
        if(pass !== confirm &&i===0) {
 i=1;
         modal.hide();
         ons.notification.alert("As senhas não conferem!");
 
       };
-
+//
           if(pass.length<6  &&i===0){
           i=1;
             modal.hide();
            ons.notification.alert("Senha pequena");
       };
-
+//confere se é possível a existencia do e-mail
         if((email.indexOf('@')===-1 || email.indexOf('.')===-1)&& i===0){
       modal.hide();
       i=1;
@@ -114,7 +114,8 @@ i=1;
       };
 
 
-
+//se tudo estiver correto, a variavel seletora nao tera alterado seu valor
+//Logo, podemos prosseguir e fazer o cadastro
       if (i===0){
 
 
