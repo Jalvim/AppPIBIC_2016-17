@@ -86,37 +86,28 @@ medApp.controllers = {
       var confirm = $('#senha-confirm').val();
       var email=$('#email-cadastro').val();
       var inputs = page.getElementsByTagName('input');
-      var i=0;//variavel seletora, para nao passar muitos alerts
-//confere os inputs
+
+      // Checa se há algum input vazio
       if(medApp.services.checkEmptyField(inputs)){
-i=1;
         modal.hide();
         ons.notification.alert("Preencha todos os campos!");
-      }
-//confere senhas
-       if(pass !== confirm &&i===0) {
-i=1;
+
+      } else if(pass !== confirm) {
+
         modal.hide();
         ons.notification.alert("As senhas não conferem!");
 
-      };
-//
-          if(pass.length<6  &&i===0){
-          i=1;
-            modal.hide();
-           ons.notification.alert("Senha pequena");
-      };
-//confere se é possível a existencia do e-mail
-        if((email.indexOf('@')===-1 || email.indexOf('.')===-1)&& i===0){
-      modal.hide();
-      i=1;
-            ons.notification.alert("E-mail invalido");
-      };
+      } else if(pass.length < 6){
 
+        modal.hide();
+        ons.notification.alert("Senha pequena");
 
-//se tudo estiver correto, a variavel seletora nao tera alterado seu valor
-//Logo, podemos prosseguir e fazer o cadastro
-      if (i===0){
+      } else if ((email.indexOf('@')===-1 || email.indexOf('.')===-1)){
+
+        modal.hide();
+        ons.notification.alert("E-mail inválido");
+
+      } else {
 
 
         $.post('https://pibicfitbit.herokuapp.com/api/medico/',
@@ -135,8 +126,8 @@ i=1;
             document.querySelector('#loginNav').popPage();
           });
 
+      };
     };
-  };
   },
 
   /////////////////////////////////////
@@ -533,52 +524,58 @@ i=1;
 
       $.get('https://pibicfitbit.herokuapp.com/api/medico/busca/ID/' + medApp.services.idAtualMedico)
       .done(function(data) {
-        console.log(data[0]);
         $('#nome-medico').val(data[0].nome);
         $('#crm-medico').val(data[0].CRM);
         $('#esp-medico').val(data[0].especialidade);
         $('#tel-medico').val(data[0].telefone);
         $('#email-medico').val(data[0].email);
-        $('cpf-medico').val(data[0].CPF);
+        $('#cpf-medico').val(data[0].CPF);
       });
 
     });
 
-      var dadosEdit = {
+    // Verifica se algum input do formulário foi mudado
+    $("#medico-edit-form :input").change(function() {
 
-        nomeEdit: $('#nome-medico').val(),
-        crmEdit: $('#crm-medico').val(),
-        espEdit: $('#esp-medico').val(), 
-        telEdit: $('#tel-medico').val(),
-        emailEdit: $('#email-medico').val(),
-        cpfEdit: $('#cpf-medico').val()
+      $("#medico-edit-form").data("changed",true);
 
-      };
+    });
 
     // Botão salvar altera os dados no servidor se houve mudanças 
     page.querySelector('#salvar-med').onclick = function() {
 
-      var novoEdit = {
+      if ($("#medico-edit-form").data("changed")) {
 
-        nomeEdit: $('#nome-medico').val(),
-        crmEdit: $('#crm-medico').val(),
-        espEdit: $('#esp-medico').val(), 
-        telEdit: $('#tel-medico').val(),
-        emailEdit: $('#email-medico').val(),
-        cpfEdit: $('#cpf-medico').val()
+        var dadosEdit = {
 
-      };
+          nome: $('#nome-medico').val(),
+          crm: $('#crm-medico').val(),
+          esp: $('#esp-medico').val(), 
+          tel: $('#tel-medico').val(),
+          email: $('#email-medico').val(),
+          cpf: $('#cpf-medico').val(),
+          idMedico: medApp.services.idAtualMedico
 
-      if (medApp.services.checkEdit(novoEdit, dadosEdit)) {
+        };
 
-        console.log('editou');
+        $.ajax({
+          url: 'https://pibicfitbit.herokuapp.com/api/medico',
+          type: 'PUT',
+          data: { idMedico: dadosEdit.idMedico,
+                  nomeMedico: dadosEdit.nome,
+                  especialidade: dadosEdit.esp,
+                  CRM: dadosEdit.crm,
+                  telefone: dadosEdit.tel,
+                  CPF: dadosEdit.cpf
+                }
+        });
+
         document.querySelector('#medicoNav').popPage();
 
-      } else if (!medApp.services.checkEdit(novoEdit, dadosEdit)) {
+      } else {
 
-        console.log('nao editou');
         document.querySelector('#medicoNav').popPage();
-
+      
       };
 
     };
