@@ -8,7 +8,7 @@ medApp.controllers = {
   // Controlador da página de Login //
   ///////////////////////////////////
   login: function(page) {
-    
+
     // Botão de mostrar o texto da senha
     page.querySelector('#olho').ontouchstart = function() {
       $('#senha-login').attr('type', 'text');
@@ -70,8 +70,8 @@ medApp.controllers = {
   // Controlador da página de Cadastro //
   //////////////////////////////////////
 
-  cadastromedico: function(page) {  
-      
+  cadastromedico: function(page) {
+
     // Máscaras dos campos de dados
     $('#telefone-cadastro').mask('(00) 00000-0000');
     $('#crm-cadastro').mask('0#');
@@ -85,6 +85,8 @@ medApp.controllers = {
       var pass = $('#senha-cadastro').val();
       var confirm = $('#senha-confirm').val();
       var email=$('#email-cadastro').val();
+      var CPF=$('#cpf-cadastro').val().toString();
+
       var inputs = page.getElementsByTagName('input');
 
       // Checa se há algum input vazio
@@ -101,13 +103,25 @@ medApp.controllers = {
 
         modal.hide();
         ons.notification.alert("Senha pequena");
+       }
 
-      } else if ((email.indexOf('@')===-1 || email.indexOf('.')===-1)){
+//confere o CPF
+      else if(CPF.length<11){
 
-        modal.hide();
-        ons.notification.alert("E-mail inválido");
 
-      } else {
+      modal.hide();
+      ons.notification.alert("CPF invalido");
+      }
+
+
+//confere se é possível a existencia do e-mail
+        else if(email.indexOf('@')===-1 || email.indexOf('.')===-1||Math.abs(email.indexOf('@')- email.indexOf('.')<3)){
+      modal.hide();
+            ons.notification.alert("E-mail invalido");
+      }
+
+
+       else {
 
 
         $.post('https://pibicfitbit.herokuapp.com/api/medico/',
@@ -205,7 +219,7 @@ medApp.controllers = {
 
   pacientes: function(page) {
 
-    // Chama o perfil com os dados do paciente selecionado 
+    // Chama o perfil com os dados do paciente selecionado
     //ANTES: var pacientes = page.querySelectorAll(".paciente-lista"); //TODO --> TESTE DE CONEXÂO
     var pacientesInfo;
 
@@ -217,7 +231,6 @@ medApp.controllers = {
         pacientesInfo = data;
         console.log(pacientesInfo);
       });
-
     for (var i = 0, len = pacientesInfo.length; i < len; i++) {
       medApp.services.createPaciente(pacientesInfo[i]); // DEPOIS, apagar caso falha
       pacientes[i].onclick = function() {
@@ -226,7 +239,7 @@ medApp.controllers = {
         //ANTES: var causaPaciente = this.querySelector(".causa").innerHTML;
         //ANTES: var imgPaciente = this.querySelector('.list__item__thumbnail').src;
         medApp.services.setIdPaciente(pacientesInfo.numeroDoProntuario);
-        document.querySelector('#pacienteNav').pushPage('html/perfilpaciente.html', 
+        document.querySelector('#pacienteNav').pushPage('html/perfilpaciente.html',
           {data: {nome: pacientesInfo[i].nome, // ANTES: nomePaciente,
                   causa: pacientesInfo[i].causa, // ANTES: causaPaciente,
                   img: pacientesInfo[i].foto }});// ANTES: imgPaciente }});
@@ -270,7 +283,7 @@ medApp.controllers = {
       document.querySelector('#pacienteNav').pushPage('html/perfilpaciente.html');
 
     };
-      
+
   },
 
   ///////////////////////////////////////
@@ -286,7 +299,7 @@ medApp.controllers = {
     page.querySelector('.profile-image').src = page.data.img;
     //medApp.services.setIdPaciente($('#')); //TODO --> ver se prontuário é retornado e faz papel de ID.
     */
-    
+
     // Chama página de edição de dados do paciente
     page.querySelector('#pacienteeditar').onclick = function() {
 
@@ -301,7 +314,7 @@ medApp.controllers = {
 
     }
 
-    
+
     // Chama página de dados de saúde
     page.querySelector('#graf').onclick = function() {
 
@@ -316,7 +329,7 @@ medApp.controllers = {
     };
 
   },
-  
+
   /////////////////////////////////////
   ///Controle dos Gráficos de saúde ///
   /////////////////////////////////////
@@ -541,7 +554,7 @@ medApp.controllers = {
 
     });
 
-    // Botão salvar altera os dados no servidor se houve mudanças 
+    // Botão salvar altera os dados no servidor se houve mudanças
     page.querySelector('#salvar-med').onclick = function() {
 
       if ($("#medico-edit-form").data("changed")) {
@@ -550,7 +563,7 @@ medApp.controllers = {
 
           nome: $('#nome-medico').val(),
           crm: $('#crm-medico').val(),
-          esp: $('#esp-medico').val(), 
+          esp: $('#esp-medico').val(),
           tel: $('#tel-medico').val(),
           email: $('#email-medico').val(),
           cpf: $('#cpf-medico').val(),
@@ -575,7 +588,7 @@ medApp.controllers = {
       } else {
 
         document.querySelector('#medicoNav').popPage();
-      
+
       };
 
     };
@@ -616,7 +629,6 @@ medApp.controllers = {
     page.querySelector('#editar-pac').onclick = function() {
 
       /*var novoEdit = {
-
         nomeEdit: $('#nome-pac').val(),
         causaEdit: $('#causa-pac').val(),
         obsEdit: $('#obs-pac').val(),
@@ -624,13 +636,9 @@ medApp.controllers = {
         idadeEdit: $('#idade-pac').val(),
    		  emailEdit: $('#email-pac').val(),
       };
-
       if (medApp.services.checkEdit(novoEdit, dadosEdit)) {
-
         console.log('nao editou');
-
       } else {
-
         console.log('editou');
       };*/
 
@@ -721,25 +729,23 @@ medApp.controllers = {
       page.querySelector('#add-lembrete').onclick = function() {
         ons.notification.prompt({message: 'Escreva abaixo o lembrete:'})
           .then(function(texto){
-
             if( texto === '' ) {
               ons.notification.alert('Insira algum texto!');
             } else {
               medApp.services.createLembrete(texto);
             };
-
         });
       };
       */
 
       page.querySelector('#add-lembrete').onclick = function() {
-        
+
         document.querySelector('#pacienteNav').pushPage('html/addlembrete.html');
 
       };
 
       page.querySelector('#ver-lembrete').onclick = function() {
-        
+
         document.querySelector('#pacienteNav').pushPage('html/verlembrete.html');
 
       };
@@ -753,7 +759,7 @@ medApp.controllers = {
     buscarpaciente: function(page){
 
       page.querySelector('#add-pac').onclick = function() {
-        
+
         document.querySelector('#pacienteNav').pushPage('html/addpaciente.html');
 
       };
@@ -767,7 +773,7 @@ medApp.controllers = {
     addpaciente: function(page) {
 
       page.querySelector('#cadastrar-pac').onclick = function() {
-        
+
         document.querySelector('#pacienteNav').popPage();
 
       };
@@ -777,7 +783,7 @@ medApp.controllers = {
     configuracoes: function(page) {
 
       page.querySelector('#manage-pulseiras').onclick = function() {
-        
+
         document.querySelector('#configuracoesNav').pushPage('pulseiras.html');
 
       };
@@ -791,7 +797,7 @@ medApp.controllers = {
     addlembrete: function(page) {
 
       page.querySelector('#pub-lembrete').onclick = function() {
-        
+
         document.querySelector('#pacienteNav').popPage();
 
       };
