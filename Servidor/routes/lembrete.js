@@ -8,7 +8,7 @@ FUNCIONAMENTO:
 
 
 */
-
+var senhas = require('../senhas.js');
 var express = require('express');
 var mysql = require('mysql');
 var request = require('request');
@@ -18,7 +18,7 @@ var router = express.Router();
 var connection = mysql.createConnection({
 	host : '79.170.40.183',
 	user : 'cl19-dbpipibic',
-	password : 'XXXXXXXXX',
+	password : senhas.senha_DB,
 	database : 'cl19-dbpipibic'
 });
 connection.connect();
