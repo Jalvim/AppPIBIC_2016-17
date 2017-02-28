@@ -35,7 +35,7 @@ router.route('/')
 				console.log(err);
 				console.log(rows);
 				console.log(fields);
-				if(err != null){
+				if(err == null){
 					res.send("Grupo criado com sucesso.");
 				}
 				else{
@@ -52,35 +52,43 @@ router.route('/')
 		if (req.hasOwnProperty('body') &&
 			req.body.hasOwnProperty('idGrupoPac') &&
 			req.body.hasOwnProperty('nome')){
+			
 			var selector = {
 				sql:`SELECT * FROM GrupoPacientes WHERE idGrupoPac = ${connection.escape(req.body.idGrupoPac)} LIMIT 1`,
 				timeout: 10000
 				}
+
 			connection.query(selector, function(err, rows, fields) {
 			
-			if (err != null) console.log('Erro ao selecionar grupo a ser editado na base de dados.');
-			else if (rows.length < 1) {
-				console.log('Grupo nao encontrado.');
-				res.send('Grupo nao encontrado.');
-			}
-			else {
-				console.log(rows);
-				var nome;
-				
-					nome = req.body.nomeMedico;
-				
-				queryString = 'UPDATE GrupoPacientes SET nome=' + nome + ' WHERE idGrupoPac= ' + req.body.idGrupoPac + ' LIMIT 1';
-				connection.query(queryString, function(error, results){
-					if (error != null) {
-						console.log(error);
-						console.log('Erro ao alterar o grupo de pacientes na base de dados');
-						res.send('Erro ao alterar o grupo de pacientes na base de dados');
-					} else {
-						console.log('Grupo de Pacientes editado com sucesso.');
+				if (err != null) console.log('Erro ao selecionar grupo a ser editado na base de dados.');
+				else if (rows.length < 1) {
+					console.log('Grupo nao encontrado.');
+					res.send('Grupo nao encontrado.');
+				}
+				else {
+					console.log(rows);
+					var nome;
+					
+						nome = req.body.nome;
+					
+					queryString = {
+						sql: `UPDATE GrupoPacientes SET nome= '${nome}' WHERE idGrupoPac= ${connection.escape(req.body.idGrupoPac)} LIMIT 1`,
+						timeout: 100000
 					}
+					console.log(queryString.sql);
+					connection.query(queryString, function(error, results){
+						if (error != null) {
+							console.log(error);
+							console.log('Erro ao alterar o grupo de pacientes na base de dados');
+							res.send('Erro ao alterar o grupo de pacientes na base de dados');
+						} else {
+							console.log('Grupo de Pacientes editado com sucesso.');
+						}
 
-				});
-			}
+					});
+				}
+			});
+		}
 		else {
 			res.send('Insira o nome do grupo a ser criado. Erro.');
 		}
@@ -115,7 +123,7 @@ router.route('/relacoes/')
 			req.body.hasOwnProperty('idPaciente') &&
 			req.body.hasOwnProperty('idGrupoPac')){
 			var query ={
-				sql: `INSERT INTO Paciente_GrupoPac (idPaciente, idGrupoPac) VALUES (${connection.escape(req.body.idPaciente)}, ${connection.escape(req.body.idGrupoPac)})`,
+				sql: `INSERT INTO GrupoPac_Paciente (idPaciente, idGrupoPac) VALUES (${connection.escape(req.body.idPaciente)}, ${connection.escape(req.body.idGrupoPac)})`,
 				timeout: 1000
 			}
 
@@ -123,7 +131,7 @@ router.route('/relacoes/')
 				console.log(err);
 				console.log(rows);
 				console.log(fields);
-				if(err != null){
+				if(err == null){
 					res.send("Paciente adicionado ao grupo com sucesso.");
 				}
 				else{
@@ -138,13 +146,13 @@ router.route('/relacoes/')
 	})
 	delete(function(req, res) {
 
-		console.log(req.body.hasOwnProperty('idtable1'));
+		console.log(req.body.hasOwnProperty('idPaciente'));
 		if (req,hasOwnProperty('body') &&
-			req.body.hasOwnProperty('idtable1') &&
+			req.body.hasOwnProperty('idPaciente') &&
 			req.body.hasOwnProperty('idGrupoPac') ) {
 			connection.query(
 			  'DELETE FROM GrupoPac_Paciente WHERE idtable1=? AND idGrupoPac=? LIMIT 1',
-			  [req.body.idtable1, req.body.idGrupoPac],
+			  [req.body.idPaciente, req.body.idGrupoPac],
 			  	function(err){
 				  	if (err != null) {
 				  		console.log('Error ao remover paciente do grupo');
@@ -164,10 +172,10 @@ router.route('/relacoes/')
 	.get(function(req, res){
 		if (req.params.hasOwnProperty('idGrupoPac')) {
 		var query = {
-			sql: `SELECT P.* FROM  Paciente P, GrupoPac_Paciente GP WHERE GP.idtable1 = P.idtable1 AND GP.idGrupoPac = ${connection.escape(req.params.idGrupoPac)}`,
+			sql: `SELECT P.* FROM  Paciente P, GrupoPac_Paciente GP WHERE GP.idPaciente	 = P.idtable1 AND GP.idGrupoPac = ${connection.escape(req.params.idGrupoPac)}`,
 			timeout: 10000	
 		}
-		connection.query(getPatientQuery, function(err, rows, fields) {
+		connection.query(query, function(err, rows, fields) {
 			if(err) {
 				console.log(err);
 				res.send('Não foi possível recuperar os pacientes pertencentes ao grupo. Erro SQL.');
@@ -181,4 +189,6 @@ router.route('/relacoes/')
 	} else {
 		res.send('Indique o grupo desejado. Erro');			
 	}
-	}) 
+	});
+
+	module.exports = router;

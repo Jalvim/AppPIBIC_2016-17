@@ -147,6 +147,42 @@ module.exports = function(app) {
 			nome: 'Terceiro andar, Ala Norte'	
 		}
 	};
+
+	app.optionsPutTestRequestGrupoPacientes = {
+		method:'PUT',
+		url:'http://127.0.0.1:3000/api/grupoPacientes/',
+		form:{
+			idGrupoPac: 1,
+			nome: 'Quarto andar, Ala Norte'	
+		}
+	};
+
+	app.optionsDeleteTestRequestGrupoPacientes = {
+		method:'DELETE',
+		url:'http://127.0.0.1:3000/api/grupoPacientes/',
+		form:{ 
+			idGrupoPac: 2
+		}
+	};
+
+	app.optionsPostTestRequestGrupoPac_Pacientes = {
+		method:'POST',
+		url:'http://127.0.0.1:3000/api/grupoPacientes/relacoes/',
+		form:{ 
+			idGrupoPac: 1,
+			idPaciente: 40
+		}
+	};
+
+	app.optionsDeleteTestRequestGrupoPac_Pacientes = {
+		method:'DELETE',
+		url:'http://127.0.0.1:3000/api/grupoPacientes/relacoes/',
+		form:{ 
+			id: 1,
+			idGrupoPac: 1,
+			idPaciente: 40
+		}
+	};
 }
 
 

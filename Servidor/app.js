@@ -48,7 +48,7 @@ setupOptionsVariables(app);
 // POST - Nova adição de médicos com cpf funcionando
 // PUT - Bug encontrados e debugados, o código agora edita perfis de medico corretamente
 // 
-request(app.optionsPutTestRequestGrupoPacientes, function(err, httpResponse, body) { 
+request(app.optionsDeleteTestRequestGrupoPac_Pacientes, function(err, httpResponse, body) { 
   	console.log(err);
   	//console.log(httpResponse);
   	console.log(body);
@@ -270,6 +270,8 @@ app.use('/api/lembrete', lembreteRouter);
 
 //Ações para alterar tabela Login na base de dados, usar módulo local ./router/lembrete.js
 app.use('/api/login', loginRouter);
+
+app.use('/api/grupoPacientes', grupoPacientesRouter);
 
 port = process.env.PORT || 3000
 
