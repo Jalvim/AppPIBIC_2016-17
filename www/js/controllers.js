@@ -164,6 +164,12 @@ medApp.controllers = {
 
     });
 
+    if(ons.orientation.isLandscape()) {
+        document.querySelector('#medicoNav').pushPage('html/medicoPaisagem.html');
+    }
+
+    // TODO --> pensar na eventual função if(ons.orientation.isLandscape()){}
+
     // Chama a página de editar perfil do médico
     page.querySelector('#edit-med').onclick = function() {
 
@@ -205,11 +211,18 @@ medApp.controllers = {
       }
 
       pullHook.innerHTML = message;
+
+      if(ons.orientation.isLandscape()) {
+        document.querySelector('#medicoNav').pushPage('html/medicoPaisagem.html');
+      } else {
+        document.querySelector('#medicoNav').pushPage('html/medico.html');
+      }
     });
 
     pullHook.onAction = function(done) {
       setTimeout(done, 1000);
     };
+
 
   },
 
@@ -714,7 +727,7 @@ medApp.controllers = {
         type: 'radar',
         data: dados,
           options: {
-            responsive: true
+            responsive: false
           }
       });
     },
