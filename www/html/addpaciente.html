@@ -15,8 +15,8 @@
           <img src="http://www.clker.com/cliparts/A/Y/O/m/o/N/placeholder-md.png" class="editar-image">
         </div>
         <div class="center">
-          <ons-input placeholder="Nome" class="text-input--underbar registro-input-top" disable-auto-styling></ons-input>
-          <ons-input placeholder="Médico Responsável" class="text-input--underbar registro-input-top" disable-auto-styling></ons-input>
+          <ons-input placeholder="Nome" input-id="nome-novo-pac" class="text-input--underbar registro-input-top" disable-auto-styling></ons-input>
+          <ons-input placeholder="Médico Responsável" input-id="med-novo-pac" class="text-input--underbar registro-input-top" disable-auto-styling></ons-input>
         </div>
       </ons-list-item>
 
@@ -29,7 +29,8 @@
           <ons-icon icon="md-calendar" class="list__item__icon"></ons-icon>
         </div>
         <div class="center">
-          <ons-input class="text-input--underbar registro-input-icon" type="date" disable-auto-styling></ons-input>
+          <ons-input class="text-input--underbar registro-input-icon" input-id="data-novo-pac" type="date" disable-auto-styling>
+          </ons-input>
         </div>  
       </ons-list-item>
 
@@ -38,7 +39,7 @@
           <ons-icon icon="md-plaster" class="list__item__icon"></ons-icon>
         </div>
         <div class="center">
-          <ons-input placeholder="Causa da Internação" class="text-input--underbar registro-input-icon" disable-auto-styling></ons-input>
+          <ons-input placeholder="Causa da Internação" input-id="causa-novo-pac" class="text-input--underbar registro-input-icon" disable-auto-styling></ons-input>
         </div>
       </ons-list-item>
 
@@ -47,7 +48,7 @@
           <ons-icon icon="hospital-o" class="list__item__icon"></ons-icon>
         </div>
         <div class="center">
-          <ons-input placeholder="Hospital e Andar" class="text-input--underbar registro-input-icon" disable-auto-styling></ons-input>
+          <ons-input placeholder="Hospital e Andar" input-id="local-novo-pac" class="text-input--underbar registro-input-icon" disable-auto-styling></ons-input>
         </div>
       </ons-list-item>
 
@@ -56,5 +57,13 @@
     <ons-button position="center" class="button-send" id="cadastrar-pac">Editar Cadastro</ons-button>
 
   </div>
+
+  <ons-modal direction="up">
+    <div style="text-align: center">
+      <p>
+        <ons-icon icon="md-spinner" size="28px" spin></ons-icon> Adicionando...
+      </p>
+    </div>
+  </ons-modal>
 
 </ons-page>

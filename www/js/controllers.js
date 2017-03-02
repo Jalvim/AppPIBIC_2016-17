@@ -126,7 +126,6 @@ medApp.controllers = {
 
        else {
 
-
         $.post('https://pibicfitbit.herokuapp.com/api/medico/',
         {
           nomeMedico: $('#nome-cadastro').val(),
@@ -851,7 +850,7 @@ medApp.controllers = {
     // Controlador do feed de notícias   //
     ///////////////////////////////////////
 
-    feed: function(page) {
+  feed: function(page) {
       // Realiza a atualização do feed com pull --> TODO: funcionalidade.
         var pullHook = document.getElementById('pull-hook-feed');
         pullHook.addEventListener('changestate', function(event) {
@@ -902,7 +901,7 @@ medApp.controllers = {
     // Controlador da lista de lembretes //
     ///////////////////////////////////////
 
-    lembretes: function(page){
+  lembretes: function(page){
 
       /* Funcionalidade Antiga (adaptar)
       page.querySelector('#add-lembrete').onclick = function() {
@@ -929,58 +928,94 @@ medApp.controllers = {
 
       };
 
-    },
+  },
 
-    ///////////////////////////////////////
-    // Controlador da busca de pacientes //
-    ///////////////////////////////////////
+  ///////////////////////////////////////
+  // Controlador da busca de pacientes //
+  ///////////////////////////////////////
 
-    buscarpaciente: function(page){
+  buscarpaciente: function(page){
 
-      page.querySelector('#add-pac').onclick = function() {
+    page.querySelector('#add-pac').onclick = function() {
 
-        document.querySelector('#pacienteNav').pushPage('html/addpaciente.html');
+      document.querySelector('#pacienteNav').pushPage('html/addpaciente.html');
+
+    };
+
+  },
+
+  /////////////////////////////////////////
+  // Controlador do cadastro de paciente //
+  /////////////////////////////////////////
+
+  addpaciente: function(page) {
+
+    page.querySelector('#cadastrar-pac').onclick = function() {
+
+      var modal = page.querySelector('ons-modal');
+      modal.show();
+
+      var inputs = page.getElementsByTagName('input');
+
+      // Checa se há algum input vazio
+      if(medApp.services.checkEmptyField(inputs)) {
+
+        modal.hide();
+        ons.notification.alert("Preencha todos os campos!");
+
+      } else {
+
+        var nomeNovoPaciente = $('#nome-novo-pac').val();
+        var medNovoPaciente = $('#med-novo-pac').val();
+        var dataNovoPaciente = $('#data-novo-pac').val();
+        var causaNovoPaciente = $('#causa-novo-pac').val();
+        var localNovoPaciente = $('#local-novo-pac').val();
+
+        $.post('https://pibicfitbit.herokuapp.com/api/paciente/geral',
+        {
+          nomePaciente: $('#nome-novo-pac').val(),
+          causaDaInternacao: $('#causa-novo-pac').val(),
+          numeroDoProntuario: 1111,
+          telefone: 11111,
+          foto: 01010101011111011111,
+          dataDeNascimento: '1980-01-01',
+          idMedico: medApp.services.getIdMedico(),
+          idPulseira: 47
+        })
+          .done(function(data) {
+            modal.hide();
+            ons.notification.alert(data);
+            document.querySelector('#pacienteNav').popPage();
+          });
 
       };
 
-    },
+    };
 
-    /////////////////////////////////////////
-    // Controlador do cadastro de paciente //
-    /////////////////////////////////////////
+  },
 
-    addpaciente: function(page) {
+  configuracoes: function(page) {
 
-      page.querySelector('#cadastrar-pac').onclick = function() {
+    page.querySelector('#manage-pulseiras').onclick = function() {
 
-        document.querySelector('#pacienteNav').popPage();
+      document.querySelector('#configuracoesNav').pushPage('pulseiras.html');
 
-      };
+    };
 
-    },
+  },
 
-    configuracoes: function(page) {
+  ////////////////////////////////////////
+  // Controlador de adicionar lembrete //
+  ///////////////////////////////////////
 
-      page.querySelector('#manage-pulseiras').onclick = function() {
+  addlembrete: function(page) {
 
-        document.querySelector('#configuracoesNav').pushPage('pulseiras.html');
+    page.querySelector('#pub-lembrete').onclick = function() {
 
-      };
+      document.querySelector('#pacienteNav').popPage();
 
-    },
+    };
 
-    ////////////////////////////////////////
-    // Controlador de adicionar lembrete //
-    ///////////////////////////////////////
-
-    addlembrete: function(page) {
-
-      page.querySelector('#pub-lembrete').onclick = function() {
-
-        document.querySelector('#pacienteNav').popPage();
-
-      };
-
-    }
+  }
 
 };
