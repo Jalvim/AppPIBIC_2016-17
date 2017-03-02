@@ -187,20 +187,41 @@ medApp.services = {
   createLembrete: function(data) {
 
     // Define um texto resumido do lembrete para vizualização
-    var textoLembrete = data.texto.substring(0,20);
+    if (data.texto.length < 30) {
+
+      var textoLembrete = data.texto;
+
+    } else {
+
+      var textoLembrete = data.texto.substring(0,30);
+
+    };
 
     // Template de paciente
     var template = document.createElement('div');
     template.innerHTML =
-      '<ons-list-item>'+
+      '<ons-list-item>' +
       '<div class="right">' +
-      //'<ons-icon icon="star-o" class="list__item__icon"></ons-icon>' + 
-      '<ons-icon icon="md-delete" class="list__item__icon delete"></ons-icon>' +
+        '<ons-icon icon="md-delete" class="list__item__icon delete"></ons-icon>' +
       '</div>' +
-      '<div>' +
-      textoLembrete +
+      '<div class="center">' +
+        '<ons-row style="padding-bottom: 10px">' +
+          '<ons-icon icon="md-assignment" size="30px" class="list__item__icon"></ons-icon>' + 
+          '<div class="lembrete-lista-header">' + textoLembrete + ((data.texto.length < 30) ? '' : '...') +
+          '</div>' +
+        '</ons-row>' + 
+        '<ons-row>' +
+          '<ons-col>' +
+            '<ons-icon icon="md-calendar" size="20px" class="list__item__icon"></ons-icon>' + 
+            '<span>' + data.horario + '</span>' +
+          '</ons-col>' +
+          '<ons-col>' +
+            '<ons-icon icon="user-md" size="20px" class="list__item__icon"></ons-icon>' +
+            '<span>' + data.medico + '</span>' +
+          '</ons-col>' +
+        '</ons-row>' +
       '</div>' +
-      '</ons-list-item>';
+    '</ons-list-item>';
 
     var lembreteItem = template.firstChild;
     var lembretesLista = document.querySelector('#lista-lembretes');

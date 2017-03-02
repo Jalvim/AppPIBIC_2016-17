@@ -37,7 +37,7 @@ medApp.controllers = {
 
     };
 
-    $.post('https://pibicfitbit.herokuapp.com/api/login/',
+    $.post('http://julianop.com.br:3000/api/login/',
       {
         email: emailLogin,
         senha: senhaLogin
@@ -378,6 +378,7 @@ medApp.controllers = {
 
     };
 
+    /*
     page.querySelector('#pac-teste').onclick = function() {
 
       medApp.services.createPaciente( { statusPaciente: 'ativo',
@@ -391,7 +392,7 @@ medApp.controllers = {
                                       });
 
     };
-
+    */
   },
 
   ///////////////////////////////////////
@@ -903,30 +904,17 @@ medApp.controllers = {
 
   lembretes: function(page){
 
-      /* Funcionalidade Antiga (adaptar)
-      page.querySelector('#add-lembrete').onclick = function() {
-        ons.notification.prompt({message: 'Escreva abaixo o lembrete:'})
-          .then(function(texto){
-            if( texto === '' ) {
-              ons.notification.alert('Insira algum texto!');
-            } else {
-              medApp.services.createLembrete(texto);
-            };
-        });
-      };
-      */
+    page.querySelector('#add-lembrete').onclick = function() {
 
-      page.querySelector('#add-lembrete').onclick = function() {
+      document.querySelector('#pacienteNav').pushPage('html/addlembrete.html');
 
-        document.querySelector('#pacienteNav').pushPage('html/addlembrete.html');
+    };
 
-      };
+    page.querySelector('#ver-lembrete').onclick = function() {
 
-      page.querySelector('#ver-lembrete').onclick = function() {
+      document.querySelector('#pacienteNav').pushPage('html/verlembrete.html');
 
-        document.querySelector('#pacienteNav').pushPage('html/verlembrete.html');
-
-      };
+    };
 
   },
 
