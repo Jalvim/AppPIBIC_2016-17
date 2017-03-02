@@ -37,7 +37,7 @@ medApp.controllers = {
 
     };
 
-    $.post('http://julianop.com.br:3000/api/login/',
+    $.post('https://pibicfitbit.herokuapp.com/api/login/',
       {
         email: emailLogin,
         senha: senhaLogin
@@ -378,7 +378,6 @@ medApp.controllers = {
 
     };
 
-    /*
     page.querySelector('#pac-teste').onclick = function() {
 
       medApp.services.createPaciente( { statusPaciente: 'ativo',
@@ -392,7 +391,7 @@ medApp.controllers = {
                                       });
 
     };
-    */
+
   },
 
   ///////////////////////////////////////
@@ -688,7 +687,8 @@ medApp.controllers = {
                   especialidade: dadosEdit.esp,
                   CRM: dadosEdit.crm,
                   telefone: dadosEdit.tel,
-                  CPF: dadosEdit.cpf
+                  CPF: dadosEdit.cpf,
+                  email:dadosEdit.email
                 }
         });
 
@@ -904,17 +904,30 @@ medApp.controllers = {
 
   lembretes: function(page){
 
-    page.querySelector('#add-lembrete').onclick = function() {
+      /* Funcionalidade Antiga (adaptar)
+      page.querySelector('#add-lembrete').onclick = function() {
+        ons.notification.prompt({message: 'Escreva abaixo o lembrete:'})
+          .then(function(texto){
+            if( texto === '' ) {
+              ons.notification.alert('Insira algum texto!');
+            } else {
+              medApp.services.createLembrete(texto);
+            };
+        });
+      };
+      */
 
-      document.querySelector('#pacienteNav').pushPage('html/addlembrete.html');
+      page.querySelector('#add-lembrete').onclick = function() {
 
-    };
+        document.querySelector('#pacienteNav').pushPage('html/addlembrete.html');
 
-    page.querySelector('#ver-lembrete').onclick = function() {
+      };
 
-      document.querySelector('#pacienteNav').pushPage('html/verlembrete.html');
+      page.querySelector('#ver-lembrete').onclick = function() {
 
-    };
+        document.querySelector('#pacienteNav').pushPage('html/verlembrete.html');
+
+      };
 
   },
 
@@ -937,6 +950,26 @@ medApp.controllers = {
   /////////////////////////////////////////
 
   addpaciente: function(page) {
+
+    medApp.services.resetPulseirasDisponiveis();
+
+    //Método responsável por encontrar na base as pulseiras disponíveis.
+    $.get('https://pibicfitbit.herokuapp.com/api/pulseira/disponivel')
+      .done(function(data){
+        medApp.services.setPulseirasDisponiveis(data);
+        console.log(medApp.services.pulseirasDisponiveis);
+      });
+
+    page.querySelector('#pulseiraButton').onclick = function() {
+      var showPopover = function(target) {
+        document.getElementById('#popover')
+          .show(target);
+      }
+
+      for(var i = 0; i < medApp.services.pulseirasDisponiveis.length; i++){
+        medApp.services.showPulseirasDisponiveis(i);
+      }
+    };
 
     page.querySelector('#cadastrar-pac').onclick = function() {
 
