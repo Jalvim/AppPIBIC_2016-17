@@ -20,6 +20,7 @@ var express = require('express'),
 	lembreteRouter = require('./routes/lembrete.js'),
 	medicoRouter = require('./routes/medico.js'),
 	loginRouter = require('./routes/login.js'),
+	pulseiraRouter = require('./routes/pulseira.js'),
 	grupoPacientesRouter = require('./routes/grupoPacientes.js');
 	
 //Setup inicial de conecção com a base de dados 	
@@ -48,18 +49,18 @@ setupOptionsVariables(app);
 // POST - Nova adição de médicos com cpf funcionando
 // PUT - Bug encontrados e debugados, o código agora edita perfis de medico corretamente
 // 
-request(app.optionsDeleteTestRequestGrupoPac_Pacientes, function(err, httpResponse, body) { 
-  	console.log(err);
-  	//console.log(httpResponse);
-  	console.log(body);
-  });
+//  request(app.optionsPutTestRequestPulseira, function(err, httpResponse, body) { 
+//  	console.log(err);
+//  	//console.log(httpResponse);
+//  	console.log(body);
+//  });
 
 //info vai conter dados HR de chamada bem sucedida à API fitbit
 var info = {};
 
 //request(optionsGetHR, getHRCallback);
 //getDynamicHealthParams(38);
-//getStaticHealthParams(0, 44);
+//getStaticHealthParams(0, 56);
 //getStaticHealthParams(0, 18);
 //console.log(getTodayDate());
 
@@ -68,10 +69,9 @@ getHRCallback é a função que trata a resposta advinda da chamada à API da Fi
 batimentos cardíacos.
 
 TO DO:
-	=>Caso o Heroku faça a request pra refresh o key token, perdemos acesso a este,
-	pensar em uma maneira de armazenar esses dados de autenticação além de localmente  TESTAR/DEBUGAR
 	=>Armazenar dados de batimento cardíaco recebidos na base de dados
 	=>Implementar funcionalidade similar ao da função de parametros estáticos (puxar dados de autenticação da bd)
+	=>Adaptar função à nova arquitetura do webapp (pulseira e paciente separados)
 */ 
 function getDynamicHealthParams(id) {
 
@@ -126,70 +126,73 @@ function getTodayDate() {
 getStaticParams é uma função que puxa dados de saúde estáticos (não necessitam acompanhamento em tempo real)
 da API da FitBit de maneira recursiva, a necessidade do uso da recursão veio da natureza assíncrona da função
 request, que torna complexa a implementação usando for loop. Ao chamar, dê sempre um 0 como argumento i para 
-resgatar os dados corretamente para o paciente de id especificado.
+resgatar os dados corretamente para a pulseira de id especificado.
 
 TO DO:
 	=> Otimizar velocidade da função, eliminando dados IntraDay da chamada à API da Fitbit.(Entrar em contato com a Fitbit).
-
 */
-function getStaticHealthParams(i, id) {
+function getStaticHealthParams(i, idPulseira) {
 
 	if (i == 4) return;
 
-	connection.query('SELECT * FROM Autenticacao WHERE idPaciente=?', [id],
-	  function(erro, result, fields){
-	  	console.log(result);
-	  	if (result.length < 1 || erro) { console.log('Erro ao puxar info de autenticação da base de dados para parâmetros estáticos.'); return; }
+	connection.query('SELECT pacienteAtual FROM Pulseira_Paciente WHERE idPulseira=?',[idPulseira],function(error, res, fields){
+		console.log(res[0].pacienteAtual);
+		connection.query('SELECT * FROM Autenticacao WHERE idPulseira=?', [idPulseira],
+		  function(erro, result, fields){
+			console.log(result);
+			if (result.length < 1 || erro) { return console.log('Erro ao puxar info de autenticação da base de dados para parâmetros estáticos.'); }
 	  
-	  	var authorizationHeader = `Bearer ${result[0].accessToken}`;
-	  	
-		var staticParamsArray = ['steps', 'calories', 'distance', 'floors'];
+			var authorizationHeader = `Bearer ${result[0].accessToken}`;
+		
+			var staticParamsArray = ['steps', 'calories', 'distance', 'floors'];
 	
-		var newStaticParamOption = {
-			url: `https://api.fitbit.com/1/user/${result[0].userID}/activities/${staticParamsArray[i]}/date/today/1d.json`,
-			headers: {
-				'Authorization': authorizationHeader,
-			}
-		}
-		request(newStaticParamOption, function getStaticHealthParamsCallback(errors, response, body){
-			console.log(response.statusCode);
-			if (response.statusCode == 401) {
-				refreshOAuthToken(newStaticParamOption, getStaticHealthParamsCallback, result);
-			} else if (!errors && response.statusCode == 200) {
-				var activity = JSON.parse(body);
-				var property = 'activities-' + staticParamsArray[i];
-				if (staticParamsArray[i] == 'steps') {
-					newStaticQuery = {
-						sql: `SELECT * FROM SaudeParamsEstaticos WHERE idPaciente=${id} AND data='${activity[property][0].dateTime}'`, 
-						timeout: 10000
-					}
-					connection.query(newStaticQuery, function(err, rows, fields) {
-						if(rows.length < 1) {
-							newStaticQuery = {
-								sql: `INSERT INTO SaudeParamsEstaticos (idPaciente, data, steps) VALUES (${id}, '${activity[property][0].dateTime}', ${activity[property][0].value})`,
-								timeout: 10000
-							}
-						}
-						else if (rows.length == 1){
-							newStaticQuery = {
-								sql: `UPDATE SaudeParamsEstaticos SET steps=${activity[property][0].value} WHERE data='${activity[property][0].dateTime}' AND idPaciente=${id}`,
-								timeout: 10000
-							}
-						} else throw new Error("Ambiguidades com id e/ou data de pacientes na base de dados");
-						connection.query(newStaticQuery);
-					});
-				} else {
-					staticQuery = {
-						sql: `UPDATE SaudeParamsEstaticos SET ${staticParamsArray[i]}=${activity[property][0].value} WHERE data='${activity[property][0].dateTime}'`,
-						timeout: 10000
-					}
-					connection.query(staticQuery, function(err, rows, fields) {
-					});
+			var newStaticParamOption = {
+				url: `https://api.fitbit.com/1/user/${result[0].userID}/activities/${staticParamsArray[i]}/date/today/1d.json`,
+				headers: {
+					'Authorization': authorizationHeader,
 				}
-				getStaticHealthParams(i+1, id);
 			}
+			request(newStaticParamOption, function getStaticHealthParamsCallback(errors, response, body){
+				console.log(response.statusCode);
+				if (response.statusCode == 401) {
+					refreshOAuthToken(newStaticParamOption, getStaticHealthParamsCallback, result);
+				} else if (!errors && response.statusCode == 200) {
+					var activity = JSON.parse(body);
+					var property = 'activities-' + staticParamsArray[i];
+					if (staticParamsArray[i] == 'steps') {
+						newStaticQuery = {
+							sql: `SELECT * FROM SaudeParamsEstaticos WHERE idPaciente=${res[0].pacienteAtual} AND data='${activity[property][0].dateTime}'`, 
+							timeout: 10000
+						}
+						connection.query(newStaticQuery, function(err, rows, fields) {
+							if(rows.length < 1) {
+								newStaticQuery = {
+									sql: `INSERT INTO SaudeParamsEstaticos (idPaciente, data, steps) VALUES (${res[0].pacienteAtual}, '${activity[property][0].dateTime}', ${activity[property][0].value})`,
+									timeout: 10000
+								}
+							}
+							else if (rows.length == 1){
+								newStaticQuery = {
+									sql: `UPDATE SaudeParamsEstaticos SET steps=${activity[property][0].value} WHERE data='${activity[property][0].dateTime}' AND idPaciente=${res[0].pacienteAtual}`,
+									timeout: 10000
+								}
+							} else throw new Error("Ambiguidades com id e/ou data de pacientes na base de dados");
+							connection.query(newStaticQuery);
+						});
+					} else {
+						staticQuery = {
+							sql: `UPDATE SaudeParamsEstaticos SET ${staticParamsArray[i]}=${activity[property][0].value} WHERE data='${activity[property][0].dateTime}' AND idPaciente=${res[0].pacienteAtual}`,
+							timeout: 10000
+						}
+						connection.query(staticQuery, function(err, rows, fields) {
+						});
+					}
+					getStaticHealthParams(i+1, idPulseira);
+				}
+			});
 		});
 	});
+		
 }
 
 /*
@@ -201,7 +204,7 @@ TO DO:
 */
 function refreshOAuthToken(options, callback, auth) {
 	//Adicionado código de automação para refresh de token de acesso
-	var tokenRefreshAuthorization = 'Basic ' + new Buffer("XXXXXX:XXXXXXXXXXXXXXXXXXX").toString('base64');
+	var tokenRefreshAuthorization = 'Basic ' + new Buffer(`${senhas.clientID}:${senhas.clientSecret}`).toString('base64');
 	console.log(tokenRefreshAuthorization);	
 	console.log(auth[0].refreshToken);
 	
@@ -225,8 +228,8 @@ function refreshOAuthToken(options, callback, auth) {
 			console.log('Error:Chamada refresh à API mal sucedida, algo deu errado');
 		} else { 
 			connection.query(
-			  'UPDATE Autenticacao SET accessToken=?, refreshToken=? WHERE idPaciente=?',
-			  [temp.access_token, temp.refresh_token, auth[0].idPaciente],
+			  'UPDATE Autenticacao SET accessToken=?, refreshToken=? WHERE idPulseira=?',
+			  [temp.access_token, temp.refresh_token, auth[0].idPulseira],
 			  function(err){
 				if (err) console.log('Erro ao armazenar dados refreshed na base de dados');
 				else { 
@@ -270,6 +273,9 @@ app.use('/api/lembrete', lembreteRouter);
 
 //Ações para alterar tabela Login na base de dados, usar módulo local ./router/lembrete.js
 app.use('/api/login', loginRouter);
+
+//Ações para alterar tabela Login na base de dados, usar módulo local ./router/lembrete.js
+app.use('/api/pulseira', pulseiraRouter);
 
 app.use('/api/grupoPacientes', grupoPacientesRouter);
 

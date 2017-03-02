@@ -131,6 +131,7 @@ module.exports = function(app) {
 		}
 	};
 
+	//Opções de teste de request http para lembretes
 	app.optionsPostTestRequestLogin = {
 		method:'POST',
 		url:'http://127.0.0.1:3000/api/login/',
@@ -140,6 +141,7 @@ module.exports = function(app) {
 		}
 	};
 
+	//Opções de teste de request http para grupos de pacientes
 	app.optionsPostTestRequestGrupoPacientes = {
 		method:'POST',
 		url:'http://127.0.0.1:3000/api/grupoPacientes/',
@@ -147,7 +149,6 @@ module.exports = function(app) {
 			nome: 'Terceiro andar, Ala Norte'	
 		}
 	};
-
 	app.optionsPutTestRequestGrupoPacientes = {
 		method:'PUT',
 		url:'http://127.0.0.1:3000/api/grupoPacientes/',
@@ -156,7 +157,6 @@ module.exports = function(app) {
 			nome: 'Quarto andar, Ala Norte'	
 		}
 	};
-
 	app.optionsDeleteTestRequestGrupoPacientes = {
 		method:'DELETE',
 		url:'http://127.0.0.1:3000/api/grupoPacientes/',
@@ -164,7 +164,6 @@ module.exports = function(app) {
 			idGrupoPac: 2
 		}
 	};
-
 	app.optionsPostTestRequestGrupoPac_Pacientes = {
 		method:'POST',
 		url:'http://127.0.0.1:3000/api/grupoPacientes/relacoes/',
@@ -173,7 +172,6 @@ module.exports = function(app) {
 			idPaciente: 40
 		}
 	};
-
 	app.optionsDeleteTestRequestGrupoPac_Pacientes = {
 		method:'DELETE',
 		url:'http://127.0.0.1:3000/api/grupoPacientes/relacoes/',
@@ -181,6 +179,32 @@ module.exports = function(app) {
 			id: 1,
 			idGrupoPac: 1,
 			idPaciente: 40
+		}
+	};
+	
+	//Opções de teste de request http para pulseiras
+	app.optionsPostTestRequestPulseira = {
+		method:'POST',
+		url:'http://127.0.0.1:3000/api/pulseira/',
+		form:{ 
+			codigoOAuth:'1d1976396b6b7d08a5ec444b5ed7b8aa1a837014',
+			redirectUri:'https://www.google.com.br/'
+		}
+	};
+	app.optionsPutTestRequestPulseira = {
+		method:'PUT',
+		url:'http://127.0.0.1:3000/api/pulseira/',
+		form:{ 
+			idPulseira: 56,
+			disponivel: 0,
+			idPaciente: 39
+		}
+	};
+	app.optionsDeleteTestRequestPulseira = {
+		method:'DELETE',
+		url:'http://127.0.0.1:3000/api/pulseira/',
+		form:{ 
+			idPulseira: 49
 		}
 	};
 }

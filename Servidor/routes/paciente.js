@@ -6,7 +6,7 @@ Este arquivo contém o módulo javascript de roteamento para as chamadas à API 
 
 FUNCIONAMENTO:
 1)API geral de pacientes "url/api/paciente/geral"
-	GET -> Recebe em seu query string o número do crm do médico responsável pelo perfil de paciente desejado e 
+	GET -> Recebe em seu query string o número do id do médico responsável pelo perfil de paciente desejado e 
 		retorna as informações do paciente ao cliente autor da requisição. 
 		(ex query string "url/api/paciente/geral/[numero de prontuário]")
 	POST -> Recebe todas as informações do perfil a serem colocadas no corpo/form da requisição http e 
@@ -25,13 +25,11 @@ FUNCIONAMENTO:
 	Ainda a implementar...
 
 TO DO: 
-	=>Implementar api paciente focada em health
-	=>Terminar PUT da parte genérica implementando isNewPatient
-	=>Implementar api paciente voltada para dados de authenticação
-
+	=> Discutir com o time como deve se comportar essa chamada (se é que ela deve existir) DELETE
+	=> Atualmente não deleta paciente por razão da chave extrangeira da tabela PacienteMedico DELETE
 */
 
-var senhas = require('../senhas.js');
+var senhas = require('../senhas');
 var express = require('express');
 var mysql = require('mysql');
 var request = require('request');
@@ -56,11 +54,10 @@ router.route('/geral')
 			req.body.hasOwnProperty('telefone') &&
 			req.body.hasOwnProperty('foto') &&
 			req.body.hasOwnProperty('dataDeNascimento') &&
-			req.body.hasOwnProperty('codigoOAuth') &&
-			req.body.hasOwnProperty('redirectUri') &&
+			req.body.hasOwnProperty('idPulseira') &&
 			req.body.hasOwnProperty('idMedico')){	
 			var query = {
- 				sql:`INSERT INTO Paciente (nomePaciente, numeroDoProntuario, telefone, foto, causaDaInternacao, dataDeNascimento) VALUES (${connection.escape(req.body.nomePaciente)}, ${connection.escape(req.body.numeroDoProntuario)}, ${connection.escape(req.body.telefone)}, ${connection.escape(req.body.foto)}, ${connection.escape(req.body.causaDaInternacao)}, ${connection.escape(req.body.dataDeNascimento)})`,
+ 				sql:`INSERT INTO Paciente (nomePaciente, numeroDoProntuario, telefone, foto, causaDaInternacao, dataDeNascimento, idPulseira) VALUES (${connection.escape(req.body.nomePaciente)}, ${connection.escape(req.body.numeroDoProntuario)}, ${connection.escape(req.body.telefone)}, ${connection.escape(req.body.foto)}, ${connection.escape(req.body.causaDaInternacao)}, ${connection.escape(req.body.dataDeNascimento)}, ${connection.escape(req.body.idPulseira)})`,
 				timeout: 10000
 			}
 			connection.query(query, function(err, rows, fields) {
@@ -68,55 +65,25 @@ router.route('/geral')
 				if (err) {
 					res.send('Não foi possível adicionar dados ao perfil do paciente.');
 				} else {
-					var tokenRefreshAuthorization = 'Basic ' + new Buffer("XXXXXXX:XXXXXXXXXXXXXXXXX").toString('base64');
-					var oauthOptions = {
-						method: 'POST',
-						url: 'https://api.fitbit.com/oauth2/token',
-						headers: {
-							'Authorization': tokenRefreshAuthorization
-						},
-						form: {
-							clientId:'227WRB',
-							grant_type:'authorization_code',
-							redirect_uri:req.body.redirectUri,
-							code:req.body.codigoOAuth
-						}
+					
+					var queryRelacao = {
+						sql:`INSERT INTO Paciente_Medico (idPaciente, idMedico) VALUES (${rows.insertId}, ${connection.escape(req.body.idMedico)})`,
+						timeout: 10000
 					}
-					request(oauthOptions, function(error, response, body) {
-						var temp = JSON.parse(body);
-						if (temp.hasOwnProperty('errors')) {
-							res.send('Falha no processo de autenticação ao tentar registrar o paciente');
+					connection.query(queryRelacao, function(err, response, body) {
+						if(err) {
+							res.send('Erro ao adicionar relação entre medico e paciente.');
 							connection.query(`DELETE FROM Paciente WHERE idtable1=${rows.insertId}`);
 						} else {
-							console.log('passou na autenticação');
-							connection.query(
-							  'INSERT INTO Autenticacao (idPaciente, userID, refreshToken, accessToken) VALUES (?, ?, ?, ?)',
-							  [rows.insertId, temp.user_id, temp.refresh_token, temp.access_token],
-							  function(err) {
-							  	
-							  	var queryRelacao = {
- 									sql:`INSERT INTO Paciente_Medico (idPaciente, idMedico) VALUES (${rows.insertId}, ${connection.escape(req.body.idMedico)})`,
-									timeout: 10000
-								}
-								connection.query(queryRelacao, function(err, response, body) {
-									if(err) {
-										return res.send('Erro ao adicionar relação entre medico e paciente.');
-									}
-									res.send('Paciente adicionado com sucesso.');
-									console.log(err);
-									console.log(rows);
-									//console.log(fields);
-
-								});
-							  }
-							);
+							res.send('Paciente adicionado com sucesso.');
+							console.log(err);
+							console.log(rows);
+							//console.log(fields);
 						}
 					});
-				
 
 				}
 			});
-
 
 		} else {
 			throw new Error('Parâmetros POST inválidos ou inexistentes para adicionar paciente');
@@ -125,8 +92,9 @@ router.route('/geral')
 	
 	})
 	.put(function(req, res){
-		//TO DO: editar paciente pré existente
-		//		 separar edições corriqueiras a um perfil de paciente de troca de pacientes na pulseira
+// 		Juntos na versão preliminar do app, as abstrações de paciente e pulseira agora estão separados
+// 		Isso tira a necessidade de se acrescentar nesse midleware a funcionalidade "isNewPatient" comentada 
+// 		Ao final da função
 		var selector = {
 			sql:`SELECT * FROM Paciente WHERE idtable1 = ${connection.escape(req.headers.idpaciente)} LIMIT 1`,
 			timeout: 10000
@@ -146,7 +114,8 @@ router.route('/geral')
 					novoTelefone,
 					novaFoto,
 					novaCausa,
-					novaData;
+					novaData,
+					novaPulseira;
 				
 				if (req.body.hasOwnProperty('nomePaciente')) {
 					nomePacienteNovo = req.body.nomePaciente;
@@ -166,10 +135,13 @@ router.route('/geral')
 				if (req.body.hasOwnProperty('dataDeNascimento')){
 					novaData = req.body.dataDeNascimento;
 				} else { novaData = rows[0].dataDeNascimento; }
+				if (req.body.hasOwnProperty('dataDeNascimento')){
+					novaPulseira = req.body.idPulseira;
+				} else { novaPulseira = rows[0].idPulseira; }
 				
 				connection.query(
-				'UPDATE Paciente SET nomePaciente=?, numeroDoProntuario=?, telefone=?, foto=?, causaDaInternacao=?, dataDeNascimento=? WHERE idtable1=?',
-				[nomePacienteNovo,novoProntuario,novoTelefone,novaFoto,novaCausa,novaData,rows[0].idtable1], 
+				'UPDATE Paciente SET nomePaciente=?, numeroDoProntuario=?, telefone=?, foto=?, causaDaInternacao=?, dataDeNascimento=?, idPulseira=? WHERE idtable1=?',
+				[nomePacienteNovo,novoProntuario,novoTelefone,novaFoto,novaCausa,novaData,novaPulseira,rows[0].idtable1], 
 				function(error, results){
 					if (error != null) {
 						console.log('Erro ao alterar perfil de paciente na base de dados');
@@ -177,10 +149,10 @@ router.route('/geral')
 					} else {
 						console.log('Paciente editado com sucesso.');
 						//Log: bug aparentemente resolvido, permanecer alerta neste ponto mesmo assim
-						if (req.body.isNewPatient == 'true') {
-							//TO DO: chamar put em api/paciente/health para deletar dados do paciente anterior
-							console.log('Novo paciente, deletar dados antigos de saúde');
-						}
+						// if (req.body.isNewPatient == 'true') {
+// 							//TO DO: chamar put em api/paciente/health para deletar dados do paciente anterior
+// 							console.log('Novo paciente, deletar dados antigos de saúde');
+// 						}
 					}
 				});
 			}
@@ -188,26 +160,18 @@ router.route('/geral')
 		
 	})
 	.delete(function(req, res) {
-		console.log(req.body.hasOwnProperty('idPaciente'));
 		if (req.body.hasOwnProperty('idPaciente')) {
-			connection.query(
-			  'DELETE FROM Autenticacao WHERE idPaciente=?',
-			  [req.body.idPaciente],
-			  function(err){
-			  	if (err) {
-			  		console.log('Error ao remover dados de autenticação tentando deletar perfil de paciente');
-			  		return;
-			  	}
-			  	var deletePatientQuery = {
-					sql: `DELETE FROM Paciente WHERE idtable1 = ${connection.escape(req.body.idPaciente)} LIMIT 1`,
-					timeout: 10000	
-				}
-				connection.query(deletePatientQuery, function(err, rows, fields) {
-					if(err) {
-						res.send('Houve um erro ao se tentar remover paciente da base de dados.');
-					} else { res.send('O paciente de id especificado pôde ser removido com sucesso.'); }
-				});
-			  });
+		
+			var deletePatientQuery = {
+				sql: `DELETE FROM Paciente WHERE idtable1 = ${connection.escape(req.body.idPaciente)} LIMIT 1`,
+				timeout: 10000	
+			}
+			connection.query(deletePatientQuery, function(err, rows, fields) {
+				if(err) {
+					res.send('Houve um erro ao se tentar remover paciente da base de dados.');
+				} else { res.send('O paciente de id especificado pôde ser removido com sucesso.'); }
+			});
+			
 		} else {
 			res.send('Indique o número de prontuário do paciente a ser removido da base.');			
 		}
@@ -248,16 +212,16 @@ router.get('/geral/idMedico/:idMedico', function(req, res){
 });
 
 //Ações com tabelas de parâmetros de saúde dos pacientes
-router.route('/health/static')
-	.post(function(req, res) {
-		//TO DO:
-	})
-	.put(function(req, res){
-		//TO DO:
-	})
-	.delete(function(req, res) {
-		//TO DO: 
-	});
+// router.route('/health/static')
+// 	.post(function(req, res) {
+// 		//TO DO:
+// 	})
+// 	.put(function(req, res){
+// 		//TO DO:
+// 	})
+// 	.delete(function(req, res) {
+// 		//TO DO: 
+// 	});
 	
 router.get('/health/static/:idPaciente/:data', function(req, res){
 	
