@@ -213,7 +213,7 @@ router.route('/geral')
 	});
 
 // Busca na API por pacientes pelo ID do médico
-router.get('/geral/id/:idMedico', function(req, res){
+router.get('/geral/idMedico/:idMedico', function(req, res){
 	console.log(req.params.hasOwnProperty('idMedico'));
 		//Primeiramente, o id do Médico é buscado na tabela de Pacientes para obter os seus poacientes
 		if (req.params.hasOwnProperty('idMedico')) {
