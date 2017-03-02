@@ -8,6 +8,7 @@ Faculdade de Tecnologia - UnB
 // ============================= Código ativo =====================================
 
 //Setup de módulos necessários para a aplicação
+var senhas = require('./senhas.js');
 var express = require('express'),
 	app = express(),
 	request = require('request'),
@@ -17,14 +18,15 @@ var express = require('express'),
 	setupOptionsVariables = require('./setupVariables.js'),
 	pacienteRouter = require('./routes/paciente.js'),
 	lembreteRouter = require('./routes/lembrete.js'),
-	medicoRouter = require('./routes/medico.js');
-	loginRouter = require('./routes/login.js');
+	medicoRouter = require('./routes/medico.js'),
+	loginRouter = require('./routes/login.js'),
+	grupoPacientesRouter = require('./routes/grupoPacientes.js');
 	
 //Setup inicial de conecção com a base de dados 	
 var connection = mysql.createConnection({
 	host : '79.170.40.183',
 	user : 'cl19-dbpipibic',
-	password : 'XXXXXXXXX',
+	password : senhas.senha_DB,
 	database : 'cl19-dbpipibic'
 });
 connection.connect();
@@ -46,11 +48,11 @@ setupOptionsVariables(app);
 // POST - Nova adição de médicos com cpf funcionando
 // PUT - Bug encontrados e debugados, o código agora edita perfis de medico corretamente
 // 
- // request(app.optionsPutTestRequestLembrete, function(err, httpResponse, body) { 
-//  	console.log(err);
-//  	//console.log(httpResponse);
-//  	console.log(body);
-//  });
+request(app.optionsDeleteTestRequestGrupoPac_Pacientes, function(err, httpResponse, body) { 
+  	console.log(err);
+  	//console.log(httpResponse);
+  	console.log(body);
+  });
 
 //info vai conter dados HR de chamada bem sucedida à API fitbit
 var info = {};
@@ -268,6 +270,8 @@ app.use('/api/lembrete', lembreteRouter);
 
 //Ações para alterar tabela Login na base de dados, usar módulo local ./router/lembrete.js
 app.use('/api/login', loginRouter);
+
+app.use('/api/grupoPacientes', grupoPacientesRouter);
 
 port = process.env.PORT || 3000
 

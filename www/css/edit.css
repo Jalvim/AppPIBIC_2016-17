@@ -1,0 +1,41 @@
+@media screen and (orientation: portrait){
+	/*Portrait orientation design*/
+
+	.edit-wrapper {
+      padding: 16px 10px 0 10px;
+    }
+
+    .edit-image {
+      width: 70px;
+      height: 70px;
+      border-radius: 50%;
+      -webkit-border-radius: 50%;
+      border: inset 1px rgba(0, 0, 0, 0.3);
+    }
+
+    .edit-input {
+      padding: 15px 0 15px 30px;
+    }
+
+}
+
+@media screen and (orientation: landscape){
+	/*Landscape orientation design*/
+
+	.edit-wrapper {
+      padding: 16px 10px 0 10px;
+    }
+
+    .edit-image {
+      width: 70px;
+      height: 70px;
+      border-radius: 50%;
+      -webkit-border-radius: 50%;
+      border: inset 1px rgba(0, 0, 0, 0.3);
+    }
+
+    .edit-input {
+      padding: 15px 0 15px 30px;
+    }
+
+}
