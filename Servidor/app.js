@@ -60,7 +60,7 @@ var info = {};
 
 //request(optionsGetHR, getHRCallback);
 //getDynamicHealthParams(38);
-//getStaticHealthParams(0, 56);
+getStaticHealthParams(0, 56);
 //getStaticHealthParams(0, 18);
 //console.log(getTodayDate());
 
@@ -279,6 +279,6 @@ app.use('/api/pulseira', pulseiraRouter);
 
 app.use('/api/grupoPacientes', grupoPacientesRouter);
 
-port = process.env.PORT || 3000
+port = process.env.PORT || 3000;
 
 app.listen(port);
