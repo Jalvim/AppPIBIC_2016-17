@@ -17,15 +17,14 @@ module.exports = function(app) {
 		method:'POST',
 		url:'http://127.0.0.1:3000/api/paciente/geral',
 		form:{ 
-			nomePaciente: 'Jorge Mendes',
-			causaDaInternacao: 'Overdose de Dota',
-			numeroDoProntuario: 5555555,
-			telefone: 9823738,
+			nomePaciente: 'Juliano Barbosa Pretz',
+			causaDaInternacao: 'Estresse Crônico',
+			numeroDoProntuario: 8373659,
+			telefone: 999990000,
 			foto: 0001000101011111,
-			dataDeNascimento: '1994-05-17',
+			dataDeNascimento: '1990-06-05',
 			idMedico: 20, 
-			codigoOAuth:'8d0a6213f00ab776d6769d2df8822471f96e7e94',
-			redirectUri:'https://pibicfitbit.herokuapp.com/'
+			idPulseira: 47
 		}
 	};
 	app.optionsPutTestRequestPaciente = {

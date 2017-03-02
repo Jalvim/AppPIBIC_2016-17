@@ -60,7 +60,7 @@ var info = {};
 
 //request(optionsGetHR, getHRCallback);
 //getDynamicHealthParams(38);
-getStaticHealthParams(0, 56);
+//getStaticHealthParams(0, 56);
 //getStaticHealthParams(0, 18);
 //console.log(getTodayDate());
 

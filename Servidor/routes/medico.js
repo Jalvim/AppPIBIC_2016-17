@@ -92,7 +92,7 @@ router.route('/')
 		if (req.hasOwnProperty('body') && 
 			req.body.hasOwnProperty('idMedico')){
 			var selector = {
-				sql:`SELECT * FROM Medico WHERE idMedico = ${connection.escape(req.body.idMedico)} LIMIT 1`,
+				sql:`SELECT M.*, L.email FROM Medico M, logins L WHERE M.idMedico = ${connection.escape(req.body.idMedico)} AND L.idMedico = M.idMedico LIMIT 1`,
 				timeout: 10000
 				}
 			connection.query(selector, function(err, rows, fields) {
@@ -109,7 +109,8 @@ router.route('/')
 					especialidade,
 					CRM,
 					telefone,
-					CPF;
+					CPF,
+					email;
 				
 				if (req.body.hasOwnProperty('idMedico')) {
 					idMedico = req.body.idMedico;
@@ -129,6 +130,11 @@ router.route('/')
 				if (req.body.hasOwnProperty('CRM')){
 					CRM = req.body.CRM;
 				} else { CRM = rows[0].CRM; }
+				
+				if (req.body.hasOwnProperty('email')){
+					email = req.body.email;
+				} else { email = rows[0].email; }
+				connection.query('UPDATE logins SET email=? WHERE idMedico=?', [email, req.body.idMedico]);
 
 				queryString = 'UPDATE Medico SET nome=' + nome +' especialidade='+ especialidade +', telefone=' + telefone + ', CPF=' + CPF +' WHERE idMedico= ' + req.body.idMedico + ' LIMIT 1';
 
