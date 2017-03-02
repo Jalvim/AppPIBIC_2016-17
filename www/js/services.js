@@ -118,61 +118,87 @@ medApp.services = {
 
   // Cria novo paciente e adiciona à lista
   createPaciente: function(data) {
-     // Template de paciente
+
+     // Template de novo paciente
      var template = document.createElement('div');
      template.innerHTML =
-       '<ons-list-item class="paciente-lista" modifier="chevron">' +
-       '<div class="left">' + 
-       '<img class="list__item__thumbnail" src="' + 'http://www.clker.com/cliparts/A/Y/O/m/o/N/placeholder-md.png' + '">' +
-       '</div>' +
-       '<div class="center">' +
-       '<span class="list__item__title">' + data.nome + '</span>' +
-       '<span class="list__item__subtitle">Prontuário: ' + data.id + '</span>' +
-       '<span class="list__item__subtitle">Causa da internação: <span class="causa">' + data.causa + '</span></span>' +
-       '<span class="list__item__subtitle">Médico responsavel:' + data.medicoResponsavel + '</span>' +
-       '<span class="list__item__subtitle">Hospital e andar:' + data.andar + data.hospital + '</span>' +
-       '</div>' +
-       '<div class="right">' +       
-       '<ons-icon icon="star-o" class="list__item__icon"></ons-icon>'+
-       '</div>';
+      '<ons-list-item class="paciente-lista ' + data.statusPaciente + '" modifier="longdivider" id="pac2" tappable>' +
+        '<div class="left">' +
+          '<img class="list__item__thumbnail" src="'+ data.img + '">' +
+        '</div>' +
+        '<div class="center">'+
+          '<ons-row class="paciente-header">'+
+            '<ons-col>' +
+              '<span class="list__item__title">' + data.nomePaciente + '</span>' +
+            '</ons-col>' +
+            '<ons-col>' +
+              '<ons-icon icon="heartbeat" class="list__item__icon"></ons-icon>' + 
+              '<span class="list__item__title">' + data.batimentos + ' bpm</span>' +
+            '</ons-col>' +
+          '</ons-row>' +
+          '<ons-row>' +
+            '<ons-col class="paciente-detalhes">' +
+              '<ons-icon icon="md-calendar" class="list__item__icon"></ons-icon>' +
+              '<span class="list__item__subtitle">' + data.dataPaciente + '</span>' +
+            '</ons-col>' +
+            '<ons-col class="paciente-detalhes">' +
+              '<ons-icon icon="md-plaster" class="list__item__icon"></ons-icon>' +
+              '<span class="list__item__subtitle">' + data.causaPaciente + '</span>' +  
+            '</ons-col>' +
+          '</ons-row>' +
+          '<ons-row>' +
+            '<ons-col class="paciente-detalhes">' +
+              '<ons-icon icon="user-md" class="list__item__icon"></ons-icon>' +
+              '<span class="list__item__subtitle">' + data.medicoResp + '</span>' +
+            '</ons-col>' +
+            '<ons-col class="paciente-detalhes">' +
+              '<ons-icon icon="hospital-o" class="list__item__icon"></ons-icon>' +
+              '<span class="list__item__subtitle">' + data.hospital + '</span>' +
+            '</ons-col>' +
+          '</ons-row>' +
+        '</div>' +
+      '</ons-list-item>';
 
-      var pacienteItem = template.firstChild;
+    var pacienteItem = template.firstChild;
 
-    // Insert urgent tasks at the top and non urgent tasks at the bottom.
-     var pacientesLista = document.querySelector('#lista-pacientes');
-     pacientesLista.appendChild(pacienteItem);
+    var pacientesLista = document.querySelector('#lista-pacientes');
+    pacientesLista.appendChild(pacienteItem);
 
-    },
+  },
 
-    // Verifica se houve algum campo em branco nos formulários
-    checkEmptyField: function(fields) {
+  // Verifica se houve algum campo em branco nos formulários
+  checkEmptyField: function(fields) {
 
-      for (var i = 0, len = fields.length; i < len; i++) {
+    for (var i = 0, len = fields.length; i < len; i++) {
 
-        if (fields[i].value == '') {
+      if (fields[i].value == '') {
 
-          return true;
-
-        };
+        return true;
 
       };
 
-      return false;
+    };
 
-    },
+    return false;
 
-    // Cria um novo lembrete
-    createLembrete: function(data) {
-     // Template de paciente
-     var template = document.createElement('div');
-     template.innerHTML =
+  },
+
+  // Cria um novo lembrete
+  createLembrete: function(data) {
+
+    // Define um texto resumido do lembrete para vizualização
+    var textoLembrete = data.texto.substring(0,20);
+
+    // Template de paciente
+    var template = document.createElement('div');
+    template.innerHTML =
       '<ons-list-item>'+
       '<div class="right">' +
       //'<ons-icon icon="star-o" class="list__item__icon"></ons-icon>' + 
       '<ons-icon icon="md-delete" class="list__item__icon delete"></ons-icon>' +
       '</div>' +
       '<div>' +
-       data +
+      textoLembrete +
       '</div>' +
       '</ons-list-item>';
 
@@ -183,8 +209,8 @@ medApp.services = {
 
     lembreteItem.querySelector('.right').onclick = function() {
         lembretesLista.removeChild(lembreteItem);
-      };
+    };
 
-    },
+  },
 
 };

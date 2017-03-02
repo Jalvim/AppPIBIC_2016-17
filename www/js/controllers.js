@@ -103,21 +103,24 @@ medApp.controllers = {
 
         modal.hide();
         ons.notification.alert("Senha pequena");
-       }
 
-//confere o CPF
+      }
+
+      //confere o CPF
       else if(CPF.length<11){
 
+        modal.hide();
+        ons.notification.alert("CPF inválido");
 
-      modal.hide();
-      ons.notification.alert("CPF invalido");
       }
 
 
-//confere se é possível a existencia do e-mail
-        else if(email.indexOf('@')===-1 || email.indexOf('.')===-1||Math.abs(email.indexOf('@')- email.indexOf('.')<3)){
-      modal.hide();
-            ons.notification.alert("E-mail invalido");
+      //confere se é possível a existencia do e-mail
+      else if(email.indexOf('@')===-1 || email.indexOf('.')===-1||Math.abs(email.indexOf('@')- email.indexOf('.')<3)){
+
+        modal.hide();
+        ons.notification.alert("E-mail invalido");
+
       }
 
 
@@ -226,7 +229,7 @@ medApp.controllers = {
 
   },
 
-  medicoPaisagem: function(page) {
+  /*medicoPaisagem: function(page) {
 
     // Atualiza os dados do perfil do médico a partir do servidor
     page.addEventListener('show', function(event) {
@@ -303,6 +306,7 @@ medApp.controllers = {
 
 
   },
+  */
 
   ///////////////////////////////////////
   // Controlador da lista de Pacientes //
@@ -372,6 +376,20 @@ medApp.controllers = {
     page.querySelector('#pac3').onclick = function() {
 
       document.querySelector('#pacienteNav').pushPage('html/perfilpaciente.html');
+
+    };
+
+    page.querySelector('#pac-teste').onclick = function() {
+
+      medApp.services.createPaciente( { statusPaciente: 'ativo',
+                                        img: 'http://www.clker.com/cliparts/A/Y/O/m/o/N/placeholder-md.png',
+                                        nomePaciente: 'Cara',
+                                        batimentos: '60',
+                                        dataPaciente: '01/03/2017',
+                                        causaPaciente: 'Doença',
+                                        medicoResp: 'Médicão',
+                                        hospital: 'Hospital/2º andar' 
+                                      });
 
     };
 
