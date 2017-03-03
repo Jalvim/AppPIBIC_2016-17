@@ -166,11 +166,20 @@ medApp.controllers = {
 
     });
 
-    if(ons.orientation.isLandscape()) {
-        document.querySelector('#medicoNav').pushPage('html/medicoPaisagem.html');
-    }
+    //Funcionalização da responsividade de tela Retrato/Paisagem.
+    window.fn = {};
 
-    // TODO --> pensar na eventual função if(ons.orientation.isLandscape()){}
+    window.fn.open = function() {
+      var menu = document.getElementById('mainperfil');
+      menu.open();
+    };
+
+    window.fn.load = function(page) {
+      var content = document.getElementById('secundperfil');
+      var menu = document.getElementById('mainperfil');
+      content.load(page)
+        .then(menu.close.bind(menu));
+    };
 
     // Chama a página de editar perfil do médico
     page.querySelector('#edit-med').onclick = function() {
@@ -214,11 +223,6 @@ medApp.controllers = {
 
       pullHook.innerHTML = message;
 
-      if(ons.orientation.isLandscape()) {
-        document.querySelector('#medicoNav').pushPage('html/medicoPaisagem.html');
-      } else {
-        document.querySelector('#medicoNav').pushPage('html/medico.html');
-      }
     });
 
     pullHook.onAction = function(done) {
@@ -227,85 +231,6 @@ medApp.controllers = {
 
 
   },
-
-  /*medicoPaisagem: function(page) {
-
-    // Atualiza os dados do perfil do médico a partir do servidor
-    page.addEventListener('show', function(event) {
-
-      $.get('https://pibicfitbit.herokuapp.com/api/medico/busca/ID/' + medApp.services.idAtualMedico)
-      .done(function(data) {
-        page.querySelector('#nome-perfil').innerHTML = data[0].nome;
-        page.querySelector('#crm-perfil').innerHTML = data[0].CRM;
-        page.querySelector('#esp-perfil').innerHTML = data[0].especialidade;
-        page.querySelector('#tel-perfil').innerHTML = data[0].telefone;
-        page.querySelector('#email-perfil').innerHTML = data[0].email;
-      });
-
-    });
-
-    if(ons.orientation.isPortrait()) {
-        document.querySelector('#medicoNav').pushPage('html/medico.html');
-    }
-
-    // TODO --> pensar na eventual função if(ons.orientation.isLandscape()){}
-
-    // Chama a página de editar perfil do médico
-    page.querySelector('#edit-med').onclick = function() {
-
-      document.querySelector('#medicoNav').pushPage('editarmedicopaisagem.html');
-
-    };
-
-    // Realiza o logoff
-    page.querySelector('#logoff').onclick = function() {
-
-      ons.notification.confirm({message: 'Tem certeza?'})
-        .then( function(confirm){
-
-          if(confirm) {
-            medApp.services.deleteIdMedico();
-            document.querySelector('#loginNav').resetToPage( 'login.html', {options: {animation: 'fade'}});
-          };
-
-        });
-
-    };
-
-    // Realiza a atualização do perfil com pull
-    var pullHook = document.getElementById('pull-hook');
-
-    pullHook.addEventListener('changestate', function(event) {
-      var message = '';
-
-      switch (event.state) {
-        case 'initial':
-          message = 'Pull to refresh';
-          break;
-        case 'preaction':
-          message = 'Release';
-          break;
-        case 'action':
-          message = 'Loading...';
-          break;
-      }
-
-      pullHook.innerHTML = message;
-
-      if(ons.orientation.isLandscape()) {
-        document.querySelector('#medicoNav').pushPage('html/medicoPaisagem.html');
-      } else {
-        document.querySelector('#medicoNav').pushPage('html/medico.html');
-      }
-    });
-
-    pullHook.onAction = function(done) {
-      setTimeout(done, 1000);
-    };
-
-
-  },
-  */
 
   ///////////////////////////////////////
   // Controlador da lista de Pacientes //
@@ -717,76 +642,6 @@ medApp.controllers = {
 
   },
 
-  editarmedicopaisagem: function(page) {
-
-    // Máscaras dos campos de dados
-    $('#tel-medico').mask('(00) 00000-0000');
-    $('#crm-medico').mask('0#');
-    $('#cpf-medico').mask('000.000.000-00', {reverse: true});
-
-    // Pega dados do servidor para edição (CPF não é mostrado no perfil, logo não existe seu innerHTML)
-    page.addEventListener('show', function(event) {
-
-      $.get('https://pibicfitbit.herokuapp.com/api/medico/busca/ID/' + medApp.services.idAtualMedico)
-      .done(function(data) {
-        $('#nome-medico').val(data[0].nome);
-        $('#crm-medico').val(data[0].CRM);
-        $('#esp-medico').val(data[0].especialidade);
-        $('#tel-medico').val(data[0].telefone);
-        $('#email-medico').val(data[0].email);
-        $('#cpf-medico').val(data[0].CPF);
-      });
-
-    });
-
-    // Verifica se algum input do formulário foi mudado
-    $("#medico-edit-form :input").change(function() {
-
-      $("#medico-edit-form").data("changed",true);
-
-    });
-
-    // Botão salvar altera os dados no servidor se houve mudanças
-    page.querySelector('#salvar-med').onclick = function() {
-
-      if ($("#medico-edit-form").data("changed")) {
-
-        var dadosEdit = {
-
-          nome: $('#nome-medico').val(),
-          crm: $('#crm-medico').val(),
-          esp: $('#esp-medico').val(),
-          tel: $('#tel-medico').val(),
-          email: $('#email-medico').val(),
-          cpf: $('#cpf-medico').val(),
-          idMedico: medApp.services.idAtualMedico
-
-        };
-
-        $.ajax({
-          url: 'https://pibicfitbit.herokuapp.com/api/medico',
-          type: 'PUT',
-          data: { idMedico: dadosEdit.idMedico,
-                  nomeMedico: dadosEdit.nome,
-                  especialidade: dadosEdit.esp,
-                  CRM: dadosEdit.crm,
-                  telefone: dadosEdit.tel,
-                  CPF: dadosEdit.cpf
-                }
-        });
-
-        document.querySelector('#medicoNav').popPage();
-
-      } else {
-
-        document.querySelector('#medicoNav').popPage();
-
-      };
-
-    };
-
-  },
-
   ///////////////////////////////////////
   // Controlador de edição de Paciente //
   ///////////////////////////////////////
@@ -813,7 +668,7 @@ medApp.controllers = {
     $('#causa-pac').val(dadosEdit.causaEdit);
     $('#obs-pac').val(dadosEdit.obsEdit);
     $('#prontuario-pac').val(dadosEdit.prontEdit);
- 	  $('#idade-pac').val(dadosEdit.idadeEdit);
+ 	$('#idade-pac').val(dadosEdit.idadeEdit);
   	$('#email-pac').val(dadosEdit.emailEdit);
   	$('#pacienteAtivo').val(dadosEdit.ativoEdit);
 
@@ -962,9 +817,9 @@ medApp.controllers = {
 
     page.querySelector('#pulseiraButton').onclick = function() {
       var showPopover = function(target) {
-        document.getElementById('#popover')
+        document.getElementById('popover')
           .show(target);
-      }
+      };
 
       for(var i = 0; i < medApp.services.pulseirasDisponiveis.length; i++){
         medApp.services.showPulseirasDisponiveis(i);

@@ -1,172 +1,159 @@
 @media screen and (orientation: portrait){
 	/*Portrait orientation design*/
 
-  .lembrete-lista-header {
-    font-size: 18px;
-    margin-left: 8px;
-    padding-top: 6px;
-  }
-
 	.lembrete-container {
-    width: 90%;
-    margin: 10px auto 0;
-  }
+      width: 90%;
+      margin: 10px auto 0;
+    }
 
-  .lembrete-header {
-    display: block;
-    font-weight: 600;
-    font-size: 25px;
-    padding-top: 20px;
-    position: relative;
-    top: 50%;
-    left: 50%;
-    transform: translateX(-50%) translateY(-50%);
-  }
+    .lembrete-header {
+      font-weight: 600;
+      font-size: 25px;
+      padding-top: 20px;
+      position: relative;
+      top: 50%;
+      left: 50%;
+      transform: translateX(-50%) translateY(-50%);
+    }
 
 
-  .lembrete-header-icon {
+    .lembrete-header-icon {
 	  position: absolute;
 	  left: 20px;
 	  top: 20px;
-  }
+    }
 
-  .lembrete-description {
+    .lembrete-description {
 	  float: right;
 	  font-size: 17px;
 	  padding-top: 3px;
-  }
+    }
 
-  .lembrete-description-icon {
+    .lembrete-description-icon {
 	  float: left;
 	  margin-right: 10px;
-  }
+    }
 
-  .lembrete-text {
-    padding: 5px 10px 10px 10px;
+    .lembrete-text {
+      padding: 5px 10px 10px 10px;
 	  height: 200px;
 	  border: 1px solid #90A4AE;
 	  font-size: 16px;
-  }
+    }
 
-  .lembrete-input {
+    .lembrete-input {
 	  padding: 5px 10px 10px 10px;
 	  height: 200px;
 	  font-size: 16px;
-  }
+    }
 
-  .CBC {
-    float: right;
+    .CBC {
+      float: right;
 	  position: relative;
 	  padding-right: 15px;
 	  padding-left: 15px;
-  }
+    }
 
-  .BMP {
+    .BMP {
 	  float: left;
 	  position: relative;
 	  padding-right: 15px;
-  }
+    }
 
-  .dados-lembrete {
+    .dados-lembrete {
 	  position: absolute; 
 	  color: #BDBDBD;
-  }
+    }
 
-  .dados-lembrete-container {
+    .dados-lembrete-container {
 	  border: 1px solid #90A4AE;
 	  padding: 0 10px 10px 10px;
 	  margin-right: 10px;
-  }
+    }
 
-  .dados-add-lembrete {
+    .dados-add-lembrete {
 	  width: 50px;
 	  border-bottom: 1px solid #9E9E9E;
-  }
+    }
 
 }
 
 @media screen and (orientation: landscape){
 	/*Landscape orientation design*/
 
-  .lembrete-lista-header {
-    font-size: 18px;
-    margin-left: 8px;
-    padding-top: 6px;
-  }
-
 	.lembrete-container {
-    width: 90%;
-    margin: 10px auto 0;
-  }
+      width: 90%;
+      margin: 10px auto 0;
+    }
 
-  .lembrete-header {
-    font-weight: 600;
-    font-size: 25px;
-    padding-top: 20px;
-    position: relative;
-    top: 50%;
-    left: 50%;
-    transform: translateX(-50%) translateY(-50%);
-  }
+    .lembrete-header {
+      font-weight: 600;
+      font-size: 25px;
+      padding-top: 20px;
+      position: relative;
+      top: 50%;
+      left: 50%;
+      transform: translateX(-50%) translateY(-50%);
+    }
 
 
-  .lembrete-header-icon {
+    .lembrete-header-icon {
 	  position: absolute;
 	  left: 20px;
 	  top: 20px;
-  }
+    }
 
-  .lembrete-description {
+    .lembrete-description {
 	  float: right;
 	  font-size: 17px;
 	  padding-top: 3px;
-  }
+    }
 
-  .lembrete-description-icon {
+    .lembrete-description-icon {
 	  float: left;
 	  margin-right: 10px;
-  }
+    }
 
-  .lembrete-text {
-    padding: 5px 10px 10px 10px;
+    .lembrete-text {
+      padding: 5px 10px 10px 10px;
 	  height: 200px;
 	  border: 1px solid #90A4AE;
 	  font-size: 16px;
-  }
+    }
 
-  .lembrete-input {
+    .lembrete-input {
 	  padding: 5px 10px 10px 10px;
 	  height: 200px;
 	  font-size: 16px;
-  }
+    }
 
-  .CBC {
-    float: right;
+    .CBC {
+      float: right;
 	  position: relative;
 	  padding-right: 15px;
 	  padding-left: 15px;
-  }
+    }
 
-  .BMP {
+    .BMP {
 	  float: left;
 	  position: relative;
 	  padding-right: 15px;
-  }
+    }
 
-  .dados-lembrete {
+    .dados-lembrete {
 	  position: absolute; 
 	  color: #BDBDBD;
-  }
+    }
 
-  .dados-lembrete-container {
+    .dados-lembrete-container {
 	  border: 1px solid #90A4AE;
 	  padding: 0 10px 10px 10px;
 	  margin-right: 10px;
-  }
+    }
 
-  .dados-add-lembrete {
+    .dados-add-lembrete {
 	  width: 50px;
 	  border-bottom: 1px solid #9E9E9E;
-  }
+    }
 
 }

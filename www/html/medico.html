@@ -4,8 +4,11 @@
 
    <ons-template id="medico.html">
    <ons-page id="medico">
-  
-    <ons-toolbar class="toolbar">
+
+   <ons-if orientation="portrait">
+   	<!-- DESENVOLVER AQUI O TEMPLATE DE COMO A PÁGINA FICA -->
+
+   	<ons-toolbar class="toolbar">
      <div class="center">Perfil Médico</div>
      <div class="right">
        <ons-toolbar-button id="edit-med">
@@ -15,7 +18,6 @@
     </ons-toolbar>
 
     <ons-pull-hook id="pull-hook">
-      Pull to refresh
     </ons-pull-hook>
 
     <div class="profile-card">
@@ -64,6 +66,47 @@
           Sair da Conta
         </ons-button>
       </p>
+
+   </ons-if>
+
+   <ons-if orientation="landscape">
+   	<!-- Vizualização da tela em modo paisagem -->
+
+   	<ons-toolbar class="toolbar">
+     <div class="center">Perfil Médico</div>
+     <div class="right">
+       <ons-toolbar-button id="edit-med">
+        <ons-icon icon="md-edit" size="24px"></ons-icon>
+       </ons-toolbar-button>
+     </div>
+    </ons-toolbar>
+   	
+   	<ons-splitter>
+   		<ons-splitter-side id="mainperfil" side="left" width="220px" collapse swipeable> <!-- collapse="landscape" -->
+   			<ons-page>
+              <ons-toolbar class="toolbar">
+                <div class="center">Perfil Médico</div>
+                <div class="right">
+                  <ons-toolbar-button id="edit-med">
+                    <ons-icon icon="md-edit" size="24px"></ons-icon>
+                  </ons-toolbar-button>
+                </div>
+              </ons-toolbar>
+
+              <div class="profile-card">
+
+                <img src="https://pbs.twimg.com/profile_images/1608370290/VivaRio_MedicoDeFamilia_400x400.jpg" class="profile-image">
+                <div id="nome-perfil" class="profile-name">John Doe</div>
+                <div id="crm-perfil" class="profile-desc">CRM 4356</div>
+                <div id="esp-perfil" class="profile-desc">Médico Oncologista</div>
+
+              </div>
+            </ons-page>
+   		</ons-splitter-side>
+   		<ons-splitter-content id="secundPerfil" page="secundperfil.html"></ons-splitter-content>
+   	</ons-splitter>
+
+   </ons-if>
 
   </ons-page>
 </ons-template>
@@ -139,6 +182,51 @@
     </div>
   </ons-modal>
 
+  </ons-page>
+</ons-template>
+
+<!-- Página principal da versão em paisagem -->
+
+<ons-template id="secundperfil.html">
+	<ons-page>
+
+    <br>
+    <!-- Lista de Dados do Médico -->
+    <div class="profile-list">
+
+      <ons-list>
+
+        <ons-list-header>
+          Informações de Contato
+        </ons-list-header>
+
+        <ons-list-item>
+          <div class="left registro-icone">
+            <ons-icon icon="md-email" class="list__item__icon"></ons-icon>
+          </div>
+          <div class="center" id="email-perfil">
+            johndoe@gmail.com
+          </div>
+        </ons-list-item>
+
+        <ons-list-item>
+          <div class="left registro-icone">
+            <ons-icon icon="md-phone" class="list__item__icon"></ons-icon>
+          </div>
+          <div class="center" id="tel-perfil">
+            +55 61 3436 6345
+          </div>
+        </ons-list-item>
+
+      </ons-list>
+
+      <br>
+      
+      <p>
+        <ons-button position="center" id="logoff" class="logoff-button">
+          Sair da Conta
+        </ons-button>
+      </p>
   </ons-page>
 </ons-template>
 
