@@ -811,8 +811,12 @@ medApp.controllers = {
     //Método responsável por encontrar na base as pulseiras disponíveis.
     $.get('https://pibicfitbit.herokuapp.com/api/pulseira/disponivel')
       .done(function(data){
-        medApp.services.setPulseirasDisponiveis(data);
-        console.log(medApp.services.pulseirasDisponiveis);
+      	if(data.hasOwnProperty('idPulseiras')){
+      		medApp.services.setPulseirasDisponiveis(data);
+            console.log(medApp.services.pulseirasDisponiveis);
+      	} else {
+      		ons.notification.alert("Falha ao conectar com o servidor.");
+      	}
       });
 
     page.querySelector('#pulseiraButton').onclick = function() {
