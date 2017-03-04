@@ -27,6 +27,8 @@ FUNCIONAMENTO:
 TO DO: 
 	=> Discutir com o time como deve se comportar essa chamada (se é que ela deve existir) DELETE
 	=> Atualmente não deleta paciente por razão da chave extrangeira da tabela PacienteMedico DELETE
+	=> Tratar questão de multiplas pulseiras usadas por um paciente em PUT /geral. Abranger todos os 
+		edge cases (paciente em tratamento e paciente que recebeu alta).
 */
 
 var senhas = require('../senhas');
@@ -135,7 +137,7 @@ router.route('/geral')
 				if (req.body.hasOwnProperty('dataDeNascimento')){
 					novaData = req.body.dataDeNascimento;
 				} else { novaData = rows[0].dataDeNascimento; }
-				if (req.body.hasOwnProperty('dataDeNascimento')){
+				if (req.body.hasOwnProperty('idPulseira')){
 					novaPulseira = req.body.idPulseira;
 				} else { novaPulseira = rows[0].idPulseira; }
 				
@@ -147,12 +149,12 @@ router.route('/geral')
 						console.log('Erro ao alterar perfil de paciente na base de dados');
 						res.send('Erro ao alterar perfil de paciente na base de dados');
 					} else {
+					
+					
+						//TRATAR AQUI CASOS DE EDIÇÃO DE PULSEIRA
+						
+						
 						console.log('Paciente editado com sucesso.');
-						//Log: bug aparentemente resolvido, permanecer alerta neste ponto mesmo assim
-						// if (req.body.isNewPatient == 'true') {
-// 							//TO DO: chamar put em api/paciente/health para deletar dados do paciente anterior
-// 							console.log('Novo paciente, deletar dados antigos de saúde');
-// 						}
 					}
 				});
 			}
