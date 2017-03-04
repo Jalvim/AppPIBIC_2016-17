@@ -37,7 +37,7 @@ medApp.controllers = {
 
     };
 
-    $.post('https://pibicfitbit.herokuapp.com/api/login/',
+    $.post('http://julianop.com.br:3000/api/login/',
       {
         email: emailLogin,
         senha: senhaLogin
@@ -155,7 +155,7 @@ medApp.controllers = {
     // Atualiza os dados do perfil do médico a partir do servidor
     page.addEventListener('show', function(event) {
 
-      $.get('https://pibicfitbit.herokuapp.com/api/medico/busca/ID/' + medApp.services.idAtualMedico)
+      $.get('https://pibicfitbit.herokuapp.com/api/medico/busca/ID/' + medApp.services.getIdMedico())
       .done(function(data) {
         page.querySelector('#nome-perfil').innerHTML = data[0].nome;
         page.querySelector('#crm-perfil').innerHTML = data[0].CRM;
@@ -315,18 +315,29 @@ medApp.controllers = {
 
     // Chama o perfil com os dados do paciente selecionado
     //ANTES: var pacientes = page.querySelectorAll(".paciente-lista"); //TODO --> TESTE DE CONEXÂO
-    var pacientesInfo;
+    page.addEventListener('show', function(event) { 
+      var pacientesInfo;
 
-    /*
-    //Request de lista de pacientes do médico AINDA A SE IMPLEMENTAR.
-    $.get('https://pibicfitbit.herokuapp.com/api/paciente/geral/id/' + medApp.services.getIdAtualMedico)
-      .done(function(data) {
-        //console.log(data);
-        pacientesInfo = data;
-        console.log(pacientesInfo);
-      });
-    for (var i = 0, len = pacientesInfo.length; i < len; i++) {
-      medApp.services.createPaciente(pacientesInfo[i]); // DEPOIS, apagar caso falha
+      $.get('https://pibicfitbit.herokuapp.com/api/paciente/geral/idMedico/' + medApp.services.getIdMedico())
+        .done(function(data) {
+          pacientesInfo = data;
+          console.log(pacientesInfo.length);
+
+          for (var i = 0, len = pacientesInfo.length; i < len; i++) {
+
+        medApp.services.createPaciente( { statusPaciente: 'ativo',
+                                        img: 'http://www.clker.com/cliparts/A/Y/O/m/o/N/placeholder-md.png',
+                                        nomePaciente: pacientesInfo[i].nomePaciente,
+                                        batimentos: '60',
+                                        dataPaciente: pacientesInfo[i].dataDeNascimento,
+                                        causaPaciente: pacientesInfo[i].causaDaInternacao,
+                                        medicoResp: pacientesInfo[i].numeroDoProntuario,
+                                        hospital: pacientesInfo[i].telefone 
+                                      });
+          };
+        });
+
+      /*
       pacientes[i].onclick = function() {
         //Funcionalização da função com acesso do servidor, comentarizado --> ANTERIOR
         //ANTES: var nomePaciente = this.querySelector(".list__item__title").innerHTML;
@@ -341,8 +352,10 @@ medApp.controllers = {
       pacientes[i].querySelector('.list__item__icon').onclick = function() {
         this.setAttribute("icon", "star");
       };
-    };
-    */
+      */
+      //};
+
+    });
 
     // Página para adicionar um novo paciente à lista
     page.querySelector('#buscar-pac').onclick = function() {
@@ -378,6 +391,7 @@ medApp.controllers = {
 
     };
 
+    /*
     page.querySelector('#pac-teste').onclick = function() {
 
       medApp.services.createPaciente( { statusPaciente: 'ativo',
@@ -391,7 +405,7 @@ medApp.controllers = {
                                       });
 
     };
-
+    */
   },
 
   ///////////////////////////////////////
@@ -903,30 +917,17 @@ medApp.controllers = {
 
   lembretes: function(page){
 
-      /* Funcionalidade Antiga (adaptar)
-      page.querySelector('#add-lembrete').onclick = function() {
-        ons.notification.prompt({message: 'Escreva abaixo o lembrete:'})
-          .then(function(texto){
-            if( texto === '' ) {
-              ons.notification.alert('Insira algum texto!');
-            } else {
-              medApp.services.createLembrete(texto);
-            };
-        });
-      };
-      */
+    page.querySelector('#add-lembrete').onclick = function() {
 
-      page.querySelector('#add-lembrete').onclick = function() {
+      document.querySelector('#pacienteNav').pushPage('html/addlembrete.html');
 
-        document.querySelector('#pacienteNav').pushPage('html/addlembrete.html');
+    };
 
-      };
+    page.querySelector('#ver-lembrete').onclick = function() {
 
-      page.querySelector('#ver-lembrete').onclick = function() {
+      document.querySelector('#pacienteNav').pushPage('html/verlembrete.html');
 
-        document.querySelector('#pacienteNav').pushPage('html/verlembrete.html');
-
-      };
+    };
 
   },
 
@@ -949,6 +950,26 @@ medApp.controllers = {
   /////////////////////////////////////////
 
   addpaciente: function(page) {
+
+    medApp.services.resetPulseirasDisponiveis();
+
+    //Método responsável por encontrar na base as pulseiras disponíveis.
+    $.get('https://pibicfitbit.herokuapp.com/api/pulseira/disponivel')
+      .done(function(data){
+        medApp.services.setPulseirasDisponiveis(data);
+        console.log(medApp.services.pulseirasDisponiveis);
+      });
+
+    page.querySelector('#pulseiraButton').onclick = function() {
+      var showPopover = function(target) {
+        document.getElementById('#popover')
+          .show(target);
+      }
+
+      for(var i = 0; i < medApp.services.pulseirasDisponiveis.length; i++){
+        medApp.services.showPulseirasDisponiveis(i);
+      }
+    };
 
     page.querySelector('#cadastrar-pac').onclick = function() {
 
