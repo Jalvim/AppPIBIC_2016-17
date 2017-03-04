@@ -134,11 +134,7 @@ router.route('/')
 				if (req.body.hasOwnProperty('email')){
 					email = req.body.email;
 				} else { email = rows[0].email; }
-				connection.query('UPDATE logins SET email=? WHERE idMedico=?', [email, req.body.idMedico]);
 
-				queryString = 'UPDATE Medico SET nome=' + nome +' especialidade='+ especialidade +', telefone=' + telefone + ', CPF=' + CPF +' WHERE idMedico= ' + req.body.idMedico + ' LIMIT 1';
-
-				console.log(queryString)
 				connection.query(
 				'UPDATE Medico SET nome=?, especialidade=?, telefone=?, CPF=?, CRM=? WHERE idMedico=? LIMIT 1',
 				[nome, especialidade, telefone, CPF, CRM, req.body.idMedico], 
@@ -148,13 +144,15 @@ router.route('/')
 						console.log('Erro ao alterar perfil de medico na base de dados');
 						res.send('Erro ao alterar perfil de medico na base de dados');
 					} else {
-						console.log('Medico editado com sucesso.');
-						//Log: bug aparentemente resolvido, permanecer alerta neste ponto mesmo assim
-						//TO DO: Adequar alta de pacientes às demandas do doutor Vitor (Persistência de pacientes mesmo após alta)
-						if (req.body.isNewPatient == 'true') {
-							//TO DO: chamar put em api/paciente/health para deletar dados do paciente anterior
-							console.log('Novo medico, deletar dados antigos de saúde');
-						}
+						connection.query('UPDATE logins SET email=? WHERE idMedico=?', 
+						[email, req.body.idMedico], function(err) {
+							
+							if (err) {
+								return res.send("Informações de perfil editadas porém houve um problema ao editar email.");
+							}
+							res.send('Medico editado com sucesso.');
+						
+						});
 					}
 				});
 			}
