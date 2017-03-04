@@ -823,6 +823,29 @@ medApp.controllers = {
 
       for(var i = 0; i < medApp.services.pulseirasDisponiveis.length; i++){
         medApp.services.showPulseirasDisponiveis(i);
+
+        document.querySelector("#item" + i).onclick = function() {
+
+          var id;
+
+          for(var j = 0; j < i; j++){
+            if(i == medApp.services.pulseiraOnClick.in[i]){
+              id = medApp.services.pulseiraOnClick.id;
+              break;
+            } else {
+              ons.notification.alert("Erro ao preocessar pulseira");
+              return;
+            }
+          } 
+      
+          this.setPulseiraAtual(id);
+
+          ons.notification.alert("Pulseira " + medApp.services.pulseiraAtual + "selecionada.");
+
+          document
+            .getElementById('#popover')
+            .hide();
+        };
       }
     };
 

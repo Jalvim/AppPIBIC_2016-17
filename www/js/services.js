@@ -42,7 +42,7 @@ medApp.services = {
     this.idAtualPaciente = -1;
   },
 
-  dadosEstaticos: {
+  dadosEstaticos: var {
     calorias: -1,
     passos: -1,
     pulso: -1,
@@ -50,7 +50,7 @@ medApp.services = {
   }, //Seta os dados estaticos do pacientes como 'default'.
 
   //Conjunto de funções que armazenam novos dados estáticos.
-  setDadosEstaticos: {
+  setDadosEstaticos: var {
     calorias: function(data) {
       this.dadosEstaticos.calorias = data;
     },
@@ -66,7 +66,7 @@ medApp.services = {
   },
 
   //Conjunto de Funções que retornam os dados estáticos do paciente atual.
-  getDadosEstaticos: {
+  getDadosEstaticos: var {
     calorias: function() {
       return this.dadosEstaticos.calorias;
     },
@@ -82,7 +82,7 @@ medApp.services = {
   },
 
   //Função que torna os dados estáticos para o formato default.
-  deleteDadosEstaticos: {
+  deleteDadosEstaticos: var {
     calorias: function() {
       this.dadosEstaticos.calorias = -1;
     },
@@ -254,35 +254,34 @@ medApp.services = {
     this.pulseirasDisponiveis = -1;
   },
 
-  pulseiraAtual: new Array,
+  pulseiraAtual: -1,
 
   setPulseiraAtual: function(data) {
     this.pulseiraAtual = data;
   },
 
-  getPulseiraAtual: function() {
-    return this.pulseiraAtual;
+  pulseiraOnClick: var {
+    in: new Array,
+    id: new Array
+  },
+
+  setPulseiraOnClick: function() {
+    
   },
 
   showPulseirasDisponiveis: function(index) {
     var template = document.createElement('div');
 
-    template.innerHTML = '<ons-list-item modifier="tappable"> Pulseira de id = '
-      + this.pulseirasDisponiveis[index] + '</ons-list-item>';
+    template.innerHTML = '<ons-list-item modifier="tappable"> <div id=item' + index + '> Pulseira de id = '
+      + medApp.services.pulseirasDisponiveis[index].idPulseira + '</div> </ons-list-item>; 
+    
+    medApp.services.pulseiraOnClick.in[index] =  index; 
+    medApp.services.pulseiraOnClick.id[index] = medApp.services.pulseirasDisponiveis[index].idPulseira;
     
     var pulseiraItem = template.firstChild;
     var pulseiraLista = document.querySelector('#lista-pulseiras');
 
-    pulseiraLista.appendChild(pulseiraItem);
-
-    pulseiraItem.querySelector('.right').onclick = function() {
-      var id = pulseiraItem.idPulseira;
-      this.setPulseiraAtual(id);
-
-      document
-        .getElementById('#popover')
-        .hide();
-    }; 
+    pulseiraLista.appendChild(pulseiraItem); 
   },
 
 };
