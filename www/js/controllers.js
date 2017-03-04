@@ -821,6 +821,14 @@ medApp.controllers = {
           .show(target);
       };
 
+      document.querySelector('#nuloPulseira').onclick = function() {
+      	medApp.services.setPulseiraAtual(-4); // -4 é o valor de flag, já q -1 é id default.
+      };
+
+      if(medApp.services.PulseiraAtual == -4){
+      	return ;
+      }
+
       for(var i = 0; i < medApp.services.pulseirasDisponiveis.length; i++){
         medApp.services.showPulseirasDisponiveis(i);
 
@@ -838,7 +846,7 @@ medApp.controllers = {
             }
           } 
       
-          this.setPulseiraAtual(id);
+          medApp.services.setPulseiraAtual(id);
 
           ons.notification.alert("Pulseira " + medApp.services.pulseiraAtual + "selecionada.");
 
@@ -848,6 +856,18 @@ medApp.controllers = {
         };
       }
     };
+
+    var disp = true;
+
+    if(medApp.services.pulseiraAtual == -4){
+    	disp = false;
+    }
+
+    //Método que linka o paciente à pulseira na base de dados.
+    $.put('https://pibicfitbit.herokuapp.com/api/pulseira/' + medApp.services.pulseiraAtual,{
+    	disponivel: disp,
+    	idPaciente: medApp.services.idAtualPaciente
+    });
 
     page.querySelector('#cadastrar-pac').onclick = function() {
 
