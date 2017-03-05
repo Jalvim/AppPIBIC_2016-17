@@ -250,17 +250,20 @@ medApp.controllers = {
 
           for (var i = 0, len = pacientesInfo.length; i < len; i++) {
 
-        medApp.services.createPaciente( { statusPaciente: 'ativo',
-                                        img: 'http://www.clker.com/cliparts/A/Y/O/m/o/N/placeholder-md.png',
-                                        nomePaciente: pacientesInfo[i].nomePaciente,
-                                        batimentos: '60',
-                                        dataPaciente: pacientesInfo[i].dataDeNascimento,
-                                        causaPaciente: pacientesInfo[i].causaDaInternacao,
-                                        medicoResp: pacientesInfo[i].numeroDoProntuario,
-                                        hospital: pacientesInfo[i].telefone 
-                                      });
-          };
-        });
+        medApp.services.createPaciente( 
+          { 
+        	statusPaciente: 'ativo',
+            img: 'http://www.clker.com/cliparts/A/Y/O/m/o/N/placeholder-md.png',
+            nomePaciente: pacientesInfo[i].nomePaciente,
+            batimentos: '60',
+            dataPaciente: pacientesInfo[i].dataDeNascimento,
+            causaPaciente: pacientesInfo[i].causaDaInternacao,
+            medicoResp: pacientesInfo[i].numeroDoProntuario,
+            hospital: pacientesInfo[i].telefone 
+            
+          });
+        };
+    });
 
       /*
       pacientes[i].onclick = function() {
@@ -386,14 +389,12 @@ medApp.controllers = {
         //Interface gráfica interativa dos dados estáticos de saúde.
 
         //Request feito quando a interface gráfica carregar para obter os dados estáticos do paciente.
-        /*$('#dadossaude1').ready( function() { //POR HORA COMENTADO POIS A API AINDA N ESTÁ COMPLETA!
-          $.get('https://pibicfitbit.herokuapp.com/api/paciente/health/static/' + medApp.services.idAtualPaciente + '/calorias')
-            .done(function(data) {
-              medApp.services.setDadosEstaticos.calorias(data.calorias);
-              console.log('Os dados retornados são: ' + medApp.services.getDadosEstaticos.calorias());
-          });
-        }); */
-
+        
+        $.get('https://pibicfitbit.herokuapp.com/api/paciente/health/static/' + medApp.services.idAtualPaciente + '/calorias')
+          .done(function(data) {
+            medApp.services.setDadosEstaticos.calorias(data.calorias);
+            console.log(medApp.services.dadosEstaticos.calorias);
+        });
 
         var chrt1 = document.getElementById("myChart1");
         var data1 = {
@@ -418,7 +419,7 @@ medApp.controllers = {
               pointHoverBorderWidth: 2,
               pointRadius: 1,
               pointHitRadius: 10,
-              data: [65, 59, 80, 81, 56, 55, 40], // medApp.services.getDadosEstaticos().calorias;
+              data: medApp.services.dadosEstaticos.calorias,
               spanGaps: false,
             }
           ]
@@ -440,13 +441,12 @@ medApp.controllers = {
         //Interface gráfica interativa dos dados estáticos de saúde.
 
         //Request
-        /*$('#dadossaude1').ready( function() { //POR HORA COMENTADO POIS A API AINDA N ESTÁ COMPLETA!
+        
         $.get('https://pibicfitbit.herokuapp.com/api/paciente/health/static/' + medApp.services.idAtualPaciente + '/passos')
           .done(function(data) {
             medApp.services.setDadosEstaticos.passos(data.passos);
-            console.log('Os dados retornados são: ' + medApp.services.getDadosEstaticos.passos());
-          });
-        });*/
+            console.log('Os dados retornados são: ' + medApp.services.dadosEstaticos.passos);
+        });
 
         var chrt2 = document.getElementById("myChart2");
         var data2 = {
@@ -471,8 +471,8 @@ medApp.controllers = {
                 pointHoverBorderWidth: 2,
                 pointRadius: 1,
                 pointHitRadius: 10,
-                data: [65, 59, 80, 81, 56, 55, 40], //medApp.services.getDadosEstaticos().passos
-                spanGaps: false,
+                data: medApp.services.dadosEstaticos.passos,
+                spanGaps: false
               }
             ]
           }; //TODO implementação da comunicação de dados com o servidor.
@@ -493,14 +493,12 @@ medApp.controllers = {
         //Interface gráfica interativa dos dados estáticos de saúde.
 
         //Request
-        /*$('#dadossaude1').ready( function() { //POR HORA COMENTADO POIS A API AINDA N ESTÁ COMPLETA!
-          $.get('https://pibicfitbit.herokuapp.com/api/paciente/health/static/' + medApp.services.idAtualPaciente)
-            .done(function(data) {
-              medApp.services.setDadosEstaticos.pulso(data.pulso);
-              console.log('Os dados retornados são: ' + medApp.services.getDadosEstaticos.pulso());
-          });
-        });*/
-
+        $.get('https://pibicfitbit.herokuapp.com/api/paciente/health/static/' + medApp.services.idAtualPaciente)
+          .done(function(data) {
+            medApp.services.setDadosEstaticos.pulso(data.pulso);
+            console.log('Os dados retornados são: ' + medApp.services.getDadosEstaticos.pulso());
+        });
+        
         var chrt3 = document.getElementById("myChart3");
         var data3 = {
           labels: ["Domingo", "Segunda", "Terça", "Quarta", "Quinta", "Sexta", "Sábado"],
@@ -533,13 +531,11 @@ medApp.controllers = {
         //Interface gráfica interativa dos dados estáticos de saúde.
 
         //Request
-        /*$('#dadossaude1').ready( function() { //POR HORA COMENTADO POIS A API AINDA N ESTÁ COMPLETA!
-          $.get('https://pibicfitbit.herokuapp.com/api/paciente/health/static/' + medApp.services.idAtualPaciente + '/degraus')
-            .done(function(data) {
-              medApp.services.setDadosEstaticos.degrus(data.degraus);
-              console.log('Os dados retornados são: ' + medApp.services.getDadosEstaticos.degraus());
-          });
-        });*/
+        $.get('https://pibicfitbit.herokuapp.com/api/paciente/health/static/' + medApp.services.idAtualPaciente + '/degraus')
+          .done(function(data) {
+            medApp.services.setDadosEstaticos.degrus(data.degraus);
+            console.log('Os dados retornados são: ' + medApp.services.getDadosEstaticos.degraus());
+        });
 
         var chrt4 = document.getElementById("myChart4");
         var data4 = {
@@ -552,7 +548,7 @@ medApp.controllers = {
               borderWidth: 5,
               hoverBackgroundColor: "rgba(255, 99, 132, 0.4)",
               hoverBorderColor: "rgba:(255, 99, 132, 1)",
-              data: [10, 20, 30, 40, 50, 50, 40] // medApp.services.getDadosEstaticos().
+              data: medApp.services.dadosEstaticos.degraus
             }
           ]
         }; //TODO implementação da comunicação de dados com o servidor.
