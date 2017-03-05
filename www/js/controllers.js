@@ -868,12 +868,20 @@ medApp.controllers = {
     }
 
     //Método que linka o paciente à pulseira na base de dados.
-    $.put('https://pibicfitbit.herokuapp.com/api/pulseira/' + medApp.services.pulseiraAtual,{
-    	disponivel: disp,
-    	idPaciente: medApp.services.idAtualPaciente
-    })
-      .done(function(data) {
-      	ons.notification.alert("Pulseira selecionada com sucesso!");
+
+    $.ajax({
+      url: 'https://pibicfitbit.herokuapp.com/api/pulseira/' + medApp.services.PulseiraAtual,
+      type: 'PUT',
+      success: function(data) {
+        ons.notification.alert("Pulseira Selecionada com Sucesso!");
+      },
+      error: function() {
+        ons.notification.alert("Pulseira não Cadastrada.");
+      },
+      data: { 
+        disponivel: disp,
+        idPaciente: medApp.services.idAtualPaciente
+      }
     });
 
     page.querySelector('#cadastrar-pac').onclick = function() {
