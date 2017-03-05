@@ -265,10 +265,6 @@ medApp.services = {
     id: new Array
   },
 
-  setPulseiraOnClick: function() {
-    
-  },
-
   showPulseirasDisponiveis: function(index) {
     var template = document.createElement('div');
 
@@ -282,6 +278,6 @@ medApp.services = {
     var pulseiraLista = document.querySelector('#lista-pulseiras');
 
     pulseiraLista.appendChild(pulseiraItem); 
-  },
+  }
 
 };
