@@ -42,7 +42,7 @@ medApp.services = {
     this.idAtualPaciente = -1;
   },
 
-  dadosEstaticos: var {
+  dadosEstaticos: {
     calorias: -1,
     passos: -1,
     pulso: -1,
@@ -50,7 +50,7 @@ medApp.services = {
   }, //Seta os dados estaticos do pacientes como 'default'.
 
   //Conjunto de funções que armazenam novos dados estáticos.
-  setDadosEstaticos: var {
+  setDadosEstaticos: {
     calorias: function(data) {
       this.dadosEstaticos.calorias = data;
     },
@@ -66,7 +66,7 @@ medApp.services = {
   },
 
   //Conjunto de Funções que retornam os dados estáticos do paciente atual.
-  getDadosEstaticos: var {
+  getDadosEstaticos: {
     calorias: function() {
       return this.dadosEstaticos.calorias;
     },
@@ -82,7 +82,7 @@ medApp.services = {
   },
 
   //Função que torna os dados estáticos para o formato default.
-  deleteDadosEstaticos: var {
+  deleteDadosEstaticos: {
     calorias: function() {
       this.dadosEstaticos.calorias = -1;
     },

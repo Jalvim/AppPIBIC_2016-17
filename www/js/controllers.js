@@ -871,6 +871,9 @@ medApp.controllers = {
     $.put('https://pibicfitbit.herokuapp.com/api/pulseira/' + medApp.services.pulseiraAtual,{
     	disponivel: disp,
     	idPaciente: medApp.services.idAtualPaciente
+    })
+      .done(function(data) {
+      	ons.notification.alert("Pulseira selecionada com sucesso!");
     });
 
     page.querySelector('#cadastrar-pac').onclick = function() {
