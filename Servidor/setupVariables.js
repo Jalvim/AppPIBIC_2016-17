@@ -195,7 +195,7 @@ module.exports = function(app) {
 		url:'http://127.0.0.1:3000/api/pulseira/',
 		form:{ 
 			idPulseira: 56,
-			disponivel: 1,
+			disponivel: 0,
 			idPaciente: 39
 		}
 	};

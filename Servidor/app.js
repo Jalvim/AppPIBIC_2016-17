@@ -21,10 +21,11 @@ var express = require('express'),
 	medicoRouter = require('./routes/medico.js'),
 	loginRouter = require('./routes/login.js'),
 	pulseiraRouter = require('./routes/pulseira.js'),
-	grupoPacientesRouter = require('./routes/grupoPacientes.js');
+	grupoPacientesRouter = require('./routes/grupoPacientes.js'),
+	mailSender = require('./mailgunWraper.js');
 	
 //Setup inicial de conecção com a base de dados 	
-var connection = mysql.createConnection({
+connection = mysql.createConnection({
 	host : '79.170.40.183',
 	user : 'cl19-dbpipibic',
 	password : senhas.senha_DB,
@@ -35,25 +36,33 @@ connection.connect();
 //setando todas as variáveis de options nos requests http de teste
 setupOptionsVariables(app);
 // 
-// Paciente
-// POST - Add novo paciente à bd funcionando bem					OK!
-// PUT - Edição de perfil de paciente funcionando bem				OK!
-// GET - puxar pacuentes ligados a multiplos médicos implementado	OK!
 
-// Lembrete
-// GET - Novo get puxando lembretes relacionados ao paciente corretamente
-// POST - adição nova de lembretes funcionando corretamente
-// PUT - Edição de lembretes testada com sucesso e funcionando corretamente
+//  request(app.optionsPutTestRequestPulseira, function(err, httpResponse, body) { 
+//  	console.log(err);
+//  	//console.log(httpResponse);
+//  	console.log(body);
+//  });
 
-// Medico
-// POST - Nova adição de médicos com cpf funcionando
-// PUT - Bug encontrados e debugados, o código agora edita perfis de medico corretamente
+// var email = {
+// 	to:'gabrielpmp@gmail.com, prettzb@gmail.com, matheusbafutto@gmail.com, vitorbordini96@gmail.com, jorge.jglm@gmail.com, j.rabello.alvim@outlook.com',
+// 	subject: 'Email Teste(Se Deus quiser bem sucedido)',
+// 	text:'O único e principal propósito deste email é verificar que a API end point para ' +
+// 		'mandar emails que estamos usando está funcionando.'
+// }
 // 
- request(app.optionsPutTestRequestPulseira, function(err, httpResponse, body) { 
- 	console.log(err);
- 	//console.log(httpResponse);
- 	console.log(body);
- });
+// mailSender(email, function(error, body) {
+// 	console.log(body);
+// });
+
+setInterval(function(){
+	connection.query('SELECT idPulseira FROM Pulseira_Paciente', function(err,rows) {
+		if (err) console.log(err);
+		for (var i = 0; i < rows.length; i++) {
+			getStaticHealthParams(0, rows[i].idPulseira);
+		}
+	});
+}, 300000);
+
 
 //info vai conter dados HR de chamada bem sucedida à API fitbit
 var info = {};
