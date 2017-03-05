@@ -690,20 +690,23 @@ medApp.controllers = {
       };*/
 
       //Request PUT responsável pela edição de pacientes diretamente na base de dados.
-      $.put('https://pibicfitbit.herokuapp.com/api/paciente/geral/' + medApp.services.getIdPaciente(),
-      {
-        nomePacienteNovo: dadosEdit.nomeEdit,
-        novoProntuario: dadosEdit.prontEdit,
-        novaFoto: dadosEdit.fotoEdit,
-        novaCausa: dadosEdit.causaEdit,
-        novaData: dadosEdit.idadeEdit
-        //TODO --> PEDIR PARA O JORGE INSERIR CAMPOS EXTRAS NA API.
-      })
-        .fail( function(data){
-          ons.notification.prompt({message: 'Alterações Não Efetuadas.'});
-        })
-        .done(function (data) {
-          console.log(data);
+
+      $.ajax({
+          url: 'https://pibicfitbit.herokuapp.com/api/paciente/geral/' + medApp.services.getIdPaciente(),
+          type: 'PUT',
+          success: function(data) {
+            console.log(data);
+          },
+          error: function() {
+            ons.notification.alert("Alterações não efetuadas");
+          },
+          data: {
+            nomePacienteNovo: dadosEdit.nomeEdit,
+            novoProntuario: dadosEdit.prontEdit,
+            novaFoto: dadosEdit.fotoEdit,
+            novaCausa: dadosEdit.causaEdit,
+            novaData: dadosEdit.idadeEdit
+          }
       });
 
       document.querySelector('#pacienteNav').popPage();
