@@ -240,7 +240,7 @@ medApp.services = {
 
   //Ciclo de funções para as pulseiras disponiveis
 
-  pulseirasDisponiveis: -1,
+  pulseirasDisponiveis: new Array,
 
   setPulseirasDisponiveis: function(puls){
     this.pulseirasDisponiveis = puls;
@@ -260,7 +260,7 @@ medApp.services = {
     this.pulseiraAtual = data;
   },
 
-  pulseiraOnClick: var {
+  pulseiraOnClick: {
     in: new Array,
     id: new Array
   },
@@ -269,7 +269,7 @@ medApp.services = {
     var template = document.createElement('div');
 
     template.innerHTML = '<ons-list-item modifier="tappable"> <div id=item' + index + '> Pulseira de id = '
-      + medApp.services.pulseirasDisponiveis[index].idPulseira + '</div> </ons-list-item>; 
+      + medApp.services.pulseirasDisponiveis[index].idPulseira + '</div> </ons-list-item>'; 
     
     medApp.services.pulseiraOnClick.in[index] =  index; 
     medApp.services.pulseiraOnClick.id[index] = medApp.services.pulseirasDisponiveis[index].idPulseira;
