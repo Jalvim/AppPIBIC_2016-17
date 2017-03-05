@@ -51,17 +51,17 @@ medApp.services = {
 
   //Conjunto de funções que armazenam novos dados estáticos.
   setDadosEstaticos: {
-    calorias: function(data) {
-      this.dadosEstaticos.calorias = data;
+    calorias: function(input) {
+      this.dadosEstaticos.calorias = input;
     },
-    passos: function(data) {
-      this.dadosEstaticos.passos = data;
+    passos: function(input) {
+      this.dadosEstaticos.passos = input;
     },
-    pulso: function(data) {
-      this.dadosEstaticos.pulso = data;
+    pulso: function(input) {
+      this.dadosEstaticos.pulso = input;
     },
-    degraus: function(data) {
-      this.dadosEstaticos.degraus = data;
+    degraus: function(input) {
+      this.dadosEstaticos.degraus = input;
     }
   },
 
