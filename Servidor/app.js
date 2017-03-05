@@ -49,11 +49,11 @@ setupOptionsVariables(app);
 // POST - Nova adição de médicos com cpf funcionando
 // PUT - Bug encontrados e debugados, o código agora edita perfis de medico corretamente
 // 
-//  request(app.optionsPutTestRequestPulseira, function(err, httpResponse, body) { 
-//  	console.log(err);
-//  	//console.log(httpResponse);
-//  	console.log(body);
-//  });
+ request(app.optionsPutTestRequestPulseira, function(err, httpResponse, body) { 
+ 	console.log(err);
+ 	//console.log(httpResponse);
+ 	console.log(body);
+ });
 
 //info vai conter dados HR de chamada bem sucedida à API fitbit
 var info = {};
