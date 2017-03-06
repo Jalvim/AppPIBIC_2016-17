@@ -921,13 +921,11 @@ medApp.controllers = {
   // Controlador do Adicionar Pulseiras //
   ////////////////////////////////////////
 
-  adicionarPulseira:function(page){
+  pulseiras: function(page){
 
     page.querySelector('#addpulseira').onclick = function(){
 
-      ons.notification.alert("oi");
-         /*
-         //pede o login e a senha do usuario
+        //pede o login e a senha do usuario
         var  login;
         login = prompt("Digite o login da FITBIT");
 
@@ -942,33 +940,27 @@ medApp.controllers = {
             senha:senha
             })
             .done(function(data){
-            URL=window.location.href;
-
-
+              URL = window.location.href;
+              console.log(URL);
             });
 
         //pega o codigoOauth
-        var Oauth=URL.substr(URL.indexOf("=")+1,URL.indexOf("#")-1);
+        var Oauth = URL.substr(URL.indexOf("=")+1,URL.indexOf("#")-1);
 
 
         //Para debug, retirar depois
         Alert(Oauth);
 
-
-
-        /*
         $.post("url/api/pulseira",{
          redirectUri :"http://julianop.com.br:3000/",
-        Client ID: "227WRB",
-        Client Secret: "1dcfe0c85eee35d7cb8295,733a3b0f9d",
+        ClientID: "227WRB",
+        ClientSecret: "1dcfe0c85eee35d7cb8295,733a3b0f9d",
         CodigoOauth:Oauth
 
         });
-        */
+        
       };
-    },
-
-
+  },
 
   ////////////////////////////////////////
   // Controlador de adicionar lembrete //
