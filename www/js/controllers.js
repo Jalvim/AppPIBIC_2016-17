@@ -468,24 +468,24 @@ medApp.controllers = {
         //Interface gráfica interativa dos dados estáticos de saúde.
 
         //Request
-        /*$.get('https://pibicfitbit.herokuapp.com/api/paciente/health/static/' + medApp.services.idAtualPaciente)
+        $.get('https://pibicfitbit.herokuapp.com/api/paciente/health/dynamic/' + medApp.services.idAtualPaciente)
           .done(function(data) {
             medApp.services.setDadosEstaticos.pulso(data);
             console.log(medApp.services.getDadosEstaticos.pulso());
-        }); DADO NÃO ESTÁTICO --> SEM IMPLEMENTAÇÃO*/ 
+        }); 
         
         var chrt3 = document.getElementById("myChart3");
         var data3 = {
           labels: ["Domingo", "Segunda", "Terça", "Quarta", "Quinta", "Sexta", "Sábado"],
           datasets: [
             {
-              label: "Pulsação média durante a última semana",
+              label: "Pulsação média durante o último dia",
               backgroundColor: "rgba(75,192,192,0.4)",
               borderColor: "rgba(75,192,192,1)",
               borderWidth: 5,
               hoverBackgroundColor: "rgba(255, 99, 132, 0.4)",
               hoverBorderColor: "rgba:(255, 99, 132, 1)",
-              data: [10, 20, 30, 40, 50, 50, 40] // medApp.services.getDadosEstaticos().
+              data: medApp.services.dadosEstaticos.pulso
             }
           ]
         }; //TODO implementação da comunicação de dados com o servidor.
