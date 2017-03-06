@@ -764,12 +764,8 @@ medApp.controllers = {
     //Método responsável por encontrar na base as pulseiras disponíveis.
     $.get('http://julianop.com.br:3000/api/pulseira/disponivel')
       .done(function(data){
-      	if(data.hasOwnProperty('idPulseiras')){
-      		medApp.services.setPulseirasDisponiveis(data);
-            console.log(medApp.services.pulseirasDisponiveis);
-      	} else {
-      		ons.notification.alert("Falha ao conectar com o servidor.");
-      	}
+      	medApp.services.setPulseirasDisponiveis(data);
+        console.log(medApp.services.pulseirasDisponiveis);
       });
 
     page.querySelector('#pulseiraButton').onclick = function() {
