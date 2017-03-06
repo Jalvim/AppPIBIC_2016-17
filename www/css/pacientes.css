@@ -3,32 +3,33 @@
   .paciente-lista {
 
   }
+  
   .paciente-header { 
     width: 100%;
     margin-bottom: 8px;
-	padding: 3px 0 3px 5px;
+	  padding: 3px 0 3px 5px;
   }
 
   .alerta {
-	background-color: #EF5350; 
-	margin-bottom: 7px;
-	border-radius: 5px;
+	 background-color: #EF5350; 
+	 margin-bottom: 7px;
+	 border-radius: 5px;
   }
 
   .ativo {
-	background-color: #8BC34A; 
-	margin-bottom: 7px;
-	border-radius: 5px;
+	 background-color: #8BC34A; 
+	 margin-bottom: 7px;
+	 border-radius: 5px;
   }
 
   .inativo {
-	background-color: #607D8B;
-	margin-bottom: 7px; 
-	border-radius: 5px;
+	 background-color: #607D8B;
+	 margin-bottom: 7px; 
+	 border-radius: 5px;
   }
 
   .paciente-detalhes {
-	margin-bottom: 5px;
+	 margin-bottom: 5px;
   }
 
   .paciente-img {
@@ -37,12 +38,12 @@
   }
 
   .procurar {
-	position: relative;
+	  position: relative;
     left: 5px;
     width: 90%;
-	background-color: #0277BD;
-	border-radius: 10px;
-	padding-left: 5px;
+	  background-color: #0277BD;
+	  border-radius: 10px;
+	  padding-left: 5px;
   }
 }
 
