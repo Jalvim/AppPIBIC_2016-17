@@ -724,6 +724,7 @@ medApp.controllers = {
 
     page.addEventListener('show', function(event) {
 
+      // Limpa e popula a lista de lembretes
       $('#lista-lembretes').empty();
       $.get('http://julianop.com.br:3000/api/lembrete/' + medApp.services.getIdPaciente())
       .done(function(data){
@@ -752,19 +753,13 @@ medApp.controllers = {
 
     };
 
-    page.querySelector('#ver-lembrete').onclick = function() {
-
-      document.querySelector('#pacienteNav').pushPage('html/verlembrete.html');
-
-    };
-
   },
 
   ///////////////////////////////////////
-  // Controlador da busca de pacientes //
+  // Controlador da busca de pacientes // NÃO IMPLEMENTADO
   ///////////////////////////////////////
 
-  buscarpaciente: function(page){
+  /*buscarpaciente: function(page){
 
     page.querySelector('#add-pac').onclick = function() {
 
@@ -772,7 +767,7 @@ medApp.controllers = {
 
     };
 
-  },
+  },*/
 
   /////////////////////////////////////////
   // Controlador do cadastro de paciente //
