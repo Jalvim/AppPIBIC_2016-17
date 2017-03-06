@@ -25,15 +25,6 @@ medApp.services = {
 
   },
 
-  getNameMedico: function(idMedico) {
-    
-    $.get('http://julianop.com.br:3000/api/medico/busca/ID/' + idMedico)
-      .done(function(data) {
-        return data[0].nome;
-      });
-
-  },
-
   dadosPacienteAtual: {
     idAtualPaciente: -1,
     nome: '',
@@ -184,7 +175,7 @@ medApp.services = {
           '<ons-row>' +
             '<ons-col class="paciente-detalhes">' +
               '<ons-icon icon="user-md" class="list__item__icon"></ons-icon>' +
-              '<span class="list__item__subtitle">' + 'Teste' + '</span>' +
+              '<span class="list__item__subtitle">' + data.medicoResp + '</span>' +
             '</ons-col>' +
             '<ons-col class="paciente-detalhes">' +
               '<ons-icon icon="hospital-o" class="list__item__icon"></ons-icon>' +
@@ -204,17 +195,11 @@ medApp.services = {
                                           dataIntFormatoTraco: dataPacienteFormatoTraco,
                                           dataIntFormatoBarra: dataPacienteFormatoBarra,
                                           causa: data.causaPaciente,
-                                          medicoResp: 'medicoResp',
+                                          medicoResp: data.medicoResp,
                                           hospital: data.hospital
                                         });
 
-      document.querySelector('#pacienteNav').pushPage('html/perfilpaciente.html',
-        {data: {nome: data.nomePaciente, 
-                causa: data.causaPaciente,
-                medicoResp: 'medicoResp',
-                dataInt: dataPacienteFormatoBarra,
-                hospital: data.hospital
-        }}); 
+      document.querySelector('#pacienteNav').pushPage('html/perfilpaciente.html'); 
 
     };
 
@@ -326,6 +311,7 @@ medApp.services = {
         {data: {texto: $(lembreteItem).data('fullText'),
                 horario: $(lembreteItem).data('horario'),
                 medicoResp: $(lembreteItem).data('medicoResp'),
+                idLembrete: $(lembreteItem).data('idLembrete')
         }});
 
     };

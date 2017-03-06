@@ -116,7 +116,7 @@ medApp.controllers = {
 
 
       //confere se é possível a existencia do e-mail
-      else if(email.indexOf('@')===-1 || email.indexOf('.')===-1||Math.abs(email.indexOf('@')- email.indexOf('.')<3)){
+      else if(email.indexOf('@')===-1 || email.indexOf('.')===-1||Math.abs(email.indexOf('@') - email.indexOf('.'))<3){
 
         modal.hide();
         ons.notification.alert("E-mail invalido");
@@ -158,7 +158,7 @@ medApp.controllers = {
       $.get('http://julianop.com.br:3000/api/medico/busca/ID/' + medApp.services.getIdMedico())
       .done(function(data) {
         page.querySelector('#nome-perfil').innerHTML = data[0].nome;
-        page.querySelector('#crm-perfil').innerHTML = data[0].CRM;
+        page.querySelector('#crm-perfil').innerHTML = 'CRM' + ' ' + data[0].CRM;
         page.querySelector('#esp-perfil').innerHTML = data[0].especialidade;
         page.querySelector('#tel-perfil').innerHTML = data[0].telefone;
         page.querySelector('#email-perfil').innerHTML = data[0].email;
@@ -244,27 +244,32 @@ medApp.controllers = {
 
       medApp.services.deletePacienteAtual();
       $('#lista-pacientes').empty();
-      var pacientesInfo;
 
       $.get('http://julianop.com.br:3000/api/paciente/geral/idMedico/' + medApp.services.getIdMedico())
         .done(function(data) {
-          pacientesInfo = data;
 
-          for (var i = 0, len = pacientesInfo.length; i < len; i++) {
+          for (var i = 0, len = data.length; i < len; i++) {
 
-            medApp.services.createPaciente( 
-            { 
-              statusPaciente: 'ativo',
-              img: 'http://www.clker.com/cliparts/A/Y/O/m/o/N/placeholder-md.png',
-              nomePaciente: pacientesInfo[i].nomePaciente,
-              batimentos: '60',
-              dataPaciente: pacientesInfo[i].dataDeNascimento,
-              causaPaciente: pacientesInfo[i].causaDaInternacao,
-              medicoResp: pacientesInfo[i].numeroDoProntuario,
-              hospital: pacientesInfo[i].telefone,
-              idPaciente: pacientesInfo[i].idPaciente,
-              //medicoResp: data1[0].nome
-                
+            var pacientesInfo = data[i];
+
+            $.get('http://julianop.com.br:3000/api/medico/busca/ID/' + pacientesInfo.idMedico)
+            .done(function(input) {
+              pacientesInfo.medicoResp = input[0].nome;
+
+              medApp.services.createPaciente( 
+              { 
+                statusPaciente: 'ativo',
+                img: 'http://www.clker.com/cliparts/A/Y/O/m/o/N/placeholder-md.png',
+                nomePaciente: pacientesInfo.nomePaciente,
+                batimentos: '60',
+                dataPaciente: pacientesInfo.dataDeNascimento,
+                causaPaciente: pacientesInfo.causaDaInternacao,
+                medicoResp: pacientesInfo.numeroDoProntuario,
+                hospital: pacientesInfo.telefone,
+                idPaciente: pacientesInfo.idPaciente,
+                medicoResp: pacientesInfo.medicoResp
+              });
+
             });
           };
       });
@@ -318,10 +323,11 @@ medApp.controllers = {
     // Preenche os dados do perfil do paciente atual
     page.addEventListener('show', function(event) {
 
-      page.querySelector('.profile-name').innerHTML = page.data.nome;
-      page.querySelector('#data-int').innerHTML = page.data.dataInt;
-      page.querySelector('#causa').innerHTML = page.data.causa;
-      page.querySelector('#hospital').innerHTML = page.data.hospital;
+      page.querySelector('.profile-name').innerHTML = medApp.services.dadosPacienteAtual.nome;
+      page.querySelector('#medico').innerHTML = medApp.services.dadosPacienteAtual.medico;
+      page.querySelector('#data-int').innerHTML = medApp.services.dadosPacienteAtual.dataIntFormatoBarra;
+      page.querySelector('#causa').innerHTML = medApp.services.dadosPacienteAtual.causa;
+      page.querySelector('#hospital').innerHTML = medApp.services.dadosPacienteAtual.hospital;
 
     });
 
@@ -509,7 +515,6 @@ medApp.controllers = {
                 responsive: true
               }
             });
-
           });*/
 
         // Fim da interface gráfica 3. TODO --> Implementar outros gráficos.
@@ -574,7 +579,7 @@ medApp.controllers = {
     // Pega dados do servidor para edição (CPF não é mostrado no perfil, logo não existe seu innerHTML)
     page.addEventListener('show', function(event) {
 
-      $.get('http://julianop.com.br:3000/api/medico/busca/ID/' + medApp.services.dadosPacienteAtual.idAtualPaciente)
+      $.get('http://julianop.com.br:3000/api/medico/busca/ID/' + medApp.services.idAtualMedico)
       .done(function(data) {
         $('#nome-medico').val(data[0].nome);
         $('#crm-medico').val(data[0].CRM);
@@ -618,7 +623,8 @@ medApp.controllers = {
                   especialidade: dadosEdit.esp,
                   CRM: dadosEdit.crm,
                   telefone: dadosEdit.tel,
-                  CPF: dadosEdit.cpf
+                  CPF: dadosEdit.cpf,
+                  email: dadosEdit.email
                 }
         });
 
@@ -701,6 +707,7 @@ medApp.controllers = {
   ///////////////////////////////////////
 
   feed: function(page) {
+
       // Realiza a atualização do feed com pull --> TODO: funcionalidade.
         var pullHook = document.getElementById('pull-hook-feed');
         pullHook.addEventListener('changestate', function(event) {
@@ -760,19 +767,18 @@ medApp.controllers = {
       $.get('http://julianop.com.br:3000/api/lembrete/' + medApp.services.getIdPaciente())
       .done(function(data){
         
-        lembretesInfo = data;
-        console.log(lembretesInfo);
-          // Cria os lembretes no inverso dos id's retornados (ordem cronológica)
-          for (var i = lembretesInfo.length - 1; i >= 0; i--) {
+        // Cria os lembretes no inverso dos id's retornados (ordem cronológica)
+        for (var i = data.length - 1; i >= 0; i--) {
 
-            medApp.services.createLembrete( 
+          lembretesInfo = data[i];
+          medApp.services.createLembrete( 
             { 
-              texto: lembretesInfo[i].mensagem,
-              horario: lembretesInfo[i].data,
-              medico: lembretesInfo[i].nome,
-              idLembrete: lembretesInfo[i].id
+              texto: lembretesInfo.mensagem,
+              horario: lembretesInfo.data,
+              medico: lembretesInfo.nome,
+              idLembrete: lembretesInfo.id
             });
-          };
+        };
 
       });
 
@@ -848,7 +854,7 @@ medApp.controllers = {
       
           medApp.services.setPulseiraAtual(id);
 
-          ons.notification.alert("Pulseira " + medApp.services.pulseiraAtual + "selecionada.");
+          ons.notification.alert("Pulseira " + medApp.services.pulseiraAtual + " selecionada.");
 
           document
             .getElementById('#popover')
@@ -991,11 +997,14 @@ medApp.controllers = {
 
     page.addEventListener('show', function(event) {
 
-      page.querySelector('.lembrete-header').innerHTML = medApp.services.dadosPacienteAtual.nome;
-      page.querySelector('#medico-lembrete').innerHTML = medApp.services.getNameMedico();
-      // Pega a data atual
-      var hoje = medApp.services.getToday('barra');
-      page.querySelector('#data-lembrete').innerHTML = hoje;
+      $.get('http://julianop.com.br:3000/api/medico/busca/ID/' + medApp.services.getIdMedico())
+      .done(function(data) {
+          page.querySelector('.lembrete-header').innerHTML = medApp.services.dadosPacienteAtual.nome;
+          page.querySelector('#medico-lembrete').innerHTML = data[0].nome;
+          // Pega a data atual
+          var hoje = medApp.services.getToday('barra');
+          page.querySelector('#data-lembrete').innerHTML = hoje;
+        });
 
     });
 
@@ -1007,7 +1016,7 @@ medApp.controllers = {
       if($('#texto-lembrete').val() == ''){
 
         modal.hide();
-        ons.notification.alert("Preencha todos os campos!");
+        ons.notification.alert("Preencha o lembrete!");
 
       } else {
 
@@ -1038,11 +1047,43 @@ medApp.controllers = {
     page.addEventListener('show', function(event) {
 
       page.querySelector('.lembrete-header').innerHTML = medApp.services.dadosPacienteAtual.nome;
-      page.querySelector('.lembrete-text').innerHTML = page.data.texto;
+      $('#texto-ver-lembrete').val(page.data.texto);
       page.querySelector('#medico-ver-lembrete').innerHTML = page.data.medicoResp;
       page.querySelector('#data-ver-lembrete').innerHTML = page.data.horario;
 
     });
+
+    page.querySelector('#edit-lembrete').onclick = function() {
+
+      var modal = page.querySelector('ons-modal');
+      modal.show();
+
+      if($('#texto-ver-lembrete').val() == ''){
+
+        modal.hide();
+        ons.notification.alert("Preencha o lembrete!");
+
+      } else {
+
+        $.ajax({
+          url: 'http://julianop.com.br:3000/api/lembrete',
+          type: 'PUT',
+          data: { idLembrete: page.data.idLembrete,
+                  mensagem: $('#texto-ver-lembrete').val()
+                }
+        })
+        .done(function(data) {
+          console.log(data);
+          document.querySelector('#pacienteNav').popPage();
+        })
+        .fail(function() {
+          ons.notification.alert("Edição não efetuada");
+          document.querySelector('#pacienteNav').popPage();
+        });
+
+      };
+
+    };
 
   }
 
