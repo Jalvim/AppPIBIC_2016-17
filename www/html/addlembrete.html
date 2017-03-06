@@ -9,17 +9,17 @@
 
     <div class="lembrete-container">
         <ons-icon icon="md-assignment" size="35px" class="lembrete-header-icon"></ons-icon>
-        <div class="lembrete-header">Paciente Genérico</div>
+        <div class="lembrete-header"></div>
     </div>
-
+    <br>
     <div class="lembrete-container">
         <div style="float: left;">
             <ons-icon icon="md-calendar" size="25px" class="lembrete-description-icon"></ons-icon>
-            <div class="lembrete-description">01/01/2017</div>
+            <div class="lembrete-description" id="data-lembrete"></div>
         </div>
         <div style="float: right;">
             <ons-icon icon="user-md" size="25px" class="lembrete-description-icon"></ons-icon>
-            <div class="lembrete-description">John Doe</div>
+            <div class="lembrete-description" id="medico-lembrete"></div>
         </div>
     </div>
 
@@ -27,7 +27,7 @@
     
     <div class="lembrete-container">
     	<div class="lembrete-input">
-      		<textarea class="textarea" placeholder="Escreva seu lembrete aqui" style="width: 100%; height: 200px;"></textarea>
+      		<textarea class="textarea" id="texto-lembrete" placeholder="Escreva seu lembrete aqui" style="width: 100%; height: 200px;"></textarea>
     	</div>
     </div>
 

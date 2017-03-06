@@ -254,6 +254,10 @@ medApp.services = {
 
     };
 
+    var dataFormatoBarra = data.horario.substring(8,10) + '/' +
+                           data.horario.substring(5,7) + '/' +
+                           data.horario.substring(0,4);
+
     // Template de paciente
     var template = document.createElement('div');
     template.innerHTML =
@@ -263,14 +267,14 @@ medApp.services = {
       '</div>' +
       '<div class="center">' +
         '<ons-row style="padding-bottom: 10px">' +
-          '<ons-icon icon="md-assignment" size="30px" class="list__item__icon"></ons-icon>' + 
+          '<ons-icon icon="md-assignment" class="list__item__icon"></ons-icon>' + 
           '<div class="lembrete-lista-header">' + textoLembrete + ((data.texto.length < 30) ? '' : '...') +
           '</div>' +
         '</ons-row>' + 
         '<ons-row>' +
           '<ons-col>' +
             '<ons-icon icon="md-calendar" size="20px" class="list__item__icon"></ons-icon>' + 
-            '<span>' + data.horario + '</span>' +
+            '<span>' + dataFormatoBarra + '</span>' +
           '</ons-col>' +
           '<ons-col>' +
             '<ons-icon icon="user-md" size="20px" class="list__item__icon"></ons-icon>' +
@@ -282,12 +286,40 @@ medApp.services = {
 
     var lembreteItem = template.firstChild;
     var lembretesLista = document.querySelector('#lista-lembretes');
+    $(lembreteItem).data('medicoResp', data.medico);
+    $(lembreteItem).data('horario', dataFormatoBarra);
+    $(lembreteItem).data('idLembrete', data.idLembrete);
+    $(lembreteItem).data('fullText', data.texto);
+
+    // Funcionalidade de remover lembrete
+    lembreteItem.querySelector('.right').onclick = function() {
+        
+        // Retira o lembrete do banco de dados
+        // NAO ESTA FUNCIONANDO
+        $.ajax({
+          url: 'http://julianop.com.br:3000/api/lembrete',
+          type: 'DELETE',
+          data: { 
+            idLembrete: $(lembreteItem).data('idLembrete')
+          }
+        });
+
+        lembretesLista.removeChild(lembreteItem);
+
+    };
+
+    // Funcionalidade de ver lembrete
+    lembreteItem.querySelector('.center').onclick = function() {
+        
+      document.querySelector('#pacienteNav').pushPage('html/verlembrete.html',
+        {data: {texto: $(lembreteItem).data('fullText'),
+                horario: $(lembreteItem).data('horario'),
+                medicoResp: $(lembreteItem).data('medicoResp'),
+        }});
+
+    };
 
     lembretesLista.appendChild(lembreteItem);
-
-    lembreteItem.querySelector('.right').onclick = function() {
-        lembretesLista.removeChild(lembreteItem);
-    };
 
   },
 
@@ -331,6 +363,36 @@ medApp.services = {
     var pulseiraLista = document.querySelector('#lista-pulseiras');
 
     pulseiraLista.appendChild(pulseiraItem); 
-  }
+
+  },
+
+  getToday: function(tipo) {
+    
+    var hoje = new Date();
+    var dia = hoje.getDate();
+    var mes = hoje.getMonth()+1;
+    var ano = hoje.getFullYear();
+
+    if(dia < 10) {
+      dia = '0' + dia;
+    };
+
+    if(mes < 10) {
+      mes = '0' + mes;
+    };
+
+    if(tipo === "barra") {
+
+      hoje = dia + '/' + mes + '/' + ano;
+      return hoje;
+
+    } else if(tipo === "traco") {
+
+      hoje = ano + '-' + mes + '-' + dia;
+      return hoje;
+
+    };
+
+  },
 
 };

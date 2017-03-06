@@ -10,10 +10,10 @@
       font-weight: 600;
       font-size: 25px;
       padding-top: 20px;
-      position: relative;
-      top: 50%;
-      left: 50%;
-      transform: translateX(-50%) translateY(-50%);
+      margin-bottom: 10px;
+      position: absolute;
+      top: 7px;
+      left: 55px;
     }
 
 
