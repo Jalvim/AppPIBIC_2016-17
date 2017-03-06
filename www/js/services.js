@@ -25,15 +25,6 @@ medApp.services = {
 
   },
 
-  getNameMedico: function(idMedico) {
-    
-    $.get('http://julianop.com.br:3000/api/medico/busca/ID/' + idMedico)
-      .done(function(data) {
-        return data[0].nome;
-      });
-
-  },
-
   dadosPacienteAtual: {
     idAtualPaciente: -1,
     nome: '',
@@ -72,14 +63,14 @@ medApp.services = {
   },
 
   dadosEstaticos: {
-    calorias: -1,
-    passos: -1,
-    pulso: -1,
-    degraus: -1
+    calorias: new Array,
+    passos: new Array,
+    pulso: new Array,
+    degraus: new Array
   }, //Seta os dados estaticos do pacientes como 'default'.
 
   //Conjunto de funções que armazenam novos dados estáticos.
-  setDadosEstaticos: {
+  /*setDadosEstaticos: {
     calorias: function(input) {
       this.dadosEstaticos.calorias = input;
     },
@@ -92,10 +83,10 @@ medApp.services = {
     degraus: function(input) {
       this.dadosEstaticos.degraus = input;
     }
-  },
+  },*/
 
   //Conjunto de Funções que retornam os dados estáticos do paciente atual.
-  getDadosEstaticos: {
+  /*getDadosEstaticos: {
     calorias: function() {
       return this.dadosEstaticos.calorias;
     },
@@ -108,10 +99,10 @@ medApp.services = {
     degraus: function() {
       return this.dadosEstaticos.degraus;
     }
-  },
+  },*/
 
   //Função que torna os dados estáticos para o formato default.
-  deleteDadosEstaticos: {
+  /*deleteDadosEstaticos: {
     calorias: function() {
       this.dadosEstaticos.calorias = -1;
     },
@@ -124,7 +115,7 @@ medApp.services = {
     degraus: function() {
       this.dadosEstaticos.degraus = -1;
     }
-  },
+  },*/
 
   // Função que verifica se os dados do médico foram editados 
   checkEdit: function(novo, velho) {
@@ -154,9 +145,9 @@ medApp.services = {
 
     var dataPacienteFormatoTraco = data.dataPaciente.substring(0,10);
 
-     // Template de novo paciente
-     var template = document.createElement('div');
-     template.innerHTML =
+    // Template de novo paciente
+    var template = document.createElement('div');
+    template.innerHTML =
       '<ons-list-item class="paciente-lista ' + data.statusPaciente + '" modifier="longdivider" id="pac2" tappable>' +
         '<div class="left">' +
           '<img class="list__item__thumbnail" src="'+ data.img + '">' +
@@ -204,17 +195,11 @@ medApp.services = {
                                           dataIntFormatoTraco: dataPacienteFormatoTraco,
                                           dataIntFormatoBarra: dataPacienteFormatoBarra,
                                           causa: data.causaPaciente,
-                                          medicoResp: 'medicoResp',
+                                          medicoResp: data.medicoResp,
                                           hospital: data.hospital
                                         });
 
-      document.querySelector('#pacienteNav').pushPage('html/perfilpaciente.html',
-        {data: {nome: data.nomePaciente, 
-                causa: data.causaPaciente,
-                medicoResp: 'medicoResp',
-                dataInt: dataPacienteFormatoBarra,
-                hospital: data.hospital
-        }}); 
+      document.querySelector('#pacienteNav').pushPage('html/perfilpaciente.html'); 
 
     };
 
@@ -254,6 +239,10 @@ medApp.services = {
 
     };
 
+    var dataFormatoBarra = data.horario.substring(8,10) + '/' +
+                           data.horario.substring(5,7) + '/' +
+                           data.horario.substring(0,4);
+
     // Template de paciente
     var template = document.createElement('div');
     template.innerHTML =
@@ -263,14 +252,14 @@ medApp.services = {
       '</div>' +
       '<div class="center">' +
         '<ons-row style="padding-bottom: 10px">' +
-          '<ons-icon icon="md-assignment" size="30px" class="list__item__icon"></ons-icon>' + 
+          '<ons-icon icon="md-assignment" class="list__item__icon"></ons-icon>' + 
           '<div class="lembrete-lista-header">' + textoLembrete + ((data.texto.length < 30) ? '' : '...') +
           '</div>' +
         '</ons-row>' + 
         '<ons-row>' +
           '<ons-col>' +
             '<ons-icon icon="md-calendar" size="20px" class="list__item__icon"></ons-icon>' + 
-            '<span>' + data.horario + '</span>' +
+            '<span>' + dataFormatoBarra + '</span>' +
           '</ons-col>' +
           '<ons-col>' +
             '<ons-icon icon="user-md" size="20px" class="list__item__icon"></ons-icon>' +
@@ -282,12 +271,52 @@ medApp.services = {
 
     var lembreteItem = template.firstChild;
     var lembretesLista = document.querySelector('#lista-lembretes');
+    $(lembreteItem).data('medicoResp', data.medico);
+    $(lembreteItem).data('horario', dataFormatoBarra);
+    $(lembreteItem).data('idLembrete', data.idLembrete);
+    $(lembreteItem).data('fullText', data.texto);
+
+    // Funcionalidade de remover lembrete
+    lembreteItem.querySelector('.right').onclick = function() {
+        
+        ons.notification.confirm({message: 'Tem certeza?'})
+        .then( function(confirm){
+
+          if(confirm) {
+            $.ajax({
+              url: 'http://julianop.com.br:3000/api/lembrete',
+              type: 'DELETE',
+              data: { 
+                idLembrete: $(lembreteItem).data('idLembrete')
+              }
+            })
+            .done(function(data) {
+
+              ons.notification.alert(data);
+
+              lembretesLista.removeChild(lembreteItem);
+
+            });
+          };
+
+        });
+        
+
+    };
+
+    // Funcionalidade de ver lembrete
+    lembreteItem.querySelector('.center').onclick = function() {
+        
+      document.querySelector('#pacienteNav').pushPage('html/verlembrete.html',
+        {data: {texto: $(lembreteItem).data('fullText'),
+                horario: $(lembreteItem).data('horario'),
+                medicoResp: $(lembreteItem).data('medicoResp'),
+                idLembrete: $(lembreteItem).data('idLembrete')
+        }});
+
+    };
 
     lembretesLista.appendChild(lembreteItem);
-
-    lembreteItem.querySelector('.right').onclick = function() {
-        lembretesLista.removeChild(lembreteItem);
-    };
 
   },
 
@@ -331,6 +360,36 @@ medApp.services = {
     var pulseiraLista = document.querySelector('#lista-pulseiras');
 
     pulseiraLista.appendChild(pulseiraItem); 
-  }
+
+  },
+
+  getToday: function(tipo) {
+    
+    var hoje = new Date();
+    var dia = hoje.getDate();
+    var mes = hoje.getMonth()+1;
+    var ano = hoje.getFullYear();
+
+    if(dia < 10) {
+      dia = '0' + dia;
+    };
+
+    if(mes < 10) {
+      mes = '0' + mes;
+    };
+
+    if(tipo === "barra") {
+
+      hoje = dia + '/' + mes + '/' + ano;
+      return hoje;
+
+    } else if(tipo === "traco") {
+
+      hoje = ano + '-' + mes + '-' + dia;
+      return hoje;
+
+    };
+
+  },
 
 };

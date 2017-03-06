@@ -116,7 +116,7 @@ medApp.controllers = {
 
 
       //confere se é possível a existencia do e-mail
-      else if(email.indexOf('@')===-1 || email.indexOf('.')===-1||Math.abs(email.indexOf('@')- email.indexOf('.')<3)){
+      else if(email.indexOf('@')===-1 || email.indexOf('.')===-1||Math.abs(email.indexOf('@') - email.indexOf('.'))<3){
 
         modal.hide();
         ons.notification.alert("E-mail invalido");
@@ -158,7 +158,7 @@ medApp.controllers = {
       $.get('http://julianop.com.br:3000/api/medico/busca/ID/' + medApp.services.getIdMedico())
       .done(function(data) {
         page.querySelector('#nome-perfil').innerHTML = data[0].nome;
-        page.querySelector('#crm-perfil').innerHTML = data[0].CRM;
+        page.querySelector('#crm-perfil').innerHTML = 'CRM' + ' ' + data[0].CRM;
         page.querySelector('#esp-perfil').innerHTML = data[0].especialidade;
         page.querySelector('#tel-perfil').innerHTML = data[0].telefone;
         page.querySelector('#email-perfil').innerHTML = data[0].email;
@@ -167,6 +167,7 @@ medApp.controllers = {
     });
 
     //Funcionalização da responsividade de tela Retrato/Paisagem.
+    /* RETIRADO PARA TESTES
     window.fn = {};
 
     window.fn.open = function() {
@@ -180,6 +181,7 @@ medApp.controllers = {
       content.load(page)
         .then(menu.close.bind(menu));
     };
+    */
 
     // Chama a página de editar perfil do médico
     page.querySelector('#edit-med').onclick = function() {
@@ -203,8 +205,8 @@ medApp.controllers = {
 
     };
 
-    // Realiza a atualização do perfil com pull
-    var pullHook = document.getElementById('pull-hook');
+    // Realiza a atualização do perfil com pull (NAO IIMPLEMENTADO)
+    /*var pullHook = document.getElementById('pull-hook');
 
     pullHook.addEventListener('changestate', function(event) {
       var message = '';
@@ -227,7 +229,7 @@ medApp.controllers = {
 
     pullHook.onAction = function(done) {
       setTimeout(done, 1000);
-    };
+    };*/
 
 
   },
@@ -238,33 +240,36 @@ medApp.controllers = {
 
   pacientes: function(page) {
 
-    // Chama o perfil com os dados do paciente selecionado
-    //ANTES: var pacientes = page.querySelectorAll(".paciente-lista"); //TODO --> TESTE DE CONEXÂO
     page.addEventListener('show', function(event) { 
 
       medApp.services.deletePacienteAtual();
-      var pacientesInfo;
+      $('#lista-pacientes').empty();
 
-      $.get('https://pibicfitbit.herokuapp.com/api/paciente/geral/idMedico/' + medApp.services.getIdMedico())
+      $.get('http://julianop.com.br:3000/api/paciente/geral/idMedico/' + medApp.services.getIdMedico())
         .done(function(data) {
-          pacientesInfo = data;
-          console.log(pacientesInfo);
 
-          for (var i = 0, len = pacientesInfo.length; i < len; i++) {
+          for (var i = 0, len = data.length; i < len; i++) {
 
-            medApp.services.createPaciente( 
-            { 
-              statusPaciente: 'ativo',
-              img: 'http://www.clker.com/cliparts/A/Y/O/m/o/N/placeholder-md.png',
-              nomePaciente: pacientesInfo[i].nomePaciente,
-              batimentos: '60',
-              dataPaciente: pacientesInfo[i].dataDeNascimento,
-              causaPaciente: pacientesInfo[i].causaDaInternacao,
-              medicoResp: pacientesInfo[i].numeroDoProntuario,
-              hospital: pacientesInfo[i].telefone,
-              idPaciente: pacientesInfo[i].idPaciente,
-              //medicoResp: data1[0].nome
-                
+            var pacientesInfo = data[i];
+
+            $.get('http://julianop.com.br:3000/api/medico/busca/ID/' + pacientesInfo.idMedico)
+            .done(function(input) {
+              pacientesInfo.medicoResp = input[0].nome;
+
+              medApp.services.createPaciente( 
+              { 
+                statusPaciente: 'ativo',
+                img: 'http://www.clker.com/cliparts/A/Y/O/m/o/N/placeholder-md.png',
+                nomePaciente: pacientesInfo.nomePaciente,
+                batimentos: '60',
+                dataPaciente: pacientesInfo.dataDeNascimento,
+                causaPaciente: pacientesInfo.causaDaInternacao,
+                medicoResp: pacientesInfo.numeroDoProntuario,
+                hospital: pacientesInfo.telefone,
+                idPaciente: pacientesInfo.idPaciente,
+                medicoResp: pacientesInfo.medicoResp
+              });
+
             });
           };
       });
@@ -278,12 +283,13 @@ medApp.controllers = {
 
     };
 
-    // Página para adicionar um novo grupo de pacientes
+    /* Página para adicionar um novo grupo de pacientes (NAO IMPLEMENTADO)
     page.querySelector('#add-grupo').onclick = function() {
 
       document.querySelector('#pacienteNav').pushPage('html/addgrupo.html');
 
     };
+    */
 
     /* GAMBIARRA PARA O TESTE DE UX !!!RETIRAR!!!
 
@@ -317,11 +323,11 @@ medApp.controllers = {
     // Preenche os dados do perfil do paciente atual
     page.addEventListener('show', function(event) {
 
-      console.log(medApp.services.dadosPacienteAtual);
-      page.querySelector('.profile-name').innerHTML = page.data.nome;
-      page.querySelector('#data-int').innerHTML = page.data.dataInt;
-      page.querySelector('#causa').innerHTML = page.data.causa;
-      page.querySelector('#hospital').innerHTML = page.data.hospital;
+      page.querySelector('.profile-name').innerHTML = medApp.services.dadosPacienteAtual.nome;
+      page.querySelector('#medico').innerHTML = medApp.services.dadosPacienteAtual.medico;
+      page.querySelector('#data-int').innerHTML = medApp.services.dadosPacienteAtual.dataIntFormatoBarra;
+      page.querySelector('#causa').innerHTML = medApp.services.dadosPacienteAtual.causa;
+      page.querySelector('#hospital').innerHTML = medApp.services.dadosPacienteAtual.hospital;
 
     });
 
@@ -365,47 +371,53 @@ medApp.controllers = {
 
         //Request feito quando a interface gráfica carregar para obter os dados estáticos do paciente.
         
-        $.get('https://pibicfitbit.herokuapp.com/api/paciente/health/static/' + medApp.services.idAtualPaciente + '/calorias')
+        $.get('http://julianop.com.br:3000/api/paciente/health/static/' + medApp.services.dadosPacienteAtual.idAtualPaciente)
           .done(function(data) {
-            medApp.services.setDadosEstaticos.calorias(data);
-            console.log(data);
-        });
-
-        var chrt1 = document.getElementById("myChart1");
-        var data1 = {
-          labels: ["Domingo", "Segunda", "Terça", "Quarta", "Quinta", "Sexta", "Sábado"],
-          datasets: [
-            {
-              label: "Calorias perdidas ao longo da semana",
-              fill: false,
-              lineTension: 0.1,
-              backgroundColor: "rgba(75,192,192,0.4)",
-              borderColor: "rgba(75,192,192,1)",
-              borderCapStyle: 'butt',
-              borderDash: [],
-              borderDashOffset: 0.0,
-              borderJoinStyle: 'miter',
-              pointBorderColor: "rgba(75,192,192,1)",
-              pointBackgroundColor: "#fff",
-              pointBorderWidth: 1,
-              pointHoverRadius: 5,
-              pointHoverBackgroundColor: "rgba(75,192,192,1)",
-              pointHoverBorderColor: "rgba(220,220,220,1)",
-              pointHoverBorderWidth: 2,
-              pointRadius: 1,
-              pointHitRadius: 10,
-              data: medApp.services.dadosEstaticos.calorias,
-              spanGaps: false,
+            for(var i = 0; i < data.length; i++){
+              medApp.services.dadosEstaticos.calorias[i] = data[i].calories;
             }
-          ]
-        }; //TODO implementação da comunicação de dados com o servidor.
-        var myChart1 = new Chart(chrt1, {
-          type: 'line',
-          data: data1,
-          options: {
-            responsive: true
-          }
-        });
+          })
+
+          .done(function() {
+        
+
+            var chrt1 = document.getElementById("myChart1");
+            var data1 = {
+              labels: ["Domingo", "Segunda", "Terça", "Quarta", "Quinta", "Sexta", "Sábado"],
+              datasets: [
+                {
+                  label: "Calorias perdidas ao longo da semana",
+                  fill: false,
+                  lineTension: 0.1,
+                  backgroundColor: "rgba(75,192,192,0.4)",
+                  borderColor: "rgba(75,192,192,1)",
+                  borderCapStyle: 'butt',
+                  borderDash: [],
+                  borderDashOffset: 0.0,
+                  borderJoinStyle: 'miter',
+                  pointBorderColor: "rgba(75,192,192,1)",
+                  pointBackgroundColor: "#fff",
+                  pointBorderWidth: 1,
+                  pointHoverRadius: 5,
+                  pointHoverBackgroundColor: "rgba(75,192,192,1)",
+                  pointHoverBorderColor: "rgba(220,220,220,1)",
+                  pointHoverBorderWidth: 2,
+                  pointRadius: 1,
+                  pointHitRadius: 10,
+                  data: medApp.services.dadosEstaticos.calorias,
+                  spanGaps: false,
+                }
+              ]
+            }; //TODO implementação da comunicação de dados com o servidor.
+            var myChart1 = new Chart(chrt1, {
+              type: 'line',
+              data: data1,
+              options: {
+                responsive: true
+              }
+            });
+
+          });
 
         // Fim da interface gráfica 1. TODO --> Implementar outros gráficos.
 
@@ -417,46 +429,52 @@ medApp.controllers = {
 
         //Request
         
-        $.get('https://pibicfitbit.herokuapp.com/api/paciente/health/static/' + medApp.services.idAtualPaciente + '/passos')
+        $.get('http://julianop.com.br:3000/api/paciente/health/static/' + medApp.services.dadosPacienteAtual.idAtualPaciente)
           .done(function(data) {
-            medApp.services.setDadosEstaticos.passos(data);
-            console.log(data);
-        });
-
-        var chrt2 = document.getElementById("myChart2");
-        var data2 = {
-          labels: ["Domingo", "Segunda", "Terça", "Quarta", "Quinta", "Sexta", "Sábado"],
-            datasets: [
-              {
-                label: "Número de passos dados na última semana",
-                fill: false,
-                lineTension: 0.1,
-                backgroundColor: "rgba(75,192,192,0.4)",
-                borderColor: "rgba(75,192,192,1)",
-                borderCapStyle: 'butt',
-                borderDash: [],
-                borderDashOffset: 0.0,
-                borderJoinStyle: 'miter',
-                pointBorderColor: "rgba(75,192,192,1)",
-                pointBackgroundColor: "#fff",
-                pointBorderWidth: 1,
-                pointHoverRadius: 5,
-                pointHoverBackgroundColor: "rgba(75,192,192,1)",
-                pointHoverBorderColor: "rgba(220,220,220,1)",
-                pointHoverBorderWidth: 2,
-                pointRadius: 1,
-                pointHitRadius: 10,
-                data: medApp.services.dadosEstaticos.passos,
-                spanGaps: false
-              }
-            ]
-          }; //TODO implementação da comunicação de dados com o servidor.
-          var myChart2 = new Chart(chrt2, {
-            type: 'polarArea',
-            data: data2,
-            options: {
-              responsive: true
+            for(var i = 0; i < data.length; i++){
+              medApp.services.dadosEstaticos.passos[i] = data[i].steps;
             }
+          })
+
+          .done(function() {  
+        
+
+            var chrt2 = document.getElementById("myChart2");
+            var data2 = {
+              labels: ["Domingo", "Segunda", "Terça", "Quarta", "Quinta", "Sexta", "Sábado"],
+                datasets: [
+                  {
+                    label: "Número de passos dados na última semana",
+                    fill: false,
+                    lineTension: 0.1,
+                    backgroundColor: "rgba(75,192,192,0.4)",
+                    borderColor: "rgba(75,192,192,1)",
+                    borderCapStyle: 'butt',
+                    borderDash: [],
+                    borderDashOffset: 0.0,
+                    borderJoinStyle: 'miter',
+                    pointBorderColor: "rgba(75,192,192,1)",
+                    pointBackgroundColor: "#fff",
+                    pointBorderWidth: 1,
+                    pointHoverRadius: 5,
+                    pointHoverBackgroundColor: "rgba(75,192,192,1)",
+                    pointHoverBorderColor: "rgba(220,220,220,1)",
+                    pointHoverBorderWidth: 2,
+                    pointRadius: 1,
+                    pointHitRadius: 10,
+                    data: medApp.services.dadosEstaticos.passos,
+                    spanGaps: false
+                  }
+                ]
+              }; //TODO implementação da comunicação de dados com o servidor.
+              var myChart2 = new Chart(chrt2, {
+                type: 'bar',
+                data: data2,
+                options: {
+                  responsive: true
+                }
+              });
+
           });
 
           // Fim da interface gráfica 2. TODO --> Implementar outros gráficos.
@@ -468,34 +486,36 @@ medApp.controllers = {
         //Interface gráfica interativa dos dados estáticos de saúde.
 
         //Request
-        $.get('https://pibicfitbit.herokuapp.com/api/paciente/health/dynamic/' + medApp.services.idAtualPaciente)
+        /*$.get('http://julianop.com.br:3000/api/paciente/health/dynamic/' + medApp.services.dadosPacienteAtual.idAtualPaciente)
           .done(function(data) {
-            medApp.services.setDadosEstaticos.pulso(data);
-            console.log(medApp.services.getDadosEstaticos.pulso());
-        }); 
-        
-        var chrt3 = document.getElementById("myChart3");
-        var data3 = {
-          labels: ["Domingo", "Segunda", "Terça", "Quarta", "Quinta", "Sexta", "Sábado"],
-          datasets: [
-            {
-              label: "Pulsação média durante o último dia",
-              backgroundColor: "rgba(75,192,192,0.4)",
-              borderColor: "rgba(75,192,192,1)",
-              borderWidth: 5,
-              hoverBackgroundColor: "rgba(255, 99, 132, 0.4)",
-              hoverBorderColor: "rgba:(255, 99, 132, 1)",
-              data: medApp.services.dadosEstaticos.pulso
-            }
-          ]
-        }; //TODO implementação da comunicação de dados com o servidor.
-        var myChart3 = new Chart(chrt3, {
-          type: 'bar',
-          data: data3,
-          options: {
-            responsive: true
-          }
-        });
+            medApp.services.dadosEstaticos.pulso = data;
+            console.log(medApp.services.dadosEstaticos.pulso);
+    
+          })
+          .done(
+            var chrt3 = document.getElementById("myChart3");
+            var data3 = {
+              labels: ["Domingo", "Segunda", "Terça", "Quarta", "Quinta", "Sexta", "Sábado"],
+              datasets: [
+                {
+                  label: "Pulsação média durante o último dia",
+                  backgroundColor: "rgba(75,192,192,0.4)",
+                  borderColor: "rgba(75,192,192,1)",
+                  borderWidth: 5,
+                  hoverBackgroundColor: "rgba(255, 99, 132, 0.4)",
+                  hoverBorderColor: "rgba:(255, 99, 132, 1)",
+                  data: medApp.services.dadosEstaticos.pulso
+                }
+              ]
+            }; //TODO implementação da comunicação de dados com o servidor.
+            var myChart3 = new Chart(chrt3, {
+              type: 'bar',
+              data: data3,
+              options: {
+                responsive: true
+              }
+            });
+          });*/
 
         // Fim da interface gráfica 3. TODO --> Implementar outros gráficos.
 
@@ -506,34 +526,40 @@ medApp.controllers = {
         //Interface gráfica interativa dos dados estáticos de saúde.
 
         //Request
-        $.get('https://pibicfitbit.herokuapp.com/api/paciente/health/static/' + medApp.services.idAtualPaciente + '/degraus')
+        $.get('http://julianop.com.br:3000/api/paciente/health/static/' + medApp.services.dadosPacienteAtual.idAtualPaciente)
           .done(function(data) {
-            medApp.services.setDadosEstaticos.degraus(data);
-            console.log(medApp.services.getDadosEstaticos.degraus());
-        });
-
-        var chrt4 = document.getElementById("myChart4");
-        var data4 = {
-          labels: ["Domingo", "Segunda", "Terça", "Quarta", "Quinta", "Sexta", "Sábado"],
-          datasets: [
-            {
-              label: "Últimas medições de Oximetria do Paciente",
-              backgroundColor: "rgba(75,192,192,0.4)",
-              borderColor: "rgba(75,192,192,1)",
-              borderWidth: 5,
-              hoverBackgroundColor: "rgba(255, 99, 132, 0.4)",
-              hoverBorderColor: "rgba:(255, 99, 132, 1)",
-              data: medApp.services.dadosEstaticos.degraus
+            for(var i = 0; i < data.length; i++){
+              medApp.services.dadosEstaticos.degraus[i] = data[i].steps;
             }
-          ]
-        }; //TODO implementação da comunicação de dados com o servidor.
-        var myChart4 = new Chart(chrt4, {
-          type: 'radar',
-          data: data4,
-          options: {
-            responsive: true
-          }
-        });
+          })
+
+          .done(function() {
+        
+
+            var chrt4 = document.getElementById("myChart4");
+            var data4 = {
+              labels: ["Domingo", "Segunda", "Terça", "Quarta", "Quinta", "Sexta", "Sábado"],
+              datasets: [
+                {
+                  label: "Número de degraus subidos na última semana",
+                  backgroundColor: "rgba(75,192,192,0.4)",
+                  borderColor: "rgba(75,192,192,1)",
+                  borderWidth: 5,
+                  hoverBackgroundColor: "rgba(255, 99, 132, 0.4)",
+                  hoverBorderColor: "rgba:(255, 99, 132, 1)",
+                  data: medApp.services.dadosEstaticos.degraus
+                }
+              ]
+            }; //TODO implementação da comunicação de dados com o servidor.
+            var myChart4 = new Chart(chrt4, {
+              type: 'radar',
+              data: data4,
+              options: {
+                responsive: true
+              }
+            });
+
+          });
 
         // Fim da interface gráfica 4. TODO --> Implementar outros gráficos.
 
@@ -553,7 +579,7 @@ medApp.controllers = {
     // Pega dados do servidor para edição (CPF não é mostrado no perfil, logo não existe seu innerHTML)
     page.addEventListener('show', function(event) {
 
-      $.get('https://pibicfitbit.herokuapp.com/api/medico/busca/ID/' + medApp.services.idAtualMedico)
+      $.get('http://julianop.com.br:3000/api/medico/busca/ID/' + medApp.services.idAtualMedico)
       .done(function(data) {
         $('#nome-medico').val(data[0].nome);
         $('#crm-medico').val(data[0].CRM);
@@ -597,7 +623,8 @@ medApp.controllers = {
                   especialidade: dadosEdit.esp,
                   CRM: dadosEdit.crm,
                   telefone: dadosEdit.tel,
-                  CPF: dadosEdit.cpf
+                  CPF: dadosEdit.cpf,
+                  email: dadosEdit.email
                 }
         });
 
@@ -647,32 +674,40 @@ medApp.controllers = {
       //Request PUT responsável pela edição de pacientes diretamente na base de dados.
 
       $.ajax({
-          url: 'http://julianop.com.br:3000/api/paciente/geral' + medApp.services.getIdPaciente(),
+          url: 'http://julianop.com.br:3000/api/paciente/geral',
           type: 'PUT',
-          success: function(data) {
-            console.log(data);
-          },
-          error: function() {
-            ons.notification.alert("Alterações não efetuadas");
-          },
+          headers: { 'idpaciente': medApp.services.getIdPaciente() },
           data: {
             nomePaciente: dadosEditPac.nome,
             causaDaInternacao: dadosEditPac.causa,
-            novaData: dadosEdit.idadeEdit,
-            dataDeNascimento: '1990-04-12'
+            dataDeNascimento: dadosEditPac.dataInt
           }
+        })
+        .done(function(data) {
+          console.log(data);
+          document.querySelector('#pacienteNav').popPage( {data: 
+            {
+              nome: dadosEditPac.nome,
+              causa: dadosEditPac.causa,
+              dataInt: dadosEditPac.dataInt
+            }
+          });
+        })
+        .fail(function() {
+          ons.notification.alert("Alterações não efetuadas");
+          document.querySelector('#pacienteNav').popPage();
         });
 
-      document.querySelector('#pacienteNav').popPage();
     };
 
   },
 
-    ///////////////////////////////////////
-    // Controlador do feed de notícias   //
-    ///////////////////////////////////////
+  ///////////////////////////////////////
+  // Controlador do feed de notícias   //
+  ///////////////////////////////////////
 
   feed: function(page) {
+
       // Realiza a atualização do feed com pull --> TODO: funcionalidade.
         var pullHook = document.getElementById('pull-hook-feed');
         pullHook.addEventListener('changestate', function(event) {
@@ -719,11 +754,35 @@ medApp.controllers = {
       });
     },
 
-    ///////////////////////////////////////
-    // Controlador da lista de lembretes //
-    ///////////////////////////////////////
+  ///////////////////////////////////////
+  // Controlador da lista de lembretes //
+  ///////////////////////////////////////
 
   lembretes: function(page){
+
+    page.addEventListener('show', function(event) {
+
+      // Limpa e popula a lista de lembretes
+      $('#lista-lembretes').empty();
+      $.get('http://julianop.com.br:3000/api/lembrete/' + medApp.services.getIdPaciente())
+      .done(function(data){
+        
+        // Cria os lembretes no inverso dos id's retornados (ordem cronológica)
+        for (var i = data.length - 1; i >= 0; i--) {
+
+          lembretesInfo = data[i];
+          medApp.services.createLembrete( 
+            { 
+              texto: lembretesInfo.mensagem,
+              horario: lembretesInfo.data,
+              medico: lembretesInfo.nome,
+              idLembrete: lembretesInfo.id
+            });
+        };
+
+      });
+
+    });
 
     page.querySelector('#add-lembrete').onclick = function() {
 
@@ -731,19 +790,13 @@ medApp.controllers = {
 
     };
 
-    page.querySelector('#ver-lembrete').onclick = function() {
-
-      document.querySelector('#pacienteNav').pushPage('html/verlembrete.html');
-
-    };
-
   },
 
   ///////////////////////////////////////
-  // Controlador da busca de pacientes //
+  // Controlador da busca de pacientes // NÃO IMPLEMENTADO
   ///////////////////////////////////////
 
-  buscarpaciente: function(page){
+  /*buscarpaciente: function(page){
 
     page.querySelector('#add-pac').onclick = function() {
 
@@ -751,7 +804,7 @@ medApp.controllers = {
 
     };
 
-  },
+  },*/
 
   /////////////////////////////////////////
   // Controlador do cadastro de paciente //
@@ -801,7 +854,7 @@ medApp.controllers = {
       
           medApp.services.setPulseiraAtual(id);
 
-          ons.notification.alert("Pulseira " + medApp.services.pulseiraAtual + "selecionada.");
+          ons.notification.alert("Pulseira " + medApp.services.pulseiraAtual + " selecionada.");
 
           document
             .getElementById('#popover')
@@ -861,9 +914,9 @@ medApp.controllers = {
           numeroDoProntuario: 1111,
           telefone: 11111,
           foto: 01010101011111011111,
-          dataDeNascimento: '1980-01-01',
+          dataDeNascimento: dataNovoPaciente,
           idMedico: medApp.services.getIdMedico(),
-          idPulseira: medApp.services.pulseiraAtual
+          idPulseira: 50
         })
           .done(function(data) {
             modal.hide();
@@ -877,6 +930,10 @@ medApp.controllers = {
 
   },
 
+  //////////////////////////////////
+  // Controlador de configurações //
+  //////////////////////////////////
+
   configuracoes: function(page) {
 
     page.querySelector('#manage-pulseiras').onclick = function() {
@@ -888,14 +945,143 @@ medApp.controllers = {
   },
 
   ////////////////////////////////////////
+  // Controlador do Adicionar Pulseiras //
+  ////////////////////////////////////////
+
+  pulseiras: function(page){
+
+    page.querySelector('#addpulseira').onclick = function(){
+
+        //pede o login e a senha do usuario
+        var  login;
+        login = prompt("Digite o login da FITBIT");
+
+
+        var   senha;
+        senha = prompt("Digite a senha da FITBIT");
+
+        //encontra a URL
+        var URL;
+        $.post("https://www.fitbit.com/oauth2/authorize?response_type=code&client_id=227WRB&redirect_uri=http%3A%2F%2Fjulianop.com.br%3A3000%2F&scope=activity%20heartrate%20location%20nutrition%20profile%20settings%20sleep%20social%20weight&expires_in=604800",
+            {login:login,
+            senha:senha
+            })
+            .done(function(data){
+              URL = window.location.href;
+              console.log(URL);
+            });
+
+        //pega o codigoOauth
+        var Oauth = URL.substr(URL.indexOf("=")+1,URL.indexOf("#")-1);
+
+
+        //Para debug, retirar depois
+        Alert(Oauth);
+
+        $.post("url/api/pulseira",{
+         redirectUri :"http://julianop.com.br:3000/",
+        ClientID: "227WRB",
+        ClientSecret: "1dcfe0c85eee35d7cb8295,733a3b0f9d",
+        CodigoOauth:Oauth
+
+        });
+        
+      };
+  },
+
+  ////////////////////////////////////////
   // Controlador de adicionar lembrete //
   ///////////////////////////////////////
 
   addlembrete: function(page) {
 
+    page.addEventListener('show', function(event) {
+
+      $.get('http://julianop.com.br:3000/api/medico/busca/ID/' + medApp.services.getIdMedico())
+      .done(function(data) {
+          page.querySelector('.lembrete-header').innerHTML = medApp.services.dadosPacienteAtual.nome;
+          page.querySelector('#medico-lembrete').innerHTML = data[0].nome;
+          // Pega a data atual
+          var hoje = medApp.services.getToday('barra');
+          page.querySelector('#data-lembrete').innerHTML = hoje;
+        });
+
+    });
+
     page.querySelector('#pub-lembrete').onclick = function() {
 
-      document.querySelector('#pacienteNav').popPage();
+      var modal = page.querySelector('ons-modal');
+      modal.show();
+
+      if($('#texto-lembrete').val() == ''){
+
+        modal.hide();
+        ons.notification.alert("Preencha o lembrete!");
+
+      } else {
+
+        $.post('http://julianop.com.br:3000/api/lembrete',
+        {
+          data: medApp.services.getToday('traco'),
+          mensagem: $('#texto-lembrete').val(),
+          idMedico: medApp.services.getIdMedico(),
+          idPaciente: medApp.services.getIdPaciente()
+        })
+          .done(function(data) {
+            modal.hide();
+            ons.notification.alert(data);
+            document.querySelector('#pacienteNav').popPage();
+          });
+      };
+
+    };
+
+  },
+
+  ////////////////////////////////////////
+  // Controlador de visualizar lembrete //
+  ////////////////////////////////////////
+
+  verlembrete: function(page) {
+
+    page.addEventListener('show', function(event) {
+
+      page.querySelector('.lembrete-header').innerHTML = medApp.services.dadosPacienteAtual.nome;
+      $('#texto-ver-lembrete').val(page.data.texto);
+      page.querySelector('#medico-ver-lembrete').innerHTML = page.data.medicoResp;
+      page.querySelector('#data-ver-lembrete').innerHTML = page.data.horario;
+
+    });
+
+    page.querySelector('#edit-lembrete').onclick = function() {
+
+      var modal = page.querySelector('ons-modal');
+      modal.show();
+
+      if($('#texto-ver-lembrete').val() == ''){
+
+        modal.hide();
+        ons.notification.alert("Preencha o lembrete!");
+
+      } else {
+
+        $.ajax({
+          url: 'http://julianop.com.br:3000/api/lembrete',
+          type: 'PUT',
+          data: { idLembrete: page.data.idLembrete,
+                  mensagem: $('#texto-ver-lembrete').val()
+                }
+        })
+        .done(function(data) {
+          console.log(data);
+          document.querySelector('#pacienteNav').popPage();
+        })
+        .fail(function() {
+          ons.notification.alert("Edição não efetuada");
+          document.querySelector('#pacienteNav').popPage();
+        });
+
+      };
 
     };
 

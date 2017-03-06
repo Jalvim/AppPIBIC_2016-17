@@ -22,6 +22,8 @@ var express = require('express'),
 	pulseiraRouter = require('./routes/pulseira.js'),
 	grupoPacientesRouter = require('./routes/grupoPacientes.js'),
 	mailSender = require('./mailgunWraper.js');
+	hospitaisRouter = require('./routes/hospitais.js');
+	compartilhamentoRouter = require('./routes/compartilhamento.js');
 	
 //Setup inicial de conecção com a base de dados 	
 connection = mysql.createConnection({
@@ -34,7 +36,7 @@ connection.connect();
 
 //setando todas as variáveis de options nos requests http de teste
 setupOptionsVariables(app);
-// 
+ 
 
 //  request(app.optionsDeleteTestRequestLembrete, function(err, httpResponse, body) { 
 //  	console.log(err);
@@ -326,6 +328,10 @@ app.use('/api/login', loginRouter);
 app.use('/api/pulseira', pulseiraRouter);
 
 app.use('/api/grupoPacientes', grupoPacientesRouter);
+
+app.use('/api/hospitais', hospitaisRouter);
+
+app.use('/api/compartilhamento', compartilhamentoRouter);
 
 port = process.env.PORT || 3000;
 
