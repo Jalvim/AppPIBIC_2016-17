@@ -12,7 +12,6 @@ var senhas = require('./senhas.js');
 var express = require('express'),
 	app = express(),
 	request = require('request'),
-	fs = require('fs'),
 	mysql = require('mysql'),
 	bodyParser = require('body-parser'),
 	setupOptionsVariables = require('./setupVariables.js'),
@@ -56,6 +55,9 @@ setupOptionsVariables(app);
 // 	console.log(body);
 // });
 
+
+
+//Loop e multiplexação das pulseiras em atividade para resgate de parâmetros estáticos
 setInterval(function(){
 	connection.query('SELECT idPulseira FROM Pulseira_Paciente', function(err,rows) {
 		if (err) console.log(err);
@@ -65,12 +67,25 @@ setInterval(function(){
 	});
 }, 300000);
 
+//Loop e multiplexação das pulseiras em atividade para resgate de parâmetros dinâmicos
+setInterval(function() {
+	var data = new Date(),
+		delay = 30;
+	connection.query('SELECT idPulseira FROM Pulseira_Paciente', function(err,rows) {
+		if (err) console.log(err);
+		for (var i = 0; i < rows.length; i++) {
+			getDynamicHealthParams(rows[i].idPulseira, data, delay);
+		}
+	});
+}, 30000);
+
+
 
 //info vai conter dados HR de chamada bem sucedida à API fitbit
 var info = {};
 
 //request(optionsGetHR, getHRCallback);
-//getDynamicHealthParams(38);
+//getDynamicHealthParams(56, data, 120);
 //getStaticHealthParams(0, 56);
 //getStaticHealthParams(0, 18);
 //console.log(getTodayDate());
@@ -80,58 +95,81 @@ getHRCallback é a função que trata a resposta advinda da chamada à API da Fi
 batimentos cardíacos.
 
 TO DO:
-	=>Armazenar dados de batimento cardíaco recebidos na base de dados
-	=>Implementar funcionalidade similar ao da função de parametros estáticos (puxar dados de autenticação da bd)
-	=>Adaptar função à nova arquitetura do webapp (pulseira e paciente separados)
+	=> Melhorar algoritmo para pegar HR, atualmente ele é bem ineficiente em termos de espaço e talvez tempo
 */ 
-function getDynamicHealthParams(id) {
+function getDynamicHealthParams(idPulseira, currDate, delay) {
 
-	connection.query(`SELECT * FROM Autenticacao WHERE idPaciente=${id}`, 
+	var date = new Date(currDate);
+	date.setSeconds(date.getSeconds() - 60);
+	console.log(currDate);
+	console.log(date);
+	
+	connection.query(`SELECT A.*, PulPac.pacienteAtual FROM Autenticacao A, Pulseira_Paciente PulPac WHERE A.idPulseira=${idPulseira} AND PulPac.idPulseira = A.idPulseira`, 
 	  function(err, result, fields){
 	  	console.log(result);
-		if (result.length < 1 || err) { console.log('Erro ao puxar info de autenticação da base de dados para parâmetros dinâmicos.'); return; }
-		else {
-			
-			var authorizationHeader = `Bearer ${result[0].accessToken}`;
-			
-			var optionsGetHR = {
-				url:`https://api.fitbit.com/1/user/${result[0].userID}/activities/heart/date/today/1d/1sec/time/00:00/00:01.json`,
-				headers: {
-					'Authorization': authorizationHeader,
+		if (result.length < 1 || err) { return res.send('Erro ao puxar info de autenticação da base de dados para parâmetros dinâmicos.'); }
+					
+		var authorizationHeader = `Bearer ${result[0].accessToken}`;	
+		var optionsGetHR = {
+			url:`https://api.fitbit.com/1/user/${result[0].userID}/activities/heart/date/today/1d/1sec/time/${date.getHours()}:${date.getMinutes()}/${currDate.getHours()}:${currDate.getMinutes()}.json`,
+			headers: {
+				'Authorization': authorizationHeader,
+			}
+		};
+
+		request(optionsGetHR,function getHRCallback(errors, response, body) {
+			console.log(response.statusCode);
+			if (!errors && response.statusCode == 200) {
+				info = JSON.parse(body);
+				console.log(info['activities-heart-intraday'].dataset);
+				
+				if (info['activities-heart-intraday'].dataset.length < 1) {
+					currDate.setSeconds(currDate.getSeconds() - delay);
+					getDynamicHealthParams(idPulseira, currDate, delay);
+				} else {
+					formatDate(currDate);
+					connection.query(`SELECT * FROM SaudeParamsDinamicos WHERE idPaciente=${result[0].pacienteAtual} AND hora='${currDate.time}'`, function(err,rows) {
+						if (err) { return console.log('Error: problema na base impediu armazenamento de dados HR'); }
+						if (rows.length != 0) { return console.log('Erro:dado já armazenado! Sincronize novamente a pulseira com o concentrador.'); }
+						else {
+							connection.query(`INSERT INTO SaudeParamsDinamicos (idPaciente, data, hora, heartRate) VALUES (${result[0].pacienteAtual}, '${currDate.date}', '${currDate.time}', ${info['activities-heart-intraday'].dataset[0].value})`);
+							console.log('Dados de HR armazenados com sucesso!');						
+						} 
+					});
+					console.log('útil');
 				}
-			};
+			} 
+			//tokens em OAuth valem por 1 hora, caso tenham expirado, refresh
+			else if (response.statusCode == 401) {
+				refreshOAuthToken(optionsGetHR, getHRCallback, result);
+			}
+		});
 	
-			request(optionsGetHR,function getHRCallback(errors, response, body) {
-				console.log(response.statusCode);
-				if (!errors && response.statusCode == 200) {
-					info = JSON.parse(body);
-					console.log(info);
-					
-					
-					
-				} 
-				//tokens em OAuth valem por 1 hora, caso tenham expirado, refresh
-				else if (response.statusCode == 401) {
-					refreshOAuthToken(optionsGetHR, getHRCallback, result);
-				}
-			});
-		}
 	})
 		
 }
 
-function getTodayDate() {
-	var today = new Date(),
-		dd = today.getDate(),
-		mm = today.getMonth() + 1,
-		yyyy = today.getFullYear();
+//Função subtrai delay da data "today" e formata para armazenamento na base de dados
+function formatDate(today) {
+
+	dd = today.getDate(),
+	MM = today.getMonth() + 1,
+	yyyy = today.getFullYear();
+	hh = today.getHours();
+	mm = today.getMinutes();
+	ss = today.getSeconds();
 		
-	if (mm < 10) mm = '0' + mm;
+	if (MM < 10) MM = '0' + MM;
 	if (dd < 10) dd = '0' + dd;
+	if (hh < 10) hh = '0' + hh;
+	if (mm < 10) mm = '0' + mm;
+	if (ss < 10) ss = '0' + ss;
 		
-	today = `${yyyy}-${mm}-${dd}`;
+	today.date = `${yyyy}-${MM}-${dd}`;
+	today.time = `${hh}:${mm}:${ss}`;
 	return today;
 }
+
 
 /*
 getStaticParams é uma função que puxa dados de saúde estáticos (não necessitam acompanhamento em tempo real)

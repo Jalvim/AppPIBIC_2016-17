@@ -261,4 +261,22 @@ router.get('/health/static/:idPaciente', function(req, res){
 	
 });
 
+router.get('/health/dynamic/:idPaciente/:data', function(req, res){
+	
+	connection.query(
+	  'SELECT * FROM SaudeParamsDinamicos where idPaciente=? AND data=?',
+	  [req.params.idPaciente, req.params.data],
+	  function(err, rows, fields) {
+		if (err) res.send('Error: não foi possível puxar dados do paciente especificado na data especificada.');
+		else {
+			if(rows.length < 1){
+				res.send('Id ou data Inválidos');
+			} else {
+				res.json(rows);
+			}
+		}
+	});
+	
+});
+
 module.exports = router;

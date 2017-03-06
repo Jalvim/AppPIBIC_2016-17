@@ -238,17 +238,15 @@ medApp.controllers = {
 
   pacientes: function(page) {
 
-    // Chama o perfil com os dados do paciente selecionado
-    //ANTES: var pacientes = page.querySelectorAll(".paciente-lista"); //TODO --> TESTE DE CONEXÂO
     page.addEventListener('show', function(event) { 
 
       medApp.services.deletePacienteAtual();
+      $('#lista-pacientes').empty();
       var pacientesInfo;
 
       $.get('https://pibicfitbit.herokuapp.com/api/paciente/geral/idMedico/' + medApp.services.getIdMedico())
         .done(function(data) {
           pacientesInfo = data;
-          console.log(pacientesInfo);
 
           for (var i = 0, len = pacientesInfo.length; i < len; i++) {
 
@@ -317,7 +315,6 @@ medApp.controllers = {
     // Preenche os dados do perfil do paciente atual
     page.addEventListener('show', function(event) {
 
-      console.log(medApp.services.dadosPacienteAtual);
       page.querySelector('.profile-name').innerHTML = page.data.nome;
       page.querySelector('#data-int').innerHTML = page.data.dataInt;
       page.querySelector('#causa').innerHTML = page.data.causa;
@@ -468,24 +465,24 @@ medApp.controllers = {
         //Interface gráfica interativa dos dados estáticos de saúde.
 
         //Request
-        /*$.get('https://pibicfitbit.herokuapp.com/api/paciente/health/static/' + medApp.services.idAtualPaciente)
+        $.get('https://pibicfitbit.herokuapp.com/api/paciente/health/dynamic/' + medApp.services.idAtualPaciente)
           .done(function(data) {
             medApp.services.setDadosEstaticos.pulso(data);
             console.log(medApp.services.getDadosEstaticos.pulso());
-        }); DADO NÃO ESTÁTICO --> SEM IMPLEMENTAÇÃO*/ 
+        });
         
         var chrt3 = document.getElementById("myChart3");
         var data3 = {
           labels: ["Domingo", "Segunda", "Terça", "Quarta", "Quinta", "Sexta", "Sábado"],
           datasets: [
             {
-              label: "Pulsação média durante a última semana",
+              label: "Pulsação média durante o último dia",
               backgroundColor: "rgba(75,192,192,0.4)",
               borderColor: "rgba(75,192,192,1)",
               borderWidth: 5,
               hoverBackgroundColor: "rgba(255, 99, 132, 0.4)",
               hoverBorderColor: "rgba:(255, 99, 132, 1)",
-              data: [10, 20, 30, 40, 50, 50, 40] // medApp.services.getDadosEstaticos().
+              data: medApp.services.dadosEstaticos.pulso
             }
           ]
         }; //TODO implementação da comunicação de dados com o servidor.
@@ -725,25 +722,44 @@ medApp.controllers = {
 
   lembretes: function(page){
 
+    page.addEventListener('show', function(event) {
+
+      // Limpa e popula a lista de lembretes
+      $('#lista-lembretes').empty();
+      $.get('http://julianop.com.br:3000/api/lembrete/' + medApp.services.getIdPaciente())
+      .done(function(data){
+        
+        lembretesInfo = data;
+        console.log(lembretesInfo);
+          // Cria os lembretes no inverso dos id's retornados (ordem cronológica)
+          for (var i = lembretesInfo.length - 1; i >= 0; i--) {
+
+            medApp.services.createLembrete( 
+            { 
+              texto: lembretesInfo[i].mensagem,
+              horario: lembretesInfo[i].data,
+              medico: lembretesInfo[i].nome,
+              idLembrete: lembretesInfo[i].id
+            });
+          };
+
+      });
+
+    });
+
     page.querySelector('#add-lembrete').onclick = function() {
 
       document.querySelector('#pacienteNav').pushPage('html/addlembrete.html');
 
     };
 
-    page.querySelector('#ver-lembrete').onclick = function() {
-
-      document.querySelector('#pacienteNav').pushPage('html/verlembrete.html');
-
-    };
-
   },
 
   ///////////////////////////////////////
-  // Controlador da busca de pacientes //
+  // Controlador da busca de pacientes // NÃO IMPLEMENTADO
   ///////////////////////////////////////
 
-  buscarpaciente: function(page){
+  /*buscarpaciente: function(page){
 
     page.querySelector('#add-pac').onclick = function() {
 
@@ -751,7 +767,7 @@ medApp.controllers = {
 
     };
 
-  },
+  },*/
 
   /////////////////////////////////////////
   // Controlador do cadastro de paciente //
@@ -764,12 +780,8 @@ medApp.controllers = {
     //Método responsável por encontrar na base as pulseiras disponíveis.
     $.get('http://julianop.com.br:3000/api/pulseira/disponivel')
       .done(function(data){
-      	if(data.hasOwnProperty('idPulseiras')){
-      		medApp.services.setPulseirasDisponiveis(data);
-            console.log(medApp.services.pulseirasDisponiveis);
-      	} else {
-      		ons.notification.alert("Falha ao conectar com o servidor.");
-      	}
+      	medApp.services.setPulseirasDisponiveis(data);
+        console.log(medApp.services.pulseirasDisponiveis);
       });
 
     page.querySelector('#pulseiraButton').onclick = function() {
@@ -865,9 +877,9 @@ medApp.controllers = {
           numeroDoProntuario: 1111,
           telefone: 11111,
           foto: 01010101011111011111,
-          dataDeNascimento: '1980-01-01',
+          dataDeNascimento: dataNovoPaciente,
           idMedico: medApp.services.getIdMedico(),
-          idPulseira: medApp.services.pulseiraAtual
+          idPulseira: 47
         })
           .done(function(data) {
             modal.hide();
@@ -897,11 +909,55 @@ medApp.controllers = {
 
   addlembrete: function(page) {
 
+    page.addEventListener('show', function(event) {
+
+      page.querySelector('.lembrete-header').innerHTML = medApp.services.dadosPacienteAtual.nome;
+      page.querySelector('#medico-lembrete').innerHTML = medApp.services.getNameMedico();
+      // Pega a data atual
+      var hoje = medApp.services.getToday('barra');
+      page.querySelector('#data-lembrete').innerHTML = hoje;
+
+    });
+
     page.querySelector('#pub-lembrete').onclick = function() {
 
-      document.querySelector('#pacienteNav').popPage();
+      if($('#texto-lembrete').val() == ''){
+
+        ons.notification.alert("Preencha todos os campos!");
+
+      } else {
+
+        $.post('http://julianop.com.br:3000/api/lembrete',
+        {
+          data: medApp.services.getToday('traco'),
+          mensagem: $('#texto-lembrete').val(),
+          idMedico: medApp.services.getIdMedico(),
+          idPaciente: medApp.services.getIdPaciente()
+        })
+          .done(function(data) {
+            ons.notification.alert(data);
+            document.querySelector('#pacienteNav').popPage();
+          });
+      };
 
     };
+
+  },
+
+  ////////////////////////////////////////
+  // Controlador de visualizar lembrete //
+  ////////////////////////////////////////
+
+  verlembrete: function(page) {
+
+    page.addEventListener('show', function(event) {
+
+      page.querySelector('.lembrete-header').innerHTML = medApp.services.dadosPacienteAtual.nome;
+      page.querySelector('.lembrete-text').innerHTML = page.data.texto;
+      page.querySelector('#medico-ver-lembrete').innerHTML = page.data.medicoResp;
+      page.querySelector('#data-ver-lembrete').innerHTML = page.data.horario;
+
+    });
 
   }
 
