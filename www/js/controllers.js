@@ -468,11 +468,11 @@ medApp.controllers = {
         //Interface gráfica interativa dos dados estáticos de saúde.
 
         //Request
-        $.get('https://pibicfitbit.herokuapp.com/api/paciente/health/static/' + medApp.services.idAtualPaciente)
+        /*$.get('https://pibicfitbit.herokuapp.com/api/paciente/health/static/' + medApp.services.idAtualPaciente)
           .done(function(data) {
             medApp.services.setDadosEstaticos.pulso(data);
             console.log(medApp.services.getDadosEstaticos.pulso());
-        });
+        }); DADO NÃO ESTÁTICO --> SEM IMPLEMENTAÇÃO*/ 
         
         var chrt3 = document.getElementById("myChart3");
         var data3 = {
@@ -659,7 +659,7 @@ medApp.controllers = {
             nomePaciente: dadosEditPac.nome,
             causaDaInternacao: dadosEditPac.causa,
             novaData: dadosEdit.idadeEdit,
-            dataDeNascimento:
+            dataDeNascimento: '1990-04-12'
           }
         });
 
