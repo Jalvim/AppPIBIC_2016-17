@@ -328,7 +328,7 @@ app.use('/api/pulseira', pulseiraRouter);
 
 app.use('/api/grupoPacientes', grupoPacientesRouter);
 
-app.use('/api/hospitais', hospitaisRouteros);
+app.use('/api/hospitais', hospitaisRouter);
 
 app.use('/api/compartilhamento', compartilhamentoRouter);
 
