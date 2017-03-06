@@ -486,16 +486,17 @@ medApp.controllers = {
         //Interface gráfica interativa dos dados estáticos de saúde.
 
         //Request
-        /*$.get('http://julianop.com.br:3000/api/paciente/health/dynamic/' + medApp.services.dadosPacienteAtual.idAtualPaciente)
+        $.get('http://julianop.com.br:3000/api/paciente/health/dynamic/' + medApp.services.dadosPacienteAtual.idAtualPaciente + '/' + medApp.services.getToday('traco'))
           .done(function(data) {
-            medApp.services.dadosEstaticos.pulso = data;
-            console.log(medApp.services.dadosEstaticos.pulso);
-    
+            for(var i = 0; i < 10; i++){
+              medApp.services.dadosEstaticos.pulso[i] = data[((data.length - 11) + i)].heartRate;
+            }
           })
-          .done(
+          .done(function () {
+            console.log(medApp.services.dadosEstaticos.pulso);
             var chrt3 = document.getElementById("myChart3");
             var data3 = {
-              labels: ["Domingo", "Segunda", "Terça", "Quarta", "Quinta", "Sexta", "Sábado"],
+              labels: ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10"],
               datasets: [
                 {
                   label: "Pulsação média durante o último dia",
@@ -515,7 +516,7 @@ medApp.controllers = {
                 responsive: true
               }
             });
-          });*/
+          });
 
         // Fim da interface gráfica 3. TODO --> Implementar outros gráficos.
 
