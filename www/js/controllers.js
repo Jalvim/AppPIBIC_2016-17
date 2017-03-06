@@ -261,7 +261,7 @@ medApp.controllers = {
                 statusPaciente: 'ativo',
                 img: 'http://www.clker.com/cliparts/A/Y/O/m/o/N/placeholder-md.png',
                 nomePaciente: pacientesInfo.nomePaciente,
-                batimentos: '60',
+                batimentos: '--',
                 dataPaciente: pacientesInfo.dataDeNascimento,
                 causaPaciente: pacientesInfo.causaDaInternacao,
                 medicoResp: pacientesInfo.numeroDoProntuario,
@@ -708,6 +708,25 @@ medApp.controllers = {
 
   feed: function(page) {
 
+    page.addEventListener('show', function(event) {
+
+      $.get('http://julianop.com.br:3000/api/paciente/geral/idMedico/' + medApp.services.getIdMedico())
+        .done(function(data) {
+
+          for (var i = 0, len = data.length; i < len; i++) {
+
+            var pacientesNews = data[i];
+
+            $.get('http://julianop.com.br:3000/api/lembrete/' + pacientesNews.idPaciente)
+              .done(function(response){
+
+                // Criar feed de notícias aqui
+
+            });
+          };
+      });
+    });
+
       // Realiza a atualização do feed com pull --> TODO: funcionalidade.
         var pullHook = document.getElementById('pull-hook-feed');
         pullHook.addEventListener('changestate', function(event) {
@@ -729,6 +748,7 @@ medApp.controllers = {
           setTimeout(done, 1000);
         };
 
+    /* RETIRADO PARA TESTES
       //Implementação de gráfico aparente no feed.
       var ctx = document.getElementById("myChart");
       var dados = {
@@ -752,7 +772,8 @@ medApp.controllers = {
             responsive: false
           }
       });
-    },
+    */
+  },
 
   ///////////////////////////////////////
   // Controlador da lista de lembretes //
@@ -996,6 +1017,8 @@ medApp.controllers = {
   addlembrete: function(page) {
 
     page.addEventListener('show', function(event) {
+
+      $('#texto-lembrete').val('');
 
       $.get('http://julianop.com.br:3000/api/medico/busca/ID/' + medApp.services.getIdMedico())
       .done(function(data) {
