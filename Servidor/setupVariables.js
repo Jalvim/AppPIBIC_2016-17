@@ -126,7 +126,7 @@ module.exports = function(app) {
 		method:'DELETE',
 		url:'http://127.0.0.1:3000/api/lembrete/',
 		form:{ 
-			idLembrete: 12
+			idLembrete: '17'
 		}
 	};
 

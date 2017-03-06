@@ -36,7 +36,7 @@ connection.connect();
 setupOptionsVariables(app);
 // 
 
-//  request(app.optionsPutTestRequestPulseira, function(err, httpResponse, body) { 
+//  request(app.optionsDeleteTestRequestLembrete, function(err, httpResponse, body) { 
 //  	console.log(err);
 //  	//console.log(httpResponse);
 //  	console.log(body);
@@ -63,7 +63,7 @@ setInterval(function(){
 			getStaticHealthParams(0, rows[i].idPulseira);
 		}
 	});
-}, 300000);
+}, 900000);
 
 //Loop e multiplexação das pulseiras em atividade para resgate de parâmetros dinâmicos
 setInterval(function() {
@@ -75,7 +75,7 @@ setInterval(function() {
 			getDynamicHealthParams(rows[i].idPulseira, data, delay);
 		}
 	});
-}, 30000);
+}, 60000);
 
 
 
@@ -97,19 +97,19 @@ TO DO:
 */ 
 function getDynamicHealthParams(idPulseira, currDate, delay) {
 
-	var date = new Date(currDate);
-	date.setSeconds(date.getSeconds() - 60);
-	console.log(currDate);
-	console.log(date);
+// 	var date = new Date(currDate);
+// 	date.setSeconds(date.getSeconds() - 60);
+// 	console.log(currDate);
+// 	console.log(date);
 	
 	connection.query(`SELECT A.*, PulPac.pacienteAtual FROM Autenticacao A, Pulseira_Paciente PulPac WHERE A.idPulseira=${idPulseira} AND PulPac.idPulseira = A.idPulseira`, 
 	  function(err, result, fields){
-	  	console.log(result);
+	  	//console.log(result);
 		if (result.length < 1 || err) { return res.send('Erro ao puxar info de autenticação da base de dados para parâmetros dinâmicos.'); }
 					
 		var authorizationHeader = `Bearer ${result[0].accessToken}`;	
 		var optionsGetHR = {
-			url:`https://api.fitbit.com/1/user/${result[0].userID}/activities/heart/date/today/1d/1sec/time/${date.getHours()}:${date.getMinutes()}/${currDate.getHours()}:${currDate.getMinutes()}.json`,
+			url:`https://api.fitbit.com/1/user/${result[0].userID}/activities/heart/date/today/1d/1sec.json`, 
 			headers: {
 				'Authorization': authorizationHeader,
 			}
@@ -126,11 +126,12 @@ function getDynamicHealthParams(idPulseira, currDate, delay) {
 					getDynamicHealthParams(idPulseira, currDate, delay);
 				} else {
 					formatDate(currDate);
-					connection.query(`SELECT * FROM SaudeParamsDinamicos WHERE idPaciente=${result[0].pacienteAtual} AND hora='${currDate.time}'`, function(err,rows) {
+					var len = info["activities-heart-intraday"].dataset.length;
+					connection.query(`SELECT * FROM SaudeParamsDinamicos WHERE idPaciente=${result[0].pacienteAtual} AND hora='${info["activities-heart-intraday"].dataset[len-1].time}'`, function(err,rows) {
 						if (err) { return console.log('Error: problema na base impediu armazenamento de dados HR'); }
 						if (rows.length != 0) { return console.log('Erro:dado já armazenado! Sincronize novamente a pulseira com o concentrador.'); }
 						else {
-							connection.query(`INSERT INTO SaudeParamsDinamicos (idPaciente, data, hora, heartRate) VALUES (${result[0].pacienteAtual}, '${currDate.date}', '${currDate.time}', ${info['activities-heart-intraday'].dataset[0].value})`);
+							connection.query(`INSERT INTO SaudeParamsDinamicos (idPaciente, data, hora, heartRate) VALUES (${result[0].pacienteAtual}, '${currDate.date}', '${info["activities-heart-intraday"].dataset[len-1].time}', ${info['activities-heart-intraday'].dataset[len-1].value})`);
 							console.log('Dados de HR armazenados com sucesso!');						
 						} 
 					});
