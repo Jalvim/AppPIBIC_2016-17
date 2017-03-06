@@ -154,9 +154,9 @@ medApp.services = {
 
     var dataPacienteFormatoTraco = data.dataPaciente.substring(0,10);
 
-     // Template de novo paciente
-     var template = document.createElement('div');
-     template.innerHTML =
+    // Template de novo paciente
+    var template = document.createElement('div');
+    template.innerHTML =
       '<ons-list-item class="paciente-lista ' + data.statusPaciente + '" modifier="longdivider" id="pac2" tappable>' +
         '<div class="left">' +
           '<img class="list__item__thumbnail" src="'+ data.img + '">' +
@@ -184,7 +184,7 @@ medApp.services = {
           '<ons-row>' +
             '<ons-col class="paciente-detalhes">' +
               '<ons-icon icon="user-md" class="list__item__icon"></ons-icon>' +
-              '<span class="list__item__subtitle">' + data.medicoResp + '</span>' +
+              '<span class="list__item__subtitle">' + 'Teste' + '</span>' +
             '</ons-col>' +
             '<ons-col class="paciente-detalhes">' +
               '<ons-icon icon="hospital-o" class="list__item__icon"></ons-icon>' +

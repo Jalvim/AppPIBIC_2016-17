@@ -889,7 +889,7 @@ medApp.controllers = {
           foto: 01010101011111011111,
           dataDeNascimento: dataNovoPaciente,
           idMedico: medApp.services.getIdMedico(),
-          idPulseira: 47
+          idPulseira: 50
         })
           .done(function(data) {
             modal.hide();
