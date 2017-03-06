@@ -23,6 +23,8 @@ var express = require('express'),
 	pulseiraRouter = require('./routes/pulseira.js'),
 	grupoPacientesRouter = require('./routes/grupoPacientes.js'),
 	mailSender = require('./mailgunWraper.js');
+	hospitaisRouter = require('./hospitais.js');
+	compartilhamentoRouter = require('./compartilhamento.js');
 	
 //Setup inicial de conecção com a base de dados 	
 connection = mysql.createConnection({
@@ -287,6 +289,10 @@ app.use('/api/login', loginRouter);
 app.use('/api/pulseira', pulseiraRouter);
 
 app.use('/api/grupoPacientes', grupoPacientesRouter);
+
+app.use('/api/hospitais', hospitaisRouteros);
+
+app.use('/api/compartilhamento', compartilhamentoRouter);
 
 port = process.env.PORT || 3000;
 

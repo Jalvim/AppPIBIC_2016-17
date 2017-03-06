@@ -90,7 +90,7 @@ router.route('/')
 			});
 		}
 		else {
-			res.send('Insira o nome do grupo a ser criado. Erro.');
+			res.send('Insira o nome do grupo a ser editado. Erro.');
 		}
 	})
 	.delete(function(req, res) {
@@ -144,7 +144,7 @@ router.route('/relacoes/')
 			res.send('Paciente não foi adicionado ao grupo. Erro.');
 		}
 	})
-	delete(function(req, res) {
+	.delete(function(req, res) {
 
 		console.log(req.body.hasOwnProperty('idPaciente'));
 		if (req,hasOwnProperty('body') &&
