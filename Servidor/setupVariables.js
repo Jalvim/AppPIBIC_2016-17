@@ -263,7 +263,7 @@ module.exports = function(app) {
 		url:'http://127.0.0.1:3000/api/hospitais/relacoes/',
 		form:{ 
 			idHospital: 1,
-			idPaciente: 40
+			idMedico: 16
 		}
 	};
 	app.optionsDeleteTestRequestHospitaisRelac = {
@@ -272,7 +272,7 @@ module.exports = function(app) {
 		form:{ 
 			idHosPac: 1,
 			idHospital: 1,
-			idPaciente: 40
+			idMedico: 16
 		}
 	};
 }
