@@ -111,6 +111,36 @@ module.exports = function(app) {
 			dataLimite: '2017-01-25'
 		}
 	};
+
+	app.optionsPostTestRequestLembreteComElementos = {
+		method:'POST',
+		url:'http://127.0.0.1:3000/api/lembrete/',
+		form:{ 
+			idMedico: '2',
+			idPaciente: '18',
+			data: '2017-01-14',
+			mensagem: 'Este é um sample lembrete.',
+			tarefa: 1,
+			K: 10,
+			CI: 1,
+			dataLimite: '2017-01-25'
+		}
+	};
+	app.optionsPutTestRequestLembreteComElementos = {
+		method:'PUT',
+		url:'http://127.0.0.1:3000/api/lembrete/',
+		headers: {
+			'idLembrete':'28'
+		},
+		form:{
+			idLembrete:'28',
+			mensagem: 'Este é um novo sample lembrete!',
+			dataLimite: '2017-01-27',
+			K: 1,
+			CI:10,
+			Na: 10
+		}
+	};
 	app.optionsPutTestRequestLembrete = {
 		method:'PUT',
 		url:'http://127.0.0.1:3000/api/lembrete/',
@@ -204,6 +234,45 @@ module.exports = function(app) {
 		url:'http://127.0.0.1:3000/api/pulseira/',
 		form:{ 
 			idPulseira: 49
+		}
+	};
+	app.optionsPostTestRequestHospitais= {
+		method:'POST',
+		url:'http://127.0.0.1:3000/api/hospitais/',
+		form:{ 
+			nome: 'Sriio-Libanês'	
+		}
+	};
+	app.optionsPutTestRequestHospitais = {
+		method:'PUT',
+		url:'http://127.0.0.1:3000/api/hospitais/',
+		form:{
+			idHospital: 1,
+			nome: 'Sírio-Libanês'	
+		}
+	};
+	app.optionsDeleteTestRequestHospitais = {
+		method:'DELETE',
+		url:'http://127.0.0.1:3000/api/hospitais/',
+		form:{ 
+			idHospital: 2
+		}
+	};
+	app.optionsPostTestRequestHospitaisRelac = {
+		method:'POST',
+		url:'http://127.0.0.1:3000/api/hospitais/relacoes/',
+		form:{ 
+			idHospital: 1,
+			idPaciente: 40
+		}
+	};
+	app.optionsDeleteTestRequestHospitaisRelac = {
+		method:'DELETE',
+		url:'http://127.0.0.1:3000/api/hospitais/relacoes/',
+		form:{ 
+			idHosPac: 1,
+			idHospital: 1,
+			idPaciente: 40
 		}
 	};
 }

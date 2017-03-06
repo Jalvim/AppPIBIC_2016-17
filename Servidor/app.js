@@ -22,8 +22,8 @@ var express = require('express'),
 	pulseiraRouter = require('./routes/pulseira.js'),
 	grupoPacientesRouter = require('./routes/grupoPacientes.js'),
 	mailSender = require('./mailgunWraper.js');
-	hospitaisRouter = require('./hospitais.js');
-	compartilhamentoRouter = require('./compartilhamento.js');
+	hospitaisRouter = require('./routes/hospitais.js');
+	compartilhamentoRouter = require('./routes/compartilhamento.js');
 	
 //Setup inicial de conecção com a base de dados 	
 connection = mysql.createConnection({
@@ -36,13 +36,13 @@ connection.connect();
 
 //setando todas as variáveis de options nos requests http de teste
 setupOptionsVariables(app);
-// 
+ 
 
-//  request(app.optionsPutTestRequestPulseira, function(err, httpResponse, body) { 
-//  	console.log(err);
-//  	//console.log(httpResponse);
-//  	console.log(body);
-//  });
+  request(app.optionsPutTestRequestLembreteComElementos, function(err, httpResponse, body) { 
+  	console.log(err);
+  	//console.log(httpResponse);
+  	console.log(body);
+  });
 
 // var email = {
 // 	to:'gabrielpmp@gmail.com, prettzb@gmail.com, matheusbafutto@gmail.com, vitorbordini96@gmail.com, jorge.jglm@gmail.com, j.rabello.alvim@outlook.com',

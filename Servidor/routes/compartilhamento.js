@@ -37,7 +37,7 @@ router.route('/')
 				console.log(err);
 				console.log(rows);
 				console.log(fields);
-				if(err == null && rows){
+				if(err == null && rows.length >= 1){
 					var queryCompartilhar = {
 						sql: `INSERT INTO Paciente_Medico (idMedico, idPaciente) VALUES (${connection.escape(req.body.idMedicoDestino)}, idHospital = ${connection.escape(req.body.idHospitalOrigem)})`,
 						timeout: 1000
