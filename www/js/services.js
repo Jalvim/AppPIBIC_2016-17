@@ -294,17 +294,28 @@ medApp.services = {
     // Funcionalidade de remover lembrete
     lembreteItem.querySelector('.right').onclick = function() {
         
-        // Retira o lembrete do banco de dados
-        // NAO ESTA FUNCIONANDO
-        $.ajax({
-          url: 'http://julianop.com.br:3000/api/lembrete',
-          type: 'DELETE',
-          data: { 
-            idLembrete: $(lembreteItem).data('idLembrete')
-          }
-        });
+        ons.notification.confirm({message: 'Tem certeza?'})
+        .then( function(confirm){
 
-        lembretesLista.removeChild(lembreteItem);
+          if(confirm) {
+            $.ajax({
+              url: 'http://julianop.com.br:3000/api/lembrete',
+              type: 'DELETE',
+              data: { 
+                idLembrete: $(lembreteItem).data('idLembrete')
+              }
+            })
+            .done(function(data) {
+
+              ons.notification.alert(data);
+
+              lembretesLista.removeChild(lembreteItem);
+
+            });
+          };
+
+        });
+        
 
     };
 

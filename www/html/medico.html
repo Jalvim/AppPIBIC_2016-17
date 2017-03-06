@@ -5,8 +5,11 @@
    <ons-template id="medico.html">
    <ons-page id="medico">
 
-   <ons-if orientation="portrait">
-   	<!-- DESENVOLVER AQUI O TEMPLATE DE COMO A PÁGINA FICA -->
+   <!--
+    <ons-if orientation="portrait">
+   	DESENVOLVER AQUI O TEMPLATE DE COMO A PÁGINA FICA
+    REMOVIDO PARA TESTES
+   -->
 
    	<ons-toolbar class="toolbar">
      <div class="center">Perfil Médico</div>
@@ -17,8 +20,10 @@
      </div>
     </ons-toolbar>
 
+    <!-- REMOVIDO PARA TESTES
     <ons-pull-hook id="pull-hook">
     </ons-pull-hook>
+    -->
 
     <div class="profile-card">
 
@@ -67,10 +72,11 @@
         </ons-button>
       </p>
 
+  <!-- Vizualização da tela em modo paisagem (RETIRADO PARA TESTES)
    </ons-if>
 
    <ons-if orientation="landscape">
-   	<!-- Vizualização da tela em modo paisagem -->
+   
 
    	<ons-toolbar class="toolbar">
      <div class="center">Perfil Médico</div>
@@ -82,7 +88,7 @@
     </ons-toolbar>
    	
    	<ons-splitter>
-   		<ons-splitter-side id="mainperfil" side="left" width="220px" collapse swipeable> <!-- collapse="landscape" -->
+   		<ons-splitter-side id="mainperfil" side="left" width="220px" collapse swipeable>
    			<ons-page>
               <ons-toolbar class="toolbar">
                 <div class="center">Perfil Médico</div>
@@ -107,6 +113,7 @@
    	</ons-splitter>
 
    </ons-if>
+    -->
 
   </ons-page>
 </ons-template>
@@ -185,13 +192,13 @@
   </ons-page>
 </ons-template>
 
-<!-- Página principal da versão em paisagem -->
+<!-- Página principal da versão em paisagem 
 
 <ons-template id="secundperfil.html">
 	<ons-page>
 
     <br>
-    <!-- Lista de Dados do Médico -->
+    Lista de Dados do Médico 
     <div class="profile-list">
 
       <ons-list>
@@ -229,5 +236,6 @@
       </p>
   </ons-page>
 </ons-template>
+-->
 
 </ons-page>

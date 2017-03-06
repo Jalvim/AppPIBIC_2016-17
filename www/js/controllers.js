@@ -167,6 +167,7 @@ medApp.controllers = {
     });
 
     //Funcionalização da responsividade de tela Retrato/Paisagem.
+    /* RETIRADO PARA TESTES
     window.fn = {};
 
     window.fn.open = function() {
@@ -180,6 +181,7 @@ medApp.controllers = {
       content.load(page)
         .then(menu.close.bind(menu));
     };
+    */
 
     // Chama a página de editar perfil do médico
     page.querySelector('#edit-med').onclick = function() {
@@ -203,8 +205,8 @@ medApp.controllers = {
 
     };
 
-    // Realiza a atualização do perfil com pull
-    var pullHook = document.getElementById('pull-hook');
+    // Realiza a atualização do perfil com pull (NAO IIMPLEMENTADO)
+    /*var pullHook = document.getElementById('pull-hook');
 
     pullHook.addEventListener('changestate', function(event) {
       var message = '';
@@ -227,7 +229,7 @@ medApp.controllers = {
 
     pullHook.onAction = function(done) {
       setTimeout(done, 1000);
-    };
+    };*/
 
 
   },
@@ -244,7 +246,7 @@ medApp.controllers = {
       $('#lista-pacientes').empty();
       var pacientesInfo;
 
-      $.get('https://pibicfitbit.herokuapp.com/api/paciente/geral/idMedico/' + medApp.services.getIdMedico())
+      $.get('http://julianop.com.br:3000/api/paciente/geral/idMedico/' + medApp.services.getIdMedico())
         .done(function(data) {
           pacientesInfo = data;
 
@@ -276,12 +278,13 @@ medApp.controllers = {
 
     };
 
-    // Página para adicionar um novo grupo de pacientes
+    /* Página para adicionar um novo grupo de pacientes (NAO IMPLEMENTADO)
     page.querySelector('#add-grupo').onclick = function() {
 
       document.querySelector('#pacienteNav').pushPage('html/addgrupo.html');
 
     };
+    */
 
     /* GAMBIARRA PARA O TESTE DE UX !!!RETIRAR!!!
 
@@ -362,7 +365,7 @@ medApp.controllers = {
 
         //Request feito quando a interface gráfica carregar para obter os dados estáticos do paciente.
         
-        $.get('https://pibicfitbit.herokuapp.com/api/paciente/health/static/' + medApp.services.idAtualPaciente + '/calorias')
+        $.get('http://julianop.com.br:3000/api/paciente/health/static/' + medApp.services.idAtualPaciente + '/calorias')
           .done(function(data) {
             medApp.services.setDadosEstaticos.calorias(data);
             console.log(data);
@@ -414,7 +417,7 @@ medApp.controllers = {
 
         //Request
         
-        $.get('https://pibicfitbit.herokuapp.com/api/paciente/health/static/' + medApp.services.idAtualPaciente + '/passos')
+        $.get('http://julianop.com.br:3000/api/paciente/health/static/' + medApp.services.idAtualPaciente + '/passos')
           .done(function(data) {
             medApp.services.setDadosEstaticos.passos(data);
             console.log(data);
@@ -465,7 +468,7 @@ medApp.controllers = {
         //Interface gráfica interativa dos dados estáticos de saúde.
 
         //Request
-        $.get('https://pibicfitbit.herokuapp.com/api/paciente/health/dynamic/' + medApp.services.idAtualPaciente)
+        $.get('http://julianop.com.br:3000/api/paciente/health/dynamic/' + medApp.services.idAtualPaciente)
           .done(function(data) {
             medApp.services.setDadosEstaticos.pulso(data);
             console.log(medApp.services.getDadosEstaticos.pulso());
@@ -503,7 +506,7 @@ medApp.controllers = {
         //Interface gráfica interativa dos dados estáticos de saúde.
 
         //Request
-        $.get('https://pibicfitbit.herokuapp.com/api/paciente/health/static/' + medApp.services.idAtualPaciente + '/degraus')
+        $.get('http://julianop.com.br:3000/api/paciente/health/static/' + medApp.services.idAtualPaciente + '/degraus')
           .done(function(data) {
             medApp.services.setDadosEstaticos.degraus(data);
             console.log(medApp.services.getDadosEstaticos.degraus());
@@ -550,7 +553,7 @@ medApp.controllers = {
     // Pega dados do servidor para edição (CPF não é mostrado no perfil, logo não existe seu innerHTML)
     page.addEventListener('show', function(event) {
 
-      $.get('https://pibicfitbit.herokuapp.com/api/medico/busca/ID/' + medApp.services.idAtualMedico)
+      $.get('http://julianop.com.br:3000/api/medico/busca/ID/' + medApp.services.idAtualMedico)
       .done(function(data) {
         $('#nome-medico').val(data[0].nome);
         $('#crm-medico').val(data[0].CRM);
@@ -644,30 +647,37 @@ medApp.controllers = {
       //Request PUT responsável pela edição de pacientes diretamente na base de dados.
 
       $.ajax({
-          url: 'http://julianop.com.br:3000/api/paciente/geral' + medApp.services.getIdPaciente(),
+          url: 'http://julianop.com.br:3000/api/paciente/geral',
           type: 'PUT',
-          success: function(data) {
-            console.log(data);
-          },
-          error: function() {
-            ons.notification.alert("Alterações não efetuadas");
-          },
+          headers: { 'idpaciente': medApp.services.getIdPaciente() },
           data: {
             nomePaciente: dadosEditPac.nome,
             causaDaInternacao: dadosEditPac.causa,
-            novaData: dadosEdit.idadeEdit,
-            dataDeNascimento: '1990-04-12'
+            dataDeNascimento: dadosEditPac.dataInt
           }
+        })
+        .done(function(data) {
+          console.log(data);
+          document.querySelector('#pacienteNav').popPage( {data: 
+            {
+              nome: dadosEditPac.nome,
+              causa: dadosEditPac.causa,
+              dataInt: dadosEditPac.dataInt
+            }
+          });
+        })
+        .fail(function() {
+          ons.notification.alert("Alterações não efetuadas");
+          document.querySelector('#pacienteNav').popPage();
         });
 
-      document.querySelector('#pacienteNav').popPage();
     };
 
   },
 
-    ///////////////////////////////////////
-    // Controlador do feed de notícias   //
-    ///////////////////////////////////////
+  ///////////////////////////////////////
+  // Controlador do feed de notícias   //
+  ///////////////////////////////////////
 
   feed: function(page) {
       // Realiza a atualização do feed com pull --> TODO: funcionalidade.
@@ -716,9 +726,9 @@ medApp.controllers = {
       });
     },
 
-    ///////////////////////////////////////
-    // Controlador da lista de lembretes //
-    ///////////////////////////////////////
+  ///////////////////////////////////////
+  // Controlador da lista de lembretes //
+  ///////////////////////////////////////
 
   lembretes: function(page){
 
@@ -893,6 +903,10 @@ medApp.controllers = {
 
   },
 
+  //////////////////////////////////
+  // Controlador de configurações //
+  //////////////////////////////////
+
   configuracoes: function(page) {
 
     page.querySelector('#manage-pulseiras').onclick = function() {
@@ -903,54 +917,55 @@ medApp.controllers = {
 
   },
 
-//////////////////////////////////////////////////////////////////
-  ////////////////adiciona pulseira///////////////////////////
-    /////////////////////////////////////////////////////////
+  ////////////////////////////////////////
+  // Controlador do Adicionar Pulseiras //
+  ////////////////////////////////////////
 
-    adicionarPulseira:function(page){
+  adicionarPulseira:function(page){
+
     page.querySelector('#addpulseira').onclick = function(){
 
-  ons.notification.alert("oi");
-   /*
-   //pede o login e a senha do usuario
-  var  login;
-  login = prompt("Digite o login da FITBIT");
+      ons.notification.alert("oi");
+         /*
+         //pede o login e a senha do usuario
+        var  login;
+        login = prompt("Digite o login da FITBIT");
 
 
- var   senha;
- senha = prompt("Digite a senha da FITBIT");
+        var   senha;
+        senha = prompt("Digite a senha da FITBIT");
 
-//encontra a URL
-var URL;
-$.post("https://www.fitbit.com/oauth2/authorize?response_type=code&client_id=227WRB&redirect_uri=http%3A%2F%2Fjulianop.com.br%3A3000%2F&scope=activity%20heartrate%20location%20nutrition%20profile%20settings%20sleep%20social%20weight&expires_in=604800",
-    {login:login,
-    senha:senha
-    })
-    .done(function(data){
-    URL=window.location.href;
-
-
-    });
-
-//pega o codigoOauth
-var Oauth=URL.substr(URL.indexOf("=")+1,URL.indexOf("#")-1);
+        //encontra a URL
+        var URL;
+        $.post("https://www.fitbit.com/oauth2/authorize?response_type=code&client_id=227WRB&redirect_uri=http%3A%2F%2Fjulianop.com.br%3A3000%2F&scope=activity%20heartrate%20location%20nutrition%20profile%20settings%20sleep%20social%20weight&expires_in=604800",
+            {login:login,
+            senha:senha
+            })
+            .done(function(data){
+            URL=window.location.href;
 
 
-//Para debug, retirar depois
-Alert(Oauth);
+            });
+
+        //pega o codigoOauth
+        var Oauth=URL.substr(URL.indexOf("=")+1,URL.indexOf("#")-1);
+
+
+        //Para debug, retirar depois
+        Alert(Oauth);
 
 
 
-/*
-$.post("url/api/pulseira",{
- redirectUri :"http://julianop.com.br:3000/",
-Client ID: "227WRB",
-Client Secret: "1dcfe0c85eee35d7cb8295,733a3b0f9d",
-CodigoOauth:Oauth
+        /*
+        $.post("url/api/pulseira",{
+         redirectUri :"http://julianop.com.br:3000/",
+        Client ID: "227WRB",
+        Client Secret: "1dcfe0c85eee35d7cb8295,733a3b0f9d",
+        CodigoOauth:Oauth
 
-});
-*/
-};
+        });
+        */
+      };
     },
 
 
@@ -973,8 +988,12 @@ CodigoOauth:Oauth
 
     page.querySelector('#pub-lembrete').onclick = function() {
 
+      var modal = page.querySelector('ons-modal');
+      modal.show();
+
       if($('#texto-lembrete').val() == ''){
 
+        modal.hide();
         ons.notification.alert("Preencha todos os campos!");
 
       } else {
@@ -987,6 +1006,7 @@ CodigoOauth:Oauth
           idPaciente: medApp.services.getIdPaciente()
         })
           .done(function(data) {
+            modal.hide();
             ons.notification.alert(data);
             document.querySelector('#pacienteNav').popPage();
           });
