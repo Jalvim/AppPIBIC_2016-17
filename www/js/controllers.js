@@ -365,47 +365,53 @@ medApp.controllers = {
 
         //Request feito quando a interface gráfica carregar para obter os dados estáticos do paciente.
         
-        $.get('http://julianop.com.br:3000/api/paciente/health/static/' + medApp.services.idAtualPaciente + '/calorias')
+        $.get('http://julianop.com.br:3000/api/paciente/health/static/' + medApp.services.dadosPacienteAtual.idAtualPaciente)
           .done(function(data) {
-            medApp.services.setDadosEstaticos.calorias(data);
-            console.log(data);
-        });
-
-        var chrt1 = document.getElementById("myChart1");
-        var data1 = {
-          labels: ["Domingo", "Segunda", "Terça", "Quarta", "Quinta", "Sexta", "Sábado"],
-          datasets: [
-            {
-              label: "Calorias perdidas ao longo da semana",
-              fill: false,
-              lineTension: 0.1,
-              backgroundColor: "rgba(75,192,192,0.4)",
-              borderColor: "rgba(75,192,192,1)",
-              borderCapStyle: 'butt',
-              borderDash: [],
-              borderDashOffset: 0.0,
-              borderJoinStyle: 'miter',
-              pointBorderColor: "rgba(75,192,192,1)",
-              pointBackgroundColor: "#fff",
-              pointBorderWidth: 1,
-              pointHoverRadius: 5,
-              pointHoverBackgroundColor: "rgba(75,192,192,1)",
-              pointHoverBorderColor: "rgba(220,220,220,1)",
-              pointHoverBorderWidth: 2,
-              pointRadius: 1,
-              pointHitRadius: 10,
-              data: medApp.services.dadosEstaticos.calorias,
-              spanGaps: false,
+            for(var i = 0; i < data.length; i++){
+              medApp.services.dadosEstaticos.calorias[i] = data[i].calories;
             }
-          ]
-        }; //TODO implementação da comunicação de dados com o servidor.
-        var myChart1 = new Chart(chrt1, {
-          type: 'line',
-          data: data1,
-          options: {
-            responsive: true
-          }
-        });
+          })
+
+          .done(function() {
+        
+
+            var chrt1 = document.getElementById("myChart1");
+            var data1 = {
+              labels: ["Domingo", "Segunda", "Terça", "Quarta", "Quinta", "Sexta", "Sábado"],
+              datasets: [
+                {
+                  label: "Calorias perdidas ao longo da semana",
+                  fill: false,
+                  lineTension: 0.1,
+                  backgroundColor: "rgba(75,192,192,0.4)",
+                  borderColor: "rgba(75,192,192,1)",
+                  borderCapStyle: 'butt',
+                  borderDash: [],
+                  borderDashOffset: 0.0,
+                  borderJoinStyle: 'miter',
+                  pointBorderColor: "rgba(75,192,192,1)",
+                  pointBackgroundColor: "#fff",
+                  pointBorderWidth: 1,
+                  pointHoverRadius: 5,
+                  pointHoverBackgroundColor: "rgba(75,192,192,1)",
+                  pointHoverBorderColor: "rgba(220,220,220,1)",
+                  pointHoverBorderWidth: 2,
+                  pointRadius: 1,
+                  pointHitRadius: 10,
+                  data: medApp.services.dadosEstaticos.calorias,
+                  spanGaps: false,
+                }
+              ]
+            }; //TODO implementação da comunicação de dados com o servidor.
+            var myChart1 = new Chart(chrt1, {
+              type: 'line',
+              data: data1,
+              options: {
+                responsive: true
+              }
+            });
+
+          });
 
         // Fim da interface gráfica 1. TODO --> Implementar outros gráficos.
 
@@ -417,46 +423,52 @@ medApp.controllers = {
 
         //Request
         
-        $.get('http://julianop.com.br:3000/api/paciente/health/static/' + medApp.services.idAtualPaciente + '/passos')
+        $.get('http://julianop.com.br:3000/api/paciente/health/static/' + medApp.services.dadosPacienteAtual.idAtualPaciente)
           .done(function(data) {
-            medApp.services.setDadosEstaticos.passos(data);
-            console.log(data);
-        });
-
-        var chrt2 = document.getElementById("myChart2");
-        var data2 = {
-          labels: ["Domingo", "Segunda", "Terça", "Quarta", "Quinta", "Sexta", "Sábado"],
-            datasets: [
-              {
-                label: "Número de passos dados na última semana",
-                fill: false,
-                lineTension: 0.1,
-                backgroundColor: "rgba(75,192,192,0.4)",
-                borderColor: "rgba(75,192,192,1)",
-                borderCapStyle: 'butt',
-                borderDash: [],
-                borderDashOffset: 0.0,
-                borderJoinStyle: 'miter',
-                pointBorderColor: "rgba(75,192,192,1)",
-                pointBackgroundColor: "#fff",
-                pointBorderWidth: 1,
-                pointHoverRadius: 5,
-                pointHoverBackgroundColor: "rgba(75,192,192,1)",
-                pointHoverBorderColor: "rgba(220,220,220,1)",
-                pointHoverBorderWidth: 2,
-                pointRadius: 1,
-                pointHitRadius: 10,
-                data: medApp.services.dadosEstaticos.passos,
-                spanGaps: false
-              }
-            ]
-          }; //TODO implementação da comunicação de dados com o servidor.
-          var myChart2 = new Chart(chrt2, {
-            type: 'polarArea',
-            data: data2,
-            options: {
-              responsive: true
+            for(var i = 0; i < data.length; i++){
+              medApp.services.dadosEstaticos.passos[i] = data[i].steps;
             }
+          })
+
+          .done(function() {  
+        
+
+            var chrt2 = document.getElementById("myChart2");
+            var data2 = {
+              labels: ["Domingo", "Segunda", "Terça", "Quarta", "Quinta", "Sexta", "Sábado"],
+                datasets: [
+                  {
+                    label: "Número de passos dados na última semana",
+                    fill: false,
+                    lineTension: 0.1,
+                    backgroundColor: "rgba(75,192,192,0.4)",
+                    borderColor: "rgba(75,192,192,1)",
+                    borderCapStyle: 'butt',
+                    borderDash: [],
+                    borderDashOffset: 0.0,
+                    borderJoinStyle: 'miter',
+                    pointBorderColor: "rgba(75,192,192,1)",
+                    pointBackgroundColor: "#fff",
+                    pointBorderWidth: 1,
+                    pointHoverRadius: 5,
+                    pointHoverBackgroundColor: "rgba(75,192,192,1)",
+                    pointHoverBorderColor: "rgba(220,220,220,1)",
+                    pointHoverBorderWidth: 2,
+                    pointRadius: 1,
+                    pointHitRadius: 10,
+                    data: medApp.services.dadosEstaticos.passos,
+                    spanGaps: false
+                  }
+                ]
+              }; //TODO implementação da comunicação de dados com o servidor.
+              var myChart2 = new Chart(chrt2, {
+                type: 'bar',
+                data: data2,
+                options: {
+                  responsive: true
+                }
+              });
+
           });
 
           // Fim da interface gráfica 2. TODO --> Implementar outros gráficos.
@@ -468,34 +480,37 @@ medApp.controllers = {
         //Interface gráfica interativa dos dados estáticos de saúde.
 
         //Request
-        $.get('http://julianop.com.br:3000/api/paciente/health/dynamic/' + medApp.services.idAtualPaciente)
+        /*$.get('http://julianop.com.br:3000/api/paciente/health/dynamic/' + medApp.services.dadosPacienteAtual.idAtualPaciente)
           .done(function(data) {
-            medApp.services.setDadosEstaticos.pulso(data);
-            console.log(medApp.services.getDadosEstaticos.pulso());
-        });
-        
-        var chrt3 = document.getElementById("myChart3");
-        var data3 = {
-          labels: ["Domingo", "Segunda", "Terça", "Quarta", "Quinta", "Sexta", "Sábado"],
-          datasets: [
-            {
-              label: "Pulsação média durante o último dia",
-              backgroundColor: "rgba(75,192,192,0.4)",
-              borderColor: "rgba(75,192,192,1)",
-              borderWidth: 5,
-              hoverBackgroundColor: "rgba(255, 99, 132, 0.4)",
-              hoverBorderColor: "rgba:(255, 99, 132, 1)",
-              data: medApp.services.dadosEstaticos.pulso
-            }
-          ]
-        }; //TODO implementação da comunicação de dados com o servidor.
-        var myChart3 = new Chart(chrt3, {
-          type: 'bar',
-          data: data3,
-          options: {
-            responsive: true
-          }
-        });
+            medApp.services.dadosEstaticos.pulso = data;
+            console.log(medApp.services.dadosEstaticos.pulso);
+    
+          })
+          .done(
+            var chrt3 = document.getElementById("myChart3");
+            var data3 = {
+              labels: ["Domingo", "Segunda", "Terça", "Quarta", "Quinta", "Sexta", "Sábado"],
+              datasets: [
+                {
+                  label: "Pulsação média durante o último dia",
+                  backgroundColor: "rgba(75,192,192,0.4)",
+                  borderColor: "rgba(75,192,192,1)",
+                  borderWidth: 5,
+                  hoverBackgroundColor: "rgba(255, 99, 132, 0.4)",
+                  hoverBorderColor: "rgba:(255, 99, 132, 1)",
+                  data: medApp.services.dadosEstaticos.pulso
+                }
+              ]
+            }; //TODO implementação da comunicação de dados com o servidor.
+            var myChart3 = new Chart(chrt3, {
+              type: 'bar',
+              data: data3,
+              options: {
+                responsive: true
+              }
+            });
+
+          });*/
 
         // Fim da interface gráfica 3. TODO --> Implementar outros gráficos.
 
@@ -506,34 +521,40 @@ medApp.controllers = {
         //Interface gráfica interativa dos dados estáticos de saúde.
 
         //Request
-        $.get('http://julianop.com.br:3000/api/paciente/health/static/' + medApp.services.idAtualPaciente + '/degraus')
+        $.get('http://julianop.com.br:3000/api/paciente/health/static/' + medApp.services.dadosPacienteAtual.idAtualPaciente)
           .done(function(data) {
-            medApp.services.setDadosEstaticos.degraus(data);
-            console.log(medApp.services.getDadosEstaticos.degraus());
-        });
-
-        var chrt4 = document.getElementById("myChart4");
-        var data4 = {
-          labels: ["Domingo", "Segunda", "Terça", "Quarta", "Quinta", "Sexta", "Sábado"],
-          datasets: [
-            {
-              label: "Últimas medições de Oximetria do Paciente",
-              backgroundColor: "rgba(75,192,192,0.4)",
-              borderColor: "rgba(75,192,192,1)",
-              borderWidth: 5,
-              hoverBackgroundColor: "rgba(255, 99, 132, 0.4)",
-              hoverBorderColor: "rgba:(255, 99, 132, 1)",
-              data: medApp.services.dadosEstaticos.degraus
+            for(var i = 0; i < data.length; i++){
+              medApp.services.dadosEstaticos.degraus[i] = data[i].steps;
             }
-          ]
-        }; //TODO implementação da comunicação de dados com o servidor.
-        var myChart4 = new Chart(chrt4, {
-          type: 'radar',
-          data: data4,
-          options: {
-            responsive: true
-          }
-        });
+          })
+
+          .done(function() {
+        
+
+            var chrt4 = document.getElementById("myChart4");
+            var data4 = {
+              labels: ["Domingo", "Segunda", "Terça", "Quarta", "Quinta", "Sexta", "Sábado"],
+              datasets: [
+                {
+                  label: "Número de degraus subidos na última semana",
+                  backgroundColor: "rgba(75,192,192,0.4)",
+                  borderColor: "rgba(75,192,192,1)",
+                  borderWidth: 5,
+                  hoverBackgroundColor: "rgba(255, 99, 132, 0.4)",
+                  hoverBorderColor: "rgba:(255, 99, 132, 1)",
+                  data: medApp.services.dadosEstaticos.degraus
+                }
+              ]
+            }; //TODO implementação da comunicação de dados com o servidor.
+            var myChart4 = new Chart(chrt4, {
+              type: 'radar',
+              data: data4,
+              options: {
+                responsive: true
+              }
+            });
+
+          });
 
         // Fim da interface gráfica 4. TODO --> Implementar outros gráficos.
 
@@ -553,7 +574,7 @@ medApp.controllers = {
     // Pega dados do servidor para edição (CPF não é mostrado no perfil, logo não existe seu innerHTML)
     page.addEventListener('show', function(event) {
 
-      $.get('http://julianop.com.br:3000/api/medico/busca/ID/' + medApp.services.idAtualMedico)
+      $.get('http://julianop.com.br:3000/api/medico/busca/ID/' + medApp.services.dadosPacienteAtual.idAtualPaciente)
       .done(function(data) {
         $('#nome-medico').val(data[0].nome);
         $('#crm-medico').val(data[0].CRM);

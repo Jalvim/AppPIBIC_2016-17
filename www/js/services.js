@@ -72,14 +72,14 @@ medApp.services = {
   },
 
   dadosEstaticos: {
-    calorias: -1,
-    passos: -1,
-    pulso: -1,
-    degraus: -1
+    calorias: new Array,
+    passos: new Array,
+    pulso: new Array,
+    degraus: new Array
   }, //Seta os dados estaticos do pacientes como 'default'.
 
   //Conjunto de funções que armazenam novos dados estáticos.
-  setDadosEstaticos: {
+  /*setDadosEstaticos: {
     calorias: function(input) {
       this.dadosEstaticos.calorias = input;
     },
@@ -92,10 +92,10 @@ medApp.services = {
     degraus: function(input) {
       this.dadosEstaticos.degraus = input;
     }
-  },
+  },*/
 
   //Conjunto de Funções que retornam os dados estáticos do paciente atual.
-  getDadosEstaticos: {
+  /*getDadosEstaticos: {
     calorias: function() {
       return this.dadosEstaticos.calorias;
     },
@@ -108,10 +108,10 @@ medApp.services = {
     degraus: function() {
       return this.dadosEstaticos.degraus;
     }
-  },
+  },*/
 
   //Função que torna os dados estáticos para o formato default.
-  deleteDadosEstaticos: {
+  /*deleteDadosEstaticos: {
     calorias: function() {
       this.dadosEstaticos.calorias = -1;
     },
@@ -124,7 +124,7 @@ medApp.services = {
     degraus: function() {
       this.dadosEstaticos.degraus = -1;
     }
-  },
+  },*/
 
   // Função que verifica se os dados do médico foram editados 
   checkEdit: function(novo, velho) {
