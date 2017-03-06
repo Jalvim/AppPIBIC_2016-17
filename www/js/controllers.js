@@ -903,6 +903,58 @@ medApp.controllers = {
 
   },
 
+//////////////////////////////////////////////////////////////////
+  ////////////////adiciona pulseira///////////////////////////
+    /////////////////////////////////////////////////////////
+
+    adicionarPulseira:function(page){
+    page.querySelector('#addpulseira').onclick = function(){
+
+  ons.notification.alert("oi");
+   /*
+   //pede o login e a senha do usuario
+  var  login;
+  login = prompt("Digite o login da FITBIT");
+
+
+ var   senha;
+ senha = prompt("Digite a senha da FITBIT");
+
+//encontra a URL
+var URL;
+$.post("https://www.fitbit.com/oauth2/authorize?response_type=code&client_id=227WRB&redirect_uri=http%3A%2F%2Fjulianop.com.br%3A3000%2F&scope=activity%20heartrate%20location%20nutrition%20profile%20settings%20sleep%20social%20weight&expires_in=604800",
+    {login:login,
+    senha:senha
+    })
+    .done(function(data){
+    URL=window.location.href;
+
+
+    });
+
+//pega o codigoOauth
+var Oauth=URL.substr(URL.indexOf("=")+1,URL.indexOf("#")-1);
+
+
+//Para debug, retirar depois
+Alert(Oauth);
+
+
+
+/*
+$.post("url/api/pulseira",{
+ redirectUri :"http://julianop.com.br:3000/",
+Client ID: "227WRB",
+Client Secret: "1dcfe0c85eee35d7cb8295,733a3b0f9d",
+CodigoOauth:Oauth
+
+});
+*/
+};
+    },
+
+
+
   ////////////////////////////////////////
   // Controlador de adicionar lembrete //
   ///////////////////////////////////////
