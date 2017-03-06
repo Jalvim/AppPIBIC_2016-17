@@ -126,7 +126,7 @@ medApp.controllers = {
 
        else {
 
-        $.post('https://pibicfitbit.herokuapp.com/api/medico/',
+        $.post('http://julianop.com.br:3000/api/medico/',
         {
           nomeMedico: $('#nome-cadastro').val(),
           CPF: $('#cpf-cadastro').val(),
@@ -155,7 +155,7 @@ medApp.controllers = {
     // Atualiza os dados do perfil do médico a partir do servidor
     page.addEventListener('show', function(event) {
 
-      $.get('https://pibicfitbit.herokuapp.com/api/medico/busca/ID/' + medApp.services.getIdMedico())
+      $.get('http://julianop.com.br:3000/api/medico/busca/ID/' + medApp.services.getIdMedico())
       .done(function(data) {
         page.querySelector('#nome-perfil').innerHTML = data[0].nome;
         page.querySelector('#crm-perfil').innerHTML = data[0].CRM;
@@ -241,54 +241,40 @@ medApp.controllers = {
     // Chama o perfil com os dados do paciente selecionado
     //ANTES: var pacientes = page.querySelectorAll(".paciente-lista"); //TODO --> TESTE DE CONEXÂO
     page.addEventListener('show', function(event) { 
+
+      medApp.services.deletePacienteAtual();
       var pacientesInfo;
 
       $.get('https://pibicfitbit.herokuapp.com/api/paciente/geral/idMedico/' + medApp.services.getIdMedico())
         .done(function(data) {
           pacientesInfo = data;
-          console.log(pacientesInfo.length);
+          console.log(pacientesInfo);
 
           for (var i = 0, len = pacientesInfo.length; i < len; i++) {
 
-        medApp.services.createPaciente( 
-          { 
-        	statusPaciente: 'ativo',
-            img: 'http://www.clker.com/cliparts/A/Y/O/m/o/N/placeholder-md.png',
-            nomePaciente: pacientesInfo[i].nomePaciente,
-            batimentos: '60',
-            dataPaciente: pacientesInfo[i].dataDeNascimento,
-            causaPaciente: pacientesInfo[i].causaDaInternacao,
-            medicoResp: pacientesInfo[i].numeroDoProntuario,
-            hospital: pacientesInfo[i].telefone 
-            
-          });
-        };
-    });
-
-      /*
-      pacientes[i].onclick = function() {
-        //Funcionalização da função com acesso do servidor, comentarizado --> ANTERIOR
-        //ANTES: var nomePaciente = this.querySelector(".list__item__title").innerHTML;
-        //ANTES: var causaPaciente = this.querySelector(".causa").innerHTML;
-        //ANTES: var imgPaciente = this.querySelector('.list__item__thumbnail').src;
-        medApp.services.setIdPaciente(pacientesInfo.numeroDoProntuario);
-        document.querySelector('#pacienteNav').pushPage('html/perfilpaciente.html',
-          {data: {nome: pacientesInfo[i].nome, // ANTES: nomePaciente,
-                  causa: pacientesInfo[i].causa, // ANTES: causaPaciente,
-                  img: pacientesInfo[i].foto }});// ANTES: imgPaciente }});
-      };
-      pacientes[i].querySelector('.list__item__icon').onclick = function() {
-        this.setAttribute("icon", "star");
-      };
-      */
-      //};
+            medApp.services.createPaciente( 
+            { 
+              statusPaciente: 'ativo',
+              img: 'http://www.clker.com/cliparts/A/Y/O/m/o/N/placeholder-md.png',
+              nomePaciente: pacientesInfo[i].nomePaciente,
+              batimentos: '60',
+              dataPaciente: pacientesInfo[i].dataDeNascimento,
+              causaPaciente: pacientesInfo[i].causaDaInternacao,
+              medicoResp: pacientesInfo[i].numeroDoProntuario,
+              hospital: pacientesInfo[i].telefone,
+              idPaciente: pacientesInfo[i].idPaciente,
+              //medicoResp: data1[0].nome
+                
+            });
+          };
+      });
 
     });
 
     // Página para adicionar um novo paciente à lista
     page.querySelector('#buscar-pac').onclick = function() {
 
-      document.querySelector('#pacienteNav').pushPage('html/buscarpaciente.html');
+      document.querySelector('#pacienteNav').pushPage('html/addpaciente.html');
 
     };
 
@@ -299,7 +285,7 @@ medApp.controllers = {
 
     };
 
-    // GAMBIARRA PARA O TESTE DE UX !!!RETIRAR!!!
+    /* GAMBIARRA PARA O TESTE DE UX !!!RETIRAR!!!
 
     page.querySelector('#pac1').onclick = function() {
 
@@ -318,22 +304,8 @@ medApp.controllers = {
       document.querySelector('#pacienteNav').pushPage('html/perfilpaciente.html');
 
     };
-
-    /*
-    page.querySelector('#pac-teste').onclick = function() {
-
-      medApp.services.createPaciente( { statusPaciente: 'ativo',
-                                        img: 'http://www.clker.com/cliparts/A/Y/O/m/o/N/placeholder-md.png',
-                                        nomePaciente: 'Cara',
-                                        batimentos: '60',
-                                        dataPaciente: '01/03/2017',
-                                        causaPaciente: 'Doença',
-                                        medicoResp: 'Médicão',
-                                        hospital: 'Hospital/2º andar' 
-                                      });
-
-    };
     */
+
   },
 
   ///////////////////////////////////////
@@ -343,12 +315,15 @@ medApp.controllers = {
   perfilpaciente: function(page) {
 
     // Preenche os dados do perfil do paciente atual
-    /*page.querySelector('ons-toolbar .center').innerHTML = 'Perfil' + ' ' + page.data.nome;
-    page.querySelector('.profile-name').innerHTML = page.data.nome;
-    page.querySelector('#causa-perfil').innerHTML = page.data.causa;
-    page.querySelector('.profile-image').src = page.data.img;
-    //medApp.services.setIdPaciente($('#')); //TODO --> ver se prontuário é retornado e faz papel de ID.
-    */
+    page.addEventListener('show', function(event) {
+
+      console.log(medApp.services.dadosPacienteAtual);
+      page.querySelector('.profile-name').innerHTML = page.data.nome;
+      page.querySelector('#data-int').innerHTML = page.data.dataInt;
+      page.querySelector('#causa').innerHTML = page.data.causa;
+      page.querySelector('#hospital').innerHTML = page.data.hospital;
+
+    });
 
     // Chama página de edição de dados do paciente
     page.querySelector('#pacienteeditar').onclick = function() {
@@ -392,8 +367,8 @@ medApp.controllers = {
         
         $.get('https://pibicfitbit.herokuapp.com/api/paciente/health/static/' + medApp.services.idAtualPaciente + '/calorias')
           .done(function(data) {
-            medApp.services.setDadosEstaticos.calorias(data.calorias);
-            console.log(medApp.services.dadosEstaticos.calorias);
+            medApp.services.setDadosEstaticos.calorias(data);
+            console.log(data);
         });
 
         var chrt1 = document.getElementById("myChart1");
@@ -444,8 +419,8 @@ medApp.controllers = {
         
         $.get('https://pibicfitbit.herokuapp.com/api/paciente/health/static/' + medApp.services.idAtualPaciente + '/passos')
           .done(function(data) {
-            medApp.services.setDadosEstaticos.passos(data.passos);
-            console.log('Os dados retornados são: ' + medApp.services.dadosEstaticos.passos);
+            medApp.services.setDadosEstaticos.passos(data);
+            console.log(data);
         });
 
         var chrt2 = document.getElementById("myChart2");
@@ -495,8 +470,8 @@ medApp.controllers = {
         //Request
         $.get('https://pibicfitbit.herokuapp.com/api/paciente/health/static/' + medApp.services.idAtualPaciente)
           .done(function(data) {
-            medApp.services.setDadosEstaticos.pulso(data.pulso);
-            console.log('Os dados retornados são: ' + medApp.services.getDadosEstaticos.pulso());
+            medApp.services.setDadosEstaticos.pulso(data);
+            console.log(medApp.services.getDadosEstaticos.pulso());
         });
         
         var chrt3 = document.getElementById("myChart3");
@@ -533,8 +508,8 @@ medApp.controllers = {
         //Request
         $.get('https://pibicfitbit.herokuapp.com/api/paciente/health/static/' + medApp.services.idAtualPaciente + '/degraus')
           .done(function(data) {
-            medApp.services.setDadosEstaticos.degrus(data.degraus);
-            console.log('Os dados retornados são: ' + medApp.services.getDadosEstaticos.degraus());
+            medApp.services.setDadosEstaticos.degraus(data);
+            console.log(medApp.services.getDadosEstaticos.degraus());
         });
 
         var chrt4 = document.getElementById("myChart4");
@@ -615,7 +590,7 @@ medApp.controllers = {
         };
 
         $.ajax({
-          url: 'https://pibicfitbit.herokuapp.com/api/medico',
+          url: 'http://julianop.com.br:3000/api/medico',
           type: 'PUT',
           data: { idMedico: dadosEdit.idMedico,
                   nomeMedico: dadosEdit.nome,
@@ -647,48 +622,32 @@ medApp.controllers = {
     // Máscaras dos campos de dados
     $('#tel-pac').mask('(00) 00000-0000');
 
-    // Dados atuais para verificar alteração
-    var dadosEdit = {
-
-      nomeEdit: page.data.nome,
-      causaEdit: page.data.causa,
-      prontEdit: page.data.pront,
-      fotoEdit: page.data.img,
-      idadeEdit: page.data.idade,
-	    emailEdit: page.data.email,
-	    ativoEdit: page.data.ativo // TODO --> PEDIR PARA IMPLEMENTAÇÃO DE CAMPOS NA API.
-
-    };
-
-    $('#nome-pac').val(dadosEdit.nomeEdit);
-    $('#causa-pac').val(dadosEdit.causaEdit);
-    $('#obs-pac').val(dadosEdit.obsEdit);
-    $('#prontuario-pac').val(dadosEdit.prontEdit);
- 	$('#idade-pac').val(dadosEdit.idadeEdit);
-  	$('#email-pac').val(dadosEdit.emailEdit);
-  	$('#pacienteAtivo').val(dadosEdit.ativoEdit);
+    // Preenche dados do paciente atual
+    $('#nome-pac-edit').val(medApp.services.dadosPacienteAtual.nome);
+    $('#med-pac-edit').val(medApp.services.dadosPacienteAtual.medico);
+    $('#data-pac-edit').val(medApp.services.dadosPacienteAtual.dataIntFormatoTraco);
+    $('#causa-pac-edit').val(medApp.services.dadosPacienteAtual.causa);
+    $('#hospital-pac-edit').val(medApp.services.dadosPacienteAtual.hospital);
 
     // Botão salvar altera os dados no servidor se houve mudanças
     page.querySelector('#editar-pac').onclick = function() {
 
-      /*var novoEdit = {
-        nomeEdit: $('#nome-pac').val(),
-        causaEdit: $('#causa-pac').val(),
-        obsEdit: $('#obs-pac').val(),
-        prontEdit: $('#pront-pac').val(),
-        idadeEdit: $('#idade-pac').val(),
-   		  emailEdit: $('#email-pac').val(),
+      // Dados editados do paciente
+      var dadosEditPac = {
+
+      nome: $('#nome-pac-edit').val(),
+      medico: $('#med-pac-edit').val(),
+      dataInt: $('#data-pac-edit').val(),
+      causa: $('#causa-pac-edit').val(),
+      hospital: $('#hospital-pac-edit').val()
+
       };
-      if (medApp.services.checkEdit(novoEdit, dadosEdit)) {
-        console.log('nao editou');
-      } else {
-        console.log('editou');
-      };*/
+
 
       //Request PUT responsável pela edição de pacientes diretamente na base de dados.
 
       $.ajax({
-          url: 'https://pibicfitbit.herokuapp.com/api/paciente/geral/' + medApp.services.getIdPaciente(),
+          url: 'http://julianop.com.br:3000/api/paciente/geral' + medApp.services.getIdPaciente(),
           type: 'PUT',
           success: function(data) {
             console.log(data);
@@ -697,19 +656,14 @@ medApp.controllers = {
             ons.notification.alert("Alterações não efetuadas");
           },
           data: {
-            nomePacienteNovo: dadosEdit.nomeEdit,
-            novoProntuario: dadosEdit.prontEdit,
-            novaFoto: dadosEdit.fotoEdit,
-            novaCausa: dadosEdit.causaEdit,
-            novaData: dadosEdit.idadeEdit
+            nomePaciente: dadosEditPac.nome,
+            causaDaInternacao: dadosEditPac.causa,
+            novaData: dadosEdit.idadeEdit,
+            dataDeNascimento:
           }
-      });
+        });
 
       document.querySelector('#pacienteNav').popPage();
-    };
-
-    document.querySelector('#pacienteAtivo').onclick = function() {
-      dadosEdit.ativoEdit = !(dadosEdit.ativoEdit);
     };
 
   },
@@ -808,7 +762,7 @@ medApp.controllers = {
     medApp.services.resetPulseirasDisponiveis();
 
     //Método responsável por encontrar na base as pulseiras disponíveis.
-    $.get('https://pibicfitbit.herokuapp.com/api/pulseira/disponivel')
+    $.get('http://julianop.com.br:3000/api/pulseira/disponivel')
       .done(function(data){
       	if(data.hasOwnProperty('idPulseiras')){
       		medApp.services.setPulseirasDisponiveis(data);
@@ -869,7 +823,7 @@ medApp.controllers = {
     //Método que linka o paciente à pulseira na base de dados.
 
     $.ajax({
-      url: 'https://pibicfitbit.herokuapp.com/api/pulseira/' + medApp.services.PulseiraAtual,
+      url: 'http://julianop.com.br:3000/api/pulseira/' + medApp.services.PulseiraAtual,
       type: 'PUT',
       success: function(data) {
         ons.notification.alert("Pulseira Selecionada com Sucesso!");
@@ -904,7 +858,7 @@ medApp.controllers = {
         var causaNovoPaciente = $('#causa-novo-pac').val();
         var localNovoPaciente = $('#local-novo-pac').val();
 
-        $.post('https://pibicfitbit.herokuapp.com/api/paciente/geral',
+        $.post('http://julianop.com.br:3000/api/paciente/geral',
         {
           nomePaciente: $('#nome-novo-pac').val(),
           causaDaInternacao: $('#causa-novo-pac').val(),

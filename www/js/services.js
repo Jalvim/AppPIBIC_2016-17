@@ -25,21 +25,50 @@ medApp.services = {
 
   },
 
-  idAtualPaciente: -1, //ID 'default' do paciente.
+  getNameMedico: function(idMedico) {
+    
+    $.get('http://julianop.com.br:3000/api/medico/busca/ID/' + idMedico)
+      .done(function(data) {
+        return data[0].nome;
+      });
+
+  },
+
+  dadosPacienteAtual: {
+    idAtualPaciente: -1,
+    nome: '',
+    medico: '',
+    causa: '',
+    dataIntFormatoBarra: '',
+    dataIntFormatoTraco: '',
+    hospital: ''
+  }, //Dados 'default' do paciente.
 
   //Função que seta o ID do paciente de interesse do médico --> 'onclick' no ícone.
-  setIdPaciente: function(novaId) {
-    this.idAtualPaciente = novaId;
+  setPacienteAtual: function(dados) {
+    this.dadosPacienteAtual.idAtualPaciente = dados.idPaciente;
+    this.dadosPacienteAtual.nome = dados.nome;
+    this.dadosPacienteAtual.medico = dados.medicoResp;
+    this.dadosPacienteAtual.causa = dados.causa;
+    this.dadosPacienteAtual.dataIntFormatoBarra = dados.dataIntFormatoBarra;
+    this.dadosPacienteAtual.dataIntFormatoTraco = dados.dataIntFormatoTraco;
+    this.dadosPacienteAtual.hospital = dados.hospital;
   },
 
   //Função que retorna o ID do paciente de interesse.
   getIdPaciente: function() {
-    return this.idAtualPaciente;
+    return this.dadosPacienteAtual.idAtualPaciente;
   },
 
   //Função que limpa o ID do paciente quando já consultados os dados de saúde;
-  deleteIdPaciente: function() {
-    this.idAtualPaciente = -1;
+  deletePacienteAtual: function() {
+    this.dadosPacienteAtual.idAtualPaciente = -1;
+    this.dadosPacienteAtual.nome = '';
+    this.dadosPacienteAtual.medico = '';
+    this.dadosPacienteAtual.causa = '';
+    this.dadosPacienteAtual.dataIntFormatoBarra = '';
+    this.dadosPacienteAtual.dataIntFormatoTraco = '';
+    this.dadosPacienteAtual.hospital = '';
   },
 
   dadosEstaticos: {
@@ -51,17 +80,17 @@ medApp.services = {
 
   //Conjunto de funções que armazenam novos dados estáticos.
   setDadosEstaticos: {
-    calorias: function(data) {
-      this.dadosEstaticos.calorias = data;
+    calorias: function(input) {
+      this.dadosEstaticos.calorias = input;
     },
-    passos: function(data) {
-      this.dadosEstaticos.passos = data;
+    passos: function(input) {
+      this.dadosEstaticos.passos = input;
     },
-    pulso: function(data) {
-      this.dadosEstaticos.pulso = data;
+    pulso: function(input) {
+      this.dadosEstaticos.pulso = input;
     },
-    degraus: function(data) {
-      this.dadosEstaticos.degraus = data;
+    degraus: function(input) {
+      this.dadosEstaticos.degraus = input;
     }
   },
 
@@ -119,9 +148,11 @@ medApp.services = {
   // Cria novo paciente e adiciona à lista
   createPaciente: function(data) {
 
-    var dataPaciente = data.dataPaciente.substring(8,10) + '/' +
-                       data.dataPaciente.substring(5,7) + '/' +
-                       data.dataPaciente.substring(0,4);
+    var dataPacienteFormatoBarra = data.dataPaciente.substring(8,10) + '/' +
+                                   data.dataPaciente.substring(5,7) + '/' +
+                                   data.dataPaciente.substring(0,4);
+
+    var dataPacienteFormatoTraco = data.dataPaciente.substring(0,10);
 
      // Template de novo paciente
      var template = document.createElement('div');
@@ -143,7 +174,7 @@ medApp.services = {
           '<ons-row>' +
             '<ons-col class="paciente-detalhes">' +
               '<ons-icon icon="md-calendar" class="list__item__icon"></ons-icon>' +
-              '<span class="list__item__subtitle">' + dataPaciente + '</span>' +
+              '<span class="list__item__subtitle">' + dataPacienteFormatoBarra + '</span>' +
             '</ons-col>' +
             '<ons-col class="paciente-detalhes">' +
               '<ons-icon icon="md-plaster" class="list__item__icon"></ons-icon>' +
@@ -164,6 +195,28 @@ medApp.services = {
       '</ons-list-item>';
 
     var pacienteItem = template.firstChild;
+    $(pacienteItem).data('idPaciente', data.idPaciente);
+
+    pacienteItem.onclick = function() {
+
+      medApp.services.setPacienteAtual( {idPaciente: $(pacienteItem).data('idPaciente'),
+                                          nome: data.nomePaciente,
+                                          dataIntFormatoTraco: dataPacienteFormatoTraco,
+                                          dataIntFormatoBarra: dataPacienteFormatoBarra,
+                                          causa: data.causaPaciente,
+                                          medicoResp: 'medicoResp',
+                                          hospital: data.hospital
+                                        });
+
+      document.querySelector('#pacienteNav').pushPage('html/perfilpaciente.html',
+        {data: {nome: data.nomePaciente, 
+                causa: data.causaPaciente,
+                medicoResp: 'medicoResp',
+                dataInt: dataPacienteFormatoBarra,
+                hospital: data.hospital
+        }}); 
+
+    };
 
     var pacientesLista = document.querySelector('#lista-pacientes');
     pacientesLista.appendChild(pacienteItem);
