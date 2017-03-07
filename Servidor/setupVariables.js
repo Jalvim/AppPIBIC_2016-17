@@ -214,17 +214,17 @@ module.exports = function(app) {
 		method:'POST',
 		url:'http://127.0.0.1:3000/api/pulseira/',
 		form:{ 
-			codigoOAuth:'1d1976396b6b7d08a5ec444b5ed7b8aa1a837014',
-			redirectUri:'https://www.google.com.br/'
+			codigoOAuth:'7b704d2cd4fdb772a443693d00f28d419faa7795',
+			redirectUri:'http://julianop.com.br:3000/'
 		}
 	};
 	app.optionsPutTestRequestPulseira = {
 		method:'PUT',
 		url:'http://127.0.0.1:3000/api/pulseira/',
 		form:{ 
-			idPulseira: 56,
+			idPulseira: 57,
 			disponivel: 0,
-			idPaciente: 39
+			idPaciente: 52
 		}
 	};
 	app.optionsDeleteTestRequestPulseira = {
