@@ -89,13 +89,13 @@ medApp.controllers = {
 
 
      document.addEventListener("deviceready", onDeviceReady, false);
-
+var largeImage;
           function onDeviceReady () {
-             console.log('Loading Cordova is completed');
+             window.alert('Loading Cordova is completed');
           }
 
           function onSuccess (imageURI) {
-            var largeImage = $('#picture');
+             largeImage = document.getElementById('picture');
             largeImage.style.display = 'block';
             largeImage.src = imageURI;
           }
@@ -171,7 +171,8 @@ medApp.controllers = {
           CRM: $('#crm-cadastro').val(),
           telefone: $('#telefone-cadastro').val(),
           email: $('#email-cadastro').val(),
-          senha: $('#senha-cadastro').val()
+          senha: $('#senha-cadastro').val() ,
+          picture:$('picture').src
         })
           .done(function(data) {
             modal.hide();
@@ -993,7 +994,7 @@ medApp.controllers = {
 
     //pega o codigoOauth
 
-
+console.log(Oauth);
 
         $.post("http://julianop.com.br:3000/api/pulseira",{
          redirectUri :"http://julianop.com.br:3000/",
@@ -1001,8 +1002,13 @@ medApp.controllers = {
         ClientSecret: "1dcfe0c85eee35d7cb8295,733a3b0f9d",
         CodigoOauth:Oauth
 
-        });
+        })
+.done(function(data){
+console.log(data);
 
+
+
+});
 
 
 

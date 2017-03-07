@@ -180,7 +180,7 @@ router.get('/geral/idMedico/:idMedico', function(req, res){
 		//Primeiramente, o id do Médico é buscado na tabela de Pacientes para obter os seus poacientes
 		if (req.params.hasOwnProperty('idMedico')) {
 			var getMedicoQuery = {
-			sql: `SELECT * FROM Paciente_Medico PM, Paciente P WHERE PM.idMedico = ${connection.escape(req.params.idMedico)} AND PM.idPaciente = P.idtable1 AND P.ativo<>0`,
+			sql: `SELECT P.*, PM.*, M.nome  FROM Paciente_Medico PM, Paciente P, Medico M WHERE PM.idMedico = ${connection.escape(req.params.idMedico)} AND PM.idPaciente = P.idtable1 AND P.ativo<>0 AND PM.idMedico=M.idMedico`,
 			timeout: 10000	
 		}
 		
