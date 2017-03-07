@@ -4,13 +4,13 @@
 
   <ons-template id="configuracoes.html">
     <ons-page id="configuracoes">
-  
+
       <ons-toolbar class="toolbar">
         <div class="center">Configurações</div>
       </ons-toolbar>
 
       <br>
-  
+
       <ons-list>
 
         <ons-list-header>Opções</ons-list-header>
@@ -23,11 +23,11 @@
             Gerenciar Pulseiras
           </div>
         </ons-list-item>
-    
+
       </ons-list>
-  
+
       <br>
-  
+
       <ons-list>
         <ons-list-header>Sobre a Aplicação</ons-list-header>
         <ons-list-item>
@@ -52,7 +52,7 @@
       </ons-toolbar>
 
       <br>
-  
+
       <ons-list>
         <ons-list-header>Pulseiras Conectadas</ons-list-header>
         <ons-list-item>
@@ -79,16 +79,41 @@
             <ons-switch></ons-switch>
           </div>
         </ons-list-item>
-        <ons-list-item tappable>
-          <div class="center" id="addpulseira">
-            Adicionar nova pulseira
-          </div>
-        </ons-list-item>
       </ons-list>
+      <br>
+        Para adicionar uma nova pulseira, por favor siga essas etapas:
+      <br>
+        1.Acesse o link no botão;
 
-  </ons-page>
+<br>
+      2.Logue com sua conta FITBIT e clique em "allow";
+      <br>
+      3.Guarde o codigo do endereço que aparecer(ele é o que fica entre o "code=" e o #).
+      <br>
+      <br>
+      <br>
+
+        <ons-button  id="linkurl">
+          <div class="left">
+            link
+          </div>
+        </ons-button>
+      <ons-button  id="addpulseira">
+        <div class="right">
+          Adicionar nova pulseira
+        </div>
+      </ons-button>
+
+
+
+
+    </ons-page>
   </ons-template>
 
 </ons-page>
+
+
+
+
 
 <!-- Página de Configurações -->
