@@ -116,7 +116,7 @@ router.route('/')
 		if (req.body.hasOwnProperty('idHospital')) {
 			connection.query(
 			  'DELETE FROM Hospital WHERE idHospital=? LIMIT 1',
-			  [req.body.idGrupoPac],
+			  [req.body.idHospital],
 			  	function(err){
 				  	if (err != null) {
 				  		console.log('Erro ao remover hospital');
@@ -140,7 +140,7 @@ router.route('/relacoes/')
 			req.body.hasOwnProperty('idMedico') &&
 			req.body.hasOwnProperty('idHospital')){
 			var query ={
-				sql: `INSERT INTO Hospital_Medico (idMedico, idGrupoPac) VALUES (${connection.escape(req.body.idMedico)}, ${connection.escape(req.body.idHospital)})`,
+				sql: `INSERT INTO Hospital_Medico (idMedico, idHospital) VALUES (${connection.escape(req.body.idMedico)}, ${connection.escape(req.body.idHospital)})`,
 				timeout: 1000
 			}
 
@@ -164,7 +164,7 @@ router.route('/relacoes/')
 	.delete(function(req, res) {
 
 		console.log(req.body.hasOwnProperty('idMedico'));
-		if (req,hasOwnProperty('body') &&
+		if (req.hasOwnProperty('body') &&
 			req.body.hasOwnProperty('idMedico') &&
 			req.body.hasOwnProperty('idHospital') ) {
 			connection.query(
