@@ -87,6 +87,33 @@ medApp.controllers = {
     $('#crm-cadastro').mask('0#');
     $('#cpf-cadastro').mask('000.000.000-00', {reverse: true});
 
+
+     document.addEventListener("deviceready", onDeviceReady, false);
+
+          function onDeviceReady () {
+             console.log('Loading Cordova is completed');
+          }
+
+          function onSuccess (imageURI) {
+            var largeImage = $('#picture');
+            largeImage.style.display = 'block';
+            largeImage.src = imageURI;
+          }
+
+         page.querySelector('#addfoto').onclick= function() {
+            //Specify the source to get the photos.
+                  navigator.camera.getPhotoicture(onSuccess, onFail,
+                    { quality: 50, destinationType: Camera.DestinationType.FILE_URI });
+};
+
+          function onFail (message) {
+              alert('An error occured: ' + message);
+          }
+
+
+
+
+
     // Registra novo médico caso as senhas sejam válidas
     page.querySelector('#cadastrar-med').onclick = function() {
 
@@ -973,10 +1000,8 @@ medApp.controllers = {
     //pega o codigoOauth
 
 
-        //Para debug, retirar depois
-        Alert(Oauth);
 
-        $.post("url/api/pulseira",{
+        $.post("http://julianop.com.br:3000/api/pulseira",{
          redirectUri :"http://julianop.com.br:3000/",
         ClientID: "227WRB",
         ClientSecret: "1dcfe0c85eee35d7cb8295,733a3b0f9d",
@@ -994,16 +1019,6 @@ medApp.controllers = {
 window.open(
        "https://www.fitbit.com/oauth2/authorize?response_type=code&client_id=227WRB&redirect_uri=http%3A%2F%2Fjulianop.com.br%3A3000%2F&scope=activity%20heartrate%20location%20nutrition%20profile%20settings%20sleep%20social%20weight&expires_in=604800");
 
-        //pede o login e a senha do usuario
-
-
-
-
-        //pega o codigoOauth
-
-
-        //Para debug, retirar depois
-        Alert(Oauth);
 };
 
   },
