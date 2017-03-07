@@ -275,6 +275,17 @@ medApp.services = {
     $(lembreteItem).data('horario', dataFormatoBarra);
     $(lembreteItem).data('idLembrete', data.idLembrete);
     $(lembreteItem).data('fullText', data.texto);
+    $(lembreteItem).data('Na', data.Na),
+    $(lembreteItem).data('K', data.K),
+    $(lembreteItem).data('Cl', data.Cl),
+    $(lembreteItem).data('Co2', data.Co2),
+    $(lembreteItem).data('Bun', data.Bun),
+    $(lembreteItem).data('Creat', data.Creat),
+    $(lembreteItem).data('Gluc', data.Gluc),
+    $(lembreteItem).data('wbc', data.wbc),
+    $(lembreteItem).data('HgB', data.HgB),
+    $(lembreteItem).data('Hct', data.Hct),
+    $(lembreteItem).data('Plt', data.Plt)
 
     // Funcionalidade de remover lembrete
     lembreteItem.querySelector('.right').onclick = function() {
@@ -311,7 +322,18 @@ medApp.services = {
         {data: {texto: $(lembreteItem).data('fullText'),
                 horario: $(lembreteItem).data('horario'),
                 medicoResp: $(lembreteItem).data('medicoResp'),
-                idLembrete: $(lembreteItem).data('idLembrete')
+                idLembrete: $(lembreteItem).data('idLembrete'),
+                Na: $(lembreteItem).data('Na'),
+                K: $(lembreteItem).data('K'),
+                Cl: $(lembreteItem).data('Cl'),
+                Co2: $(lembreteItem).data('Co2'),
+                Bun: $(lembreteItem).data('Bun'),
+                Creat: $(lembreteItem).data('Creat'),
+                Gluc: $(lembreteItem).data('Gluc'),
+                wbc: $(lembreteItem).data('wbc'),
+                HgB: $(lembreteItem).data('HgB'),
+                Hct: $(lembreteItem).data('Hct'),
+                Plt: $(lembreteItem).data('Plt')
         }});
 
     };

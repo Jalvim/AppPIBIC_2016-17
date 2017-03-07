@@ -793,13 +793,23 @@ medApp.controllers = {
         for (var i = data.length - 1; i >= 0; i--) {
 
           lembretesInfo = data[i];
-          console.log(lembretesInfo);
           medApp.services.createLembrete( 
             { 
               texto: lembretesInfo.mensagem,
               horario: lembretesInfo.data,
               medico: lembretesInfo.nome,
-              idLembrete: lembretesInfo.id
+              idLembrete: lembretesInfo.id,
+              Na: lembretesInfo.Na,
+              K: lembretesInfo.K,
+              Cl: lembretesInfo.CI,
+              Co2: lembretesInfo.Co2,
+              Bun: lembretesInfo.Bun,
+              Creat: lembretesInfo.Creat,
+              Gluc: lembretesInfo.Gluc,
+              wbc: lembretesInfo.wcb,
+              HgB: lembretesInfo.HgB,
+              Hct: lembretesInfo.Hct,
+              Plt: lembretesInfo.Plt
             });
         };
 
@@ -1077,11 +1087,22 @@ medApp.controllers = {
   verlembrete: function(page) {
 
     page.addEventListener('show', function(event) {
-
+      console.log(page.data);
       page.querySelector('.lembrete-header').innerHTML = medApp.services.dadosPacienteAtual.nome;
       $('#texto-ver-lembrete').val(page.data.texto);
       page.querySelector('#medico-ver-lembrete').innerHTML = page.data.medicoResp;
       page.querySelector('#data-ver-lembrete').innerHTML = page.data.horario;
+      page.querySelector('#NA-diagrama').innerHTML = page.data.Na;
+      page.querySelector('#K-diagrama').innerHTML = page.data.K;
+      page.querySelector('#Cl-diagrama').innerHTML = page.data.Cl;
+      page.querySelector('#Co2-diagrama').innerHTML = page.data.Co2;
+      page.querySelector('#Bun-diagrama').innerHTML = page.data.Bun;
+      page.querySelector('#Creat-diagrama').innerHTML = page.data.Creat;
+      page.querySelector('#Gluc-diagrama').innerHTML = page.data.Gluc;
+      page.querySelector('#wbc-diagrama').innerHTML = page.data.wbc;
+      page.querySelector('#HgB-diagrama').innerHTML = page.data.HgB;
+      page.querySelector('#Hct-diagrama').innerHTML = page.data.Hct;
+      page.querySelector('#Plt-diagrama').innerHTML =page.data.Plt;
 
     });
 
@@ -1101,7 +1122,18 @@ medApp.controllers = {
           url: 'http://julianop.com.br:3000/api/lembrete',
           type: 'PUT',
           data: { idLembrete: page.data.idLembrete,
-                  mensagem: $('#texto-ver-lembrete').val()
+                  mensagem: $('#texto-ver-lembrete').val(),
+                  Na: $('#NA-ver').val(),
+                  K: $('#K-ver').val(),
+                  CI: $('#Cl-ver').val(),
+                  Co2: $('#Co2-ver').val(),
+                  Bun: $('#Bun-ver').val(),
+                  Creat: $('#Creat-ver').val(),
+                  Gluc: $('#Gluc-ver').val(),
+                  wcb: $('#wbc-ver').val(),
+                  HgB: $('#HgB-ver').val(),
+                  Hct: $('#Hct-ver').val(),
+                  Plt: $('#Plt-ver').val()
                 }
         })
         .done(function(data) {
