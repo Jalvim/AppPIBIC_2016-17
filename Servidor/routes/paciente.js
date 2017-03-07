@@ -56,10 +56,9 @@ router.route('/geral')
 			req.body.hasOwnProperty('telefone') &&
 			req.body.hasOwnProperty('foto') &&
 			req.body.hasOwnProperty('dataDeNascimento') &&
-			req.body.hasOwnProperty('idPulseira') &&
 			req.body.hasOwnProperty('idMedico')){	
 			var query = {
- 				sql:`INSERT INTO Paciente (nomePaciente, numeroDoProntuario, telefone, foto, causaDaInternacao, dataDeNascimento, idPulseira) VALUES (${connection.escape(req.body.nomePaciente)}, ${connection.escape(req.body.numeroDoProntuario)}, ${connection.escape(req.body.telefone)}, ${connection.escape(req.body.foto)}, ${connection.escape(req.body.causaDaInternacao)}, ${connection.escape(req.body.dataDeNascimento)}, ${connection.escape(req.body.idPulseira)})`,
+ 				sql:`INSERT INTO Paciente (nomePaciente, numeroDoProntuario, telefone, foto, causaDaInternacao, dataDeNascimento, ativo) VALUES (${connection.escape(req.body.nomePaciente)}, ${connection.escape(req.body.numeroDoProntuario)}, ${connection.escape(req.body.telefone)}, ${connection.escape(req.body.foto)}, ${connection.escape(req.body.causaDaInternacao)}, ${connection.escape(req.body.dataDeNascimento)}, 1)`,
 				timeout: 10000
 			}
 			connection.query(query, function(err, rows, fields) {
@@ -117,8 +116,8 @@ router.route('/geral')
 					novaFoto,
 					novaCausa,
 					novaData,
-					novaPulseira;
-				
+					ativo;
+									
 				if (req.body.hasOwnProperty('nomePaciente')) {
 					nomePacienteNovo = req.body.nomePaciente;
 				} else { nomePacienteNovo = rows[0].nomePaciente; }
@@ -137,22 +136,18 @@ router.route('/geral')
 				if (req.body.hasOwnProperty('dataDeNascimento')){
 					novaData = req.body.dataDeNascimento;
 				} else { novaData = rows[0].dataDeNascimento; }
-				if (req.body.hasOwnProperty('idPulseira')){
-					novaPulseira = req.body.idPulseira;
-				} else { novaPulseira = rows[0].idPulseira; }
+				if (req.body.hasOwnProperty('ativo')){
+					ativo = req.body.ativo;
+				} else { ativo = rows[0].ativo; }
 				
 				connection.query(
-				'UPDATE Paciente SET nomePaciente=?, numeroDoProntuario=?, telefone=?, foto=?, causaDaInternacao=?, dataDeNascimento=?, idPulseira=? WHERE idtable1=?',
-				[nomePacienteNovo,novoProntuario,novoTelefone,novaFoto,novaCausa,novaData,novaPulseira,rows[0].idtable1], 
+				'UPDATE Paciente SET nomePaciente=?, numeroDoProntuario=?, telefone=?, foto=?, causaDaInternacao=?, dataDeNascimento=?, ativo=? WHERE idtable1=?',
+				[nomePacienteNovo,novoProntuario,novoTelefone,novaFoto,novaCausa,novaData,ativo,rows[0].idtable1], 
 				function(error, results){
 					if (error != null) {
 						console.log('Erro ao alterar perfil de paciente na base de dados');
 						res.send('Erro ao alterar perfil de paciente na base de dados');
 					} else {
-					
-					
-						//TRATAR AQUI CASOS DE EDIÇÃO DE PULSEIRA
-						
 						
 						console.log('Paciente editado com sucesso.');
 					}
@@ -185,7 +180,7 @@ router.get('/geral/idMedico/:idMedico', function(req, res){
 		//Primeiramente, o id do Médico é buscado na tabela de Pacientes para obter os seus poacientes
 		if (req.params.hasOwnProperty('idMedico')) {
 			var getMedicoQuery = {
-			sql: `SELECT * FROM Paciente_Medico PM, Paciente P, Pulseira_Paciente PP WHERE PM.idMedico = ${connection.escape(req.params.idMedico)} AND PM.idPaciente = P.idtable1 AND  PP.pacienteAtual=P.idtable1`,
+			sql: `SELECT * FROM Paciente_Medico PM, Paciente P WHERE PM.idMedico = ${connection.escape(req.params.idMedico)} AND PM.idPaciente = P.idtable1 AND P.ativo<>0`,
 			timeout: 10000	
 		}
 		
@@ -213,17 +208,38 @@ router.get('/geral/idMedico/:idMedico', function(req, res){
 	}
 });
 
-//Ações com tabelas de parâmetros de saúde dos pacientes
-// router.route('/health/static')
-// 	.post(function(req, res) {
-// 		//TO DO:
-// 	})
-// 	.put(function(req, res){
-// 		//TO DO:
-// 	})
-// 	.delete(function(req, res) {
-// 		//TO DO: 
-// 	});
+router.get('/geral/inativo/idMedico/:idMedico', function(req, res){
+	console.log(req.params.hasOwnProperty('idMedico'));
+		//Primeiramente, o id do Médico é buscado na tabela de Pacientes para obter os seus poacientes
+		if (req.params.hasOwnProperty('idMedico')) {
+			var getMedicoQuery = {
+			sql: `SELECT * FROM Paciente_Medico PM, Paciente P WHERE PM.idMedico = ${connection.escape(req.params.idMedico)} AND PM.idPaciente = P.idtable1 AND P.ativo=0`,
+			timeout: 10000	
+		}
+		
+		connection.query(getMedicoQuery, function(err, rows, fields) {
+			if(err) {
+				console.log(err);
+				res.send('Houve um erro ao se tentar encontrar o médico com o ID desejado.');
+			}
+			if(rows.length < 1)	{
+				res.send('Não existe paciente associado a este médico com esta ID na base de dados');
+			}
+			else{
+				res.json(rows);
+			}
+			console.log(err);
+			console.log(rows);
+			//console.log(fields);
+			//Utilizamos o primeiro médico encontrado com o ID único para a próxima etapa
+			
+		});
+
+		
+	} else {
+		res.send('Indique o ID único do médico a ser puxado da base.');			
+	}
+});
 	
 router.get('/health/static/:idPaciente/:data', function(req, res){
 	

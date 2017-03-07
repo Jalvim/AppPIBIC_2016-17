@@ -95,13 +95,20 @@ router.route('/')
 							
 							if (error) { return res.send('Error: Não alocou a pulseira corretamente.'); }
 							
+							connection.query(`SELECT * FROM Paciente_Pulseira WHERE idPulseira=${req.body.idPulseira} AND idPaciente=${req.body.idPaciente}`, function(err, result){
+								if (err) { console.log('Erro no select do Paciente_Pulseira'); }
+								if (result.length < 1) {
+									connection.query(`INSERT INTO Paciente_Pulseira (idPulseira, idPaciente) VALUES (${req.body.idPulseira},${req.body.idPaciente})`);
+								}
+							});
+							
 							connection.query(`INSERT INTO Pulseira_Paciente (idPulseira, pacienteAtual) VALUES (${req.body.idPulseira}, ${req.body.idPaciente})`,
 							  function(erro){
 								  if (erro) { 
 								  	connection.query(`UPDATE Pulseira SET disponivel=1 WHERE idPulseira=${req.body.idPulseira}`);
 								  	return res.send('Erro_tipo1: Falha no link pulseira paciente'); 
 								  }
-								  connection.query(`UPDATE Paciente SET idPulseira=${req.body.idPulseira} WHERE idtable1=${req.body.idPaciente}`);
+// 								  connection.query(`UPDATE Paciente SET idPulseira=${req.body.idPulseira} WHERE idtable1=${req.body.idPaciente}`);
 								  res.send(`Pulseira de id ${req.body.idPulseira} alocada corretamente ao paciente de id ${req.body.idPaciente}`);
 							});
 						});

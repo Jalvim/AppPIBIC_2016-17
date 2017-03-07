@@ -38,11 +38,11 @@ connection.connect();
 setupOptionsVariables(app);
  
 
-//  request(app.optionsDeleteTestRequestLembrete, function(err, httpResponse, body) { 
-//  	console.log(err);
-//  	//console.log(httpResponse);
-//  	console.log(body);
-//  });
+ request(app.optionsPutTestRequestPulseira, function(err, httpResponse, body) { 
+ 	console.log(err);
+ 	//console.log(httpResponse);
+ 	console.log(body);
+ });
 
 // var email = {
 // 	to:'gabrielpmp@gmail.com, prettzb@gmail.com, matheusbafutto@gmail.com, vitorbordini96@gmail.com, jorge.jglm@gmail.com, j.rabello.alvim@outlook.com',
@@ -150,7 +150,7 @@ function getDynamicHealthParams(idPulseira, currDate, delay) {
 		
 }
 
-//Função subtrai delay da data "today" e formata para armazenamento na base de dados
+//Função que formata e retorna data e hora
 function formatDate(today) {
 
 	dd = today.getDate(),

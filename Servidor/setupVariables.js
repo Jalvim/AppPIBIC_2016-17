@@ -17,21 +17,20 @@ module.exports = function(app) {
 		method:'POST',
 		url:'http://127.0.0.1:3000/api/paciente/geral',
 		form:{ 
-			nomePaciente: 'Juliano Barbosa Pretz',
-			causaDaInternacao: 'Estresse Crônico',
-			numeroDoProntuario: 8373659,
-			telefone: 999990000,
+			nomePaciente: 'Alceu',
+			causaDaInternacao: 'Braço quebrado',
+			numeroDoProntuario: 89491649,
+			telefone: 999999999,
 			foto: 0001000101011111,
-			dataDeNascimento: '1990-06-05',
-			idMedico: 20, 
-			idPulseira: 47
+			dataDeNascimento: '1999-04-04',
+			idMedico: 21
 		}
 	};
 	app.optionsPutTestRequestPaciente = {
 		method:'PUT',
 		url:'http://127.0.0.1:3000/api/paciente/geral',
 		headers: {
-			'idPaciente': '12'
+			'idPaciente': '61'
 		},
 		form:{ 
 			nomePaciente: 'Mauricio Nunes',
@@ -40,8 +39,7 @@ module.exports = function(app) {
 			foto: 000100100101010010,
 			causaDaInternacao: 'Diareia',
 			dataDeNascimento: '1999-06-14',
-			crmMedicoResponsavel:'111111111111',
-			isNewPatient: false
+			ativo: 1
 		}
 	}
 	app.optionsDeleteTestRequestPaciente = {
