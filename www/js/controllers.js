@@ -17,6 +17,16 @@ medApp.controllers = {
       $('#senha-login').attr('type', 'password');
     };
 
+    page.querySelector('#esquecer-senha').onclick=function(){
+
+    var email=prompt("Digite seu e-mail");
+
+    // $.post("url/api/medico",email);
+
+
+
+    };
+
     // Chama página de cadastro
     page.querySelector('#cadastro-button').onclick = function() {
       document.querySelector('#loginNav').pushPage('html/cadastromedico.html');
@@ -150,7 +160,7 @@ medApp.controllers = {
   // Controlador do perfil do Médico no modo paisagem //
   //////////////////////////////////////////////////////
 
-  medico: function(page) { 
+  medico: function(page) {
 
     // Atualiza os dados do perfil do médico a partir do servidor
     page.addEventListener('show', function(event) {
@@ -169,12 +179,10 @@ medApp.controllers = {
     //Funcionalização da responsividade de tela Retrato/Paisagem.
     /* RETIRADO PARA TESTES
     window.fn = {};
-
     window.fn.open = function() {
       var menu = document.getElementById('mainperfil');
       menu.open();
     };
-
     window.fn.load = function(page) {
       var content = document.getElementById('secundperfil');
       var menu = document.getElementById('mainperfil');
@@ -207,10 +215,8 @@ medApp.controllers = {
 
     // Realiza a atualização do perfil com pull (NAO IIMPLEMENTADO)
     /*var pullHook = document.getElementById('pull-hook');
-
     pullHook.addEventListener('changestate', function(event) {
       var message = '';
-
       switch (event.state) {
         case 'initial':
           message = 'Pull to refresh';
@@ -222,11 +228,8 @@ medApp.controllers = {
           message = 'Loading...';
           break;
       }
-
       pullHook.innerHTML = message;
-
     });
-
     pullHook.onAction = function(done) {
       setTimeout(done, 1000);
     };*/
@@ -240,7 +243,7 @@ medApp.controllers = {
 
   pacientes: function(page) {
 
-    page.addEventListener('show', function(event) { 
+    page.addEventListener('show', function(event) {
 
       medApp.services.deletePacienteAtual();
       $('#lista-pacientes').empty();
@@ -256,8 +259,8 @@ medApp.controllers = {
             .done(function(input) {
               pacientesInfo.medicoResp = input[0].nome;
 
-              medApp.services.createPaciente( 
-              { 
+              medApp.services.createPaciente(
+              {
                 statusPaciente: 'ativo',
                 img: 'http://www.clker.com/cliparts/A/Y/O/m/o/N/placeholder-md.png',
                 nomePaciente: pacientesInfo.nomePaciente,
@@ -285,30 +288,19 @@ medApp.controllers = {
 
     /* Página para adicionar um novo grupo de pacientes (NAO IMPLEMENTADO)
     page.querySelector('#add-grupo').onclick = function() {
-
       document.querySelector('#pacienteNav').pushPage('html/addgrupo.html');
-
     };
     */
 
     /* GAMBIARRA PARA O TESTE DE UX !!!RETIRAR!!!
-
     page.querySelector('#pac1').onclick = function() {
-
       document.querySelector('#pacienteNav').pushPage('html/perfilpaciente.html');
-
     };
-
     page.querySelector('#pac2').onclick = function() {
-
       document.querySelector('#pacienteNav').pushPage('html/perfilpaciente.html');
-
     };
-
     page.querySelector('#pac3').onclick = function() {
-
       document.querySelector('#pacienteNav').pushPage('html/perfilpaciente.html');
-
     };
     */
 
@@ -370,7 +362,7 @@ medApp.controllers = {
         //Interface gráfica interativa dos dados estáticos de saúde.
 
         //Request feito quando a interface gráfica carregar para obter os dados estáticos do paciente.
-        
+
         $.get('http://julianop.com.br:3000/api/paciente/health/static/' + medApp.services.dadosPacienteAtual.idAtualPaciente)
           .done(function(data) {
             for(var i = 0; i < data.length; i++){
@@ -379,7 +371,7 @@ medApp.controllers = {
           })
 
           .done(function() {
-        
+
 
             var chrt1 = document.getElementById("myChart1");
             var data1 = {
@@ -428,7 +420,7 @@ medApp.controllers = {
         //Interface gráfica interativa dos dados estáticos de saúde.
 
         //Request
-        
+
         $.get('http://julianop.com.br:3000/api/paciente/health/static/' + medApp.services.dadosPacienteAtual.idAtualPaciente)
           .done(function(data) {
             for(var i = 0; i < data.length; i++){
@@ -436,8 +428,8 @@ medApp.controllers = {
             }
           })
 
-          .done(function() {  
-        
+          .done(function() {
+
 
             var chrt2 = document.getElementById("myChart2");
             var data2 = {
@@ -535,7 +527,7 @@ medApp.controllers = {
           })
 
           .done(function() {
-        
+
 
             var chrt4 = document.getElementById("myChart4");
             var data4 = {
@@ -686,7 +678,7 @@ medApp.controllers = {
         })
         .done(function(data) {
           console.log(data);
-          document.querySelector('#pacienteNav').popPage( {data: 
+          document.querySelector('#pacienteNav').popPage( {data:
             {
               nome: dadosEditPac.nome,
               causa: dadosEditPac.causa,
@@ -788,13 +780,13 @@ medApp.controllers = {
       $('#lista-lembretes').empty();
       $.get('http://julianop.com.br:3000/api/lembrete/' + medApp.services.getIdPaciente())
       .done(function(data){
-        
+
         // Cria os lembretes no inverso dos id's retornados (ordem cronológica)
         for (var i = data.length - 1; i >= 0; i--) {
 
           lembretesInfo = data[i];
-          medApp.services.createLembrete( 
-            { 
+          medApp.services.createLembrete(
+            {
               texto: lembretesInfo.mensagem,
               horario: lembretesInfo.data,
               medico: lembretesInfo.nome,
@@ -830,13 +822,9 @@ medApp.controllers = {
   ///////////////////////////////////////
 
   /*buscarpaciente: function(page){
-
     page.querySelector('#add-pac').onclick = function() {
-
       document.querySelector('#pacienteNav').pushPage('html/addpaciente.html');
-
     };
-
   },*/
 
   /////////////////////////////////////////
@@ -878,7 +866,7 @@ medApp.controllers = {
           error: function() {
             ons.notification.alert("Não Cadastrado.");
           },
-          data: { 
+          data: {
             disponivel: 0,
             idPaciente: medApp.services.idAtualPaciente
           }
@@ -904,7 +892,7 @@ medApp.controllers = {
               error: function() {
                 ons.notification.alert("Erro ao Selecionar a pulseira.");
               },
-              data: { 
+              data: {
                 disponivel: 1,
                 idPaciente: medApp.services.idAtualPaciente
               }
@@ -979,28 +967,10 @@ medApp.controllers = {
   pulseiras: function(page){
 
     page.querySelector('#addpulseira').onclick = function(){
+ var  Oauth;
+        Oauth = prompt("Digite o codigo da FITBIT");
 
-        //pede o login e a senha do usuario
-        var  login;
-        login = prompt("Digite o login da FITBIT");
-
-
-        var   senha;
-        senha = prompt("Digite a senha da FITBIT");
-
-        //encontra a URL
-        var URL;
-        $.post("https://www.fitbit.com/oauth2/authorize?response_type=code&client_id=227WRB&redirect_uri=http%3A%2F%2Fjulianop.com.br%3A3000%2F&scope=activity%20heartrate%20location%20nutrition%20profile%20settings%20sleep%20social%20weight&expires_in=604800",
-            {login:login,
-            senha:senha
-            })
-            .done(function(data){
-              URL = window.location.href;
-              console.log(URL);
-            });
-
-        //pega o codigoOauth
-        var Oauth = URL.substr(URL.indexOf("=")+1,URL.indexOf("#")-1);
+    //pega o codigoOauth
 
 
         //Para debug, retirar depois
@@ -1013,8 +983,29 @@ medApp.controllers = {
         CodigoOauth:Oauth
 
         });
-        
-      };
+
+
+
+
+
+        };
+
+        page.querySelector('#linkurl').onclick=function(){
+window.open(
+       "https://www.fitbit.com/oauth2/authorize?response_type=code&client_id=227WRB&redirect_uri=http%3A%2F%2Fjulianop.com.br%3A3000%2F&scope=activity%20heartrate%20location%20nutrition%20profile%20settings%20sleep%20social%20weight&expires_in=604800");
+
+        //pede o login e a senha do usuario
+
+
+
+
+        //pega o codigoOauth
+
+
+        //Para debug, retirar depois
+        Alert(Oauth);
+};
+
   },
 
   ////////////////////////////////////////
