@@ -834,12 +834,12 @@ medApp.controllers = {
 
   addpaciente: function(page) {
 
-    medApp.services.resetPulseirasDisponiveis();
-
     //Método responsável por encontrar na base as pulseiras disponíveis.
     $.get('http://julianop.com.br:3000/api/pulseira/disponivel')
       .done(function(data){
-      	medApp.services.setPulseirasDisponiveis(data);
+      	for(var i = 0; i <data.length; i++){
+      	  medApp.services.pulseirasDisponiveis[i] = data[i].idPulseira;
+      	}
         console.log(medApp.services.pulseirasDisponiveis);
       });
 
@@ -847,66 +847,61 @@ medApp.controllers = {
       var showPopover = function(target) {
         document.getElementById('popover')
           .show(target);
+      }
+
+      var hidePopover = function() {
+      	document
+      	  .getElementById('popover')
+      	  .hide();
       };
 
       document.querySelector('#nuloPulseira').onclick = function() {
-      	medApp.services.setPulseiraAtual(-4); // -4 é o valor de flag, já q -1 é id default.
+        //Método que liga a pulseira ao paciente na base de dados.
+
+        $.ajax({
+          url: 'http://julianop.com.br:3000/api/pulseira/' + medApp.services.PulseiraAtual,
+          type: 'PUT',
+          success: function(data) {
+            ons.notification.alert("Pulseira Nula selecionada!");
+          },
+          error: function() {
+            ons.notification.alert("Não Cadastrado.");
+          },
+          data: { 
+            disponivel: 0,
+            idPaciente: medApp.services.idAtualPaciente
+          }
+        });
+
+        for(var i = 0; i < medApp.services.pulseirasDisponiveis.length; i++){
+          medApp.services.showPulseirasDisponiveis(i);
+
+          document.querySelector("#item" + i).onclick = function() {
+          	var index = $("div").index(this);
+          	medApp.services.pulseiraAtual = medApp.services.pulseirasDisponiveis[index];
+
+          	$.ajax({
+              url: 'http://julianop.com.br:3000/api/pulseira/' + medApp.services.PulseiraAtual,
+              type: 'PUT',
+              success: function(data) {
+                ons.notification.alert("Pulseira de id " + index + " selecionada.");
+                console.log(medApp.services.pulseiraAtual);
+              },
+              error: function() {
+                ons.notification.alert("Erro ao Selecionar a pulseira.");
+              },
+              data: { 
+                disponivel: 1,
+                idPaciente: medApp.services.idAtualPaciente
+              }
+            });
+          };
+        }
+
+
       };
 
-      if(medApp.services.PulseiraAtual == -4){
-      	return ;
-      }
-
-      for(var i = 0; i < medApp.services.pulseirasDisponiveis.length; i++){
-        medApp.services.showPulseirasDisponiveis(i);
-
-        document.querySelector("#item" + i).onclick = function() {
-
-          var id;
-
-          for(var j = 0; j < i; j++){
-            if(i == medApp.services.pulseiraOnClick.in[i]){
-              id = medApp.services.pulseiraOnClick.id;
-              break;
-            } else {
-              ons.notification.alert("Erro ao preocessar pulseira");
-              return;
-            }
-          } 
-      
-          medApp.services.setPulseiraAtual(id);
-
-          ons.notification.alert("Pulseira " + medApp.services.pulseiraAtual + " selecionada.");
-
-          document
-            .getElementById('#popover')
-            .hide();
-        };
-      }
-    };
-
-    var disp = true;
-
-    if(medApp.services.pulseiraAtual == -4){
-    	disp = false;
-    }
-
-    //Método que linka o paciente à pulseira na base de dados.
-
-    $.ajax({
-      url: 'http://julianop.com.br:3000/api/pulseira/' + medApp.services.PulseiraAtual,
-      type: 'PUT',
-      success: function(data) {
-        ons.notification.alert("Pulseira Selecionada com Sucesso!");
-      },
-      error: function() {
-        ons.notification.alert("Pulseira não Cadastrada.");
-      },
-      data: { 
-        disponivel: disp,
-        idPaciente: medApp.services.idAtualPaciente
-      }
-    });
+  };
 
     page.querySelector('#cadastrar-pac').onclick = function() {
 

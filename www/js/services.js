@@ -342,19 +342,11 @@ medApp.services = {
     this.pulseiraAtual = data;
   },
 
-  pulseiraOnClick: {
-    in: new Array,
-    id: new Array
-  },
-
   showPulseirasDisponiveis: function(index) {
     var template = document.createElement('div');
 
     template.innerHTML = '<ons-list-item modifier="tappable"> <div id=item' + index + '> Pulseira de id = '
-      + medApp.services.pulseirasDisponiveis[index].idPulseira + '</div> </ons-list-item>'; 
-    
-    medApp.services.pulseiraOnClick.in[index] =  index; 
-    medApp.services.pulseiraOnClick.id[index] = medApp.services.pulseirasDisponiveis[index].idPulseira;
+      + medApp.services.pulseirasDisponiveis[index].idPulseira + '</div> </ons-list-item>';
     
     var pulseiraItem = template.firstChild;
     var pulseiraLista = document.querySelector('#lista-pulseiras');
