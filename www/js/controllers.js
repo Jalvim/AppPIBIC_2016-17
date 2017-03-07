@@ -17,7 +17,7 @@ medApp.controllers = {
       $('#senha-login').attr('type', 'password');
     };
 
-    page.querySelector('#esquecer-senha').onclick=function(){
+    /*page.querySelector('#esquecer-senha').onclick=function(){
 
     var email=prompt("Digite seu e-mail");
 
@@ -25,7 +25,7 @@ medApp.controllers = {
 
 
 
-    };
+    };*/
 
     // Chama página de cadastro
     page.querySelector('#cadastro-button').onclick = function() {
@@ -104,7 +104,7 @@ medApp.controllers = {
             //Specify the source to get the photos.
                   navigator.camera.getPhotoicture(onSuccess, onFail,
                     { quality: 50, destinationType: Camera.DestinationType.FILE_URI });
-};
+        };
 
           function onFail (message) {
               alert('An error occured: ' + message);
@@ -277,18 +277,14 @@ medApp.controllers = {
 
       $.get('http://julianop.com.br:3000/api/paciente/geral/idMedico/' + medApp.services.getIdMedico())
         .done(function(data) {
-
+          console.log(data);
           for (var i = 0, len = data.length; i < len; i++) {
 
             var pacientesInfo = data[i];
-
-            $.get('http://julianop.com.br:3000/api/medico/busca/ID/' + pacientesInfo.idMedico)
-            .done(function(input) {
-              pacientesInfo.medicoResp = input[0].nome;
-
-              medApp.services.createPaciente(
+            console.log(pacientesInfo);
+            medApp.services.createPaciente(
               {
-                statusPaciente: 'ativo',
+                statusPaciente: (pacientesInfo.ativo == 1) ? 'ativo' : 'inativo',
                 img: 'http://www.clker.com/cliparts/A/Y/O/m/o/N/placeholder-md.png',
                 nomePaciente: pacientesInfo.nomePaciente,
                 batimentos: '--',
@@ -297,14 +293,12 @@ medApp.controllers = {
                 medicoResp: pacientesInfo.numeroDoProntuario,
                 hospital: pacientesInfo.telefone,
                 idPaciente: pacientesInfo.idPaciente,
-                medicoResp: pacientesInfo.medicoResp
+                medicoResp: pacientesInfo.nome
               });
 
-            });
-          };
+            };
+          });
       });
-
-    });
 
     // Página para adicionar um novo paciente à lista
     page.querySelector('#buscar-pac').onclick = function() {
