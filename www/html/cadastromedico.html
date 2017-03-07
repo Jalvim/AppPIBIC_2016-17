@@ -10,14 +10,17 @@
     <ons-list modifier="noborder" disable-auto-styling>
       <ons-list-item modifier="nodivider">
         <div class="left registro-image">
-          <img src="http://www.clker.com/cliparts/A/Y/O/m/o/N/placeholder-md.png" class="editar-image">
+          <img src="http://www.clker.com/cliparts/A/Y/O/m/o/N/placeholder-md.png" class="editar-image" id="picture">
         </div>
         <div class="center">
           <ons-input input-id="nome-cadastro" placeholder="Nome" class="text-input--underbar registro-input-top" disable-auto-styling></ons-input>
           <ons-input input-id="cpf-cadastro" placeholder="CPF" class="text-input--underbar registro-input-top" disable-auto-styling></ons-input>
         </div>
       </ons-list-item>
-
+      <ons-list-item tappable id="addfoto" >
+<ons-icon icon="ion-camera" class="list_item_icon"></ons-icon>
+             Adicionar foto
+      </ons-list-item>
       <ons-list-item modifier="nodivider" disable-auto-styling>
         <div class="left registro-icone">
           <ons-icon icon="fa-medkit" class="list__item__icon"></ons-icon>
@@ -36,7 +39,7 @@
           <ons-icon icon="md-email" class="list__item__icon"></ons-icon>
         </div>
         <div class="center">
-          <ons-input input-id="email-cadastro" type="email" placeholder="Email" class="text-input--underbar registro-input-icon" disable-auto-styling></ons-input>
+          <ons-input input-id="email-cadastro" type="email" pattern="/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/" placeholder="Email" class="text-input--underbar registro-input-icon" disable-auto-styling></ons-input>
         </div>
       </ons-list-item>
 
