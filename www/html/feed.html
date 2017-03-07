@@ -8,8 +8,49 @@
     Puxe para atualizar
   </ons-pull-hook>
 
-  <ons-list>
-    <ons-list-item class="lembretes-lista" modifier="chevron">
+  <ons-list modifier="inset" style="padding-top: 10px;" id="feed-lista">
+    
+    <ons-list-item class="feed-card" modifier="longdivider" id="pac1" tappable>
+      <div class="left">
+        <img class="list__item__thumbnail" src="http://www.clker.com/cliparts/A/Y/O/m/o/N/placeholder-md.png">
+      </div>
+
+      <div class="center">
+
+      <div>
+        <ons-row class="paciente-header">
+          <span class="list__item__title">Últimas atualizações do <span class="list__item__title">Paciente #1</span></span>
+        </ons-row>
+        
+        <ons-row>
+          <ons-col>
+            <ons-icon icon="md-assignment" class="list__item__icon"></ons-icon>
+              <span class="list__item__subtitle">Lembrete mais recente:</span>  
+          </ons-col>
+        </ons-row>
+
+        <ons-row>
+          <ons-col>
+            <span class="list__item__subtitle">LEMBRETE TESTE</span>  
+          </ons-col>
+        </ons-row>
+
+      </div>
+
+        <ons-row>
+          <ons-col class="paciente-detalhes">
+            <ons-icon icon="user-md" class="list__item__icon"></ons-icon>
+            <span class="list__item__subtitle">John Doe</span>
+          </ons-col>
+          <ons-col class="paciente-detalhes">
+            <ons-icon icon="hospital-o" class="list__item__icon"></ons-icon>
+            <span class="list__item__subtitle">Hospital/1</span>
+          </ons-col>
+        </ons-row>
+
+      </div>
+    </ons-list-item>
+    <!-- <ons-list-item class="lembretes-lista" modifier="chevron">
       <div class="left">
         <img class="list__item__thumbnail" src="http://blogs.diariodepernambuco.com.br/espacodaprevidencia/wp-content/uploads/2012/10/Doente2.jpg">
       </div>
@@ -56,10 +97,10 @@
       </div>
     </ons-list-item>
 
-    <!-- <ons-list-item class="grafico-lista">
+    <ons-list-item class="grafico-lista">
       <canvas id="myChart" width="200" height="200"></canvas>
-    </ons-list-item>
-  </ons-list> -->
+    </ons-list-item> -->
+  </ons-list> 
 
 </ons-page>
 

@@ -793,6 +793,7 @@ medApp.controllers = {
         for (var i = data.length - 1; i >= 0; i--) {
 
           lembretesInfo = data[i];
+          console.log(lembretesInfo);
           medApp.services.createLembrete( 
             { 
               texto: lembretesInfo.mensagem,
@@ -837,9 +838,9 @@ medApp.controllers = {
     //Método responsável por encontrar na base as pulseiras disponíveis.
     $.get('http://julianop.com.br:3000/api/pulseira/disponivel')
       .done(function(data){
-      	for(var i = 0; i <data.length; i++){
-      	  medApp.services.pulseirasDisponiveis[i] = data[i].idPulseira;
-      	}
+        for(var i = 0; i <data.length; i++){
+          medApp.services.pulseirasDisponiveis[i] = data[i].idPulseira;
+        }
         console.log(medApp.services.pulseirasDisponiveis);
       });
 
@@ -850,9 +851,9 @@ medApp.controllers = {
       }
 
       var hidePopover = function() {
-      	document
-      	  .getElementById('popover')
-      	  .hide();
+        document
+          .getElementById('popover')
+          .hide();
       };
 
       document.querySelector('#nuloPulseira').onclick = function() {
@@ -880,10 +881,10 @@ medApp.controllers = {
           medApp.services.showPulseirasDisponiveis(i);
 
           document.querySelector("#item" + i).onclick = function() {
-          	var index = $("div").index(this);
-          	medApp.services.pulseiraAtual = medApp.services.pulseirasDisponiveis[index];
+            var index = $("div").index(this);
+            medApp.services.pulseiraAtual = medApp.services.pulseirasDisponiveis[index];
 
-          	$.ajax({
+            $.ajax({
               url: 'http://julianop.com.br:3000/api/pulseira/' + medApp.services.PulseiraAtual,
               type: 'PUT',
               success: function(data) {
@@ -1044,7 +1045,19 @@ medApp.controllers = {
           data: medApp.services.getToday('traco'),
           mensagem: $('#texto-lembrete').val(),
           idMedico: medApp.services.getIdMedico(),
-          idPaciente: medApp.services.getIdPaciente()
+          idPaciente: medApp.services.getIdPaciente(),
+          Na: $('#NA-add').val(),
+          K: $('#K-add').val(),
+          CI: $('#Cl-add').val(),
+          Co2: $('#Co2-add').val(),
+          Bun: $('#Bun-add').val(),
+          Creat: $('#Creat-add').val(),
+          Gluc: $('#Gluc-add').val(),
+          wcb: $('#wbc-add').val(),
+          HgB: $('#HgB-add').val(),
+          Hct: $('#Hct-add').val(),
+          Plt: $('#Plt-add').val()
+
         })
           .done(function(data) {
             modal.hide();
