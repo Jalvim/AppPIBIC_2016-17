@@ -52,7 +52,7 @@
         </div>
       </ons-list-item>
 
-      <ons-list-item id="pulseiraButton" tappable>
+      <ons-list-item id="pulseiraButton" tappable onclick="showPopover(this)">
           <div class="left">
             <ons-icon icon="md-watch" class="list__item__icon"></ons-icon>
           </div>
@@ -62,7 +62,7 @@
         </ons-list-item>
         <ons-popover direction="up" id="popover" cancelable>
           <ons-list id="lista-pulseiras">
-            <ons-list-item>
+            <ons-list-item tappable onclick="hidePopover()">
               <div id="nuloPulseira">Desindexar a pulseira atual</div>
             </ons-list-item>
           </ons-list>  

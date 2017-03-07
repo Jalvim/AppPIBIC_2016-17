@@ -338,10 +338,6 @@ medApp.services = {
 
   pulseiraAtual: -1,
 
-  setPulseiraAtual: function(data) {
-    this.pulseiraAtual = data;
-  },
-
   showPulseirasDisponiveis: function(index) {
     var template = document.createElement('div');
 

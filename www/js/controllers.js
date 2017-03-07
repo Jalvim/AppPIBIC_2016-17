@@ -873,7 +873,10 @@ medApp.controllers = {
           }
         });
 
-        for(var i = 0; i < medApp.services.pulseirasDisponiveis.length; i++){
+
+      };
+
+      for(var i = 0; i < medApp.services.pulseirasDisponiveis.length; i++){
           medApp.services.showPulseirasDisponiveis(i);
 
           document.querySelector("#item" + i).onclick = function() {
@@ -897,9 +900,6 @@ medApp.controllers = {
             });
           };
         }
-
-
-      };
 
   };
 
