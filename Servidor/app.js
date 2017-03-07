@@ -124,8 +124,8 @@ function getDynamicHealthParams(idPulseira, currDate, delay) {
 				console.log(info['activities-heart-intraday'].dataset);
 				
 				if (info['activities-heart-intraday'].dataset.length < 1) {
-					currDate.setSeconds(currDate.getSeconds() - delay);
-					getDynamicHealthParams(idPulseira, currDate, delay);
+// 					currDate.setSeconds(currDate.getSeconds() - delay);
+// 					getDynamicHealthParams(idPulseira, currDate, delay);
 				} else {
 					formatDate(currDate);
 					var len = info["activities-heart-intraday"].dataset.length;
