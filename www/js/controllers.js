@@ -868,42 +868,11 @@ medApp.controllers = {
           medApp.services.pulseirasDisponiveis[i] = data[i].idPulseira;
         }
         console.log(medApp.services.pulseirasDisponiveis);
-      });
+      })
+      .done(function() {
 
-    page.querySelector('#pulseiraButton').onclick = function() {
-      var showPopover = function(target) {
-        document.getElementById('popover')
-          .show(target);
-      }
-
-      var hidePopover = function() {
-        document
-          .getElementById('popover')
-          .hide();
-      };
-
-      document.querySelector('#nuloPulseira').onclick = function() {
-        //Método que liga a pulseira ao paciente na base de dados.
-
-        $.ajax({
-          url: 'http://julianop.com.br:3000/api/pulseira/' + medApp.services.PulseiraAtual,
-          type: 'PUT',
-          success: function(data) {
-            ons.notification.alert("Pulseira Nula selecionada!");
-          },
-          error: function() {
-            ons.notification.alert("Não Cadastrado.");
-          },
-          data: {
-            disponivel: 0,
-            idPaciente: medApp.services.idAtualPaciente
-          }
-        });
-
-
-      };
-
-      for(var i = 0; i < medApp.services.pulseirasDisponiveis.length; i++){
+      	//Loop de criação de ítns responsíveis no menu.
+      	for(var i = 0; i < medApp.services.pulseirasDisponiveis.length; i++){
           medApp.services.showPulseirasDisponiveis(i);
 
           document.querySelector("#item" + i).onclick = function() {
@@ -927,6 +896,42 @@ medApp.controllers = {
             });
           };
         }
+        
+      });
+
+    page.querySelector('#pulseiraButton').onclick = function() {
+      var showPopover = function(id) {
+        document
+          .getElementById('id')
+          .show(target);
+      } //Setar variáveis de dialog
+
+      var hidePopover = function(id) {
+        document
+          .getElementById('id')
+          .hide();
+      }; //Setar variáveis de dialog
+
+      document.querySelector('#nuloPulseira').onclick = function() {
+        //Método que liga a pulseira ao paciente na base de dados.
+
+        $.ajax({
+          url: 'http://julianop.com.br:3000/api/pulseira/' + medApp.services.PulseiraAtual,
+          type: 'PUT',
+          success: function(data) {
+            ons.notification.alert("Pulseira Nula selecionada!");
+          },
+          error: function() {
+            ons.notification.alert("Não Cadastrado.");
+          },
+          data: {
+            disponivel: 0,
+            idPaciente: medApp.services.idAtualPaciente
+          }
+        });
+
+
+      };
 
   };
 
