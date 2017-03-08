@@ -1,0 +1,6 @@
+tree 7951c3388fc4fdd7b42a7027f6f1619220733951
+parent 2bf6fa75d76aab0ce737646f69cee5f81e6e31ec
+author Jalvim <j.rabello.alvim@outlook.com> 1485611347 -0200
+committer Jalvim <j.rabello.alvim@outlook.com> 1485611347 -0200
+
+Criação do arquivo listaPacientes.js para o manuseio do array dado pelo BD na lista de pacientes.
