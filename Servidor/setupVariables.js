@@ -214,7 +214,7 @@ module.exports = function(app) {
 		method:'POST',
 		url:'http://127.0.0.1:3000/api/pulseira/',
 		form:{ 
-			codigoOAuth:'7b704d2cd4fdb772a443693d00f28d419faa7795',
+			codigoOAuth:'1ea948cb4774882305b3e34e849bad2075620ad6',
 			redirectUri:'http://julianop.com.br:3000/'
 		}
 	};
@@ -222,7 +222,7 @@ module.exports = function(app) {
 		method:'PUT',
 		url:'http://127.0.0.1:3000/api/pulseira/',
 		form:{ 
-			idPulseira: 57,
+			idPulseira: 59,
 			disponivel: 0,
 			idPaciente: 52
 		}
@@ -231,7 +231,7 @@ module.exports = function(app) {
 		method:'DELETE',
 		url:'http://127.0.0.1:3000/api/pulseira/',
 		form:{ 
-			idPulseira: 49
+			idPulseira: 57
 		}
 	};
 	app.optionsPostTestRequestHospitais= {

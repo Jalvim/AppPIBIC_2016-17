@@ -38,11 +38,11 @@ connection.connect();
 setupOptionsVariables(app);
  
 
- request(app.optionsPutTestRequestPulseira, function(err, httpResponse, body) { 
- 	console.log(err);
- 	//console.log(httpResponse);
- 	console.log(body);
- });
+//  request(app.optionsPutTestRequestPulseira, function(err, httpResponse, body) { 
+//  	console.log(err);
+//  	//console.log(httpResponse);
+//  	console.log(body);
+//  });
 
 // var email = {
 // 	to:'gabrielpmp@gmail.com, prettzb@gmail.com, matheusbafutto@gmail.com, vitorbordini96@gmail.com, jorge.jglm@gmail.com, j.rabello.alvim@outlook.com',
@@ -68,16 +68,16 @@ setInterval(function(){
 }, 900000);
 
 //Loop e multiplexação das pulseiras em atividade para resgate de parâmetros dinâmicos
-setInterval(function() {
-	var data = new Date(),
-		delay = 30;
-	connection.query('SELECT idPulseira FROM Pulseira_Paciente', function(err,rows) {
-		if (err) console.log(err);
-		for (var i = 0; i < rows.length; i++) {
-			getDynamicHealthParams(rows[i].idPulseira, data, delay);
-		}
-	});
-}, 60000);
+// setInterval(function() {
+// 	var data = new Date(),
+// 		delay = 30;
+// 	connection.query('SELECT idPulseira FROM Pulseira_Paciente', function(err,rows) {
+// 		if (err) console.log(err);
+// 		for (var i = 0; i < rows.length; i++) {
+// 			getDynamicHealthParams(rows[i].idPulseira, data, delay);
+// 		}
+// 	});
+// }, 60000);
 
 
 
@@ -133,6 +133,7 @@ function getDynamicHealthParams(idPulseira, currDate, delay) {
 						if (err) { return console.log('Error: problema na base impediu armazenamento de dados HR'); }
 						if (rows.length != 0) { return console.log('Erro:dado já armazenado! Sincronize novamente a pulseira com o concentrador.'); }
 						else {
+							console.log(result[0].pacienteAtual +' '+ (len-1) + ' ' + info);//["activities-heart-intraday"].dataset[len-1]);
 							connection.query(`INSERT INTO SaudeParamsDinamicos (idPaciente, data, hora, heartRate) VALUES (${result[0].pacienteAtual}, '${currDate.date}', '${info["activities-heart-intraday"].dataset[len-1].time}', ${info['activities-heart-intraday'].dataset[len-1].value})`);
 							console.log('Dados de HR armazenados com sucesso!');						
 						} 
