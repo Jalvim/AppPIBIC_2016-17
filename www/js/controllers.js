@@ -17,15 +17,13 @@ medApp.controllers = {
       $('#senha-login').attr('type', 'password');
     };
 
-    page.querySelector('#esquecer-senha').onclick=function(){
+    /*page.querySelector('#esquecer-senha').onclick=function(){
 
     var email=prompt("Digite seu e-mail");
 
     // $.post("url/api/medico",email);
 
-
-
-    };
+    };*/
 
     // Chama página de cadastro
     page.querySelector('#cadastro-button').onclick = function() {
@@ -89,7 +87,7 @@ medApp.controllers = {
 
 
      document.addEventListener("deviceready", onDeviceReady, false);
-var largeImage;
+      var largeImage;
           function onDeviceReady () {
              window.alert('Loading Cordova is completed');
           }
@@ -104,7 +102,7 @@ var largeImage;
             //Specify the source to get the photos.
                   navigator.camera.getPhotoicture(onSuccess, onFail,
                     { quality: 50, destinationType: Camera.DestinationType.FILE_URI });
-};
+        };
 
           function onFail (message) {
               alert('An error occured: ' + message);
@@ -283,13 +281,9 @@ var largeImage;
 
             var pacientesInfo = data[i];
 
-            $.get('http://julianop.com.br:3000/api/medico/busca/ID/' + pacientesInfo.idMedico)
-            .done(function(input) {
-              pacientesInfo.medicoResp = input[0].nome;
-
-              medApp.services.createPaciente(
+            medApp.services.createPaciente(
               {
-                statusPaciente: 'ativo',
+                statusPaciente: (pacientesInfo.ativo == 1) ? 'ativo' : 'inativo',
                 img: 'http://www.clker.com/cliparts/A/Y/O/m/o/N/placeholder-md.png',
                 nomePaciente: pacientesInfo.nomePaciente,
                 batimentos: '--',
@@ -298,14 +292,12 @@ var largeImage;
                 medicoResp: pacientesInfo.numeroDoProntuario,
                 hospital: pacientesInfo.telefone,
                 idPaciente: pacientesInfo.idPaciente,
-                medicoResp: pacientesInfo.medicoResp
+                medicoResp: pacientesInfo.nome
               });
 
-            });
-          };
+            };
+          });
       });
-
-    });
 
     // Página para adicionar um novo paciente à lista
     page.querySelector('#buscar-pac').onclick = function() {
@@ -351,6 +343,13 @@ var largeImage;
 
     });
 
+    // Chama página de configurações para a pulseira/paciente
+    page.querySelector('#perfil-pulseiras').onclick = function() {
+
+      document.querySelector('#pacienteNav').pushPage('html/configpaciente.html');
+
+    };
+
     // Chama página de edição de dados do paciente
     page.querySelector('#pacienteeditar').onclick = function() {
 
@@ -358,7 +357,7 @@ var largeImage;
 
     };
 
-    //Chama página de lembretes do Paciente
+    //Chama página de lembretes do paciente
     page.querySelector('#lemb').onclick = function() {
 
       document.querySelector('#pacienteNav').pushPage('html/lembretes.html');
@@ -373,6 +372,7 @@ var largeImage;
 
     };
 
+    // Chama página de configurações do paciente
     page.querySelector('#config-pac').onclick = function() {
 
       document.querySelector('#pacienteNav').pushPage('html/configpaciente.html');
@@ -868,42 +868,11 @@ var largeImage;
           medApp.services.pulseirasDisponiveis[i] = data[i].idPulseira;
         }
         console.log(medApp.services.pulseirasDisponiveis);
-      });
+      })
+      .done(function() {
 
-    page.querySelector('#pulseiraButton').onclick = function() {
-      var showPopover = function(target) {
-        document.getElementById('popover')
-          .show(target);
-      }
-
-      var hidePopover = function() {
-        document
-          .getElementById('popover')
-          .hide();
-      };
-
-      document.querySelector('#nuloPulseira').onclick = function() {
-        //Método que liga a pulseira ao paciente na base de dados.
-
-        $.ajax({
-          url: 'http://julianop.com.br:3000/api/pulseira/' + medApp.services.PulseiraAtual,
-          type: 'PUT',
-          success: function(data) {
-            ons.notification.alert("Pulseira Nula selecionada!");
-          },
-          error: function() {
-            ons.notification.alert("Não Cadastrado.");
-          },
-          data: {
-            disponivel: 0,
-            idPaciente: medApp.services.idAtualPaciente
-          }
-        });
-
-
-      };
-
-      for(var i = 0; i < medApp.services.pulseirasDisponiveis.length; i++){
+      	//Loop de criação de ítns responsíveis no menu.
+      	for(var i = 0; i < medApp.services.pulseirasDisponiveis.length; i++){
           medApp.services.showPulseirasDisponiveis(i);
 
           document.querySelector("#item" + i).onclick = function() {
@@ -927,6 +896,42 @@ var largeImage;
             });
           };
         }
+        
+      });
+
+    page.querySelector('#pulseiraButton').onclick = function() {
+      var showPopover = function(id) {
+        document
+          .getElementById('id')
+          .show(target);
+      } //Setar variáveis de dialog
+
+      var hidePopover = function(id) {
+        document
+          .getElementById('id')
+          .hide();
+      }; //Setar variáveis de dialog
+
+      document.querySelector('#nuloPulseira').onclick = function() {
+        //Método que liga a pulseira ao paciente na base de dados.
+
+        $.ajax({
+          url: 'http://julianop.com.br:3000/api/pulseira/' + medApp.services.PulseiraAtual,
+          type: 'PUT',
+          success: function(data) {
+            ons.notification.alert("Pulseira Nula selecionada!");
+          },
+          error: function() {
+            ons.notification.alert("Não Cadastrado.");
+          },
+          data: {
+            disponivel: 0,
+            idPaciente: medApp.services.idAtualPaciente
+          }
+        });
+
+
+      };
 
   };
 
@@ -995,37 +1000,43 @@ var largeImage;
   pulseiras: function(page){
 
     page.querySelector('#addpulseira').onclick = function(){
- var  Oauth;
-        Oauth = prompt("Digite o codigo da FITBIT");
 
-    //pega o codigoOauth
+      var  Oauth;
 
-console.log(Oauth);
+      ons.notification.prompt({message: 'Digite o codigo da FITBIT'})
+      .then(function(prompt) {
 
-        $.post("http://julianop.com.br:3000/api/pulseira",{
-         redirectUri :"http://julianop.com.br:3000/",
-        ClientID: "227WRB",
-        ClientSecret: "1dcfe0c85eee35d7cb8295,733a3b0f9d",
-        CodigoOauth:Oauth
+        Oauth = prompt;
+      
+      //Oauth = prompt("Digite o codigo da FITBIT");
 
-        })
-.done(function(data){
-console.log(data);
+      //pega o codigoOauth
 
+        console.log(Oauth);
 
+        $.post("http://julianop.com.br:3000/api/pulseira",
+          {
+            redirectUri :"http://julianop.com.br:3000/",
+            ClientID: "227WRB",
+            ClientSecret: "---",  // Inserir secret
+            CodigoOauth: Oauth
 
-});
+          })
+          .done(function(data){
+            
+            console.log(data);
+          
+          });
 
+      });
 
+    };
 
+    page.querySelector('#linkurl').onclick = function() {
 
-        };
+      window.open( "https://www.fitbit.com/oauth2/authorize?response_type=code&client_id=227WRB&redirect_uri=http%3A%2F%2Fjulianop.com.br%3A3000%2F&scope=activity%20heartrate%20location%20nutrition%20profile%20settings%20sleep%20social%20weight&expires_in=604800");
 
-        page.querySelector('#linkurl').onclick=function(){
-window.open(
-       "https://www.fitbit.com/oauth2/authorize?response_type=code&client_id=227WRB&redirect_uri=http%3A%2F%2Fjulianop.com.br%3A3000%2F&scope=activity%20heartrate%20location%20nutrition%20profile%20settings%20sleep%20social%20weight&expires_in=604800");
-
-};
+    };
 
   },
 
@@ -1099,7 +1110,7 @@ window.open(
   verlembrete: function(page) {
 
     page.addEventListener('show', function(event) {
-      console.log(page.data);
+
       page.querySelector('.lembrete-header').innerHTML = medApp.services.dadosPacienteAtual.nome;
       $('#texto-ver-lembrete').val(page.data.texto);
       page.querySelector('#medico-ver-lembrete').innerHTML = page.data.medicoResp;
@@ -1158,6 +1169,46 @@ window.open(
         });
 
       };
+
+    };
+
+  },
+
+  //////////////////////////////////////////////
+  // Controlador de configurações do paciente //
+  //////////////////////////////////////////////
+
+  configpaciente: function(page) {
+
+    // Funcionalidade de alta do paciente (setar ativo = '0')
+    page.querySelector('#alta-pac').onclick = function() {
+
+      ons.notification.confirm({message: 'Tem certeza?'})
+        .then( function(confirm){
+
+          if(confirm) {
+
+            $.ajax({
+              url: 'http://julianop.com.br:3000/api/paciente/geral',
+              type: 'PUT',
+              headers: { 'idpaciente': medApp.services.getIdPaciente() },
+              data: {
+                ativo: 0
+              }
+            })
+            .done(function(data) {
+
+              console.log(data);
+              document.querySelector('#loginNav').resetToPage( 'html/pacientes.html', {options: {animation: 'fade'}});
+
+            })
+            .fail(function() {
+              ons.notification.alert("Não foi possível dispensar o paciente");
+            });
+            
+          };
+
+        });
 
     };
 

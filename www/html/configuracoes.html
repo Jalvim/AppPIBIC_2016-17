@@ -55,6 +55,7 @@
 
       <ons-list>
         <ons-list-header>Pulseiras Conectadas</ons-list-header>
+        <!-- TODO: Criar dinamicamente a lista de pulseiras conectadas
         <ons-list-item>
           <div class="center">
             Pulseira #1
@@ -79,41 +80,34 @@
             <ons-switch></ons-switch>
           </div>
         </ons-list-item>
+        -->
+
       </ons-list>
-      <br>
+
+      <div class="registro-form">
+        <br>
         Para adicionar uma nova pulseira, por favor siga essas etapas:
-      <br>
-        1.Acesse o link no botão;
+        <br>
+        1. Acesse o link no botão;
+        <br>
+        2. Entre com sua conta FITBIT e clique em "Allow";
+        <br>
+        3. Guarde o código do endereço que aparecer na URL (que fica entre o "code=" e o #).
+        <br>
 
-<br>
-      2.Logue com sua conta FITBIT e clique em "allow";
-      <br>
-      3.Guarde o codigo do endereço que aparecer(ele é o que fica entre o "code=" e o #).
-      <br>
-      <br>
-      <br>
-
-        <ons-button  id="linkurl">
-          <div class="left">
-            link
-          </div>
-        </ons-button>
-      <ons-button  id="addpulseira">
-        <div class="right">
-          Adicionar nova pulseira
-        </div>
+      <ons-button  id="linkurl" class="button-send" style="float: left;">
+        Link
       </ons-button>
 
+      <ons-button  id="addpulseira" class="button-send" style="float: right;">
+        Adicionar nova pulseira
+      </ons-button>
 
-
+      </div>
 
     </ons-page>
   </ons-template>
 
 </ons-page>
-
-
-
-
 
 <!-- Página de Configurações -->
