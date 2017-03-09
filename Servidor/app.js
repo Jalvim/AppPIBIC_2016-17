@@ -25,6 +25,17 @@ var express = require('express'),
 	hospitaisRouter = require('./routes/hospitais.js');
 	compartilhamentoRouter = require('./routes/compartilhamento.js');
 	
+//Função de segurança para Exception handling
+process.on('uncaughtException', function(err){
+ 	console.log('Caught exception: ' + err);
+	var email = {
+		to: senhas.emailMatheus,
+		subject: 'Alerta de Erro no webapp das Pulseiras Inteligentes',
+		text: `Ocorreu um erro crítico na aplicação:\n\n${err}`
+	}
+	mailSender(email);
+}); 
+	
 //Setup inicial de conecção com a base de dados 	
 connection = mysql.createConnection({
 	host : '79.170.40.183',
@@ -44,40 +55,27 @@ setupOptionsVariables(app);
 //  	console.log(body);
 //  });
 
-// var email = {
-// 	to:'gabrielpmp@gmail.com, prettzb@gmail.com, matheusbafutto@gmail.com, vitorbordini96@gmail.com, jorge.jglm@gmail.com, j.rabello.alvim@outlook.com',
-// 	subject: 'Email Teste(Se Deus quiser bem sucedido)',
-// 	text:'O único e principal propósito deste email é verificar que a API end point para ' +
-// 		'mandar emails que estamos usando está funcionando.'
-// }
-// 
-// mailSender(email, function(error, body) {
-// 	console.log(body);
-// });
-
-
-
 //Loop e multiplexação das pulseiras em atividade para resgate de parâmetros estáticos
-// setInterval(function(){
-// 	connection.query('SELECT idPulseira FROM Pulseira_Paciente', function(err,rows) {
-// 		if (err) console.log(err);
-// 		for (var i = 0; i < rows.length; i++) {
-// 			getStaticHealthParams(0, rows[i].idPulseira);
-// 		}
-// 	});
-// }, 900000);
+setInterval(function(){
+	connection.query('SELECT idPulseira FROM Pulseira_Paciente', function(err,rows) {
+		if (err) console.log(err);
+		for (var i = 0; i < rows.length; i++) {
+			getStaticHealthParams(0, rows[i].idPulseira);
+		}
+	});
+}, 900000);
 
 //Loop e multiplexação das pulseiras em atividade para resgate de parâmetros dinâmicos
-// setInterval(function() {
-// 	var data = new Date(),
-// 		delay = 30;
-// 	connection.query('SELECT idPulseira FROM Pulseira_Paciente', function(err,rows) {
-// 		if (err) console.log(err);
-// 		for (var i = 0; i < rows.length; i++) {
-// 			getDynamicHealthParams(rows[i].idPulseira, data, delay);
-// 		}
-// 	});
-// }, 60000);
+setInterval(function() {
+	var data = new Date(),
+		delay = 30;
+	connection.query('SELECT idPulseira FROM Pulseira_Paciente', function(err,rows) {
+		if (err) console.log(err);
+		for (var i = 0; i < rows.length; i++) {
+			getDynamicHealthParams(rows[i].idPulseira, data, delay);
+		}
+	});
+}, 60000);
 
 
 
@@ -85,7 +83,7 @@ setupOptionsVariables(app);
 var info = {};
 
 //request(optionsGetHR, getHRCallback);
-//getDynamicHealthParams(56, data, 120);
+//getDynamicHealthParams(60, new Date(), 0);
 //getStaticHealthParams(0, 56);
 //getStaticHealthParams(0, 18);
 //console.log(getTodayDate());
@@ -107,7 +105,7 @@ function getDynamicHealthParams(idPulseira, currDate, delay) {
 	connection.query(`SELECT A.*, PulPac.pacienteAtual FROM Autenticacao A, Pulseira_Paciente PulPac WHERE A.idPulseira=${idPulseira} AND PulPac.idPulseira = A.idPulseira`, 
 	  function(err, result, fields){
 	  	//console.log(result);
-		if (result.length < 1 || err) { return res.send('Erro ao puxar info de autenticação da base de dados para parâmetros dinâmicos.'); }
+		if (result.length < 1 || err) { return console.log('Erro ao puxar info de autenticação da base de dados para parâmetros dinâmicos.'); }
 					
 		var authorizationHeader = `Bearer ${result[0].accessToken}`;	
 		var optionsGetHR = {
@@ -121,25 +119,33 @@ function getDynamicHealthParams(idPulseira, currDate, delay) {
 			console.log(response.statusCode);
 			if (!errors && response.statusCode == 200) {
 				info = JSON.parse(body);
-				console.log(info['activities-heart-intraday'].dataset);
-				
-				if (info['activities-heart-intraday'].dataset.length < 1) {
-// 					currDate.setSeconds(currDate.getSeconds() - delay);
-// 					getDynamicHealthParams(idPulseira, currDate, delay);
+				console.log(info);
+				if (info.hasOwnProperty('activities-heart-intraday') &&
+					info['activities-heart-intraday'].hasOwnProperty('dataset')){
+					
+					if (info['activities-heart-intraday'].dataset.length < 1) {
+	// 					currDate.setSeconds(currDate.getSeconds() - delay);
+	// 					getDynamicHealthParams(idPulseira, currDate, delay);
+						console.log('Array vazio, a pulseira '+idPulseira+' ainda não sincronizou hoje');
+					} else {
+						formatDate(currDate);
+						var len = info["activities-heart-intraday"].dataset.length;
+						connection.query(`SELECT * FROM SaudeParamsDinamicos WHERE idPaciente=${result[0].pacienteAtual} AND hora='${info["activities-heart-intraday"].dataset[len-1].time}'`, function(err,rows) {
+							if (err) { return console.log('Error: problema na base impediu armazenamento de dados HR'); }
+							if (rows.length != 0) { return console.log('Erro:dado já armazenado! Sincronize novamente a pulseira '+idPulseira+' com o concentrador.'); }
+							else {
+								console.log(result[0].pacienteAtual +' '+ (len-1) + ' ' + info);//["activities-heart-intraday"].dataset[len-1]);
+								connection.query(`INSERT INTO SaudeParamsDinamicos (idPaciente, data, hora, heartRate) VALUES (${result[0].pacienteAtual}, '${currDate.date}', '${info["activities-heart-intraday"].dataset[len-1].time}', ${info['activities-heart-intraday'].dataset[len-1].value})`);
+								console.log('Dados de HR de pulseira '+idPulseira+' armazenados com sucesso!');						
+							} 
+						});
+						console.log('útil');
+					}
+						
 				} else {
-					formatDate(currDate);
-					var len = info["activities-heart-intraday"].dataset.length;
-					connection.query(`SELECT * FROM SaudeParamsDinamicos WHERE idPaciente=${result[0].pacienteAtual} AND hora='${info["activities-heart-intraday"].dataset[len-1].time}'`, function(err,rows) {
-						if (err) { return console.log('Error: problema na base impediu armazenamento de dados HR'); }
-						if (rows.length != 0) { return console.log('Erro:dado já armazenado! Sincronize novamente a pulseira com o concentrador.'); }
-						else {
-							console.log(result[0].pacienteAtual +' '+ (len-1) + ' ' + info);//["activities-heart-intraday"].dataset[len-1]);
-							connection.query(`INSERT INTO SaudeParamsDinamicos (idPaciente, data, hora, heartRate) VALUES (${result[0].pacienteAtual}, '${currDate.date}', '${info["activities-heart-intraday"].dataset[len-1].time}', ${info['activities-heart-intraday'].dataset[len-1].value})`);
-							console.log('Dados de HR armazenados com sucesso!');						
-						} 
-					});
-					console.log('útil');
+					console.log('Erro: Algo deu errado, faltam componentes no json retornado.');
 				}
+				
 			} 
 			//tokens em OAuth valem por 1 hora, caso tenham expirado, refresh
 			else if (response.statusCode == 401) {

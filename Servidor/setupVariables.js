@@ -214,7 +214,7 @@ module.exports = function(app) {
 		method:'POST',
 		url:'http://127.0.0.1:3000/api/pulseira/',
 		form:{ 
-			codigoOAuth:'1ea948cb4774882305b3e34e849bad2075620ad6',
+			codigoOAuth:'865ad44c39a9715cdfee9fde335e194d02b1bf91',
 			redirectUri:'http://julianop.com.br:3000/'
 		}
 	};
@@ -222,9 +222,9 @@ module.exports = function(app) {
 		method:'PUT',
 		url:'http://127.0.0.1:3000/api/pulseira/',
 		form:{ 
-			idPulseira: 59,
+			idPulseira: 60,
 			disponivel: 0,
-			idPaciente: 52
+			idPaciente: 44
 		}
 	};
 	app.optionsDeleteTestRequestPulseira = {
