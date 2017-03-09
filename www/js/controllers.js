@@ -86,25 +86,60 @@ medApp.controllers = {
     $('#cpf-cadastro').mask('000.000.000-00', {reverse: true});
 
 
-    page.querySelector('#add-foto').onclick = function snapPicture () {
+    page.querySelector('.add-foto').onclick = function snapPicture () {
+
+      ons
+      .createDialog('fotosource.html')
+      .then(function(dialog) {
+        dialog.show();
+        page.querySelector('#camera-add').onclick = function () {
+
+          navigator.camera.getPicture (successCallback, FailCallback, { sourceType: Camera.PictureSourceType.CAMERA, 
+                                                                        destinationType: Camera.DestinationType.DATA_URL});
+
+          //Success Callback
+          function successCallback (imageData) {
+
+            //Display image
+            var image = document.getElementById ('picture');
+            image.src = "data:image/jpeg;base64, " + imageData;
+
+          };
+
+          //Error CallBack
+          function FailCallback (message) {
+
+            alert ('Erro!!!: ' + message);
+
+          };
+
+        };
+
+        page.querySelector('#galeria-add').onclick = function () {
+
+          navigator.camera.getPicture (successCallback, FailCallback, { sourceType: Camera.PictureSourceType.PHOTOLIBRARY, 
+                                                                        destinationType: Camera.DestinationType.DATA_URL});
+
+          //Success Callback
+          function successCallback (imageData) {
+
+            //Display image
+            var image = document.getElementById ('picture');
+            image.src = "data:image/jpeg;base64, " + imageData;
+
+          };
+
+          //Error CallBack
+          function FailCallback (message) {
+
+            alert ('Erro!!!: ' + message);
+
+          };
+
+        };
+
+      });
       
-      navigator.camera.getPicture (successCallback, FailCallback, {destinationType: Camera.DestinationType.DATA_URL});
-
-      //Success Callback
-      function successCallback (imageData) {
-
-        //Display image
-        var image = document.getElementById ('picture');
-        image.src = "data:image/jpeg;base64, " + imageData;
-
-      }
-
-      //Error CallBack
-      function FailCallback (message) {
-
-        alert ('Error!!!: ' + message);
-
-      }
     };
 
     // Registra novo médico caso as senhas sejam válidas

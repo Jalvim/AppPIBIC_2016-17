@@ -8,6 +8,7 @@
   <div class="registro-form">
 
     <ons-list modifier="noborder" disable-auto-styling>
+
       <ons-list-item modifier="nodivider">
         <div class="left registro-image">
           <img src="http://www.clker.com/cliparts/A/Y/O/m/o/N/placeholder-md.png" class="editar-image" id="picture">
@@ -17,10 +18,12 @@
           <ons-input input-id="cpf-cadastro" placeholder="CPF" class="text-input--underbar registro-input-top" disable-auto-styling></ons-input>
         </div>
       </ons-list-item>
-      <ons-list-item tappable id="add-foto" >
-        <ons-icon icon="ion-camera" class="list_item_icon"></ons-icon>
+
+      <ons-list-item tappable class="add-foto">
+        <ons-icon icon="md-camera" class="list_item_icon"></ons-icon>
           Adicionar foto
       </ons-list-item>
+
       <ons-list-item modifier="nodivider" disable-auto-styling>
         <div class="left registro-icone">
           <ons-icon icon="fa-medkit" class="list__item__icon"></ons-icon>
@@ -71,6 +74,7 @@
 
   </div>
 
+  <!-- Modal para impedir ações indevidadas durante cadastro no servidor --> 
   <ons-modal direction="up">
     <div style="text-align: center">
       <p>
@@ -78,5 +82,37 @@
       </p>
     </div>
   </ons-modal>
+
+  <!-- Diálogo para selecionar fonte da imagem de perfil --> 
+
+  <ons-template id="fotosource.html">
+    <ons-dialog cancelable>
+
+      <ons-navigator>
+        <ons-toolbar inline>
+          <div class="center">
+            Editar imagem
+          </div>
+        </ons-toolbar>
+
+        <div style="text-align: center">
+          <p>
+            Escolha de onde deseja selecionar a imagem:
+          </p>
+
+          <ons-list>
+            <ons-row>
+              <ons-col>
+                <ons-list-item style="text-align: center" id="camera-add" tappable>Câmera</ons-list-item>
+              </ons-col>
+              <ons-col>
+                <ons-list-item style="text-align: center" tappable>Galeria</ons-list-item>
+              </ons-col>
+            </ons-row>
+          </ons-list>
+        </div>
+      </ons-navigator>
+    </ons-dialog>
+  </ons-template>
 
 </ons-page>
