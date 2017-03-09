@@ -898,40 +898,9 @@ medApp.controllers = {
 
   addpaciente: function(page) {
 
-    var showPopover = function(id) {
-      document
-        .getElementById('id')
-        .show(target);
-    } //Setar variáveis de dialog
-
-    var hidePopover = function(id) {
-      document
-        .getElementById('id')
-        .hide();
-    }; //Setar variáveis de dialog
-
     page.querySelector('#pulseiraButton').onclick = function() {
 
-      document.querySelector('#nuloPulseira').onclick = function() {
-        //Método que liga a pulseira ao paciente na base de dados.
-
-        $.ajax({
-          url: 'http://julianop.com.br:3000/api/pulseira/' + medApp.services.PulseiraAtual,
-          type: 'PUT',
-          success: function(data) {
-            ons.notification.alert("Pulseira Nula selecionada!");
-          },
-          error: function() {
-            ons.notification.alert("Não Cadastrado.");
-          },
-          data: {
-            disponivel: 0,
-            idPaciente: medApp.services.idAtualPaciente
-          }
-        });
-
-
-      };
+      medApp.dial = document.getElementById('dialog').id;
 
       //Método responsável por encontrar na base as pulseiras disponíveis.
       $.get('http://julianop.com.br:3000/api/pulseira/disponivel')
@@ -943,31 +912,59 @@ medApp.controllers = {
         })
         .done(function() {
 
-       	  //Loop de criação de ítns responsíveis no menu.
-            for(var i = 0; i < medApp.services.pulseirasDisponiveis.length; i++){
-              medApp.services.showPulseirasDisponiveis(i);
+          medApp.services.showPopover(medApp.dial);
 
-              document.querySelector("#item" + i).onclick = function() {
-                var index = $("div").index(this);
-                medApp.services.pulseiraAtual = medApp.services.pulseirasDisponiveis[index];
+          document.querySelector('#nuloPulseira').onclick = function() {
+          //Método que liga a pulseira ao paciente na base de dados.
 
-                $.ajax({
-                  url: 'http://julianop.com.br:3000/api/pulseira/' + medApp.services.PulseiraAtual,
-                  type: 'PUT',
-                  success: function(data) {
-                    ons.notification.alert("Pulseira de id " + index + " selecionada.");
-                    console.log(medApp.services.pulseiraAtual);
-                  },
-                  error: function() {
-                    ons.notification.alert("Erro ao Selecionar a pulseira.");
-                  },
-                  data: {
-                    disponivel: 1,
-                    idPaciente: medApp.services.idAtualPaciente
-                  }
-                });
-              };
-            }
+            $.ajax({
+              url: 'http://julianop.com.br:3000/api/pulseira/' + medApp.services.PulseiraAtual,
+              type: 'PUT',
+              success: function(data) {
+                ons.notification.alert("Pulseira Nula selecionada!");
+              },
+              error: function() {
+                ons.notification.alert("Não Cadastrado.");
+              },
+              data: {
+                disponivel: 0,
+                idPaciente: medApp.services.idAtualPaciente
+              }
+            });
+
+
+          };
+
+          //Loop de criação de ítns responsíveis no menu.
+          for(var i = 0; i < medApp.services.pulseirasDisponiveis.length; i++){
+            medApp.services.showPulseirasDisponiveis(i);
+
+            document.querySelector("#item" + i).onclick = function() {
+              var index = $("div").index(this);
+              medApp.services.pulseiraAtual = medApp.services.pulseirasDisponiveis[index];
+
+              $.ajax({
+                url: 'http://julianop.com.br:3000/api/pulseira/' + medApp.services.PulseiraAtual,
+                type: 'PUT',
+                success: function(data) {
+                  ons.notification.alert("Pulseira de id " + index + " selecionada.");
+                  console.log(medApp.services.pulseiraAtual);
+                },
+                error: function() {
+                  ons.notification.alert("Erro ao Selecionar a pulseira.");
+                },
+                data: {
+                  disponivel: 1,
+                  idPaciente: medApp.services.idAtualPaciente
+                }
+              })
+              .done(function (){
+                medApp.services.hidePopover(medApp.dial);
+                $('#lista-pulseiras').empty();
+              });
+              
+            };
+          }
 
         });
 

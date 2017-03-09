@@ -225,6 +225,23 @@ medApp.services = {
 
   },
 
+  //Função responsável por revelar o dialog.
+  showPopover: function(id) {
+    document
+      .getElementById(id)
+      .show();
+  },
+
+  //Função responsável por esconder o dialog.
+  hidePopover: function(id) {
+    document
+      .getElementById(id)
+      .hide();
+  }, 
+
+  //Variável global q armazena o id do Dialog
+  dial: -1,
+
   // Cria um novo lembrete
   createLembrete: function(data) {
 
@@ -363,8 +380,8 @@ medApp.services = {
   showPulseirasDisponiveis: function(index) {
     var template = document.createElement('div');
 
-    template.innerHTML = '<ons-list-item modifier="tappable" id=item' + index + ' onclick="hidePopover(' + $('#dialog') + ')"> <div> Pulseira de id = '
-      + this.pulseirasDisponiveis[index].idPulseira + '</div> </ons-list-item>';
+    template.innerHTML = '<ons-list-item modifier="tappable" id=item' + index + ' onclick="hidePopover(' + $('#dialog') + ')"> <div> Pulseira de id '
+      + medApp.services.pulseirasDisponiveis[index] + '</div> </ons-list-item>';
     
     var pulseiraItem = template.firstChild;
     var pulseiraLista = document.querySelector('#lista-pulseiras');

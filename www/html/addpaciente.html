@@ -57,7 +57,7 @@
         </div>
       </ons-list-item>
 
-      <ons-list-item id="pulseiraButton" tappable onclick="showPopover('dialog')"> <!-- Setar Dialog -->
+      <ons-list-item id="pulseiraButton" tappable> <!-- Setar Dialog -->
           <div class="left">
             <ons-icon icon="md-watch" class="list__item__icon"></ons-icon>
           </div>
@@ -65,9 +65,10 @@
             Puseiras
           </div>
         </ons-list-item>
+        
         <ons-dialog id="dialog" cancelable> <!-- Setar opção dialog -->
           <ons-list id="lista-pulseiras"> 
-            <ons-list-item id="nuloPulseira" tappable onclick="hidePopover(dialog)">
+            <ons-list-item id="nuloPulseira" tappable>
               <div>Desindexar a pulseira atual</div>
             </ons-list-item>
           </ons-list>  
