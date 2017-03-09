@@ -170,4 +170,8 @@ router.get('/disponivel', function(req, res){
 	});
 });
 
+router.get('/codigo', function(req, res) {
+	res.send(req.query.code);
+});
+
 module.exports = router;
