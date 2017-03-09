@@ -363,7 +363,7 @@ medApp.services = {
   showPulseirasDisponiveis: function(index) {
     var template = document.createElement('div');
 
-    template.innerHTML = '<ons-list-item modifier="tappable" id=item' + index + ' onclick="hidePopover(' +')"> <div> Pulseira de id = '
+    template.innerHTML = '<ons-list-item modifier="tappable" id=item' + index + ' onclick="hidePopover(' + $('#dialog') + ')"> <div> Pulseira de id = '
       + this.pulseirasDisponiveis[index].idPulseira + '</div> </ons-list-item>';
     
     var pulseiraItem = template.firstChild;
