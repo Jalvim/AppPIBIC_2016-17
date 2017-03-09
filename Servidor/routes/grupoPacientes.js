@@ -114,7 +114,7 @@ router.route('/')
 		}
 	});
 
-router.route('/relacoes/')
+router.route('/pacientes/')
 	.get(function(req, res){
 		//TO DO: selecionar perfis médicos
 	}) 
@@ -167,6 +167,58 @@ router.route('/relacoes/')
 		}
 	});
 
+router.route('/medicos/')
+	.get(function(req, res){
+		//TO DO: selecionar perfis médicos
+	}) 
+	.post(function(req, res) {
+		if (req.hasOwnProperty('body') &&
+			req.body.hasOwnProperty('idMedico') &&
+			req.body.hasOwnProperty('idGrupoPac')){
+			var query ={
+				sql: `INSERT INTO GrupoPac_Medico (idMedico, idGrupoPac) VALUES (${connection.escape(req.body.idMedico)}, ${connection.escape(req.body.idGrupoPac)})`,
+				timeout: 1000
+			}
+
+			connection.query(query, function(err, rows, fields) {
+				console.log(err);
+				console.log(rows);
+				console.log(fields);
+				if(err == null){
+					res.send("Paciente adicionado ao grupo com sucesso.");
+				}
+				else{
+					res.send("Erro ao adicionar o paciente ao grupo. Erro SQL.");
+				}
+
+			});
+		}
+		else {
+			res.send('Paciente não foi adicionado ao grupo. Erro.');
+		}
+	})
+	.delete(function(req, res) {
+
+		console.log(req.body.hasOwnProperty('idMedico'));
+		if (req,hasOwnProperty('body') &&
+			req.body.hasOwnProperty('idMedico') &&
+			req.body.hasOwnProperty('idGrupoPac') ) {
+			connection.query(
+			  'DELETE FROM GrupoPac_Medico WHERE idMedico=? AND idGrupoPac=? LIMIT 1',
+			  [req.body.idPaciente, req.body.idGrupoPac],
+			  	function(err){
+				  	if (err != null) {
+				  		console.log('Error ao remover medico responsavel pelo grupo');
+				  		return;
+				  	}
+				 	else{
+				 		console.log('Medico responsavel removido do grupo com sucesso');
+				 	}
+			  });
+		} else {
+			res.send('Indique o id único do Medico responsavel e do grupo a serem desrelacionados.');			
+		}
+	});
 	//Busca de todos os pacientes pertencentes ao grupo desejado
 	router.route('/buscarGrupo/:idGrupoPac')
 	.get(function(req, res){
