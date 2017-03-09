@@ -167,6 +167,47 @@ router.route('/pacientes/')
 		}
 	});
 
+	router.route('/pacientes/multiplos')
+	.get(function(req, res){
+		//TO DO: selecionar perfis médicos
+	}) 
+	.post(function(req, res) {
+		if (req.hasOwnProperty('body') &&
+			req.body.hasOwnProperty('idPaciente') &&
+			req.body.hasOwnProperty('idGrupoPac')){
+
+			var values, start_row, new_row;
+			
+			start_row = `(`+ req.body.idPaciente[0] +` ,`req.body.idGrupoPac` )`;
+			values = start_row;
+
+			for (var i = 1; i < req.body.idPaciente.length; i++) {
+				values += `, (`+ req.body.idPaciente[i] +` ,`req.body.idGrupoPac` )`;
+			}
+
+			var query ={
+				sql: `INSERT INTO GrupoPac_Paciente (idPaciente, idGrupoPac) VALUES ` + values,
+				timeout: 1000
+			}
+
+			connection.query(query, function(err, rows, fields) {
+				console.log(err);
+				console.log(rows);
+				console.log(fields);
+				if(err == null){
+					res.send("Paciente adicionado ao grupo com sucesso.");
+				}
+				else{
+					res.send("Erro ao adicionar o paciente ao grupo. Erro SQL.");
+				}
+
+			});
+		}
+		else {
+			res.send('Paciente não foi adicionado ao grupo. Erro.');
+		}
+	})
+
 router.route('/medicos/')
 	.get(function(req, res){
 		//TO DO: selecionar perfis médicos
