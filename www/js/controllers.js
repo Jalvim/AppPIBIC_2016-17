@@ -86,31 +86,26 @@ medApp.controllers = {
     $('#cpf-cadastro').mask('000.000.000-00', {reverse: true});
 
 
-     document.addEventListener("deviceready", onDeviceReady, false);
-      var largeImage;
-          function onDeviceReady () {
-             window.alert('Loading Cordova is completed');
-          }
+    page.querySelector('#add-foto').onclick = function snapPicture () {
+      
+      navigator.camera.getPicture (successCallback, FailCallback, {destinationType: Camera.DestinationType.DATA_URL});
 
-          function onSuccess (imageURI) {
-             largeImage = document.getElementById('picture');
-            largeImage.style.display = 'block';
-            largeImage.src = imageURI;
-          }
+      //Success Callback
+      function successCallback (imageData) {
 
-         page.querySelector('#addfoto').onclick= function() {
-            //Specify the source to get the photos.
-                  navigator.camera.getPhotoicture(onSuccess, onFail,
-                    { quality: 50, destinationType: Camera.DestinationType.FILE_URI });
-        };
+        //Display image
+        var image = document.getElementById ('picture');
+        image.src = "data:image/jpeg;base64, " + imageData;
 
-          function onFail (message) {
-              alert('An error occured: ' + message);
-          }
+      }
 
+      //Error CallBack
+      function FailCallback (message) {
 
+        alert ('Error!!!: ' + message);
 
-
+      }
+    };
 
     // Registra novo médico caso as senhas sejam válidas
     page.querySelector('#cadastrar-med').onclick = function() {
