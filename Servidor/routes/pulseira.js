@@ -175,7 +175,7 @@ router.get('/disponivel', function(req, res){
 Novo método para cadastro de pulseiras na aplicação, acessado pela propria fitbit após autorização
 de uso da conta da pulseira pelo usuário.
 */
-router.get('/codigo', function(req, res) {	
+router.get('/codigo', function(req, res) {
 
 	var tokenRefreshAuthorization = 'Basic ' + new Buffer(`${senhas.clientID}:${senhas.clientSecret}`).toString('base64');
 	var oauthOptions = {
@@ -189,19 +189,22 @@ router.get('/codigo', function(req, res) {
 			grant_type:'authorization_code',
 			redirect_uri:'http://julianop.com.br:3000/api/pulseira/codigo',
 			code:req.query.code
-		}
+		},
+		timeout: 3000
 	}
 	//request de informações essenciais para puxar dados da fitbit
 	request(oauthOptions, function(error, response, body) {
 		var temp = JSON.parse(body);
+		console.log(temp);
 		if (temp.hasOwnProperty('errors')) {
+			
 			return res.send('Falha no processo de autenticação ao tentar registrar a pulseira');
 		}
 		console.log('Pulseira autenticada com sucesso');
 		
 		//verificar se pulseira ja foi cadastrada anteriormente
-		connection.query(`SELECT FROM Autenticacao WHERE userID=${temp.user_id}`, function(err, result){
-		
+		connection.query('SELECT * FROM Autenticacao WHERE userID=? LIMIT 1',[temp.user_id], function(err, result, fields){
+			
 			if (result.length > 0) {
 				//atualizar informações de autenticação caso sim
 				connection.query('UPDATE Autenticacao SET refreshToken=?, accessToken=? WHERE userID=?',
