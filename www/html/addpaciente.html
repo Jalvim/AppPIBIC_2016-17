@@ -114,4 +114,31 @@
     </div>
   </ons-modal>
 
+  <!-- Diálogo para selecionar fonte da imagem de perfil --> 
+
+  <ons-dialog id="fotosource">
+        <ons-toolbar class="toolbar" inline>
+          <div class="center">
+            Editar imagem
+          </div>
+        </ons-toolbar>
+
+        <div style="text-align: center">
+          <p>
+            Escolha de onde deseja selecionar a imagem:
+          </p>
+
+          <ons-list>
+            <ons-row>
+              <ons-col>
+                <ons-list-item style="text-align: center" id="camera-add" tappable>Câmera</ons-list-item>
+              </ons-col>
+              <ons-col>
+                <ons-list-item style="text-align: center" id="galeria" tappable>Galeria</ons-list-item>
+              </ons-col>
+            </ons-row>
+          </ons-list>
+        </div>
+  </ons-dialog>
+
 </ons-page>

@@ -85,7 +85,7 @@ medApp.controllers = {
     $('#crm-cadastro').mask('0#');
     $('#cpf-cadastro').mask('000.000.000-00', {reverse: true});
 
-
+    // Função de adiquirir imagem de perfil
     page.querySelector('.add-foto').onclick = function snapPicture () {
 
       medApp.services.dial = document.getElementById('fotosource').id;
@@ -93,73 +93,65 @@ medApp.controllers = {
       medApp.services.showPopover(medApp.services.dial)
 
       document.querySelector('#camera-add').onclick = function() {
-      	//Setar funcionalidades
+
+      	// Captura imagem a partir da câmera do dispositivo
       	medApp.services.hidePopover(medApp.services.dial);
+
+        navigator.camera.getPicture (successCallback, FailCallback, { sourceType: Camera.PictureSourceType.CAMERA, 
+                                                                      destinationType: Camera.DestinationType.DATA_URL
+                                                                    });
+
+        //Success Callback
+        function successCallback (imageData) {
+
+          //Display image
+          var image = document.getElementById ('picture');
+          image.src = "data:image/jpeg;base64, " + imageData;
+
+        };
+
+        //Error CallBack
+        function FailCallback (message) {
+
+            alert ('Erro!!!: ' + message);
+
+        };
 
       };
 
       document.querySelector('#galeria').onclick = function() {
-      	//Setar funcionalidades
+
+      	// Seleciona imagem a partir da galeria de imagens do dispositivo
       	medApp.services.hidePopover(medApp.services.dial);
 
+        navigator.camera.getPicture (successCallback, FailCallback, { sourceType: Camera.PictureSourceType.PHOTOLIBRARY, 
+                                                                      destinationType: Camera.DestinationType.DATA_URL
+                                                                    });
+
+          //Success Callback
+          function successCallback (imageData) {
+
+            //Display image
+            var image = document.getElementById ('picture');
+            image.src = "data:image/jpeg;base64, " + imageData;
+
+          };
+
+          //Error CallBack
+          function FailCallback (message) {
+
+            alert ('Erro!!!: ' + message);
+
+          };
+
       };
-
-      /*ons
-      .createDialog('fotosource.html')
-      .then(function(dialog) {
-        dialog.show();
-        page.querySelector('#camera-add').onclick = function () {
-
-          navigator.camera.getPicture (successCallback, FailCallback, { sourceType: Camera.PictureSourceType.CAMERA, 
-                                                                        destinationType: Camera.DestinationType.DATA_URL});
-
-          //Success Callback
-          function successCallback (imageData) {
-
-            //Display image
-            var image = document.getElementById ('picture');
-            image.src = "data:image/jpeg;base64, " + imageData;
-
-          };
-
-          //Error CallBack
-          function FailCallback (message) {
-
-            alert ('Erro!!!: ' + message);
-
-          };
-
-        };
-
-        page.querySelector('#galeria-add').onclick = function () {
-
-          navigator.camera.getPicture (successCallback, FailCallback, { sourceType: Camera.PictureSourceType.PHOTOLIBRARY, 
-                                                                        destinationType: Camera.DestinationType.DATA_URL});
-
-          //Success Callback
-          function successCallback (imageData) {
-
-            //Display image
-            var image = document.getElementById ('picture');
-            image.src = "data:image/jpeg;base64, " + imageData;
-
-          };
-
-          //Error CallBack
-          function FailCallback (message) {
-
-            alert ('Erro!!!: ' + message);
-
-          };
-
-        };
-
-      }); */
       
     };
 
     // Registra novo médico caso as senhas sejam válidas
     page.querySelector('#cadastrar-med').onclick = function() {
+
+      console.log(imageData);
 
       var modal = page.querySelector('ons-modal');
       modal.show();
@@ -351,24 +343,6 @@ medApp.controllers = {
       document.querySelector('#pacienteNav').pushPage('html/addpaciente.html');
 
     };
-
-    /* Página para adicionar um novo grupo de pacientes (NAO IMPLEMENTADO)
-    page.querySelector('#add-grupo').onclick = function() {
-      document.querySelector('#pacienteNav').pushPage('html/addgrupo.html');
-    };
-    */
-
-    /* GAMBIARRA PARA O TESTE DE UX !!!RETIRAR!!!
-    page.querySelector('#pac1').onclick = function() {
-      document.querySelector('#pacienteNav').pushPage('html/perfilpaciente.html');
-    };
-    page.querySelector('#pac2').onclick = function() {
-      document.querySelector('#pacienteNav').pushPage('html/perfilpaciente.html');
-    };
-    page.querySelector('#pac3').onclick = function() {
-      document.querySelector('#pacienteNav').pushPage('html/perfilpaciente.html');
-    };
-    */
 
   },
 
@@ -739,6 +713,69 @@ for(var i=0;i<grupoPacientes.length;i++){
 
     });
 
+    // Função de adiquirir imagem de perfil
+    page.querySelector('.add-foto').onclick = function snapPicture () {
+
+      medApp.services.dial = document.getElementById('fotosource').id;
+
+      medApp.services.showPopover(medApp.services.dial)
+
+      document.querySelector('#camera-add').onclick = function() {
+
+        // Captura imagem a partir da câmera do dispositivo
+        medApp.services.hidePopover(medApp.services.dial);
+
+        navigator.camera.getPicture (successCallback, FailCallback, { sourceType: Camera.PictureSourceType.CAMERA, 
+                                                                      destinationType: Camera.DestinationType.DATA_URL
+                                                                    });
+
+        //Success Callback
+        function successCallback (imageData) {
+
+          //Display image
+          var image = document.getElementById ('picture');
+          image.src = "data:image/jpeg;base64, " + imageData;
+
+        };
+
+        //Error CallBack
+        function FailCallback (message) {
+
+            alert ('Erro!!!: ' + message);
+
+        };
+
+      };
+
+      document.querySelector('#galeria').onclick = function() {
+
+        // Seleciona imagem a partir da galeria de imagens do dispositivo
+        medApp.services.hidePopover(medApp.services.dial);
+
+        navigator.camera.getPicture (successCallback, FailCallback, { sourceType: Camera.PictureSourceType.PHOTOLIBRARY, 
+                                                                      destinationType: Camera.DestinationType.DATA_URL
+                                                                    });
+
+          //Success Callback
+          function successCallback (imageData) {
+
+            //Display image
+            var image = document.getElementById ('picture');
+            image.src = "data:image/jpeg;base64, " + imageData;
+
+          };
+
+          //Error CallBack
+          function FailCallback (message) {
+
+            alert ('Erro!!!: ' + message);
+
+          };
+
+      };
+      
+    };
+
     // Verifica se algum input do formulário foi mudado
     $("#medico-edit-form :input").change(function() {
 
@@ -803,6 +840,69 @@ for(var i=0;i<grupoPacientes.length;i++){
     $('#data-pac-edit').val(medApp.services.dadosPacienteAtual.dataIntFormatoTraco);
     $('#causa-pac-edit').val(medApp.services.dadosPacienteAtual.causa);
     $('#hospital-pac-edit').val(medApp.services.dadosPacienteAtual.hospital);
+
+    // Função de adiquirir imagem de perfil
+    page.querySelector('.add-foto').onclick = function snapPicture () {
+
+      medApp.services.dial = document.getElementById('fotosource').id;
+
+      medApp.services.showPopover(medApp.services.dial)
+
+      document.querySelector('#camera-add').onclick = function() {
+
+        // Captura imagem a partir da câmera do dispositivo
+        medApp.services.hidePopover(medApp.services.dial);
+
+        navigator.camera.getPicture (successCallback, FailCallback, { sourceType: Camera.PictureSourceType.CAMERA, 
+                                                                      destinationType: Camera.DestinationType.DATA_URL
+                                                                    });
+
+        //Success Callback
+        function successCallback (imageData) {
+
+          //Display image
+          var image = document.getElementById ('picture');
+          image.src = "data:image/jpeg;base64, " + imageData;
+
+        };
+
+        //Error CallBack
+        function FailCallback (message) {
+
+            alert ('Erro!!!: ' + message);
+
+        };
+
+    };
+
+      document.querySelector('#galeria').onclick = function() {
+
+        // Seleciona imagem a partir da galeria de imagens do dispositivo
+        medApp.services.hidePopover(medApp.services.dial);
+
+        navigator.camera.getPicture (successCallback, FailCallback, { sourceType: Camera.PictureSourceType.PHOTOLIBRARY, 
+                                                                      destinationType: Camera.DestinationType.DATA_URL
+                                                                    });
+
+          //Success Callback
+          function successCallback (imageData) {
+
+            //Display image
+            var image = document.getElementById ('picture');
+            image.src = "data:image/jpeg;base64, " + imageData;
+
+          };
+
+          //Error CallBack
+          function FailCallback (message) {
+
+            alert ('Erro!!!: ' + message);
+
+          };
+
+      };
+      
+    };
 
     // Botão salvar altera os dados no servidor se houve mudanças
     page.querySelector('#editar-pac').onclick = function() {
@@ -1060,24 +1160,67 @@ for(var i=0;i<grupoPacientes.length;i++){
 
     };
 
+    // Função de adiquirir imagem de perfil
     page.querySelector('.add-foto').onclick = function snapPicture () {
 
       medApp.services.dial = document.getElementById('fotosource').id;
 
-        medApp.services.showPopover(medApp.services.dial)
+      medApp.services.showPopover(medApp.services.dial)
 
-        document.querySelector('#camera-add').onclick = function() {
-      	  //Setar funcionalidades
-      	  medApp.services.hidePopover(medApp.services.dial);
+      document.querySelector('#camera-add').onclick = function() {
+
+        // Captura imagem a partir da câmera do dispositivo
+        medApp.services.hidePopover(medApp.services.dial);
+
+        navigator.camera.getPicture (successCallback, FailCallback, { sourceType: Camera.PictureSourceType.CAMERA, 
+                                                                      destinationType: Camera.DestinationType.DATA_URL
+                                                                    });
+
+        //Success Callback
+        function successCallback (imageData) {
+
+          //Display image
+          var image = document.getElementById ('picture');
+          image.src = "data:image/jpeg;base64, " + imageData;
 
         };
 
-        document.querySelector('#galeria').onclick = function() {
-      	  //Setar funcionalidades
-      	  medApp.services.hidePopover(medApp.services.dial);
+        //Error CallBack
+        function FailCallback (message) {
+
+            alert ('Erro!!!: ' + message);
 
         };
 
+    };
+
+      document.querySelector('#galeria').onclick = function() {
+
+        // Seleciona imagem a partir da galeria de imagens do dispositivo
+        medApp.services.hidePopover(medApp.services.dial);
+
+        navigator.camera.getPicture (successCallback, FailCallback, { sourceType: Camera.PictureSourceType.PHOTOLIBRARY, 
+                                                                      destinationType: Camera.DestinationType.DATA_URL
+                                                                    });
+
+          //Success Callback
+          function successCallback (imageData) {
+
+            //Display image
+            var image = document.getElementById ('picture');
+            image.src = "data:image/jpeg;base64, " + imageData;
+
+          };
+
+          //Error CallBack
+          function FailCallback (message) {
+
+            alert ('Erro!!!: ' + message);
+
+          };
+
+      };
+      
     };
 
     page.querySelector('#cadastrar-pac').onclick = function() {
