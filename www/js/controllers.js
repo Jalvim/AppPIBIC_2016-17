@@ -88,7 +88,23 @@ medApp.controllers = {
 
     page.querySelector('.add-foto').onclick = function snapPicture () {
 
-      ons
+      medApp.services.dial = document.getElementById('fotosource').id;
+
+      medApp.services.showPopover(medApp.services.dial)
+
+      document.querySelector('#camera-add').onclick = function() {
+      	//Setar funcionalidades
+      	medApp.services.hidePopover(medApp.services.dial);
+
+      };
+
+      document.querySelector('#galeria').onclick = function() {
+      	//Setar funcionalidades
+      	medApp.services.hidePopover(medApp.services.dial);
+
+      };
+
+      /*ons
       .createDialog('fotosource.html')
       .then(function(dialog) {
         dialog.show();
@@ -138,7 +154,7 @@ medApp.controllers = {
 
         };
 
-      });
+      }); */
       
     };
 
@@ -974,7 +990,7 @@ for(var i=0;i<grupoPacientes.length;i++){
 
     page.querySelector('#pulseiraButton').onclick = function() {
 
-      medApp.dial = document.getElementById('dialog').id;
+      medApp.services.dial = document.getElementById('dialog').id;
 
       //Método responsável por encontrar na base as pulseiras disponíveis.
       $.get('http://julianop.com.br:3000/api/pulseira/disponivel')
@@ -986,7 +1002,7 @@ for(var i=0;i<grupoPacientes.length;i++){
         })
         .done(function() {
 
-          medApp.services.showPopover(medApp.dial);
+          medApp.services.showPopover(medApp.services.dial);
 
           document.querySelector('#nuloPulseira').onclick = function() {
           //Método que liga a pulseira ao paciente na base de dados.
@@ -1033,7 +1049,7 @@ for(var i=0;i<grupoPacientes.length;i++){
                 }
               })
               .done(function (){
-                medApp.services.hidePopover(medApp.dial);
+                medApp.services.hidePopover(medApp.services.dial);
                 $('#lista-pulseiras').empty();
               });
               
@@ -1042,7 +1058,27 @@ for(var i=0;i<grupoPacientes.length;i++){
 
         });
 
-  };
+    };
+
+    page.querySelector('.add-foto').onclick = function snapPicture () {
+
+      medApp.services.dial = document.getElementById('fotosource').id;
+
+        medApp.services.showPopover(medApp.services.dial)
+
+        document.querySelector('#camera-add').onclick = function() {
+      	  //Setar funcionalidades
+      	  medApp.services.hidePopover(medApp.services.dial);
+
+        };
+
+        document.querySelector('#galeria').onclick = function() {
+      	  //Setar funcionalidades
+      	  medApp.services.hidePopover(medApp.services.dial);
+
+        };
+
+    };
 
     page.querySelector('#cadastrar-pac').onclick = function() {
 

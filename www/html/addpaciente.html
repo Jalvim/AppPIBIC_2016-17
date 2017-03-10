@@ -72,7 +72,32 @@
               <div>Desindexar a pulseira atual</div>
             </ons-list-item>
           </ons-list>  
-        </ons-popover>
+        </ons-dialog>
+
+        <ons-dialog id="fotosource">
+        <ons-toolbar inline>
+          <div class="center">
+            Editar imagem
+          </div>
+        </ons-toolbar>
+
+        <div style="text-align: center">
+          <p>
+            Escolha de onde deseja selecionar a imagem:
+          </p>
+
+          <ons-list>
+            <ons-row>
+              <ons-col>
+                <ons-list-item style="text-align: center" id="camera-add" tappable>Câmera</ons-list-item>
+              </ons-col>
+              <ons-col>
+                <ons-list-item style="text-align: center" tappable id="galeria">Galeria</ons-list-item>
+              </ons-col>
+            </ons-row>
+          </ons-list>
+          </div>
+        </ons-dialog>
       </ons-list-item>
 
     </ons-list>
