@@ -30,54 +30,54 @@ var connection = mysql.createConnection({
 connection.connect();
 
 router.route('/')
-	.post(function(req,res) {
-		if (req.body.hasOwnProperty('codigoOAuth') &&
-			req.body.hasOwnProperty('redirectUri')) {
-			
-			var tokenRefreshAuthorization = 'Basic ' + new Buffer(`${senhas.clientID}:${senhas.clientSecret}`).toString('base64');
-				var oauthOptions = {
-					method: 'POST',
-					url: 'https://api.fitbit.com/oauth2/token',
-					headers: {
-						'Authorization': tokenRefreshAuthorization
-					},
-					form: {
-						clientId:'227WRB',
-						grant_type:'authorization_code',
-						redirect_uri:req.body.redirectUri,
-						code:req.body.codigoOAuth
-					}
-				}
-				request(oauthOptions, function(error, response, body) {
-					var temp = JSON.parse(body);
-					if (temp.hasOwnProperty('errors')) {
-						res.send('Falha no processo de autenticação ao tentar registrar a pulseira');
-					} else {
-						console.log('Pulseira autenticada com sucesso');
-						connection.query('INSERT INTO Pulseira (disponivel) VALUE (1)',function(err, rows, fields){
-							if (err) { res.send('Error: Falha ao inserir pulseira na base de dados tabela Pulseira'); }
-							else {
-								connection.query(
-								  'INSERT INTO Autenticacao (idPulseira, userID, refreshToken, accessToken) VALUES (?, ?, ?, ?)',
-								  [rows.insertId, temp.user_id, temp.refresh_token, temp.access_token],
-								  function(err) {
-									if (err) { 
-										res.send('Error: Falha ao armazenar info na tabela de autenticação'); 
-										connection.query(`DELETE FROM Pulseira WHERE idPulseira=${rows.insertId}`);
-									} else {
-										res.send('Pulseira adicionada com sucesso.');
-									}
-								  });
-							}
-						});
-					}
-				});
-			
-		}else {
-			throw new Error('Parâmetros POST inválidos ou inexistentes para adicionar pulseira');
-			res.send('Error: Parâmetros POST inválidos ou inexistentes para adicionar pulseira');
-		}
-	})
+// 	.post(function(req,res) {
+// 		if (req.body.hasOwnProperty('codigoOAuth') &&
+// 			req.body.hasOwnProperty('redirectUri')) {
+// 			
+// 			var tokenRefreshAuthorization = 'Basic ' + new Buffer(`${senhas.clientID}:${senhas.clientSecret}`).toString('base64');
+// 				var oauthOptions = {
+// 					method: 'POST',
+// 					url: 'https://api.fitbit.com/oauth2/token',
+// 					headers: {
+// 						'Authorization': tokenRefreshAuthorization
+// 					},
+// 					form: {
+// 						clientId:'227WRB',
+// 						grant_type:'authorization_code',
+// 						redirect_uri:req.body.redirectUri,
+// 						code:req.body.codigoOAuth
+// 					}
+// 				}
+// 				request(oauthOptions, function(error, response, body) {
+// 					var temp = JSON.parse(body);
+// 					if (temp.hasOwnProperty('errors')) {
+// 						res.send('Falha no processo de autenticação ao tentar registrar a pulseira');
+// 					} else {
+// 						console.log('Pulseira autenticada com sucesso');
+// 						connection.query('INSERT INTO Pulseira (disponivel) VALUE (1)',function(err, rows, fields){
+// 							if (err) { res.send('Error: Falha ao inserir pulseira na base de dados tabela Pulseira'); }
+// 							else {
+// 								connection.query(
+// 								  'INSERT INTO Autenticacao (idPulseira, userID, refreshToken, accessToken) VALUES (?, ?, ?, ?)',
+// 								  [rows.insertId, temp.user_id, temp.refresh_token, temp.access_token],
+// 								  function(err) {
+// 									if (err) { 
+// 										res.send('Error: Falha ao armazenar info na tabela de autenticação'); 
+// 										connection.query(`DELETE FROM Pulseira WHERE idPulseira=${rows.insertId}`);
+// 									} else {
+// 										res.send('Pulseira adicionada com sucesso.');
+// 									}
+// 								  });
+// 							}
+// 						});
+// 					}
+// 				});
+// 			
+// 		}else {
+// 			throw new Error('Parâmetros POST inválidos ou inexistentes para adicionar pulseira');
+// 			res.send('Error: Parâmetros POST inválidos ou inexistentes para adicionar pulseira');
+// 		}
+// 	})
 	.put(function(req,res) {
 		if (req.body.hasOwnProperty('disponivel') && req.body.hasOwnProperty('idPulseira')) {
 			
@@ -170,7 +170,13 @@ router.get('/disponivel', function(req, res){
 	});
 });
 
-router.get('/codigo', function(req, res) {
+
+/*
+Novo método para cadastro de pulseiras na aplicação, acessado pela propria fitbit após autorização
+de uso da conta da pulseira pelo usuário.
+*/
+router.get('/codigo', function(req, res) {	
+
 	var tokenRefreshAuthorization = 'Basic ' + new Buffer(`${senhas.clientID}:${senhas.clientSecret}`).toString('base64');
 	var oauthOptions = {
 		method: 'POST',
@@ -185,29 +191,44 @@ router.get('/codigo', function(req, res) {
 			code:req.query.code
 		}
 	}
+	//request de informações essenciais para puxar dados da fitbit
 	request(oauthOptions, function(error, response, body) {
 		var temp = JSON.parse(body);
 		if (temp.hasOwnProperty('errors')) {
-			res.send('Falha no processo de autenticação ao tentar registrar a pulseira');
-		} else {
-			console.log('Pulseira autenticada com sucesso');
-			connection.query('INSERT INTO Pulseira (disponivel) VALUE (1)',function(err, rows, fields){
-				if (err) { res.send('Error: Falha ao inserir pulseira na base de dados tabela Pulseira'); }
-				else {
-					connection.query(
-					  'INSERT INTO Autenticacao (idPulseira, userID, refreshToken, accessToken) VALUES (?, ?, ?, ?)',
-					  [rows.insertId, temp.user_id, temp.refresh_token, temp.access_token],
-					  function(err) {
-						if (err) { 
-							res.send('Error: Falha ao armazenar info na tabela de autenticação'); 
-							connection.query(`DELETE FROM Pulseira WHERE idPulseira=${rows.insertId}`);
-						} else {
-							res.send('Pulseira adicionada com sucesso.');
-						}
-					  });
-				}
-			});
+			return res.send('Falha no processo de autenticação ao tentar registrar a pulseira');
 		}
+		console.log('Pulseira autenticada com sucesso');
+		
+		//verificar se pulseira ja foi cadastrada anteriormente
+		connection.query(`SELECT FROM Autenticacao WHERE userID=${temp.user_id}`, funtion(err, result){
+		
+			if (result.length > 0) {
+				//atualizar informações de autenticação caso sim
+				connection.query('UPDATE Autenticacao SET refreshToken=?, accessToken=? WHERE userID=?',
+					[temp.refresh_token, temp.access_token, temp.user_id], function(err){
+					
+					if (err) { return res.send('Erro: Falha no armazenamento das informações de autenticação.'); }
+						
+				});
+			}
+			
+			//adicionar nova pulseira normalmente caso não
+			connection.query('INSERT INTO Pulseira (disponivel) VALUE (1)',function(err, rows, fields){
+				if (err) { return res.send('Error: Falha ao inserir pulseira na base de dados tabela Pulseira'); }
+		
+				connection.query(
+				  'INSERT INTO Autenticacao (idPulseira, userID, refreshToken, accessToken) VALUES (?, ?, ?, ?)',
+				  [rows.insertId, temp.user_id, temp.refresh_token, temp.access_token],
+				  function(err) {
+					if (err) { 
+						res.send('Error: Falha ao armazenar info na tabela de autenticação'); 
+						connection.query(`DELETE FROM Pulseira WHERE idPulseira=${rows.insertId}`);
+					} else {
+						res.send('Pulseira adicionada com sucesso.');
+					}
+				});
+			});
+		});
 	});
 });
 
