@@ -411,6 +411,80 @@ medApp.controllers = {
 
   },
 
+
+ //////////////////////////////////////////////////////////
+  //////////////Controlador da adição de grupos//////////////////
+  /////////////////////////////////////////////////////////
+  addgrupo:function(page){
+
+  var nome=prompt('Digite o nome do grupo');
+
+  if(nome!=''){
+
+  $.post("http://julianop.com.br:3000/api/grupoPacientes",nome);
+
+    page.addEventListener('show', function(event) {
+
+       medApp.services.deletePacienteAtual();
+       $('#grupo-pacientes').empty();
+
+       $.get('http://julianop.com.br:3000/api/paciente/geral/idMedico/' + medApp.services.getIdMedico())
+         .done(function(data) {
+
+           for (var i = 0, len = data.length; i < len; i++) {
+
+             var pacientesInfo = data[i];
+
+             medApp.services.gpac1(
+               {
+                 statusPaciente: (pacientesInfo.ativo == 1) ? 'ativo' : 'inativo',
+                 img: 'http://www.clker.com/cliparts/A/Y/O/m/o/N/placeholder-md.png',
+                 nomePaciente: pacientesInfo.nomePaciente,
+                 batimentos: '--',
+                 dataPaciente: pacientesInfo.dataDeNascimento,
+                 causaPaciente: pacientesInfo.causaDaInternacao,
+                 medicoResp: pacientesInfo.numeroDoProntuario,
+                 hospital: pacientesInfo.telefone,
+                 idPaciente: pacientesInfo.idPaciente,
+                 medicoResp: pacientesInfo.nome
+               },i);
+
+             };
+
+             document.querySelector('#terminar').onclick=function(){
+             var grupoPacientes =[];
+             var inputs=page.getElementsByTagName('input');
+             for(var i=0;i<len;i++){
+
+            if(inputs[i].checked===true){
+            grupoPacientes.push(data[i]);
+            }
+            };
+          if(grupoPacientes.length!==0){
+
+for(var i=0;i<grupoPacientes.length;i++){
+
+          $.post("http://julianop.com.br:3000/api/grupoPacientes/pacientes",grupoPacientes[i].idPaciente);
+
+
+
+            }
+            }
+            };
+
+
+           });
+       });
+
+
+  }
+
+
+  },
+
+
+
+
   /////////////////////////////////////
   ///Controle dos Gráficos de saúde ///
   /////////////////////////////////////
