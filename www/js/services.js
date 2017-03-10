@@ -281,11 +281,6 @@ medApp.services = {
               pacientesgrupo.appendChild(Item);
     },
 
-
-
-
-
-
   //Função responsável por revelar o dialog.
   showPopover: function(id) {
     document
@@ -301,7 +296,7 @@ medApp.services = {
   }, 
 
   //Variável global q armazena o id do Dialog
-  dial: -1,
+  dial: '',
 
   // Cria um novo lembrete
   createLembrete: function(data) {
