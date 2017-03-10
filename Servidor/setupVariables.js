@@ -273,6 +273,16 @@ module.exports = function(app) {
 			idMedico: 16
 		}
 	};
+
+	app.optionsPostTestRequestCompartilharPaciente = {
+		method:'POST',
+		url:'http://127.0.0.1:3000/api/compartilhamento/',
+		form:{ 
+			idHospitalOrigem: '1',
+			idMedicoDestino: '20',
+			idPaciente: '61'
+		}
+	};
 }
 
 

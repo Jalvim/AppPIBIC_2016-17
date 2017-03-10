@@ -20,7 +20,7 @@ var connection = mysql.createConnection({
 });
 connection.connect();
 
-router.route('/')
+router.route('/paciente/')
 	.post(function(req, res) {
 		if (req.hasOwnProperty('body') &&
 			req.body.hasOwnProperty('idPaciente') &&
@@ -28,7 +28,7 @@ router.route('/')
 			req.body.hasOwnProperty('idMedicoDestino')){
 
 			var queryValidacao = {
-				sql: `SELECT idHospital FROM Hospital_Medico WHERE idMedico = ${connection.escape(req.body.idMedicoDestino)} AND idHospital = ${connection.escape(req.body.idHospitalOrigem)}`,
+				sql: `SELECT HM.idHospital FROM Hospital_Medico HM WHERE idMedico = ${connection.escape(req.body.idMedicoDestino)} AND idHospital = ${connection.escape(req.body.idHospitalOrigem)}`,
 				timeout: 1000
 
 			}
@@ -37,9 +37,10 @@ router.route('/')
 				console.log(err);
 				console.log(rows);
 				console.log(fields);
+				console.log(queryValidacao);
 				if(err == null && rows.length >= 1){
 					var queryCompartilhar = {
-						sql: `INSERT INTO Paciente_Medico (idMedico, idPaciente) VALUES (${connection.escape(req.body.idMedicoDestino)}, idHospital = ${connection.escape(req.body.idHospitalOrigem)})`,
+						sql: `INSERT INTO Paciente_Medico (idMedico, idPaciente) VALUES (${connection.escape(req.body.idMedicoDestino)}, ${connection.escape(req.body.idPaciente)})`,
 						timeout: 1000
 
 					}
@@ -47,6 +48,7 @@ router.route('/')
 						console.log(err);
 						console.log(rows);
 						console.log(fields);
+						console.log(queryCompartilhar);
 						if(err == null ){
 							res.send("Paciente compartilhado com sucesso.");
 						}
@@ -66,4 +68,51 @@ router.route('/')
 		}
 	});
 
+	router.route('/grupo/')
+	.post(function(req, res) {
+		if (req.hasOwnProperty('body') &&
+			req.body.hasOwnProperty('idGrupoPac') &&
+			req.body.hasOwnProperty('idHospitalOrigem') &&
+			req.body.hasOwnProperty('idMedicoDestino')){
+
+			var queryValidacao = {
+				sql: `SELECT HM.idHospital FROM Hospital_Medico HM WHERE idMedico = ${connection.escape(req.body.idMedicoDestino)} AND idHospital = ${connection.escape(req.body.idHospitalOrigem)}`,
+				timeout: 1000
+
+			}
+
+			connection.query(queryValidacao, function(err, rows, fields) {
+				console.log(err);
+				console.log(rows);
+				console.log(fields);
+				console.log(queryValidacao);
+				if(err == null && rows.length >= 1){
+					var queryCompartilhar = {
+						sql: `INSERT INTO GrupoPac_Medico (idMedico, idGrupoPac) VALUES (${connection.escape(req.body.idMedicoDestino)}, ${connection.escape(req.body.idGrupoPac)})`,
+						timeout: 1000
+
+					}
+					connection.query(queryCompartilhar, function(err, rows, fields) {
+						console.log(err);
+						console.log(rows);
+						console.log(fields);
+						console.log(queryCompartilhar);
+						if(err == null ){
+							res.send("Grupo compartilhado com sucesso.");
+						}
+						else{
+							res.send("Erro ao compartilhar Grupo. Erro SQL.");
+						}
+					});
+				}
+				else{
+					res.send("Erro ao compartilhar Grupo. Erro SQL.");
+				}
+
+			});
+		}
+		else {
+			res.send('Insira o Grupo a ser compartilhado e o médico desejado. Erro.');
+		}
+	});
 	module.exports = router;
