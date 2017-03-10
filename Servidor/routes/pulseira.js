@@ -210,6 +210,7 @@ router.get('/codigo', function(req, res) {
 					if (err) { return res.send('Erro: Falha no armazenamento das informações de autenticação.'); }
 						
 				});
+				return;
 			}
 			
 			//adicionar nova pulseira normalmente caso não
