@@ -3,171 +3,47 @@
 
   <ons-navigator id="pacienteNav" page="pacientes.html"></ons-navigator>
 
-  <ons-template id="pacientes.html">
+  <ons-toolbar class="toolbar">
+    <div class="center">Lista de Pacientes</div>
+  </ons-toolbar>
+
+  <ons-tabbar position="top">
+      <ons-tab label="Pacientes" class="tabbar" page="pacientes.html" active>
+      </ons-tab>
+      <ons-tab label="Grupos" class="tabbar" page="grupos.html">
+      </ons-tab>
+  </ons-tabbar>
+
+  <ons-template id="pacientes.html"> 
     <ons-page id="pacientes">
-      <ons-toolbar class="toolbar">
-        <div class="center">Pacientes</div>
-	      <!-- TODO: Filtrar lista de pacientes (botão omitido sem a implementação da funcionalidade)
-        <div class="right">
-        <ons-toolbar-button id="pac-teste">
-          <ons-icon icon="md-filter-list" size="24px"></ons-icon>
-        </ons-toolbar-button>
-        </div>
-        -->
-      </ons-toolbar>
 
-    <!-- Lista de Pacientes -->
-	   <ons-list modifier="inset" style="padding-top: 10px;" id="lista-pacientes">
+      <!-- Lista de Pacientes -->
+  	  <ons-list modifier="inset" style="padding-top: 10px;" id="lista-pacientes">
 
-	   <ons-list-item class="paciente-lista ativo" modifier="longdivider" id="pac1" tappable>
+  	  </ons-list>
 
-        <div class="left">
-          <img class="list__item__thumbnail" src="http://blogs.diariodepernambuco.com.br/espacodaprevidencia/wp-content/uploads/2012/10/Doente2.jpg">
-        </div>
+      <!-- Botão para criar novo Paciente -->
+      <ons-fab position="bottom right" id="buscar-pac" class="spd-dial">
+        <ons-icon icon="md-account-add"></ons-icon>
+      </ons-fab>
 
-        <div class="center">
+    </ons-page>
+  </ons-template>
 
-          <ons-row class="paciente-header">
-            <ons-col>
-              <span class="list__item__title">Paciente #1</span>
-            </ons-col>
-            <ons-col>
-              <ons-icon icon="heartbeat" class="list__item__icon"></ons-icon>
-              <span class="list__item__title">60 bpm</span>
-            </ons-col>
-          </ons-row>
+  <ons-template id="grupos.html"> 
+    <ons-page id="grupos">
 
-          <ons-row>
-            <ons-col class="paciente-detalhes">
-              <ons-icon icon="md-calendar" class="list__item__icon"></ons-icon>
-              <span class="list__item__subtitle">01/01/2017</span>  
-            </ons-col>
-            <ons-col class="paciente-detalhes">
-              <ons-icon icon="md-plaster" class="list__item__icon"></ons-icon>
-              <span class="list__item__subtitle">Resfriado</span>  
-            </ons-col>
-          </ons-row>
+      <!-- Lista de Grupos -->
+      <ons-list modifier="inset" style="padding-top: 10px;" id="lista-grupos">
 
-          <ons-row>
-            <ons-col class="paciente-detalhes">
-              <ons-icon icon="user-md" class="list__item__icon"></ons-icon>
-              <span class="list__item__subtitle">John Doe</span>
-            </ons-col>
-            <ons-col class="paciente-detalhes">
-              <ons-icon icon="hospital-o" class="list__item__icon"></ons-icon>
-              <span class="list__item__subtitle">Hospital/1</span>
-            </ons-col>
-          </ons-row>
+      </ons-list>
 
-        </div>
+      <!-- Botão para criar novo Grupo -->
+      <ons-fab position="bottom right" id="add-grupo" class="spd-dial">
+        <ons-icon icon="md-accounts-add"></ons-icon>
+      </ons-fab>
 
-      </ons-list-item>
+    </ons-page>
+  </ons-template>
 
-	 <ons-list-item class="paciente-lista alerta" modifier="longdivider" id="pac2" tappable>
-
-        <div class="left">
-          <img class="list__item__thumbnail" src="http://dfpc6aroe7sxj.cloudfront.net/wp-content/uploads/2011/09/Sick-Man.jpg">
-        </div>
-
-        <div class="center">
-
-          <ons-row class="paciente-header">
-            <ons-col>
-              <span class="list__item__title">Paciente #2</span>
-            </ons-col>
-            <ons-col>
-              <ons-icon icon="heartbeat" class="list__item__icon"></ons-icon>
-              <span class="list__item__title">100 bpm</span>
-            </ons-col>
-          </ons-row>
-
-          <ons-row>
-            <ons-col class="paciente-detalhes">
-              <ons-icon icon="md-calendar" class="list__item__icon"></ons-icon>
-              <span class="list__item__subtitle">02/02/2017</span>  
-            </ons-col>
-            <ons-col class="paciente-detalhes">
-              <ons-icon icon="md-plaster" class="list__item__icon"></ons-icon>
-              <span class="list__item__subtitle">Gripe</span>  
-            </ons-col>
-          </ons-row>
-
-          <ons-row>
-            <ons-col class="paciente-detalhes">
-              <ons-icon icon="user-md" class="list__item__icon"></ons-icon>
-              <span class="list__item__subtitle">John Doe</span>
-            </ons-col>
-            <ons-col class="paciente-detalhes">
-              <ons-icon icon="hospital-o" class="list__item__icon"></ons-icon>
-              <span class="list__item__subtitle">Hospital/2</span>
-            </ons-col>
-          </ons-row>
-
-        </div>
-
-      </ons-list-item>
-
-  	<ons-list-item class="paciente-lista inativo" modifier="longdivider" id="pac3" tappable>
-
-        <div class="left">
-          <img class="list__item__thumbnail" src="http://cdn.xl.thumbs.canstockphoto.com/canstock16594519.jpg">
-        </div>
-
-        <div class="center">
-
-          <ons-row class="paciente-header">
-            <ons-col>
-              <span class="list__item__title">Paciente #3</span>
-            </ons-col>
-            <ons-col>
-              <ons-icon icon="heartbeat" class="list__item__icon"></ons-icon>
-              <span class="list__item__title">-- bpm</span>
-            </ons-col>
-          </ons-row>
-
-          <ons-row>
-            <ons-col class="paciente-detalhes">
-              <ons-icon icon="md-calendar" class="list__item__icon"></ons-icon>
-              <span class="list__item__subtitle">03/03/2017</span>  
-            </ons-col>
-            <ons-col class="paciente-detalhes">
-              <ons-icon icon="md-plaster" class="list__item__icon"></ons-icon>
-              <span class="list__item__subtitle">Virose</span>  
-            </ons-col>
-          </ons-row>
-
-          <ons-row>
-            <ons-col class="paciente-detalhes">
-              <ons-icon icon="user-md" class="list__item__icon"></ons-icon>
-              <span class="list__item__subtitle">Jane Doe</span>
-            </ons-col>
-            <ons-col class="paciente-detalhes">
-              <ons-icon icon="hospital-o" class="list__item__icon"></ons-icon>
-              <span class="list__item__subtitle">Hospital/3</span>
-            </ons-col>
-          </ons-row>
-
-        </div>
-
-    </ons-list-item>
-
-	 </ons-list>
-
-
-  <ons-speed-dial position="bottom right" direction="up">
-    <ons-fab class="spd-dial">
-      <ons-icon icon="md-plus"></ons-icon>
-    </ons-fab>
-    <ons-speed-dial-item id="buscar-pac" class="spd-dial">
-      <ons-icon icon="md-account-add"></ons-icon>
-    </ons-speed-dial-item>
-    <ons-speed-dial-item id="add-grupo" class="spd-dial">
-      <ons-icon icon="md-accounts-add"></ons-icon>
-    </ons-speed-dial-item>
-  </ons-speed-dial>
-
-
-
-  </ons-page>
-</ons-template>
 </ons-page>

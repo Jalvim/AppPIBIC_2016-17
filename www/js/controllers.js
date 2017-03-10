@@ -405,7 +405,7 @@ medApp.controllers = {
  //////////////////////////////////////////////////////////
   //////////////Controlador da adição de grupos//////////////////
   /////////////////////////////////////////////////////////
-  addgrupo:function(page){
+  addgrupo: function(page) {
 
   var nome=prompt('Digite o nome do grupo');
 
@@ -452,7 +452,7 @@ medApp.controllers = {
             };
           if(grupoPacientes.length!==0){
 
-for(var i=0;i<grupoPacientes.length;i++){
+          for(var i=0;i<grupoPacientes.length;i++){
 
           $.post("http://julianop.com.br:3000/api/grupoPacientes/pacientes",grupoPacientes[i].idPaciente);
 
@@ -1497,6 +1497,21 @@ for(var i=0;i<grupoPacientes.length;i++){
           };
 
         });
+
+    };
+
+  },
+
+  ////////////////////////////////////
+  // Controlador da lista de Grupos //
+  ////////////////////////////////////
+
+  grupos: function(page) {
+
+    // Página para criar um novo grupo de pacientes
+    page.querySelector('#add-grupo').onclick = function() {
+
+      document.querySelector('#pacienteNav').pushPage('html/addgrupo.html');
 
     };
 
