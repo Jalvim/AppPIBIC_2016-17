@@ -261,7 +261,7 @@ router.route('/medicos/')
 		}
 	});
 	//Busca de todos os pacientes pertencentes ao grupo desejado
-	router.route('/buscarGrupo/:idGrupoPac')
+	router.route('/buscarGrupo/paciente/:idGrupoPac')
 	.get(function(req, res){
 		if (req.params.hasOwnProperty('idGrupoPac')) {
 		var query = {
@@ -283,5 +283,60 @@ router.route('/medicos/')
 		res.send('Indique o grupo desejado. Erro');			
 	}
 	});
+	router.route('/buscarGrupo/grupo/:nome')
+	.get(function(req, res){
+		if (req.params.hasOwnProperty('nome')) {
+		var query = {
+			sql: `SELECT * FROM  GrupoPacientes WHERE nome LIKE '${connection.escape(req.params.nome)}'`,
+			timeout: 10000	
+		}
+		connection.query(query, function(err, rows, fields) {
+			if(err) {
+				console.log(err);
+				res.send('Não foi possível recuperar o grupo. Erro SQL.');
+			} else {
+				console.log(err);
+				console.log(rows);
+				//console.log(fields);
+				res.json(rows);
+			}
+		});
+	} else {
+		res.send('Indique o grupo desejado. Erro');			
+	}
+	});
+
+	router.get('/buscarGrupo/idMedico/:idMedico', function(req, res){
+	console.log(req.params.hasOwnProperty('idMedico'));
+		//Primeiramente, o id do Médico é buscado na tabela de Pacientes para obter os seus poacientes
+		if (req.params.hasOwnProperty('idMedico')) {
+			var getMedicoQuery = {
+			sql: `SELECT GP.*, M.nome  FROM GrupoPac_Medico GM, GrupoPacientes GP, Medico M WHERE GM.idMedico = ${connection.escape(req.params.idMedico)} AND GM.idGrupoPac = GP.idGrupoPac AND GM.idMedico=M.idMedico`,
+			timeout: 10000	
+		}
+		
+		connection.query(getMedicoQuery, function(err, rows, fields) {
+			if(err) {
+				console.log(err);
+				res.send('Houve um erro ao se tentar encontrar o médico com o ID desejado.');
+			}
+			if(rows.length < 1)	{
+				res.send('Não existe grupo associado a este médico com esta ID na base de dados');
+			}
+			else{
+				res.json(rows);
+			}
+			console.log(err);
+			console.log(rows);
+			//console.log(fields);
+			//Utilizamos o primeiro médico encontrado com o ID único para a próxima etapa
+			
+		});
+
+		
+	} else {
+		res.send('Indique o ID único do médico a ser puxado da base.');			
+	}
+});
 
 	module.exports = router;
