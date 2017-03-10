@@ -200,7 +200,7 @@ router.get('/codigo', function(req, res) {
 		console.log('Pulseira autenticada com sucesso');
 		
 		//verificar se pulseira ja foi cadastrada anteriormente
-		connection.query(`SELECT FROM Autenticacao WHERE userID=${temp.user_id}`, funtion(err, result){
+		connection.query(`SELECT FROM Autenticacao WHERE userID=${temp.user_id}`, function(err, result){
 		
 			if (result.length > 0) {
 				//atualizar informações de autenticação caso sim
