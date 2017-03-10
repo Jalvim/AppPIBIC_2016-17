@@ -25,7 +25,8 @@ router.route('/')
 	}) 
 	.post(function(req, res) {
 		if (req.hasOwnProperty('body') &&
-			req.body.hasOwnProperty('nome')){
+			req.body.hasOwnProperty('nome') && 
+			req.body.hasOwnProperty('idMedico') ){
 			var query = {
 				sql: `INSERT INTO GrupoPacientes (nome) VALUES (${connection.escape(req.body.nome)})`,
 				timeout: 1000
@@ -36,7 +37,21 @@ router.route('/')
 				console.log(rows);
 				console.log(fields);
 				if(err == null){
-					res.send("Grupo criado com sucesso.");
+					var queryRelacao = {
+						sql:`INSERT INTO GrupoPac_Medico (idGrupoPac, idMedico) VALUES (${rows.insertId}, ${connection.escape(req.body.idMedico)})`,
+						timeout: 10000
+					}
+					connection.query(queryRelacao, function(err, response, body) {
+						if(err) {
+							res.send('Erro ao adicionar relação entre medico e grupo.');
+							connection.query(`DELETE FROM GrupoPacientes WHERE idtable1=${rows.insertId}`);
+						} else {
+							res.send('Grupo adicionado com sucesso.');
+							console.log(err);
+							console.log(rows);
+							//console.log(fields);
+						}
+					});
 				}
 				else{
 					res.send("Erro ao criar o grupo. Erro SQL.");
