@@ -124,8 +124,6 @@ function getDynamicHealthParams(idPulseira, currDate, delay) {
 					info['activities-heart-intraday'].hasOwnProperty('dataset')){
 					
 					if (info['activities-heart-intraday'].dataset.length < 1) {
-	// 					currDate.setSeconds(currDate.getSeconds() - delay);
-	// 					getDynamicHealthParams(idPulseira, currDate, delay);
 						console.log('Array vazio, a pulseira '+idPulseira+' ainda não sincronizou hoje');
 					} else {
 						formatDate(currDate);

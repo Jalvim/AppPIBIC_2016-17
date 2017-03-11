@@ -11,7 +11,9 @@ TO DO:
 var senhas = require('../senhas.js');
 var express = require('express');
 var mysql = require('mysql');
-var router = express.Router();
+var router = express.Router();	
+var mailSender = require('../mailgunWraper.js');
+
 
 //Setup inicial de conecção com a base de dados 	
 var connection = mysql.createConnection({
@@ -56,13 +58,26 @@ router.route('/')
 				idMedico = rows.insertId;
 				if(err == null){
 					var query = {
-						sql:`INSERT INTO logins (email, senha, idMedico) VALUES (${connection.escape(req.body.email)}, ${connection.escape(req.body.senha)}, ${connection.escape(idMedico)})`,
+						sql:`INSERT INTO logins (email, senha, idMedico, emailConfirmado) VALUES (${connection.escape(req.body.email)}, ${connection.escape(req.body.senha)}, ${connection.escape(idMedico)}, 0)`,
 						timeout: 10000
 						}
-						connection.query(query, function(err, rows, fields) {
+						connection.query(query, function(err) {
 							console.log(err);
 							if (err == null){
+								
+								var url = `http://julianop.com.br:3000/api/medico/confirm/${idMedico}`;
+								var verificationEmail = {
+									to: req.body.email,
+									subject: 'Confirmação de Email',
+									text: `Este endereço de email foi usado no cadastro de uma nova conta no aplicativo das pulseiras inteligentes.\n\n` +
+											`Por favor confirmar seu endereço de email clicando no link abaixo.\n\n` +
+											`Caso você seja o proprietário deste email e não tenha realizado o cadastro ignore esta mensagem.`,
+									html: `Link para confirmação de email: <a>${url}</a>` 
+								}
+								mailSender(verificationEmail);
+								
 								res.send("Novo login e médico criado com sucesso.");
+								
 							}
 							else {
 								res.send("Médico criado com sucesso, mas erro ao criar login");
@@ -185,7 +200,7 @@ router.route('/')
 		}
 	});
 	
-	router.route('/busca/CRM/:crmMedico')
+router.route('/busca/CRM/:crmMedico')
 	.get(function(req, res){
 		
 		var getPatientQuery = {
@@ -207,7 +222,29 @@ router.route('/')
 		});
 	});
 	
-	router.route('/busca/ID/:idMedico')
+router.route('/confirm/:idMedico')
+	.get(function(req, res){
+		
+		var getPatientQuery = {
+			sql: `UPDATE logins SET emailConfirmado=1 WHERE idMedico=${req.params.idMedico}`,
+			timeout: 10000	
+		}
+		connection.query(getPatientQuery, function(err, rows, fields) {
+			if(err == null) {
+				res.json('Parabéns! Sua conta foi confirmada com sucesso!');
+			}
+			else {
+			//Enviar código de erro http
+				res.send('Erro ao realizar a busca na base de dados por CRM');
+			}
+			console.log(err);
+			console.log(rows);
+			//console.log(fields);
+			
+		});
+	});
+	
+router.route('/busca/ID/:idMedico')
 	.get(function(req, res){
 		if (req.params.idMedico < 0) { res.send('Ids de medicos são estritamente positivos.'); }
 		else {
