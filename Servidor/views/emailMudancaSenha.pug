@@ -1,0 +1,9 @@
+html
+	body
+		h2 Mudar Senha
+		p Para mudar sua senha favor preencher o formulario abaixo
+
+		form(action='http://www.julianop.com.br:3000/api/logins/mudarSenha' method='post')
+			input(type='password' name='velhaSenha' placeholder='Senha atual')
+			input(type='text' name='novaSenha' placeholder='Nova senha')
+			input(type='submit' value='Confirmar')

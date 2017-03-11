@@ -28,12 +28,12 @@ var express = require('express'),
 //Função de segurança para Exception handling
 process.on('uncaughtException', function(err){
  	console.log('Caught exception: ' + err);
-	var email = {
-		to: senhas.emailMatheus,
-		subject: 'Alerta de Erro no webapp das Pulseiras Inteligentes',
-		text: `Ocorreu um erro crítico na aplicação:\n\n${err}`
-	}
-	mailSender(email);
+// 	var email = {
+// 		to: senhas.emailMatheus,
+// 		subject: 'Alerta de Erro no webapp das Pulseiras Inteligentes',
+// 		text: `Ocorreu um erro crítico na aplicação:\n\n${err}`
+// 	}
+// 	mailSender(email);
 }); 
 	
 //Setup inicial de conecção com a base de dados 	
@@ -47,13 +47,12 @@ connection.connect();
 
 //setando todas as variáveis de options nos requests http de teste
 setupOptionsVariables(app);
- 
 
-//  request(app.optionsPutTestRequestPulseira, function(err, httpResponse, body) { 
-//  	console.log(err);
-//  	//console.log(httpResponse);
-//  	console.log(body);
-//  });
+// request(app.optionsPutTestRequestLogin, function(err, httpResponse, body) { 
+// 	console.log(err);
+// 	//console.log(httpResponse);
+// // 	console.log(body);
+// });
 
 //Loop e multiplexação das pulseiras em atividade para resgate de parâmetros estáticos
 setInterval(function(){
@@ -76,11 +75,6 @@ setInterval(function() {
 		}
 	});
 }, 60000);
-
-
-
-//info vai conter dados HR de chamada bem sucedida à API fitbit
-var info = {};
 
 //request(optionsGetHR, getHRCallback);
 //getDynamicHealthParams(60, new Date(), 0);
@@ -312,9 +306,13 @@ app.use(function(req, res, next) {
   next();
 });
 
+//Setup da template engine escolhida para renderizar emails e páginas web
+app.set('view engine', 'pug');
+app.set('views','./views');
+
 // ROUTING DO SERVIDOR E API's nativas da aplicação
 app.get('/', function(req, res) {
-	res.json(info);
+	res.render('emailMudancaSenha');//'index');
 });
 
 //Ações para alterar tabela paciente na base de dados, usar módulo local ./router/paciente.js

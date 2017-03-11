@@ -65,12 +65,13 @@ module.exports = function(app) {
 		method:'POST',
 		url:'http://127.0.0.1:3000/api/medico',
 		form:{ 
-			nomeMedico: 'Ney Matogrosso',
-			especialidade: 'Urologista',
-			CRM: 12345624,
-			telefone: 33449369,
-			email: 'email2@gmail.com',
-			senha: '123456'
+			nomeMedico: 'Matheus Clemente',
+			especialidade: 'Gastrointerologista',
+			CRM: 777777777,
+			telefone: 9401900,
+			CPF: 903842093,
+			email: 'matheusbafutto@gmail.com',
+			senha: 'senia'
 		}
 	};
 	
@@ -78,10 +79,8 @@ module.exports = function(app) {
 		method:'PUT',
 		url:'http://127.0.0.1:3000/api/medico',
 		form:{ 
-			nomeMedico: 'Ney Matogrosso',
-			especialidade: 'Urologista',
-			CRM: 133545,
-			telefone: 33449388
+			idMedico: 53,
+			email:'matheusbafutto@gmail.com'
 		}
 	};
 
@@ -158,13 +157,20 @@ module.exports = function(app) {
 		}
 	};
 
-	//Opções de teste de request http para lembretes
+	//Opções de teste de request http para login
 	app.optionsPostTestRequestLogin = {
 		method:'POST',
 		url:'http://127.0.0.1:3000/api/login/',
 		form:{ 
 			email: 'email@gmail.com',
 			senha: '123456'
+		}
+	};
+	app.optionsPutTestRequestLogin = {
+		method:'PUT',
+		url:'http://127.0.0.1:3000/api/login/',
+		form:{ 
+			email: 'matheusbafutto@gmail.com'
 		}
 	};
 

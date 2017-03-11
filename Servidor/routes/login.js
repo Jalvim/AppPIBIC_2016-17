@@ -11,7 +11,9 @@ TO DO:
 
 var senhas = require('../senhas.js');
 var express = require('express');
-var mysql = require('mysql');
+var mysql = require('mysql');	
+var pug = require('pug');
+var mailSender = require('../mailgunWraper.js');
 var router = express.Router();
 
 //Setup inicial de conecção com a base de dados 	
@@ -51,7 +53,64 @@ router.route('/')
 			
 			});
 		} 
+	})
+	.put(function(req, res) {
+		if (req.hasOwnProperty('body') && 
+			req.body.hasOwnProperty('email')){
+			
+			connection.query('SELECT idMedico FROM logins WHERE email=?',[req.body.email], function(err, rows) {
+				console.log(rows);
+				if (rows.length < 1) {
+					return res.send(`O email ${req.body.email} não pertence a nenhuma conta cadastrada.`);
+				}
+				
+				if (rows[0].emailConfirmado != 0) {
+
+					var url = `http://www.julianop.com.br:3000/api/logins/senha/change/${rows[0].idMedico}`;
+
+					var verificationEmail = {
+						to: req.body.email,
+						subject: 'Mudança de Senha',
+						html: `Segue o link para mudança de senha: ${url}`
+					}
+					mailSender(verificationEmail, function(err, body) {
+						console.log(body);
+						console.log(err);
+					});
+				} else {
+					res.send(`Confirme o endereço de email ${req.body.email} para habilitar a mudança de senha.`);
+				}
+				
+			});
+				
+		} else {
+			res.send('Parâmetros inválidos');
+		}
 	});
+	
+router.get('/senha/change/:idMedico', function(req, res) {
+	connection.query('SELECT * FROM logins WHERE idMedico=?',[req.params.idMedico], function(err,rows){
+		if (rows[0].emailConfirmado != 0) {
+			res.render('emailMudancaSenha');
+		} else {
+			res.send('Confirme o email da conta.');
+		}
+	});
+});
+
+router.post('/mudarSenha',function(req,res){
+	connection.query('UPDATE logins SET senha=? WHERE idMedico=?',[req.body.idMedico],function(err){
+		if (err) { return res.send('Erro no armazenamento da nova senha.'); }
+		res.send('Senha alterada com sucesso');
+	});
+});
 
 
 module.exports = router;
+
+
+
+
+
+
+
