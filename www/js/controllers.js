@@ -1107,7 +1107,7 @@ medApp.controllers = {
           document.querySelector('#nuloPulseira').onclick = function() {
           //Método que liga a pulseira ao paciente na base de dados.
 
-            $.ajax({
+            /*$.ajax({
               url: 'http://julianop.com.br:3000/api/pulseira/' + medApp.services.PulseiraAtual,
               type: 'PUT',
               success: function(data) {
@@ -1120,7 +1120,7 @@ medApp.controllers = {
                 disponivel: 0,
                 idPaciente: medApp.services.idAtualPaciente
               }
-            });
+            });*/
 
 
           };
@@ -1132,8 +1132,10 @@ medApp.controllers = {
             document.querySelector("#item" + i).onclick = function() {
               var index = $("div").index(this);
               medApp.services.pulseiraAtual = medApp.services.pulseirasDisponiveis[index];
+              medApp.services.hidePopover(medApp.services.dial);
+              $('#lista-pulseiras').empty();
 
-              $.ajax({
+              /*$.ajax({
                 url: 'http://julianop.com.br:3000/api/pulseira/' + medApp.services.PulseiraAtual,
                 type: 'PUT',
                 success: function(data) {
@@ -1151,7 +1153,7 @@ medApp.controllers = {
               .done(function (){
                 medApp.services.hidePopover(medApp.services.dial);
                 $('#lista-pulseiras').empty();
-              });
+              });*/
               
             };
           }
@@ -1192,7 +1194,7 @@ medApp.controllers = {
 
         };
 
-    };
+      };
 
       document.querySelector('#galeria').onclick = function() {
 
