@@ -402,20 +402,42 @@ medApp.controllers = {
   },
 
 
+
+
  //////////////////////////////////////////////////////////
   //////////////Controlador da adição de grupos//////////////////
   /////////////////////////////////////////////////////////
-  addgrupo: function(page) {
-
+  addgrupo:function(page){
+var idGrupoPac;
   var nome=prompt('Digite o nome do grupo');
 
   if(nome!=''){
 
-  $.post("http://julianop.com.br:3000/api/grupoPacientes",nome);
+  $.post("http://julianop.com.br:3000/api/grupoPacientes",
+  {
+ nome:nome,
+ idMedico:medApp.services.getIdMedico(),
+  })
+.done(function (data){
+console.log(data);
+
+
+});
+
+ $.get("http://julianop.com.br:3000/api/grupoPacientes/buscarGrupo/idMedico/"+medApp.services.getIdMedico())
+ .always(function(data){
+ console.log(data);
+idGrupoPac=data[data.length-1].idGrupoPac;
+console.log(idGrupoPac);
+
+
+
+ });
+
+
+
 
     page.addEventListener('show', function(event) {
-
-       medApp.services.deletePacienteAtual();
        $('#grupo-pacientes').empty();
 
        $.get('http://julianop.com.br:3000/api/paciente/geral/idMedico/' + medApp.services.getIdMedico())
@@ -452,14 +474,20 @@ medApp.controllers = {
             };
           if(grupoPacientes.length!==0){
 
-          for(var i=0;i<grupoPacientes.length;i++){
+for(var i=0;i<grupoPacientes.length;i++){
+          $.post("http://julianop.com.br:3000/api/grupoPacientes/pacientes",
+          {
+          idPaciente:grupoPacientes[i].idPaciente ,
+          idGrupoPac:idGrupoPac
+          })
+          .done(function (data){
 
-          $.post("http://julianop.com.br:3000/api/grupoPacientes/pacientes",grupoPacientes[i].idPaciente);
-
-
-
+          console.log(data);
+          });
             }
             }
+            else
+            alert("Escolha ao menos um paciente!");
             };
 
 
@@ -468,9 +496,11 @@ medApp.controllers = {
 
 
   }
-
-
   },
+
+
+
+
 
 
 
