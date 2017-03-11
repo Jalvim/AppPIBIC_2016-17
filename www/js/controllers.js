@@ -487,8 +487,18 @@ medApp.controllers = {
 
         $.get('http://julianop.com.br:3000/api/paciente/health/static/' + medApp.services.dadosPacienteAtual.idAtualPaciente)
           .done(function(data) {
-            for(var i = 0; i < data.length; i++){
-              medApp.services.dadosEstaticos.calorias[i] = data[i].calories;
+            if(data.length <= 7){
+              for(var i = 0; i < data.length; i++){
+                medApp.services.dadosEstaticos.calorias[i] = data[i].calories;
+              }
+            } else {
+              for(var i = 0; i < 7; i++){
+                medApp.services.dadosEstaticos.calorias[i] = data[((data.length - 7) + i)].calories; 
+              }
+            }
+
+            for(var i = 0; i < 7; i++){
+              medApp.services.semana[i] = medApp.services.getDia(i + 1);
             }
           })
 
@@ -497,7 +507,7 @@ medApp.controllers = {
 
             var chrt1 = document.getElementById("myChart1");
             var data1 = {
-              labels: ["Domingo", "Segunda", "Terça", "Quarta", "Quinta", "Sexta", "Sábado"],
+              labels: medApp.services.semana,
               datasets: [
                 {
                   label: "Calorias perdidas ao longo da semana",
@@ -544,18 +554,24 @@ medApp.controllers = {
         //Request
 
         $.get('http://julianop.com.br:3000/api/paciente/health/static/' + medApp.services.dadosPacienteAtual.idAtualPaciente)
-          .done(function(data) {
+        .done(function(data) {
+          if(data.length <= 7){
             for(var i = 0; i < data.length; i++){
-              medApp.services.dadosEstaticos.passos[i] = data[i].steps;
+              medApp.services.dadosEstaticos.calorias[i] = data[i].calories;
             }
-          })
+          } else {
+            for(var i = 0; i < 7; i++){
+              medApp.services.dadosEstaticos.calorias[i] = data[((data.length - 7) + i)].calories; 
+            }
+          }
+        })
 
           .done(function() {
 
 
             var chrt2 = document.getElementById("myChart2");
             var data2 = {
-              labels: ["Domingo", "Segunda", "Terça", "Quarta", "Quinta", "Sexta", "Sábado"],
+              labels:medApp.services.semana, //["Domingo", "Segunda", "Terça", "Quarta", "Quinta", "Sexta", "Sábado"],
                 datasets: [
                   {
                     label: "Número de passos dados na última semana",
@@ -650,8 +666,14 @@ medApp.controllers = {
         //Request
         $.get('http://julianop.com.br:3000/api/paciente/health/static/' + medApp.services.dadosPacienteAtual.idAtualPaciente)
           .done(function(data) {
-            for(var i = 0; i < data.length; i++){
-              medApp.services.dadosEstaticos.degraus[i] = data[i].steps;
+            if(data.length <= 7){
+              for(var i = 0; i < data.length; i++){
+                medApp.services.dadosEstaticos.calorias[i] = data[i].calories;
+              }
+            } else {
+              for(var i = 0; i < 7; i++){
+                medApp.services.dadosEstaticos.calorias[i] = data[((data.length - 7) + i)].calories; 
+              }
             }
           })
 
@@ -660,7 +682,7 @@ medApp.controllers = {
 
             var chrt4 = document.getElementById("myChart4");
             var data4 = {
-              labels: ["Domingo", "Segunda", "Terça", "Quarta", "Quinta", "Sexta", "Sábado"],
+              labels: medApp.services.semana, //["Domingo", "Segunda", "Terça", "Quarta", "Quinta", "Sexta", "Sábado"],
               datasets: [
                 {
                   label: "Número de degraus subidos na última semana",

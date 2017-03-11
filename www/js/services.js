@@ -446,6 +446,14 @@ medApp.services = {
 
   },
 
+  getDia: function(index){
+    var dia = new Date();
+    dia.setDate(dia.getDate() - index);
+    return dia;
+  },
+
+  semana: new Array,
+
   getToday: function(tipo) {
     
     var hoje = new Date();
