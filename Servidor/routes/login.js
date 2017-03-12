@@ -74,7 +74,7 @@ router.route('/')
 						html: `Segue o link para mudança de senha: ${url}`
 					}
 					mailSender(verificationEmail, function(err, body) {
-						console.log(body);
+						res.send(body);
 						console.log(err);
 					});
 				} else {
