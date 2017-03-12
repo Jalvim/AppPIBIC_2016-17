@@ -2,18 +2,35 @@
 
   <ons-toolbar class="toolbar">
     <div class="center">Criar Grupo</div>
-    <div class="left"><ons-back-button>Voltar</ons-back-button></div>
-    <div class="right" ><ons-button id="terminar">Terminar</ons-button></div>
+    <div class="left"><ons-back-button>Cancelar</ons-back-button></div>
   </ons-toolbar>
 
-    <
+  <div class="lista-container">
 
-        <!-- Lista de Pacientes -->
-        <ons-list modifier="inset" style="padding-top: 10px;" id="grupo-pacientes">
+    <ons-list modifier="inset" style="padding-top: 10px;">
+      <ons-list-header>
+        Nome do Grupo
+      </ons-list-header>
 
-  </ons-page>
+      <ons-list-item modifier="nodivider" disable-auto-styling>
+        <div class="left registro-icone">
+          <ons-icon icon="md-accounts-add" class="list__item__icon"></ons-icon>
+        </div>
+        <div class="center">
+          <ons-input input-id="nome-novo-grupo" class="text-input--underbar registro-input-icon" disable-auto-styling></ons-input>
+        </div>  
+      </ons-list-item>
+    </ons-list>
 
+    <!-- Lista de Pacientes para criação de grupo -->
+    <ons-list modifier="inset" style="padding-top: 10px;" id="novo-grupo-pacientes">
 
-  </ons-list>
+      <ons-list-header>Selecionar integrantes do grupo</ons-list-header>
+      
+    </ons-list>
+
+    <ons-button position="center" class="button-send">Criar</ons-button>
+
+  </div>
   
 </ons-page>

@@ -3,8 +3,8 @@
 
 	.registro-form {
       text-align: center;
-      width: 90%;
-      margin: 20px auto 0;
+      width: 95%;
+      margin: 8px auto 20px;
     }
 
     .registro-input {
@@ -35,6 +35,7 @@
     }  
 
     .registro-image {
+
       height: 120px;
       width: 120px;
       border-radius: 50%;
@@ -46,8 +47,8 @@
 
     .editar-form {
       text-align: center;
-      width: 90%;
-      margin: 40px auto 0;
+      width: 95%;
+      margin: 8px auto 20px;
     }
 
     .editar-image {

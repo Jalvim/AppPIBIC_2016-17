@@ -414,44 +414,65 @@ medApp.controllers = {
 
   },
 
+  //////////////////////////////////////
+  // Controlador da Criação de Grupos //
+  //////////////////////////////////////
+
+  addgrupo: function(page) {
+
+    page.addEventListener('show', function(event) {
+
+      $('#novo-grupo-pacientes').empty();
+
+      // Cria a lista de possíveis integrantes do novo grupo a partir da lista de pacientes do médico atual
+      $.get('http://julianop.com.br:3000/api/paciente/geral/idMedico/' + medApp.services.getIdMedico())
+        .done(function(data) {
+
+          // Preenche a lista de integrantes com os pacientes do médico atual 
+          for (var i = 0, len = data.length; i < len; i++) {
+
+            var pacientesInfo = data[i];
+
+            medApp.services.listAddGroup(
+              {
+                nomePaciente: pacientesInfo.nomePaciente,
+                img: 'http://www.clker.com/cliparts/A/Y/O/m/o/N/placeholder-md.png',
+                idPaciente: pacientesInfo.idPaciente
+              });
+
+          };
+
+      });
+
+    });
+
+      /*
+      $.post("http://julianop.com.br:3000/api/grupoPacientes",
+      {
+     nome:nome,
+     idMedico:medApp.services.getIdMedico(),
+      })
+    .done(function (data){
+    console.log(data);
+
+
+    });
+
+     $.get("http://julianop.com.br:3000/api/grupoPacientes/buscarGrupo/idMedico/"+medApp.services.getIdMedico())
+     .always(function(data){
+     console.log(data);
+    idGrupoPac=data[data.length-1].idGrupoPac;
+    console.log(idGrupoPac);
 
 
 
- //////////////////////////////////////////////////////////
-  //////////////Controlador da adição de grupos//////////////////
-  /////////////////////////////////////////////////////////
-  addgrupo:function(page){
-var idGrupoPac;
-  var nome=prompt('Digite o nome do grupo');
-
-  if(nome!=''){
-
-  $.post("http://julianop.com.br:3000/api/grupoPacientes",
-  {
- nome:nome,
- idMedico:medApp.services.getIdMedico(),
-  })
-.done(function (data){
-console.log(data);
-
-
-});
-
- $.get("http://julianop.com.br:3000/api/grupoPacientes/buscarGrupo/idMedico/"+medApp.services.getIdMedico())
- .always(function(data){
- console.log(data);
-idGrupoPac=data[data.length-1].idGrupoPac;
-console.log(idGrupoPac);
-
-
-
- });
+     });
 
 
 
 
     page.addEventListener('show', function(event) {
-       $('#grupo-pacientes').empty();
+       
 
        $.get('http://julianop.com.br:3000/api/paciente/geral/idMedico/' + medApp.services.getIdMedico())
          .done(function(data) {
@@ -508,15 +529,8 @@ for(var i=0;i<grupoPacientes.length;i++){
        });
 
 
-  }
+  }*/
   },
-
-
-
-
-
-
-
 
   /////////////////////////////////////
   ///Controle dos Gráficos de saúde ///
