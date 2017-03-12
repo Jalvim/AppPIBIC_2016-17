@@ -161,8 +161,8 @@ medApp.controllers = {
       modal.show();
       var pass = $('#senha-cadastro').val();
       var confirm = $('#senha-confirm').val();
-      var email=$('#email-cadastro').val();
-      var CPF=$('#cpf-cadastro').val().toString();
+      var email = $('#email-cadastro').val();
+      var CPF = $('#cpf-cadastro').val().toString();
 
       var inputs = page.getElementsByTagName('input');
 
@@ -466,6 +466,42 @@ medApp.controllers = {
       });
 
     });
+
+    page.querySelector('#criar-grupo').onclick = function() {
+
+      var nomeNovoGrupo = $('#nome-novo-grupo').val();
+
+      if (nomeNovoGrupo === '') {
+
+        ons.notification.alert("Preencha o nome do grupo!");
+
+      } else if (nomeNovoGrupo !== '') {
+        var integrantes = page.querySelectorAll('.checkbox-opt');
+
+        for (var i = 0, len = integrantes.length; i < len; i++) {
+
+          if(integrantes[i].checked == true) {
+
+            console.log(jQuery.data(integrantes[i], 'idPaciente'));
+
+          };
+
+        };
+
+        $.post("http://julianop.com.br:3000/api/grupoPacientes",
+          {
+          nome: nome,
+          })
+        .done(function (data){
+          
+          console.log(data);
+
+        });
+
+      };
+
+    };
+
 
       /*
       $.post("http://julianop.com.br:3000/api/grupoPacientes",

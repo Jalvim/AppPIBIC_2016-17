@@ -498,18 +498,12 @@ medApp.services = {
             data.nomePaciente +
           '</div>' +
           '<div class="right">' +
-            '<ons-input type="checkbox"></ons-input>' +
+            '<ons-input type="checkbox" class="checkbox-opt"></ons-input>' +
           '</div>' +
         '</ons-list-item>'
 
     var groupListItem = template.firstChild;
-    $(groupListItem).data('idPaciente', data.idPaciente);
-
-    groupListItem.onclick = function() {
-
-      alert($(groupListItem).data('idPaciente'));
-      
-    };
+    jQuery.data(groupListItem.querySelector('.checkbox-opt'), 'idPaciente', data.idPaciente);
 
     var novoGrupoLista = document.querySelector('#novo-grupo-pacientes');
     novoGrupoLista.appendChild(groupListItem);
