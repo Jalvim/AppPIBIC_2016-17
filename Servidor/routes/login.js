@@ -99,9 +99,12 @@ router.get('/senha/change/:idMedico', function(req, res) {
 });
 
 router.post('/mudarSenha',function(req,res){
-	connection.query('UPDATE logins SET senha=? WHERE senha=?',[req.body.novaSenha,req.body.velhaSenha],function(err, rows){
+	connection.query('UPDATE logins SET senha=? WHERE senha=? AND email=?',[req.body.novaSenha,req.body.velhaSenha, req.body.email],
+		function(err, rows){
+		
 		if (err) { return res.send('Erro no armazenamento da nova senha.'); }
 		res.send(req.body.velhaSenha +' '+req.body.novaSenha);
+		
 	});
 });
 
