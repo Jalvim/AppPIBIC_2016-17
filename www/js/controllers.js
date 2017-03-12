@@ -307,7 +307,8 @@ medApp.controllers = {
 
   pacientes: function(page) {
 
-    page.addEventListener('show', function(event) {
+    // Função que gera e autaliza a lista de pacientes a partir de dados do sevidor
+    function gerarListaPacientes () {
 
       medApp.services.deletePacienteAtual();
       $('#lista-pacientes').empty();
@@ -333,9 +334,21 @@ medApp.controllers = {
                 medicoResp: pacientesInfo.nome
               });
 
-            };
-          });
+          };
+
       });
+
+    };
+
+    // Gera a lista de pacientes na primeira vez que a página é carregada
+    gerarListaPacientes ();
+
+    // Atualiza a lista de pacientes sempre que a página for mostrada
+    page.addEventListener('show', function(event) {
+
+      gerarListaPacientes();
+
+    });
 
     // Página para adicionar um novo paciente à lista
     page.querySelector('#buscar-pac').onclick = function() {
