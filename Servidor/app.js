@@ -55,26 +55,26 @@ setupOptionsVariables(app);
 // });
 
 //Loop e multiplexação das pulseiras em atividade para resgate de parâmetros estáticos
-setInterval(function(){
-	connection.query('SELECT idPulseira FROM Pulseira_Paciente', function(err,rows) {
-		if (err) console.log(err);
-		for (var i = 0; i < rows.length; i++) {
-			getStaticHealthParams(0, rows[i].idPulseira);
-		}
-	});
-}, 900000);
-
-//Loop e multiplexação das pulseiras em atividade para resgate de parâmetros dinâmicos
-setInterval(function() {
-	var data = new Date(),
-		delay = 30;
-	connection.query('SELECT idPulseira FROM Pulseira_Paciente', function(err,rows) {
-		if (err) console.log(err);
-		for (var i = 0; i < rows.length; i++) {
-			getDynamicHealthParams(rows[i].idPulseira, data, delay);
-		}
-	});
-}, 60000);
+// setInterval(function(){
+// 	connection.query('SELECT idPulseira FROM Pulseira_Paciente', function(err,rows) {
+// 		if (err) console.log(err);
+// 		for (var i = 0; i < rows.length; i++) {
+// 			getStaticHealthParams(0, rows[i].idPulseira);
+// 		}
+// 	});
+// }, 900000);
+// 
+// //Loop e multiplexação das pulseiras em atividade para resgate de parâmetros dinâmicos
+// setInterval(function() {
+// 	var data = new Date(),
+// 		delay = 30;
+// 	connection.query('SELECT idPulseira FROM Pulseira_Paciente', function(err,rows) {
+// 		if (err) console.log(err);
+// 		for (var i = 0; i < rows.length; i++) {
+// 			getDynamicHealthParams(rows[i].idPulseira, data, delay);
+// 		}
+// 	});
+// }, 60000);
 
 //request(optionsGetHR, getHRCallback);
 //getDynamicHealthParams(60, new Date(), 0);
@@ -312,7 +312,7 @@ app.set('views','./views');
 
 // ROUTING DO SERVIDOR E API's nativas da aplicação
 app.get('/', function(req, res) {
-	res.render('emailMudancaSenha');//'index');
+	res.render('index');
 });
 
 //Ações para alterar tabela paciente na base de dados, usar módulo local ./router/paciente.js

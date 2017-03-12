@@ -356,11 +356,6 @@ medApp.controllers = {
 
     // Página para adicionar um novo paciente à lista
     page.querySelector('#buscar-pac').onclick = function() {
-      //get da pulseira indexada ao paciente.
-  	  /*$.get(' ')
-  	  .done(function(data) {
-  	    medApp.services.pulseiraAtual = data;
-  	  });*/
 
       document.querySelector('#pacienteNav').pushPage('html/addpaciente.html');
 
@@ -383,15 +378,24 @@ medApp.controllers = {
       page.querySelector('#causa').innerHTML = medApp.services.dadosPacienteAtual.causa;
       page.querySelector('#hospital').innerHTML = medApp.services.dadosPacienteAtual.hospital;
       
-      if(medApp.services.pulseiraAtual === ''){
+      //get da pulseira indexada ao paciente.
+  	  $.get('url/api/pulseira/idPaciente/' + medApp.services.dadosPacienteAtual.idAtualPaciente)
+  	  .done(function(data) {
 
-      	page.querySelector('#pulseira-pac').innerHTML = 'Sem pulseira';
+  	    medApp.services.pulseiraAtual = data;
+  	    
+  	  })
+      .done(function() {
+        if(medApp.services.pulseiraAtual === ''){
+
+      	  page.querySelector('#pulseira-pac').innerHTML = 'Sem pulseira';
       
-      } else {
+        } else {
       	
-      	page.querySelector('#pulseira-pac').innerHTML = medApp.services.pulseiraAtual;
+      	  page.querySelector('#pulseira-pac').innerHTML = medApp.services.pulseiraAtual;
       
-      }
+        }
+      });
 
     });
 

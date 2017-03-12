@@ -170,6 +170,14 @@ router.get('/disponivel', function(req, res){
 	});
 });
 
+router.get('/idPaciente/:pacienteAtual', function(req, res) {
+	connection.query('SELECT idPulseira FROM  `Pulseira_Paciente` WHERE pacienteAtual =?', [req.params.pacienteAtual], function(err, rows){
+		if (err) { return res.send('Erro ao puxar id de pulseira.'); }
+		res.json(rows);
+	});
+});
+
+
 
 /*
 Novo método para cadastro de pulseiras na aplicação, acessado pela propria fitbit após autorização
