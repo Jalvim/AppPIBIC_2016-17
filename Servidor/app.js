@@ -28,12 +28,12 @@ var express = require('express'),
 //Função de segurança para Exception handling
 process.on('uncaughtException', function(err){
  	console.log('Caught exception: ' + err);
-// 	var email = {
-// 		to: senhas.emailMatheus,
-// 		subject: 'Alerta de Erro no webapp das Pulseiras Inteligentes',
-// 		text: `Ocorreu um erro crítico na aplicação:\n\n${err}`
-// 	}
-// 	mailSender(email);
+	var email = {
+		to: senhas.emailMatheus,
+		subject: 'Alerta de Erro no webapp das Pulseiras Inteligentes',
+		text: `Ocorreu um erro crítico na aplicação:\n\n${err}`
+	}
+	mailSender(email);
 }); 
 	
 //Setup inicial de conecção com a base de dados 	
