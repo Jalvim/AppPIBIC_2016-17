@@ -44,9 +44,9 @@ router.route('/')
 					connection.query(queryRelacao, function(err, response, body) {
 						if(err) {
 							res.send('Erro ao adicionar relação entre medico e grupo.');
-							connection.query(`DELETE FROM GrupoPacientes WHERE idtable1=${rows.insertId}`);
+							connection.query(`DELETE FROM GrupoPacientes WHERE idGrupoPac=${rows.insertId}`);
 						} else {
-							res.send('Grupo adicionado com sucesso.');
+							res.json(rows);
 							console.log(err);
 							console.log(rows);
 							//console.log(fields);

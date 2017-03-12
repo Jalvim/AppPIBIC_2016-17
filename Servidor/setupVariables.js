@@ -179,7 +179,8 @@ module.exports = function(app) {
 		method:'POST',
 		url:'http://127.0.0.1:3000/api/grupoPacientes/',
 		form:{ 
-			nome: 'Terceiro andar, Ala Norte'	
+			nome: 'Terceiro andar, Ala Norte',
+			idMedico: 20	
 		}
 	};
 	app.optionsPutTestRequestGrupoPacientes = {
