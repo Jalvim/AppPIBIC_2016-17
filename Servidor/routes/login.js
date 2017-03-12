@@ -99,7 +99,7 @@ router.get('/senha/change/:idMedico', function(req, res) {
 });
 
 router.post('/mudarSenha',function(req,res){
-	connection.query('UPDATE logins SET senha=? WHERE idMedico=?',[req.body.idMedico],function(err){
+	connection.query('UPDATE logins SET senha=? WHERE senha=?',[req.body.novaSenha,req.body.velhaSenha],function(err){
 		if (err) { return res.send('Erro no armazenamento da nova senha.'); }
 		res.send('Senha alterada com sucesso');
 	});
