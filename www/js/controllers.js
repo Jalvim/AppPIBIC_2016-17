@@ -17,13 +17,17 @@ medApp.controllers = {
       $('#senha-login').attr('type', 'password');
     };
 
-    /*page.querySelector('#esquecer-senha').onclick=function(){
+    page.querySelector('#esquecer-senha').onclick=function(){
 
     var email=prompt("Digite seu e-mail");
 
-    // $.post("url/api/medico",email);
+     $.ajax({
+     url:"http://www.julianop.com.br:3000/api/login/",
+     email:email,
+     type:'PUT'
+     });
 
-    };*/
+    };
 
     // Chama página de cadastro
     page.querySelector('#cadastro-button').onclick = function() {
