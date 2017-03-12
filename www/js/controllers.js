@@ -1691,8 +1691,8 @@ medApp.controllers = {
 
       // Limpa o paciente atual, se retornar do perfil de algum
       medApp.services.deletePacienteAtual();
-
-      $.get('http://julianop.com.br:3000/api/grupoPacientes/buscarGrupo/' + medApp.services.getGrupoAtual())
+      $('#lista-pacientes-grupo').empty();
+      $.get('http://julianop.com.br:3000/api/grupoPacientes/buscarGrupo/paciente/' + medApp.services.getGrupoAtual())
       .done(function(data) {
           
           for (var i = 0, len = data.length; i < len; i++) {
