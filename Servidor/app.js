@@ -324,10 +324,10 @@ app.use('/api/medico', medicoRouter);
 //Ações para alterar tabela Lembrete na base de dados, usar módulo local ./router/lembrete.js
 app.use('/api/lembrete', lembreteRouter);
 
-//Ações para alterar tabela Login na base de dados, usar módulo local ./router/lembrete.js
+//Ações para alterar tabela Login na base de dados, usar módulo local ./router/login.js
 app.use('/api/login', loginRouter);
 
-//Ações para alterar tabela Login na base de dados, usar módulo local ./router/lembrete.js
+//Ações para alterar tabela Login na base de dados, usar módulo local ./router/pulseira.js
 app.use('/api/pulseira', pulseiraRouter);
 
 app.use('/api/grupoPacientes', grupoPacientesRouter);

@@ -66,7 +66,7 @@ router.route('/')
 				
 				if (rows[0].emailConfirmado != 0) {
 
-					var url = `http://www.julianop.com.br:3000/api/logins/senha/change/${rows[0].idMedico}`;
+					var url = `http://julianop.com.br:3000/api/login/senha/change/${rows[0].idMedico}`;
 
 					var verificationEmail = {
 						to: req.body.email,
