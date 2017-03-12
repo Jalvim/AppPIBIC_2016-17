@@ -379,20 +379,21 @@ medApp.controllers = {
       page.querySelector('#hospital').innerHTML = medApp.services.dadosPacienteAtual.hospital;
       
       //get da pulseira indexada ao paciente.
-  	  $.get('url/api/pulseira/idPaciente/' + medApp.services.dadosPacienteAtual.idAtualPaciente)
+  	  $.get('http://julianop.com.br:3000/api/pulseira/idPaciente/' + medApp.services.dadosPacienteAtual.idAtualPaciente)
   	  .done(function(data) {
 
-  	    medApp.services.pulseiraAtual = data;
+  	    medApp.services.pulseiraAtual = data[0];
+        console.log(data);
   	    
   	  })
-      .done(function() {
-        if(medApp.services.pulseiraAtual === ''){
+      .done(function(data) {
+        if(data.length == 0){
 
       	  page.querySelector('#pulseira-pac').innerHTML = 'Sem pulseira';
       
         } else {
       	
-      	  page.querySelector('#pulseira-pac').innerHTML = medApp.services.pulseiraAtual;
+      	  page.querySelector('#pulseira-pac').innerHTML = medApp.services.pulseiraAtual.idPulseira;
       
         }
       });
@@ -629,9 +630,9 @@ for(var i=0;i<grupoPacientes.length;i++){
               }
             }
 
-            for(var i = 0; i < 7; i++){
+            /*for(var i = 0; i < 7; i++){
               medApp.services.semana[i] = medApp.services.getDia(i + 1);
-            }
+            }*/
           })
 
           .done(function() {
