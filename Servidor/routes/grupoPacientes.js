@@ -326,7 +326,7 @@ router.route('/medicos/')
 		//Primeiramente, o id do Médico é buscado na tabela de GrupoPac_Medicos para obter os seus grupos de pacientes
 		if (req.params.hasOwnProperty('idMedico')) {
 			var getMedicoQuery = {
-			sql: `SELECT GP.*, M.nome  FROM GrupoPac_Medico GM, GrupoPacientes GP, Medico M WHERE GM.idMedico = ${connection.escape(req.params.idMedico)} AND GM.idGrupoPac = GP.idGrupoPac AND GM.idMedico=M.idMedico`,
+			sql: `SELECT GP.idGrupoPac idGrupoPac, GP.nome nomeGrupo, M.nome MedicoResp FROM GrupoPac_Medico GM, GrupoPacientes GP, Medico M WHERE GM.idMedico = ${connection.escape(req.params.idMedico)} AND GM.idGrupoPac = GP.idGrupoPac AND GM.idMedico=M.idMedico`,
 			timeout: 10000	
 		}
 		
