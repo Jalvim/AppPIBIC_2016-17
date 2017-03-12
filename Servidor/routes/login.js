@@ -74,9 +74,9 @@ router.route('/')
 						html: `Segue o link para mudança de senha: ${url}`
 					}
 					mailSender(verificationEmail, function(err, body) {
-						console.log(body);
 						if(err){ return res.send('Erro ao enviar email'); }
 						res.send('O email solicitado entrou na fila e chegará em breve.');
+						console.log(body);
 					});
 				} else {
 					res.send(`Confirme o endereço de email ${req.body.email} para habilitar a mudança de senha.`);
@@ -89,8 +89,18 @@ router.route('/')
 		}
 	});
 	
-router.get('/senha/change/:idMedico', function(req, res) {
+router.get('/senha/change/id/:idMedico', function(req, res) {
 	connection.query('SELECT * FROM logins WHERE idMedico=?',[req.params.idMedico], function(err,rows){
+		if (rows[0].emailConfirmado != 0) {
+			res.render('emailMudancaSenha');
+		} else {
+			res.send('Confirme o email da conta.');
+		}
+	});
+});
+
+router.get('/senha/change/email/:email', function(req, res) {
+	connection.query('SELECT * FROM logins WHERE email=?',[req.params.email], function(err,rows){
 		if (rows[0].emailConfirmado != 0) {
 			res.render('emailMudancaSenha');
 		} else {
