@@ -426,8 +426,6 @@ medApp.controllers = {
 
     page.addEventListener('show', function(event) {
 
-      $('#novo-grupo-pacientes').empty();
-
       // Cria a lista de possíveis integrantes do novo grupo a partir da lista de pacientes do médico atual
       $.get('http://julianop.com.br:3000/api/paciente/geral/idMedico/' + medApp.services.getIdMedico())
         .done(function(data) {
