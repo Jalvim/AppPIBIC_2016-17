@@ -226,7 +226,7 @@ medApp.services = {
   },
 
    //recria a pagina de paciente, sem poder entrar no perfil dos pacientes e com um checkbox do lado
-   gpac1:function (data,i){
+   gpac1:function (data,i) {
 
 
       var dataPacienteFormatoBarra = data.dataPaciente.substring(8,10) + '/' +
@@ -446,10 +446,12 @@ medApp.services = {
 
   },
 
-  getDia: function(index){
+  getDia: function(index) {
+
     var dia = new Date();
     dia.setDate(dia.getDate() - index);
     return dia;
+
   },
 
   semana: new Array,
@@ -480,6 +482,31 @@ medApp.services = {
       return hoje;
 
     };
+
+  },
+
+  listAddGroup: function(data) {
+    
+    // Template de paciente na lista de adicionar novo grupo
+    var template = document.createElement('div');
+    template.innerHTML =
+      '<ons-list-item>' + 
+        '<div class="left">' +
+          '<img class="list__item__thumbnail" src="' + data.img + '"' +
+        '</div>' +
+        '<div class="center">' +
+          data.nomePaciente
+        '</div>' +
+        '<div class="right">' + 
+          '<ons-input type="checkbox" input-id="check-1"></ons-input>' +
+        '</div>' +
+      '</ons-list-item>';
+
+    var groupListItem = template.firstChild;
+    $(groupListItem).data('idPaciente', data.idPaciente);
+
+    var novoGrupoLista = document.querySelector('#novo-grupo-pacientes');
+    novoGrupoLista.appendChild(pacienteItem);
 
   }
 
