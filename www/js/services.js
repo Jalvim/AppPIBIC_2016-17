@@ -454,7 +454,7 @@ medApp.services = {
 
   },
 
-  semana: new Array,
+  idPacVec: new Array,
 
   getToday: function(tipo) {
     

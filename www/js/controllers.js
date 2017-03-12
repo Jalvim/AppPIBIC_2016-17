@@ -564,7 +564,7 @@ for(var i=0;i<grupoPacientes.length;i++){
 
             var chrt1 = document.getElementById("myChart1");
             var data1 = {
-              labels: medApp.services.semana,
+              labels: ["Dia 1", "Dia 2", "Dia 3", "Dia 4", "Dia 5", "Dia 6", "Dia 7"], //medApp.services.semana,
               datasets: [
                 {
                   label: "Calorias perdidas ao longo da semana",
@@ -628,7 +628,7 @@ for(var i=0;i<grupoPacientes.length;i++){
 
             var chrt2 = document.getElementById("myChart2");
             var data2 = {
-              labels:medApp.services.semana, //["Domingo", "Segunda", "Terça", "Quarta", "Quinta", "Sexta", "Sábado"],
+              labels: ["Dia 1", "Dia 2", "Dia 3", "Dia 4", "Dia 5", "Dia 6", "Dia 7"], //medApp.services.semana, //["Domingo", "Segunda", "Terça", "Quarta", "Quinta", "Sexta", "Sábado"],
                 datasets: [
                   {
                     label: "Número de passos dados na última semana",
@@ -739,7 +739,7 @@ for(var i=0;i<grupoPacientes.length;i++){
 
             var chrt4 = document.getElementById("myChart4");
             var data4 = {
-              labels: medApp.services.semana, //["Domingo", "Segunda", "Terça", "Quarta", "Quinta", "Sexta", "Sábado"],
+              labels: ["Dia 1", "Dia 2", "Dia 3", "Dia 4", "Dia 5", "Dia 6", "Dia 7"], //medApp.services.semana, //["Domingo", "Segunda", "Terça", "Quarta", "Quinta", "Sexta", "Sábado"],
               datasets: [
                 {
                   label: "Número de degraus subidos na última semana",
@@ -1184,23 +1184,11 @@ for(var i=0;i<grupoPacientes.length;i++){
           medApp.services.showPopover(medApp.services.dial);
 
           document.querySelector('#nuloPulseira').onclick = function() {
-          //Método que liga a pulseira ao paciente na base de dados.
+            medApp.services.pulseiraAtual = -4;
 
-            /*$.ajax({
-              url: 'http://julianop.com.br:3000/api/pulseira/' + medApp.services.PulseiraAtual,
-              type: 'PUT',
-              success: function(data) {
-                ons.notification.alert("Pulseira Nula selecionada!");
-              },
-              error: function() {
-                ons.notification.alert("Não Cadastrado.");
-              },
-              data: {
-                disponivel: 0,
-                idPaciente: medApp.services.idAtualPaciente
-              }
-            });*/
+            medApp.services.hidePopover(medApp.services.dial);
 
+            ons.notification.alert('Pulseira Nula selecionada.');
 
           };
 
@@ -1210,8 +1198,9 @@ for(var i=0;i<grupoPacientes.length;i++){
 
             document.querySelector("#item" + i).onclick = function() {
               var index = $("div").index(this);
-              medApp.services.pulseiraAtual = medApp.services.pulseirasDisponiveis[index];
-              medApp.services.hidePopover(medApp.services.dial);
+              medApp.services.pulseiraAtual = medApp.services.pulseirasDisponiveis[(index - 1)];
+              medApp.services.hidePopover(medApp.services.dial)
+
               $('#lista-pulseiras').empty();
 
               /*$.ajax({
@@ -1296,7 +1285,7 @@ for(var i=0;i<grupoPacientes.length;i++){
           //Error CallBack
           function FailCallback (message) {
 
-            alert ('Erro!!!: ' + message);
+            ons.notification.alert ('Erro!!!: ' + message);
 
           };
 
@@ -1336,11 +1325,71 @@ for(var i=0;i<grupoPacientes.length;i++){
           idMedico: medApp.services.getIdMedico(),
           idPulseira: 50
         })
+        .done(function(data) {
+          modal.hide();
+          ons.notification.alert(data);
+          document.querySelector('#pacienteNav').popPage();
+        })
+        .done(function(){
+          //Inserir aqui o PUT da indexação de pulseiras.
+
+          $.get('http://julianop.com.br:3000/api/paciente/geral/idMedico/' + medApp.services.getIdMedico())
           .done(function(data) {
-            modal.hide();
-            ons.notification.alert(data);
-            document.querySelector('#pacienteNav').popPage();
+
+            for(var i = 0; i < data.length; i++){
+              medApp.services.idPacVec[i] = data[i].idPaciente;
+            }
+
+          })
+          .done(function() {
+            var id = Math.max.apply(null, medApp.services.idPacVec);
+
+            if(medApp.services.pulseiraAtual === -4){
+
+              //Insere na base de dados a pulseira nula.
+              $.ajax({
+                url: 'http://julianop.com.br:3000/api/pulseira/' + medApp.services.PulseiraAtual,
+                type: 'PUT',
+                success: function(data) {
+                  ons.notification.alert("Pulseira Nula selecionada!");
+                },
+                error: function() {
+                  ons.notification.alert("Não Cadastrado.");
+                },
+                data: {
+                  disponivel: 0,
+                  idPaciente: id
+                }
+              })
+              .done(function() {
+                console.log('Pulseira nula add');
+              });
+
+            } else {
+
+              $.ajax({
+                url: 'http://julianop.com.br:3000/api/pulseira/' + medApp.services.PulseiraAtual,
+                type: 'PUT',
+                success: function(data) {
+                  ons.notification.alert("Pulseira Nula selecionada!");
+                },
+                error: function() {
+                  ons.notification.alert("Não Cadastrado.");
+                },
+                data: {
+                  disponivel: 1,
+                  idPaciente: id
+                }
+              })
+              .done(function() {
+                console.log(id + ' add');
+              });
+
+            }
+
           });
+
+        });
 
       };
 
