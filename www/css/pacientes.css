@@ -1,7 +1,8 @@
 @media screen and (orientation: portrait){
   /*Portrait orientation design*/
   .paciente-lista {
-
+    margin-bottom: 7px;
+    border-radius: 5px;
   }
   
   .paciente-header { 
@@ -12,20 +13,18 @@
 
   .alerta {
 	 background-color: #EF5350; 
-	 margin-bottom: 7px;
-	 border-radius: 5px;
   }
 
   .ativo {
 	 background-color: #8BC34A; 
-	 margin-bottom: 7px;
-	 border-radius: 5px;
   }
 
   .inativo {
 	 background-color: #607D8B;
-	 margin-bottom: 7px; 
-	 border-radius: 5px;
+  }
+
+  .grupo {
+    background-color: #FFEB3B;
   }
 
   .paciente-detalhes {
@@ -33,7 +32,6 @@
   }
 
   .paciente-img {
-
 
   }
 

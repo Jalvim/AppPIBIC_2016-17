@@ -94,7 +94,7 @@ medApp.controllers = {
 
       medApp.services.dial = document.getElementById('fotosource').id;
 
-      medApp.services.showPopover(medApp.services.dial)
+      medApp.services.showPopover(medApp.services.dial);
 
       document.querySelector('#camera-add').onclick = function() {
 
@@ -469,20 +469,27 @@ medApp.controllers = {
 
     page.querySelector('#criar-grupo').onclick = function() {
 
+      var modal = page.querySelector('ons-modal');
+      modal.show();
+
       var nomeNovoGrupo = $('#nome-novo-grupo').val();
+      // Array com os ids dos pacientes que entrarão no novo grupo 
+      var pacientesNovoGrupo = [];
 
       if (nomeNovoGrupo === '') {
 
         ons.notification.alert("Preencha o nome do grupo!");
 
       } else if (nomeNovoGrupo !== '') {
+
         var integrantes = page.querySelectorAll('.checkbox-opt');
 
         for (var i = 0, len = integrantes.length; i < len; i++) {
 
+          // Verifica os checkboxes de cada paciente e adiciona seus ids ao pacientesNovoGrupo 
           if(integrantes[i].checked == true) {
 
-            console.log(jQuery.data(integrantes[i], 'idPaciente'));
+            pacientesNovoGrupo.push(jQuery.data(integrantes[i], 'idPaciente'));
 
           };
 
@@ -490,11 +497,22 @@ medApp.controllers = {
 
         $.post("http://julianop.com.br:3000/api/grupoPacientes",
           {
-          nome: nome,
+          nome: nomeNovoGrupo,
+          idMedico:medApp.services.getIdMedico(),
           })
         .done(function (data){
           
           console.log(data);
+          if (pacientesNovoGrupo.length == 1) {
+
+          } else if (pacientesNovoGrupo.length > 1) {
+
+          } else if (pacientesNovoGrupo.length == 0) {
+
+            modal.hide();
+            document.querySelector('#pacienteNav').popPage();
+
+          };
 
         });
 
@@ -1274,7 +1292,7 @@ for(var i=0;i<grupoPacientes.length;i++){
 
       medApp.services.dial = document.getElementById('fotosource').id;
 
-      medApp.services.showPopover(medApp.services.dial)
+      medApp.services.showPopover(medApp.services.dial);
 
       document.querySelector('#camera-add').onclick = function() {
 
@@ -1656,7 +1674,7 @@ for(var i=0;i<grupoPacientes.length;i++){
             .done(function(data) {
 
               console.log(data);
-              document.querySelector('#loginNav').resetToPage( 'html/pacientes.html', {options: {animation: 'fade'}});
+              document.querySelector('#pacienteNav').resetToPage('html/pacientes.html', {options: {animation: 'fade'}});
 
               $.ajax({
                 url: 'http://julianop.com.br:3000/api/pulseira/' + medApp.services.PulseiraAtual,
@@ -1692,12 +1710,44 @@ for(var i=0;i<grupoPacientes.length;i++){
 
   grupos: function(page) {
 
+    page.addEventListener('show', function(event) {
+
+      // Limpa e popula a lista de grupos
+      $('#lista-grupos').empty();
+      medApp.services.listGroups({ nomeGrupo: 'Teste',
+                                    tamanhoGrupo: 4,
+                                    medicoResp: 'Roberto Carlos'})
+
+    });
+
     // Página para criar um novo grupo de pacientes
     page.querySelector('#add-grupo').onclick = function() {
 
       document.querySelector('#pacienteNav').pushPage('html/addgrupo.html');
 
     };
+
+  },
+
+  /////////////////////////////////////////
+  // Controlador de Ver Membros do Grupo //
+  /////////////////////////////////////////
+
+  vergrupo: function(page) {
+
+    page.addEventListener('show', function(event) {
+
+      // Limpa o paciente atual, se retornar do perfil de algum
+      medApp.services.deletePacienteAtual();
+
+    });
+
+    page.querySelector('#grupo-edit').onclick = function() {
+
+      document.querySelector('#pacienteNav').pushPage('html/editargrupo.html');
+
+    };
+
 
   }
 

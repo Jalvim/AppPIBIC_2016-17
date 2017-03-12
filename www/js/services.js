@@ -502,11 +502,67 @@ medApp.services = {
           '</div>' +
         '</ons-list-item>'
 
-    var groupListItem = template.firstChild;
-    jQuery.data(groupListItem.querySelector('.checkbox-opt'), 'idPaciente', data.idPaciente);
+    var pacienteGroupListItem = template.firstChild;
+    jQuery.data(pacienteGroupListItem.querySelector('.checkbox-opt'), 'idPaciente', data.idPaciente);
 
     var novoGrupoLista = document.querySelector('#novo-grupo-pacientes');
-    novoGrupoLista.appendChild(groupListItem);
+    novoGrupoLista.appendChild(pacienteGroupListItem);
+
+  },
+
+  listGroups: function(data) {
+    
+    // Template de cada grupo linkado ao médico atual
+    var template = document.createElement('div');
+    template.innerHTML = 
+      '<ons-list-item class="paciente-lista grupo" modifier="longdivider" tappable>' +
+        '<div class="center">' +
+          '<ons-row class="paciente-header">' +
+            '<span class="list__item__title">' + data.nomeGrupo + '</span>' +
+          '</ons-row>' +
+          '<ons-row>' +
+            '<ons-col class="paciente-detalhes">' +
+              '<ons-icon icon="md-accounts" class="list__item__icon"></ons-icon>' +
+              '<span class="list__item__title">' + data.tamanhoGrupo + '</span>' +
+            '</ons-col>' +
+            '<ons-col class="paciente-detalhes">' +
+              '<ons-icon icon="user-md" class="list__item__icon"></ons-icon>' +
+              '<span class="list__item__subtitle">' + data.medicoResp + '</span>' +
+            '</ons-col>' +
+          '</ons-row>' +
+        '</div>' +
+        '<div class="right">' +
+          '<ons-icon icon="md-delete" class="list__item__icon delete"></ons-icon>' +
+        '</div>' +
+      '</ons-list-item>';
+
+    var groupListItem = template.firstChild;
+    var grupoLista = document.querySelector('#lista-grupos');
+
+    // Funcionalidade de ver grupo
+    groupListItem.querySelector('.center').onclick = function() {
+
+      document.querySelector('#pacienteNav').pushPage('html/vergrupo.html');
+
+    };
+
+    // Funcionalidade de excluír grupo 
+    groupListItem.querySelector('.right').onclick = function() {
+        
+      ons.notification.confirm({message: 'Tem certeza?'})
+      .then( function(confirm){
+
+        if(confirm) {
+         
+         grupoLista.removeChild(groupListItem);
+
+        };
+
+      });
+        
+    };
+
+    grupoLista.appendChild(groupListItem);
 
   }
 
