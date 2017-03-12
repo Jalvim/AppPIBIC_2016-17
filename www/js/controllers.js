@@ -336,7 +336,7 @@ medApp.controllers = {
                 hospital: pacientesInfo.telefone,
                 idPaciente: pacientesInfo.idPaciente,
                 medicoResp: pacientesInfo.nome
-              });
+              }, 'pacientes');
 
           };
 
@@ -506,7 +506,31 @@ medApp.controllers = {
           console.log(data);
           if (pacientesNovoGrupo.length == 1) {
 
+            $.post("http://julianop.com.br:3000/api/grupoPacientes/pacientes",
+              {
+              idPaciente: pacientesNovoGrupo[0],
+              idGrupoPac: data.insertId,
+              })
+            .done(function (resp){
+              console.log(resp);
+              modal.hide();
+              document.querySelector('#pacienteNav').popPage();
+
+            });
+
           } else if (pacientesNovoGrupo.length > 1) {
+
+            $.post("http://julianop.com.br:3000/api/grupoPacientes/pacientes/multiplos",
+              {
+              idPaciente: pacientesNovoGrupo,
+              idGrupoPac: data.insertId,
+              })
+            .done(function (resp){
+              console.log(resp);
+              modal.hide();
+              document.querySelector('#pacienteNav').popPage();
+              
+            });
 
           } else if (pacientesNovoGrupo.length == 0) {
 
@@ -521,91 +545,6 @@ medApp.controllers = {
 
     };
 
-
-      /*
-      $.post("http://julianop.com.br:3000/api/grupoPacientes",
-      {
-     nome:nome,
-     idMedico:medApp.services.getIdMedico(),
-      })
-    .done(function (data){
-    console.log(data);
-
-
-    });
-
-     $.get("http://julianop.com.br:3000/api/grupoPacientes/buscarGrupo/idMedico/"+medApp.services.getIdMedico())
-     .always(function(data){
-     console.log(data);
-    idGrupoPac=data[data.length-1].idGrupoPac;
-    console.log(idGrupoPac);
-
-
-
-     });
-
-
-
-
-    page.addEventListener('show', function(event) {
-       
-
-       $.get('http://julianop.com.br:3000/api/paciente/geral/idMedico/' + medApp.services.getIdMedico())
-         .done(function(data) {
-
-           for (var i = 0, len = data.length; i < len; i++) {
-
-             var pacientesInfo = data[i];
-
-             medApp.services.gpac1(
-               {
-                 statusPaciente: (pacientesInfo.ativo == 1) ? 'ativo' : 'inativo',
-                 img: 'http://www.clker.com/cliparts/A/Y/O/m/o/N/placeholder-md.png',
-                 nomePaciente: pacientesInfo.nomePaciente,
-                 batimentos: '--',
-                 dataPaciente: pacientesInfo.dataDeNascimento,
-                 causaPaciente: pacientesInfo.causaDaInternacao,
-                 medicoResp: pacientesInfo.numeroDoProntuario,
-                 hospital: pacientesInfo.telefone,
-                 idPaciente: pacientesInfo.idPaciente,
-                 medicoResp: pacientesInfo.nome
-               },i);
-
-             };
-
-             document.querySelector('#terminar').onclick=function(){
-             var grupoPacientes =[];
-             var inputs=page.getElementsByTagName('input');
-             for(var i=0;i<len;i++){
-
-            if(inputs[i].checked===true){
-            grupoPacientes.push(data[i]);
-            }
-            };
-          if(grupoPacientes.length!==0){
-
-for(var i=0;i<grupoPacientes.length;i++){
-          $.post("http://julianop.com.br:3000/api/grupoPacientes/pacientes",
-          {
-          idPaciente:grupoPacientes[i].idPaciente ,
-          idGrupoPac:idGrupoPac
-          })
-          .done(function (data){
-
-          console.log(data);
-          });
-            }
-            }
-            else
-            alert("Escolha ao menos um paciente!");
-            };
-
-
-           });
-       });
-
-
-  }*/
   },
 
   /////////////////////////////////////
@@ -1713,11 +1652,23 @@ for(var i=0;i<grupoPacientes.length;i++){
 
     page.addEventListener('show', function(event) {
 
+      // Limpa o grupo atual selecionado
+      medApp.services.deleteGrupoAtual();
       // Limpa e popula a lista de grupos
       $('#lista-grupos').empty();
-      medApp.services.listGroups({ nomeGrupo: 'Teste',
-                                    tamanhoGrupo: 4,
-                                    medicoResp: 'Roberto Carlos'})
+
+      $.get('http://julianop.com.br:3000/api/grupoPacientes/buscarGrupo/idMedico/' + medApp.services.getIdMedico())
+      .done(function(data) {
+
+          for (var i = 0, len = data.length; i < len; i++) {
+
+            medApp.services.listGroups({ nomeGrupo: data[i].nomeGrupo,
+                                         medicoResp: data[i].MedicoResp,
+                                         idGrupoPac: data[i].idGrupoPac})
+
+          };
+
+        });
 
     });
 
@@ -1740,6 +1691,31 @@ for(var i=0;i<grupoPacientes.length;i++){
 
       // Limpa o paciente atual, se retornar do perfil de algum
       medApp.services.deletePacienteAtual();
+
+      $.get('http://julianop.com.br:3000/api/grupoPacientes/buscarGrupo/' + medApp.services.getGrupoAtual())
+      .done(function(data) {
+          
+          for (var i = 0, len = data.length; i < len; i++) {
+
+            var pacientesInfo = data[i];
+
+            medApp.services.createPaciente(
+              {
+                statusPaciente: (pacientesInfo.ativo == 1) ? 'ativo' : 'inativo',
+                img: 'http://www.clker.com/cliparts/A/Y/O/m/o/N/placeholder-md.png',
+                nomePaciente: pacientesInfo.nomePaciente,
+                batimentos: '--',
+                dataPaciente: pacientesInfo.dataDeNascimento,
+                causaPaciente: pacientesInfo.causaDaInternacao,
+                medicoResp: pacientesInfo.numeroDoProntuario,
+                hospital: pacientesInfo.telefone,
+                idPaciente: pacientesInfo.idPaciente,
+                medicoResp: pacientesInfo.nome
+              }, 'grupo');
+
+          };
+
+        });
 
     });
 
