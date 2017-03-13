@@ -114,7 +114,8 @@ router.post('/mudarSenha',function(req,res){
 		function(err, rows){
 		
 		if (err) { return res.send('Erro no armazenamento da nova senha.'); }
-		res.send('Senha mudada com sucesso');
+		
+		res.send('Operação efetuada, caso as informações previas de email e senha estejam corretas a senha foi modificada.');
 		
 	});
 });
