@@ -110,11 +110,11 @@ router.get('/senha/change/email/:email', function(req, res) {
 });
 
 router.post('/mudarSenha',function(req,res){
-	connection.query('UPDATE logins SET senha=? WHERE senha=? AND email=?',[req.body.novaSenha,req.body.velhaSenha, req.body.email],
+	connection.query('UPDATE logins SET senha=? WHERE email=?',[req.body.novaSenha, req.body.email],
 		function(err, rows){
 		
 		if (err) { return res.send('Erro no armazenamento da nova senha.'); }
-		res.send('Senha mudada com sucesso');//req.body.velhaSenha +' '+req.body.novaSenha);
+		res.send('Senha mudada com sucesso');
 		
 	});
 });

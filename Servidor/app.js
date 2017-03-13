@@ -51,7 +51,7 @@ setupOptionsVariables(app);
 // request(app.optionsPutTestRequestLogin, function(err, httpResponse, body) { 
 // 	console.log(err);
 // 	//console.log(httpResponse);
-// // 	console.log(body);
+// 	console.log(body);
 // });
 
 //Loop e multiplexação das pulseiras em atividade para resgate de parâmetros estáticos
