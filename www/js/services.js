@@ -148,7 +148,7 @@ medApp.services = {
     // Template de novo paciente
     var template = document.createElement('div');
     template.innerHTML =
-      '<ons-list-item class="paciente-lista ' + data.statusPaciente + '" modifier="longdivider" id="pac2" tappable>' +
+      '<ons-list-item class="paciente-lista ' + data.statusPaciente + '" modifier="longdivider" tappable>' +
         '<div class="left">' +
           '<img class="list__item__thumbnail" src="'+ data.img + '">' +
         '</div>' +
@@ -157,10 +157,12 @@ medApp.services = {
             '<ons-col>' +
               '<span class="list__item__title nome">' + data.nomePaciente + '</span>' +
             '</ons-col>' +
+            /* TODO: Adicionar os dados dinâmicos de batimentos cardíacos
             '<ons-col>' +
               '<ons-icon icon="heartbeat" class="list__item__icon"></ons-icon>' + 
               '<span class="list__item__title">' + data.batimentos + ' bpm</span>' +
             '</ons-col>' +
+            */
           '</ons-row>' +
           '<ons-row>' +
             '<ons-col class="paciente-detalhes">' +
@@ -409,7 +411,7 @@ medApp.services = {
            },
            error: function(data) {
              console.log(data);
-           },
+            },
            data: {
              idPulseira: medApp.services.pulseiraAtual.idPulseira,
              disponivel: 1,
@@ -440,7 +442,7 @@ medApp.services = {
         },
         data: {
           idPulseira: medApp.services.pulseiraAtual,
-          disponivel: 1,
+          disponivel: 0,
           idPaciente: medApp.services.getIdPaciente()
         }
       });
@@ -452,7 +454,7 @@ medApp.services = {
   showPulseirasDisponiveis2: function(index) {
     var template = document.createElement('div');
 
-    template.innerHTML = '<ons-list-item modifier="nodivider"> <div> Pulseira de id '
+    template.innerHTML = '<ons-list-item modifier="nodivider"> <div> Pulseira #'
       + medApp.services.pulseirasDisponiveis[index] + '</div> </ons-list-item>';
     
     var pulseiraItem = template.firstChild;

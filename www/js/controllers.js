@@ -17,14 +17,30 @@ medApp.controllers = {
       $('#senha-login').attr('type', 'password');
     };
 
-    page.querySelector('#esquecer-senha').onclick=function(){
+    page.querySelector('#esquecer-senha').onclick = function(e) {
+      
+      ons.notification.prompt({
+        message:"Digite seu e-mail",
+        callback:function(email){
+          window.open("http://www.julianop.com.br:3000/api/login/senha/change/email/" + email);
+      /*
+          e.preventDefault();
+    
+          $.ajax({
+          url:'http://www.julianop.com.br:3000/api/login/',
+            type:'PUT',
+            data:{
+              email:email
+            },
+            jsonp:true,
+            complete:function(info){
 
-      var email=prompt("Digite seu e-mail");
+              console.log(JSON.stringify(info));
 
-      $.ajax({
-        url:"http://www.julianop.com.br:3000/api/login/",
-        email:email,
-        type:'PUT'
+            }
+          });
+     */
+        }
       });
 
     };
@@ -155,8 +171,6 @@ medApp.controllers = {
     // Registra novo médico caso as senhas sejam válidas
     page.querySelector('#cadastrar-med').onclick = function() {
 
-      console.log(imageData);
-
       var modal = page.querySelector('ons-modal');
       modal.show();
       var pass = $('#senha-cadastro').val();
@@ -212,7 +226,7 @@ medApp.controllers = {
           telefone: $('#telefone-cadastro').val(),
           email: $('#email-cadastro').val(),
           senha: $('#senha-cadastro').val() ,
-          picture:$('picture').src
+          picture: $('picture').src
         })
           .done(function(data) {
             modal.hide();
@@ -345,7 +359,7 @@ medApp.controllers = {
     };
 
     // Gera a lista de pacientes na primeira vez que a página é carregada
-    gerarListaPacientes ();
+    //gerarListaPacientes ();
 
     // Atualiza a lista de pacientes sempre que a página for mostrada
     page.addEventListener('show', function(event) {
@@ -1192,6 +1206,19 @@ medApp.controllers = {
 
   addpaciente: function(page) {
 
+    // Preencher o nome do Médico Responsável para o médico atual (não-editável)
+    page.addEventListener('show', function(event) {
+
+      $.get('http://julianop.com.br:3000/api/medico/busca/ID/' + medApp.services.getIdMedico())
+      .done(function(data) {
+
+        $('#med-novo-pac').val(data[0].nome);
+
+      });
+      
+
+    });
+
     // Função de adiquirir imagem de perfil
     page.querySelector('.add-foto').onclick = function snapPicture () {
 
@@ -1546,7 +1573,21 @@ medApp.controllers = {
 
             ons.notification.alert("Pulseira Nula selecionada.");
 
-            medApp.services.pulseiraAtual = [];
+            $.ajax({
+              url: 'http://julianop.com.br:3000/api/pulseira',
+              type: 'PUT',
+              success: function(data) {
+                console.log(data);
+              },
+              error: function(data) {
+                console.log(data);
+              },
+              data: {
+                idPulseira: medApp.services.pulseiraAtual.idPulseira,
+                disponivel: 1,
+                idPaciente: medApp.services.getIdPaciente()
+              }
+            });
 
             //Esvazia a lista de pulseiras
             $('#lista-pulseiras').empty();
@@ -1569,6 +1610,9 @@ medApp.controllers = {
 
           if(confirm) {
 
+            var modal = page.querySelector('ons-modal');
+            modal.show();
+
             $.ajax({
               url: 'http://julianop.com.br:3000/api/paciente/geral',
               type: 'PUT',
@@ -1580,12 +1624,16 @@ medApp.controllers = {
             .done(function(data) {
 
               console.log(data);
-              document.querySelector('#pacienteNav').resetToPage('html/pacientes.html', {options: {animation: 'fade'}});
 
             })
             .fail(function() {
               ons.notification.alert("Não foi possível dispensar o paciente");
             });
+
+            setTimeout(function(){ 
+              modal.hide();
+              document.querySelector('#pacienteNav').resetToPage('html/pacientes.html', {options: {animation: 'fade'}});
+              }, 1000);
             
           };
 
