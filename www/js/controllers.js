@@ -176,7 +176,7 @@ medApp.controllers = {
       var pass = $('#senha-cadastro').val();
       var confirm = $('#senha-confirm').val();
       var email = $('#email-cadastro').val();
-      var CPF = $('#cpf-cadastro').val().toString();
+      var CPF = $('#cpf-cadastro').cleanVal();
 
       var inputs = page.getElementsByTagName('input');
 
@@ -198,7 +198,7 @@ medApp.controllers = {
       }
 
       //confere o CPF
-      else if(CPF.length<11){
+      else if(CPF.length < 11){
 
         modal.hide();
         ons.notification.alert("CPF inválido");
@@ -220,7 +220,7 @@ medApp.controllers = {
         $.post('http://julianop.com.br:3000/api/medico/',
         {
           nomeMedico: $('#nome-cadastro').val(),
-          CPF: $('#cpf-cadastro').val(),
+          CPF: $('#cpf-cadastro').cleanVal(),
           especialidade: $('#esp-cadastro').val(),
           CRM: $('#crm-cadastro').val(),
           telefone: $('#telefone-cadastro').val(),
@@ -362,7 +362,7 @@ medApp.controllers = {
     };
 
     // Gera a lista de pacientes na primeira vez que a página é carregada
-    //gerarListaPacientes ();
+    // gerarListaPacientes ();
 
     // Atualiza a lista de pacientes sempre que a página for mostrada
     page.addEventListener('show', function(event) {
@@ -914,8 +914,8 @@ medApp.controllers = {
           esp: $('#esp-medico').val(),
           tel: $('#tel-medico').val(),
           email: $('#email-medico').val(),
-          cpf: $('#cpf-medico').val(),
-          idMedico: medApp.services.idAtualMedico
+          cpf: $('#cpf-medico').cleanVal(),
+          idMedico: medApp.services.getIdMedico()
 
         };
 
