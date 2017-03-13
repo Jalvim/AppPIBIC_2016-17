@@ -146,23 +146,6 @@ router.route('/')
 					CRM = req.body.CRM;
 				} else { CRM = rows[0].CRM; }
 				
-				if (req.body.hasOwnProperty('email')){
-					var url = `http://julianop.com.br:3000/api/medico/confirm/${idMedico}`;
-					var verificationEmail = {
-						to: req.body.email,
-						subject: 'Confirmação de mudança de Email',
-						text: `Este endereço de email foi usado no cadastro de uma nova conta no aplicativo das pulseiras inteligentes.\n\n` +
-								`Por favor confirmar seu endereço de email clicando no link abaixo.\n\n` +
-								`Caso você seja o proprietário deste email e não tenha realizado o cadastro ignore esta mensagem.`,
-						html: `Link para confirmação de email: <a>${url}</a>` 
-					}
-					mailSender(verificationEmail, function(error, body){
-						console.log(body);
-					});
-					
-					
-					email = req.body.email;
-				} else { email = rows[0].email; }
 
 				connection.query(
 				'UPDATE Medico SET nome=?, especialidade=?, telefone=?, CPF=?, CRM=? WHERE idMedico=? LIMIT 1',
@@ -184,7 +167,26 @@ router.route('/')
 						
 						});
 					}
-				});
+				});				
+				
+				if (req.body.hasOwnProperty('email')){
+					var url = `http://julianop.com.br:3000/api/medico/confirm/${idMedico}`;
+					var verificationEmail = {
+						to: req.body.email,
+						subject: 'Confirmação de mudança de Email',
+						text: `Este endereço de email foi usado no cadastro de uma nova conta no aplicativo das pulseiras inteligentes.\n\n` +
+								`Por favor confirmar seu endereço de email clicando no link abaixo.\n\n` +
+								`Caso você seja o proprietário deste email e não tenha realizado o cadastro ignore esta mensagem.`,
+						html: `Link para confirmação de email: <a>${url}</a>` 
+					}
+					mailSender(verificationEmail, function(error, body){
+						console.log(body);
+					});
+					
+					
+					email = req.body.email;
+				} else { email = rows[0].email; }
+
 			}
 		});
 
