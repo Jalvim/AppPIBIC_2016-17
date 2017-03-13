@@ -344,9 +344,6 @@ medApp.controllers = {
 
     };
 
-    // Gera a lista de pacientes na primeira vez que a página é carregada
-    gerarListaPacientes ();
-
     // Atualiza a lista de pacientes sempre que a página for mostrada
     page.addEventListener('show', function(event) {
 
@@ -1192,6 +1189,19 @@ medApp.controllers = {
 
   addpaciente: function(page) {
 
+    // Preencher o nome do Médico Responsável para o médico atual (não-editável)
+    page.addEventListener('show', function(event) {
+
+      $.get('http://julianop.com.br:3000/api/medico/busca/ID/' + medApp.services.getIdMedico())
+      .done(function(data) {
+
+        $('#med-novo-pac').val(data[0].nome);
+
+      });
+      
+
+    });
+    
     // Função de adiquirir imagem de perfil
     page.querySelector('.add-foto').onclick = function snapPicture () {
 
@@ -1569,6 +1579,9 @@ medApp.controllers = {
 
           if(confirm) {
 
+            var modal = page.querySelector('ons-modal');
+            modal.show();
+
             $.ajax({
               url: 'http://julianop.com.br:3000/api/paciente/geral',
               type: 'PUT',
@@ -1580,12 +1593,16 @@ medApp.controllers = {
             .done(function(data) {
 
               console.log(data);
-              document.querySelector('#pacienteNav').resetToPage('html/pacientes.html', {options: {animation: 'fade'}});
 
             })
             .fail(function() {
               ons.notification.alert("Não foi possível dispensar o paciente");
             });
+
+            setTimeout(function(){ 
+              modal.hide();
+              document.querySelector('#pacienteNav').resetToPage('html/pacientes.html', {options: {animation: 'fade'}});
+              }, 1000);
             
           };
 

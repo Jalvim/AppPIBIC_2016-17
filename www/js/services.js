@@ -409,7 +409,7 @@ medApp.services = {
            },
            error: function(data) {
              console.log(data);
-           },
+            },
            data: {
              idPulseira: medApp.services.pulseiraAtual.idPulseira,
              disponivel: 1,
@@ -440,7 +440,7 @@ medApp.services = {
         },
         data: {
           idPulseira: medApp.services.pulseiraAtual,
-          disponivel: 1,
+          disponivel: 0,
           idPaciente: medApp.services.getIdPaciente()
         }
       });
