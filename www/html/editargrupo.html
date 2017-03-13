@@ -5,4 +5,40 @@
     <div class="center">Editar Grupo</div>
   </ons-toolbar>
 
+  <div class="lista-container">
+  
+  	<ons-list modifier="inset" style="padding-top: 10px;">
+      <ons-list-header>
+        Alterar nome do grupo
+      </ons-list-header>
+
+      <ons-list-item modifier="nodivider" disable-auto-styling>
+        <div class="left registro-icone">
+          <ons-icon icon="md-accounts" class="list__item__icon"></ons-icon>
+        </div>
+        <div class="center">
+          <ons-input input-id="nome-editar-grupo" class="text-input--underbar registro-input-icon" disable-auto-styling></ons-input>
+        </div>  
+      </ons-list-item>
+    </ons-list>
+
+    <!-- Lista de Pacientes para criação de grupo -->
+    <ons-list modifier="inset" style="padding-top: 10px;" id="editar-grupo-pacientes">
+
+      <ons-list-header>Alterar integrantes do grupo</ons-list-header>
+      
+    </ons-list>
+
+    <ons-button position="center" class="button-send" id="editar-grupo">Salvar</ons-button>
+
+  </div>
+
+  <ons-modal direction="up">
+    <div style="text-align: center">
+      <p>
+        <ons-icon icon="md-spinner" size="28px" spin></ons-icon> Editando Grupo...
+      </p>
+    </div>
+  </ons-modal>
+
 </ons-page>

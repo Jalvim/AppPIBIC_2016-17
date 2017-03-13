@@ -155,7 +155,7 @@ medApp.services = {
         '<div class="center">'+
           '<ons-row class="paciente-header">'+
             '<ons-col>' +
-              '<span class="list__item__title">' + data.nomePaciente + '</span>' +
+              '<span class="list__item__title nome">' + data.nomePaciente + '</span>' +
             '</ons-col>' +
             '<ons-col>' +
               '<ons-icon icon="heartbeat" class="list__item__icon"></ons-icon>' + 
@@ -400,22 +400,22 @@ medApp.services = {
     document.querySelector("#item" + index).onclick = function() {
 
       if(medApp.services.pulseiraAtual.length != 0){
-
-        $.ajax({
-          url: 'http://julianop.com.br:3000/api/pulseira',
-          type: 'PUT',
-          success: function(data) {
-            console.log("Pulseira desvinculada");
-          },
-          data: {
-            idPulseira: medApp.services.pulseiraAtual.idPulseira,
-            disponivel: 1,
-            idPaciente: medApp.services.getIdPaciente()
-          }
-        });
-
-      }  
-
+ 
+         $.ajax({
+           url: 'http://julianop.com.br:3000/api/pulseira',
+           type: 'PUT',
+           success: function(data) {
+             console.log("Pulseira desvinculada");
+           },
+           data: {
+             idPulseira: medApp.services.pulseiraAtual.idPulseira,
+             disponivel: 1,
+             idPaciente: medApp.services.getIdPaciente()
+           }
+         });
+ 
+      };
+      
       medApp.services.pulseiraAtual = medApp.services.pulseirasDisponiveis[index];
       medApp.services.hidePopover(medApp.services.dial);
 
@@ -496,9 +496,9 @@ medApp.services = {
 
   },
 
-  listAddGroup: function(data) {
+  listAddGroup: function(data, status, list) {
     
-    // Template de paciente na lista de adicionar novo grupo
+    // Template de paciente na lista de adicionar ou editar grupo
     var template = document.createElement('div');
     template.innerHTML =
       '<ons-list-item>' +
@@ -516,7 +516,26 @@ medApp.services = {
     var pacienteGroupListItem = template.firstChild;
     jQuery.data(pacienteGroupListItem.querySelector('.checkbox-opt'), 'idPaciente', data.idPaciente);
 
-    var novoGrupoLista = document.querySelector('#novo-grupo-pacientes');
+    if(status == 'checked') {
+
+      pacienteGroupListItem.querySelector('.checkbox-opt').checked = true;
+
+    } else if (status == 'unchecked') {
+
+      pacienteGroupListItem.querySelector('.checkbox-opt').checked = false;
+
+    }
+
+    if(list == 'add') {
+
+      var novoGrupoLista = document.querySelector('#novo-grupo-pacientes');
+
+    } else if(list == 'edit') {
+
+      var novoGrupoLista = document.querySelector('#editar-grupo-pacientes');
+
+    }
+    
     novoGrupoLista.appendChild(pacienteGroupListItem);
 
   },
@@ -535,7 +554,7 @@ medApp.services = {
             /* TODO: Adicionar número de membros de um grupo ao request 
             '<ons-col class="paciente-detalhes">' +
               '<ons-icon icon="md-accounts" class="list__item__icon"></ons-icon>' +
-              '<span class="list__item__title">' + data.tamanhoGrupo + '</span>' +
+              '<span class="list__item__subtitle">' + data.tamanhoGrupo + '</span>' +
             '</ons-col>' +
             */
             '<ons-col class="paciente-detalhes">' +
@@ -557,7 +576,7 @@ medApp.services = {
     groupListItem.querySelector('.center').onclick = function() {
 
       medApp.services.setGrupoAtual($(groupListItem).data('idGrupoPac'));
-      document.querySelector('#pacienteNav').pushPage('html/vergrupo.html');
+      document.querySelector('#pacienteNav').pushPage('html/vergrupo.html', {data: { nomeGrupo: data.nomeGrupo } });
 
     };
 

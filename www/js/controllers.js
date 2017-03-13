@@ -383,16 +383,16 @@ medApp.controllers = {
   	  .done(function(data) {
 
   	    if(data.length == 0){
-
-  	      medApp.services.pulseiraAtual = data;
-
-  	    } else {
-
-  	      medApp.services.pulseiraAtual = data[0];
-  	      
-  	    }
-
-        console.log(medApp.services.pulseiraAtual);
+ 
+           medApp.services.pulseiraAtual = data;
+ 
+         } else {
+ 
+           medApp.services.pulseiraAtual = data[0];
+           
+         }
+ 
+         console.log(medApp.services.pulseiraAtual);
   	    
   	  })
       .done(function(data) {
@@ -469,7 +469,7 @@ medApp.controllers = {
                 nomePaciente: pacientesInfo.nomePaciente,
                 img: 'http://www.clker.com/cliparts/A/Y/O/m/o/N/placeholder-md.png',
                 idPaciente: pacientesInfo.idPaciente
-              });
+              }, 'unchecked', 'add');
 
           };
 
@@ -1053,10 +1053,11 @@ medApp.controllers = {
 
   },
 
-  ///////////////////////////////////////
-  // Controlador do feed de notícias   //
-  ///////////////////////////////////////
+  /////////////////////////////////////
+  // Controlador do feed de notícias //
+  /////////////////////////////////////
 
+  /* RETIRADO PARA TESTES
   feed: function(page) {
 
     page.addEventListener('show', function(event) {
@@ -1123,8 +1124,8 @@ medApp.controllers = {
             responsive: false
           }
       });
-    */
-  },
+    
+  },*/
 
   ///////////////////////////////////////
   // Controlador da lista de lembretes //
@@ -1639,13 +1640,16 @@ medApp.controllers = {
 
     page.addEventListener('show', function(event) {
 
+      // Seta o nome do grupo na Tollbar
+      page.querySelector('.center').innerHTML = page.data.nomeGrupo;
+
       // Limpa o paciente atual, se retornar do perfil de algum
       medApp.services.deletePacienteAtual();
 
       $('#lista-pacientes-grupo').empty();
-      $.get('http://julianop.com.br:3000/api/grupoPacientes/buscarGrupo/paciente/' + medApp.services.getGrupoAtual())
+      $.get('http://julianop.com.br:3000/api/grupoPacientes/buscarGrupo/paciente/' + medApp.services.getGrupoAtual() + '/' + medApp.services.getIdMedico())
       .done(function(data) {
-          
+
           for (var i = 0, len = data.length; i < len; i++) {
 
             var pacientesInfo = data[i];
@@ -1672,11 +1676,95 @@ medApp.controllers = {
 
     page.querySelector('#grupo-edit').onclick = function() {
 
-      document.querySelector('#pacienteNav').pushPage('html/editargrupo.html');
+      document.querySelector('#pacienteNav').pushPage('html/editargrupo.html', { data: { nomeGrupo: page.querySelector('.center').innerHTML } });
 
     };
 
 
+  },
+
+  ////////////////////////////////////
+  // Controlador de Edição de Grupo //
+  ////////////////////////////////////
+
+  editargrupo: function(page) {
+
+    var nomeAtual = page.data.nomeGrupo;
+
+    page.addEventListener('show', function(event) {
+
+      // Seta o nome atual do grupo editado
+      $('#nome-editar-grupo').val(page.data.nomeGrupo);
+
+      $.get('http://julianop.com.br:3000/api/grupoPacientes/buscarGrupo/paciente/' + medApp.services.getGrupoAtual())
+      .done(function(data) {
+
+        for (var i = 0, len = data.length; i < len; i++) {
+
+            var integrantesInfo = data[i];
+
+            medApp.services.listAddGroup(
+              {
+                nomePaciente: integrantesInfo.nomePaciente,
+                img: 'http://www.clker.com/cliparts/A/Y/O/m/o/N/placeholder-md.png',
+                idPaciente: integrantesInfo.idPaciente
+              }, 'checked', 'edit');
+
+          };
+
+      });
+
+    });
+
+    page.querySelector('#editar-grupo').onclick = function() {
+
+      var modal = page.querySelector('ons-modal');
+      modal.show();
+
+      if ($('#nome-editar-grupo').val() === '') {
+
+        ons.notification.alert("Preencha o nome do grupo!");
+
+      } else {
+
+        if(nomeAtual !== $('#nome-editar-grupo').val()) { 
+
+          $.ajax({
+            url: 'http://julianop.com.br:3000/api/grupoPacientes',
+            type: 'PUT',
+            data: { idGrupoPac: medApp.services.getGrupoAtual(),
+                    nome: $('#nome-editar-grupo').val()
+                  }
+          });
+
+        };
+
+        var integrantesEdit = page.querySelectorAll('.checkbox-opt');
+
+        for (var i = 0, len = integrantesEdit.length; i < len; i++) {
+
+          // Verifica os checkboxes de cada paciente e os exclui caso não estajam marcados 
+          if(integrantesEdit[i].checked == false) {
+
+            $.ajax({
+              url: 'http://julianop.com.br:3000/api/grupoPacientes/pacientes',
+              type: 'DELETE',
+              data: { 
+                idGrupoPac: medApp.services.getGrupoAtual(),
+                idPaciente: jQuery.data(integrantesEdit[i], 'idPaciente')
+              }
+            });
+
+          };
+
+        };
+
+        document.querySelector('#pacienteNav').popPage();
+
+      };
+
+    };
+      
   }
 
 };
