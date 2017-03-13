@@ -652,11 +652,11 @@ medApp.controllers = {
         .done(function(data) {
           if(data.length <= 7){
             for(var i = 0; i < data.length; i++){
-              medApp.services.dadosEstaticos.calorias[i] = data[i].calories;
+              medApp.services.dadosEstaticos.passos[i] = data[i].steps;
             }
           } else {
             for(var i = 0; i < 7; i++){
-              medApp.services.dadosEstaticos.calorias[i] = data[((data.length - 7) + i)].calories; 
+              medApp.services.dadosEstaticos.passos[i] = data[((data.length - 7) + i)].steps; 
             }
           }
         })
@@ -763,11 +763,11 @@ medApp.controllers = {
           .done(function(data) {
             if(data.length <= 7){
               for(var i = 0; i < data.length; i++){
-                medApp.services.dadosEstaticos.calorias[i] = data[i].calories;
+                medApp.services.dadosEstaticos.degraus[i] = data[i].floors;
               }
             } else {
               for(var i = 0; i < 7; i++){
-                medApp.services.dadosEstaticos.calorias[i] = data[((data.length - 7) + i)].calories; 
+                medApp.services.dadosEstaticos.degraus[i] = data[((data.length - 7) + i)].floors; 
               }
             }
           })
