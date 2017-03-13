@@ -149,7 +149,7 @@ router.route('/geral')
 						res.send('Erro ao alterar perfil de paciente na base de dados');
 					} else {
 						
-						console.log('Paciente editado com sucesso.');
+						res.send('Paciente editado com sucesso.');
 					}
 				});
 			}
