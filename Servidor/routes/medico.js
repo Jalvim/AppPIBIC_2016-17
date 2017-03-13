@@ -64,7 +64,8 @@ router.route('/')
 						connection.query(query, function(err) {
 							console.log(err);
 							if (err == null){
-								
+								res.send("Novo login e médico criado com sucesso.");
+
 								var url = `http://julianop.com.br:3000/api/medico/confirm/${idMedico}`;
 								var verificationEmail = {
 									to: req.body.email,
@@ -76,7 +77,6 @@ router.route('/')
 								}
 								mailSender(verificationEmail);
 								
-								res.send("Novo login e médico criado com sucesso.");
 								
 							}
 							else {
