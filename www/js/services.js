@@ -405,7 +405,10 @@ medApp.services = {
            url: 'http://julianop.com.br:3000/api/pulseira',
            type: 'PUT',
            success: function(data) {
-             console.log("Pulseira desvinculada");
+             console.log(data);
+           },
+           error: function(data) {
+             console.log(data);
            },
            data: {
              idPulseira: medApp.services.pulseiraAtual.idPulseira,
@@ -414,7 +417,7 @@ medApp.services = {
            }
          });
  
-      };
+      }
       
       medApp.services.pulseiraAtual = medApp.services.pulseirasDisponiveis[index];
       medApp.services.hidePopover(medApp.services.dial);
@@ -429,10 +432,11 @@ medApp.services = {
         url: 'http://julianop.com.br:3000/api/pulseira',
         type: 'PUT',
         success: function(data) {
-          console.log("Pulseira" + medApp.services.pulseiraAtual + "selecionada!");
+          console.log("Pulseira " + medApp.services.pulseiraAtual + " selecionada!");
+          console.log(data);
         },
-        error: function() {
-          console.log("Não Cadastrado.");
+        error: function(data) {
+          console.log(data);
         },
         data: {
           idPulseira: medApp.services.pulseiraAtual,

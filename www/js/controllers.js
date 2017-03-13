@@ -392,7 +392,7 @@ medApp.controllers = {
            
          }
  
-         console.log(medApp.services.pulseiraAtual);
+         console.log(medApp.services.pulseiraAtual.idPulseira);
   	    
   	  })
       .done(function(data) {
