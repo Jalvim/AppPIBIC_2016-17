@@ -89,7 +89,7 @@ router.route('/')
 		}
 	});
 	
-router.get('/senha/change/id/:idMedico', function(req, res) {
+router.get('/senha/change/:idMedico', function(req, res) {
 	connection.query('SELECT * FROM logins WHERE idMedico=?',[req.params.idMedico], function(err,rows){
 		if (rows[0].emailConfirmado != 0) {
 			res.render('emailMudancaSenha');
