@@ -276,11 +276,11 @@ router.route('/medicos/')
 		}
 	});
 	//Busca de todos os pacientes pertencentes ao grupo desejado
-	router.route('/buscarGrupo/paciente/:idGrupoPac')
+	router.route('/buscarGrupo/paciente/:idGrupoPac/:idMedico')
 	.get(function(req, res){
 		if (req.params.hasOwnProperty('idGrupoPac')) {
 		var query = {
-			sql: `SELECT P.* FROM  Paciente P, GrupoPac_Paciente GP WHERE GP.idPaciente	 = P.idtable1 AND GP.idGrupoPac = ${connection.escape(req.params.idGrupoPac)}`,
+			sql: `SELECT P.*, M.nome FROM  `Paciente` P, `GrupoPac_Paciente` GP, `GrupoPac_Medico` GM, `Medico` M WHERE GP.idPaciente	 = P.idtable1 AND GP.idGrupoPac = ${connection.escape(req.params.idGrupoPac)} AND M.idMedico = ${connection.escape(req.params.idMedico)} AND GP.idGrupoPac=GM.idGrupoPac`,//SELECT P.* FROM  Paciente P, GrupoPac_Paciente GP WHERE GP.idPaciente	 = P.idtable1 AND GP.idGrupoPac = ${connection.escape(req.params.idGrupoPac)}`,
 			timeout: 10000	
 		}
 		connection.query(query, function(err, rows, fields) {
