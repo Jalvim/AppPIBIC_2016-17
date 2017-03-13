@@ -398,6 +398,24 @@ medApp.services = {
     pulseiraLista.appendChild(pulseiraItem); 
 
     document.querySelector("#item" + index).onclick = function() {
+
+      if(medApp.services.pulseiraAtual.length != 0){
+
+        $.ajax({
+          url: 'http://julianop.com.br:3000/api/pulseira',
+          type: 'PUT',
+          success: function(data) {
+            console.log("Pulseira desvinculada");
+          },
+          data: {
+            idPulseira: medApp.services.pulseiraAtual.idPulseira,
+            disponivel: 1,
+            idPaciente: medApp.services.getIdPaciente()
+          }
+        });
+
+      }  
+
       medApp.services.pulseiraAtual = medApp.services.pulseirasDisponiveis[index];
       medApp.services.hidePopover(medApp.services.dial);
 

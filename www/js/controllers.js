@@ -382,8 +382,17 @@ medApp.controllers = {
   	  $.get('http://julianop.com.br:3000/api/pulseira/idPaciente/' + medApp.services.dadosPacienteAtual.idAtualPaciente)
   	  .done(function(data) {
 
-  	    medApp.services.pulseiraAtual = data[0];
-        console.log(data);
+  	    if(data.length == 0){
+
+  	      medApp.services.pulseiraAtual = data;
+
+  	    } else {
+
+  	      medApp.services.pulseiraAtual = data[0];
+  	      
+  	    }
+
+        console.log(medApp.services.pulseiraAtual);
   	    
   	  })
       .done(function(data) {
@@ -1517,25 +1526,12 @@ medApp.controllers = {
 
   	page.querySelector('#manage-pulseiras').onclick = function() {
 
-  		$.ajax({
-          url: 'http://julianop.com.br:3000/api/pulseira',
-          type: 'PUT',
-          success: function(data) {
-            console.log("Pulseira desvinculada");
-          },
-          data: {
-            idPulseira: medApp.services.pulseiraAtual.idPulseira,
-            disponivel: 1,
-            idPaciente: medApp.services.getIdPaciente()
-          }
-        });
-
   		medApp.services.dial = document.getElementById('dialog').id;
 
         //Método responsável por encontrar na base as pulseiras disponíveis.
         $.get('http://julianop.com.br:3000/api/pulseira/disponivel')
         .done(function(data){
-          for(var i = 0; i <data.length; i++){
+          for(var i = 0; i < data.length; i++){
             medApp.services.pulseirasDisponiveis[i] = data[i].idPulseira;
           }
         })
@@ -1551,6 +1547,7 @@ medApp.controllers = {
 
             medApp.services.pulseiraAtual = [];
 
+            //Esvazia a lista de pulseiras
             $('#lista-pulseiras').empty();
 
           };
