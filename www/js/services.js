@@ -414,7 +414,7 @@ medApp.services = {
            }
          });
  
-      };
+      }
       
       medApp.services.pulseiraAtual = medApp.services.pulseirasDisponiveis[index];
       medApp.services.hidePopover(medApp.services.dial);
