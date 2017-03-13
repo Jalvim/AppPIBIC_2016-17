@@ -336,7 +336,7 @@ medApp.controllers = {
                 hospital: pacientesInfo.telefone,
                 idPaciente: pacientesInfo.idPaciente,
                 medicoResp: pacientesInfo.nome
-              });
+              }, 'pacientes');
 
           };
 
@@ -379,20 +379,21 @@ medApp.controllers = {
       page.querySelector('#hospital').innerHTML = medApp.services.dadosPacienteAtual.hospital;
       
       //get da pulseira indexada ao paciente.
-  	  $.get('url/api/pulseira/idPaciente/' + medApp.services.dadosPacienteAtual.idAtualPaciente)
+  	  $.get('http://julianop.com.br:3000/api/pulseira/idPaciente/' + medApp.services.dadosPacienteAtual.idAtualPaciente)
   	  .done(function(data) {
 
-  	    medApp.services.pulseiraAtual = data;
+  	    medApp.services.pulseiraAtual = data[0];
+        console.log(data);
   	    
   	  })
-      .done(function() {
-        if(medApp.services.pulseiraAtual === ''){
+      .done(function(data) {
+        if(data.length == 0){
 
       	  page.querySelector('#pulseira-pac').innerHTML = 'Sem pulseira';
       
         } else {
       	
-      	  page.querySelector('#pulseira-pac').innerHTML = medApp.services.pulseiraAtual;
+      	  page.querySelector('#pulseira-pac').innerHTML = medApp.services.pulseiraAtual.idPulseira;
       
         }
       });
@@ -505,7 +506,31 @@ medApp.controllers = {
           console.log(data);
           if (pacientesNovoGrupo.length == 1) {
 
+            $.post("http://julianop.com.br:3000/api/grupoPacientes/pacientes",
+              {
+              idPaciente: pacientesNovoGrupo[0],
+              idGrupoPac: data.insertId,
+              })
+            .done(function (resp){
+              console.log(resp);
+              modal.hide();
+              document.querySelector('#pacienteNav').popPage();
+
+            });
+
           } else if (pacientesNovoGrupo.length > 1) {
+
+            $.post("http://julianop.com.br:3000/api/grupoPacientes/pacientes/multiplos",
+              {
+              idPaciente: pacientesNovoGrupo,
+              idGrupoPac: data.insertId,
+              })
+            .done(function (resp){
+              console.log(resp);
+              modal.hide();
+              document.querySelector('#pacienteNav').popPage();
+              
+            });
 
           } else if (pacientesNovoGrupo.length == 0) {
 
@@ -520,91 +545,6 @@ medApp.controllers = {
 
     };
 
-
-      /*
-      $.post("http://julianop.com.br:3000/api/grupoPacientes",
-      {
-     nome:nome,
-     idMedico:medApp.services.getIdMedico(),
-      })
-    .done(function (data){
-    console.log(data);
-
-
-    });
-
-     $.get("http://julianop.com.br:3000/api/grupoPacientes/buscarGrupo/idMedico/"+medApp.services.getIdMedico())
-     .always(function(data){
-     console.log(data);
-    idGrupoPac=data[data.length-1].idGrupoPac;
-    console.log(idGrupoPac);
-
-
-
-     });
-
-
-
-
-    page.addEventListener('show', function(event) {
-       
-
-       $.get('http://julianop.com.br:3000/api/paciente/geral/idMedico/' + medApp.services.getIdMedico())
-         .done(function(data) {
-
-           for (var i = 0, len = data.length; i < len; i++) {
-
-             var pacientesInfo = data[i];
-
-             medApp.services.gpac1(
-               {
-                 statusPaciente: (pacientesInfo.ativo == 1) ? 'ativo' : 'inativo',
-                 img: 'http://www.clker.com/cliparts/A/Y/O/m/o/N/placeholder-md.png',
-                 nomePaciente: pacientesInfo.nomePaciente,
-                 batimentos: '--',
-                 dataPaciente: pacientesInfo.dataDeNascimento,
-                 causaPaciente: pacientesInfo.causaDaInternacao,
-                 medicoResp: pacientesInfo.numeroDoProntuario,
-                 hospital: pacientesInfo.telefone,
-                 idPaciente: pacientesInfo.idPaciente,
-                 medicoResp: pacientesInfo.nome
-               },i);
-
-             };
-
-             document.querySelector('#terminar').onclick=function(){
-             var grupoPacientes =[];
-             var inputs=page.getElementsByTagName('input');
-             for(var i=0;i<len;i++){
-
-            if(inputs[i].checked===true){
-            grupoPacientes.push(data[i]);
-            }
-            };
-          if(grupoPacientes.length!==0){
-
-for(var i=0;i<grupoPacientes.length;i++){
-          $.post("http://julianop.com.br:3000/api/grupoPacientes/pacientes",
-          {
-          idPaciente:grupoPacientes[i].idPaciente ,
-          idGrupoPac:idGrupoPac
-          })
-          .done(function (data){
-
-          console.log(data);
-          });
-            }
-            }
-            else
-            alert("Escolha ao menos um paciente!");
-            };
-
-
-           });
-       });
-
-
-  }*/
   },
 
   /////////////////////////////////////
@@ -629,9 +569,9 @@ for(var i=0;i<grupoPacientes.length;i++){
               }
             }
 
-            for(var i = 0; i < 7; i++){
+            /*for(var i = 0; i < 7; i++){
               medApp.services.semana[i] = medApp.services.getDia(i + 1);
-            }
+            }*/
           })
 
           .done(function() {
@@ -756,7 +696,7 @@ for(var i=0;i<grupoPacientes.length;i++){
           	  }
           	} else {
               for(var i = 0; i < 10; i++){
-                medApp.services.dadosEstaticos.pulso[i] = data[((data.length - 11) + i)].heartRate;
+                medApp.services.dadosEstaticos.pulso[i] = data[((data.length - 10) + i)].heartRate;
               }
             }
             console.log(data);
@@ -1242,51 +1182,6 @@ for(var i=0;i<grupoPacientes.length;i++){
 
   addpaciente: function(page) {
 
-    page.querySelector('#pulseiraButton').onclick = function() {
-
-      medApp.services.dial = document.getElementById('dialog').id;
-
-      //Método responsável por encontrar na base as pulseiras disponíveis.
-      $.get('http://julianop.com.br:3000/api/pulseira/disponivel')
-        .done(function(data){
-          for(var i = 0; i <data.length; i++){
-            medApp.services.pulseirasDisponiveis[i] = data[i].idPulseira;
-          }
-          console.log(medApp.services.pulseirasDisponiveis);
-        })
-        .done(function() {
-
-          medApp.services.showPopover(medApp.services.dial);
-
-          document.querySelector('#nuloPulseira').onclick = function() {
-            medApp.services.pulseiraAtual = -4;
-
-            medApp.services.hidePopover(medApp.services.dial);
-
-            ons.notification.alert("Pulseira Nula selecionada.");
-
-          };
-
-          //Loop de criação de ítns responsíveis no menu.
-          for(var i = 0; i < medApp.services.pulseirasDisponiveis.length; i++){
-            medApp.services.showPulseirasDisponiveis(i);
-
-            document.querySelector("#item" + i).onclick = function() {
-              var index = $("div").index(this);
-              medApp.services.pulseiraAtual = medApp.services.pulseirasDisponiveis[(index - 1)];
-              medApp.services.hidePopover(medApp.services.dial);
-
-              ons.notification.alert("Pukseira cadastrada com sucesso.");
-
-              $('#lista-pulseiras').empty();
-              
-            };
-          }
-
-        });
-
-    };
-
     // Função de adiquirir imagem de perfil
     page.querySelector('.add-foto').onclick = function snapPicture () {
 
@@ -1397,53 +1292,6 @@ for(var i=0;i<grupoPacientes.length;i++){
               medApp.services.idPacVec[i] = data[i].idPaciente;
             }
 
-          })
-          .done(function() {
-            var id = Math.max.apply(null, medApp.services.idPacVec);
-
-            if(medApp.services.pulseiraAtual === -4){
-
-              //Insere na base de dados a pulseira nula.
-              $.ajax({
-                url: 'http://julianop.com.br:3000/api/pulseira/' + medApp.services.PulseiraAtual,
-                type: 'PUT',
-                success: function(data) {
-                  ons.notification.alert("Pulseira Nula selecionada!");
-                },
-                error: function() {
-                  ons.notification.alert("Não Cadastrado.");
-                },
-                data: {
-                  disponivel: 0,
-                  idPaciente: id
-                }
-              })
-              .done(function() {
-                console.log('Pulseira nula add');
-              });
-
-            } else {
-
-              $.ajax({
-                url: 'http://julianop.com.br:3000/api/pulseira/' + medApp.services.PulseiraAtual,
-                type: 'PUT',
-                success: function(data) {
-                  ons.notification.alert("Pulseira Nula selecionada!");
-                },
-                error: function() {
-                  ons.notification.alert("Não Cadastrado.");
-                },
-                data: {
-                  disponivel: 1,
-                  idPaciente: id
-                }
-              })
-              .done(function() {
-                console.log(id + ' add');
-              });
-
-            }
-
           });
 
         });
@@ -1473,6 +1321,18 @@ for(var i=0;i<grupoPacientes.length;i++){
   ////////////////////////////////////////
 
   pulseiras: function(page){
+
+  	/*$.get('http://julianop.com.br:3000/api/pulseira/disponivel')
+    .done(function(data){
+      for(var i = 0; i <data.length; i++){
+        medApp.services.pulseirasDisponiveis[i] = data[i].idPulseira;
+      }
+    })
+    .done(function() {
+      for(var i = 0; i < medApp.services.pulseirasDisponiveis.length; i++){
+    	medApp.services.showPulseirasDisponiveis2(i);
+      }
+    });*/
 
     page.querySelector('#addpulseira').onclick = function(){
 
@@ -1655,6 +1515,54 @@ for(var i=0;i<grupoPacientes.length;i++){
 
   configpaciente: function(page) {
 
+  	page.querySelector('#manage-pulseiras').onclick = function() {
+
+  		$.ajax({
+          url: 'http://julianop.com.br:3000/api/pulseira',
+          type: 'PUT',
+          success: function(data) {
+            console.log("Pulseira desvinculada");
+          },
+          data: {
+            idPulseira: medApp.services.pulseiraAtual.idPulseira,
+            disponivel: 1,
+            idPaciente: medApp.services.getIdPaciente()
+          }
+        });
+
+  		medApp.services.dial = document.getElementById('dialog').id;
+
+        //Método responsável por encontrar na base as pulseiras disponíveis.
+        $.get('http://julianop.com.br:3000/api/pulseira/disponivel')
+        .done(function(data){
+          for(var i = 0; i <data.length; i++){
+            medApp.services.pulseirasDisponiveis[i] = data[i].idPulseira;
+          }
+        })
+        .done(function() {
+
+          medApp.services.showPopover(medApp.services.dial);
+
+          document.querySelector('#nuloPulseira').onclick = function() {
+
+            medApp.services.hidePopover(medApp.services.dial);
+
+            ons.notification.alert("Pulseira Nula selecionada.");
+
+            medApp.services.pulseiraAtual = [];
+
+            $('#lista-pulseiras').empty();
+
+          };
+
+          //Loop de criação de ítns responsíveis no menu.
+          for(var i = 0; i < medApp.services.pulseirasDisponiveis.length; i++){
+            medApp.services.showPulseirasDisponiveis(i);
+          }
+
+        });
+    };
+
     // Funcionalidade de alta do paciente (setar ativo = '0')
     page.querySelector('#alta-pac').onclick = function() {
 
@@ -1675,21 +1583,6 @@ for(var i=0;i<grupoPacientes.length;i++){
 
               console.log(data);
               document.querySelector('#pacienteNav').resetToPage('html/pacientes.html', {options: {animation: 'fade'}});
-
-              $.ajax({
-                url: 'http://julianop.com.br:3000/api/pulseira/' + medApp.services.PulseiraAtual,
-                type: 'PUT',
-                success: function(data) {
-                  console.log("Pulseira Nula selecionada!");
-                },
-                error: function() {
-                  console.log("Não Cadastrado.");
-                },
-                data: {
-                  disponivel: 0,
-                  idPaciente: medApp.services.getIdPaciente()
-                }
-              });
 
             })
             .fail(function() {
@@ -1712,11 +1605,23 @@ for(var i=0;i<grupoPacientes.length;i++){
 
     page.addEventListener('show', function(event) {
 
+      // Limpa o grupo atual selecionado
+      medApp.services.deleteGrupoAtual();
       // Limpa e popula a lista de grupos
       $('#lista-grupos').empty();
-      medApp.services.listGroups({ nomeGrupo: 'Teste',
-                                    tamanhoGrupo: 4,
-                                    medicoResp: 'Roberto Carlos'})
+
+      $.get('http://julianop.com.br:3000/api/grupoPacientes/buscarGrupo/idMedico/' + medApp.services.getIdMedico())
+      .done(function(data) {
+
+          for (var i = 0, len = data.length; i < len; i++) {
+
+            medApp.services.listGroups({ nomeGrupo: data[i].nomeGrupo,
+                                         medicoResp: data[i].MedicoResp,
+                                         idGrupoPac: data[i].idGrupoPac})
+
+          };
+
+        });
 
     });
 
@@ -1739,6 +1644,32 @@ for(var i=0;i<grupoPacientes.length;i++){
 
       // Limpa o paciente atual, se retornar do perfil de algum
       medApp.services.deletePacienteAtual();
+
+      $('#lista-pacientes-grupo').empty();
+      $.get('http://julianop.com.br:3000/api/grupoPacientes/buscarGrupo/paciente/' + medApp.services.getGrupoAtual())
+      .done(function(data) {
+          
+          for (var i = 0, len = data.length; i < len; i++) {
+
+            var pacientesInfo = data[i];
+
+            medApp.services.createPaciente(
+              {
+                statusPaciente: (pacientesInfo.ativo == 1) ? 'ativo' : 'inativo',
+                img: 'http://www.clker.com/cliparts/A/Y/O/m/o/N/placeholder-md.png',
+                nomePaciente: pacientesInfo.nomePaciente,
+                batimentos: '--',
+                dataPaciente: pacientesInfo.dataDeNascimento,
+                causaPaciente: pacientesInfo.causaDaInternacao,
+                medicoResp: pacientesInfo.numeroDoProntuario,
+                hospital: pacientesInfo.telefone,
+                idPaciente: pacientesInfo.idPaciente,
+                medicoResp: pacientesInfo.nome
+              }, 'grupo');
+
+          };
+
+        });
 
     });
 
