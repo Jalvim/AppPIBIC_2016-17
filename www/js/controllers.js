@@ -1556,7 +1556,21 @@ medApp.controllers = {
 
             ons.notification.alert("Pulseira Nula selecionada.");
 
-            medApp.services.pulseiraAtual = [];
+            $.ajax({
+              url: 'http://julianop.com.br:3000/api/pulseira',
+              type: 'PUT',
+              success: function(data) {
+                console.log(data);
+              },
+              error: function(data) {
+                console.log(data);
+              },
+              data: {
+                idPulseira: medApp.services.pulseiraAtual.idPulseira,
+                disponivel: 1,
+                idPaciente: medApp.services.getIdPaciente()
+              }
+            });
 
             //Esvazia a lista de pulseiras
             $('#lista-pulseiras').empty();
