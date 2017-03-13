@@ -17,18 +17,33 @@ medApp.controllers = {
       $('#senha-login').attr('type', 'password');
     };
 
-    page.querySelector('#esquecer-senha').onclick=function(){
+      page.querySelector('#esquecer-senha').onclick=function(e){
+       ons.notification.prompt({
+       message:"Digite seu e-mail",
+      callback:function(email){
 
-      var email=prompt("Digite seu e-mail");
 
-      $.ajax({
-        url:"http://www.julianop.com.br:3000/api/login/",
-        email:email,
-        type:'PUT'
-      });
+          window.open("http://www.julianop.com.br:3000/api/login/senha/change/email/"+email);
+    /*
+           e.preventDefault();
 
-    };
+        $.ajax({
+        url:'http://www.julianop.com.br:3000/api/login/',
+        type:'PUT',
+        data:{
+   email:email
+   },
+   jsonp:true,
+   complete:function(info){
+       console.log(JSON.stringify(info));
 
+   }
+   });
+   */
+       }
+   });
+
+   };
     // Chama página de cadastro
     page.querySelector('#cadastro-button').onclick = function() {
       document.querySelector('#loginNav').pushPage('html/cadastromedico.html');
@@ -101,7 +116,7 @@ medApp.controllers = {
       	// Captura imagem a partir da câmera do dispositivo
       	medApp.services.hidePopover(medApp.services.dial);
 
-        navigator.camera.getPicture (successCallback, FailCallback, { sourceType: Camera.PictureSourceType.CAMERA, 
+        navigator.camera.getPicture (successCallback, FailCallback, { sourceType: Camera.PictureSourceType.CAMERA,
                                                                       destinationType: Camera.DestinationType.DATA_URL
                                                                     });
 
@@ -128,7 +143,7 @@ medApp.controllers = {
       	// Seleciona imagem a partir da galeria de imagens do dispositivo
       	medApp.services.hidePopover(medApp.services.dial);
 
-        navigator.camera.getPicture (successCallback, FailCallback, { sourceType: Camera.PictureSourceType.PHOTOLIBRARY, 
+        navigator.camera.getPicture (successCallback, FailCallback, { sourceType: Camera.PictureSourceType.PHOTOLIBRARY,
                                                                       destinationType: Camera.DestinationType.DATA_URL
                                                                     });
 
@@ -149,7 +164,7 @@ medApp.controllers = {
           };
 
       };
-      
+
     };
 
     // Registra novo médico caso as senhas sejam válidas
@@ -374,33 +389,33 @@ medApp.controllers = {
       page.querySelector('#data-int').innerHTML = medApp.services.dadosPacienteAtual.dataIntFormatoBarra;
       page.querySelector('#causa').innerHTML = medApp.services.dadosPacienteAtual.causa;
       page.querySelector('#hospital').innerHTML = medApp.services.dadosPacienteAtual.hospital;
-      
+
       //get da pulseira indexada ao paciente.
   	  $.get('http://julianop.com.br:3000/api/pulseira/idPaciente/' + medApp.services.dadosPacienteAtual.idAtualPaciente)
   	  .done(function(data) {
 
   	    if(data.length == 0){
- 
+
            medApp.services.pulseiraAtual = data;
- 
+
          } else {
- 
+
            medApp.services.pulseiraAtual = data[0];
-           
+
          }
- 
+
          console.log(medApp.services.pulseiraAtual.idPulseira);
-  	    
+
   	  })
       .done(function(data) {
         if(data.length == 0){
 
       	  page.querySelector('#pulseira-pac').innerHTML = 'Sem pulseira';
-      
+
         } else {
-      	
+
       	  page.querySelector('#pulseira-pac').innerHTML = medApp.services.pulseiraAtual.idPulseira;
-      
+
         }
       });
 
@@ -456,7 +471,7 @@ medApp.controllers = {
       $.get('http://julianop.com.br:3000/api/paciente/geral/idMedico/' + medApp.services.getIdMedico())
         .done(function(data) {
 
-          // Preenche a lista de integrantes com os pacientes do médico atual 
+          // Preenche a lista de integrantes com os pacientes do médico atual
           for (var i = 0, len = data.length; i < len; i++) {
 
             var pacientesInfo = data[i];
@@ -480,7 +495,7 @@ medApp.controllers = {
       modal.show();
 
       var nomeNovoGrupo = $('#nome-novo-grupo').val();
-      // Array com os ids dos pacientes que entrarão no novo grupo 
+      // Array com os ids dos pacientes que entrarão no novo grupo
       var pacientesNovoGrupo = [];
 
       if (nomeNovoGrupo === '') {
@@ -493,7 +508,7 @@ medApp.controllers = {
 
         for (var i = 0, len = integrantes.length; i < len; i++) {
 
-          // Verifica os checkboxes de cada paciente e adiciona seus ids ao pacientesNovoGrupo 
+          // Verifica os checkboxes de cada paciente e adiciona seus ids ao pacientesNovoGrupo
           if(integrantes[i].checked == true) {
 
             pacientesNovoGrupo.push(jQuery.data(integrantes[i], 'idPaciente'));
@@ -508,7 +523,7 @@ medApp.controllers = {
           idMedico:medApp.services.getIdMedico(),
           })
         .done(function (data){
-          
+
           console.log(data);
           if (pacientesNovoGrupo.length == 1) {
 
@@ -535,7 +550,7 @@ medApp.controllers = {
               console.log(resp);
               modal.hide();
               document.querySelector('#pacienteNav').popPage();
-              
+
             });
 
           } else if (pacientesNovoGrupo.length == 0) {
@@ -571,7 +586,7 @@ medApp.controllers = {
               }
             } else {
               for(var i = 0; i < 7; i++){
-                medApp.services.dadosEstaticos.calorias[i] = data[((data.length - 7) + i)].calories; 
+                medApp.services.dadosEstaticos.calorias[i] = data[((data.length - 7) + i)].calories;
               }
             }
 
@@ -639,7 +654,7 @@ medApp.controllers = {
             }
           } else {
             for(var i = 0; i < 7; i++){
-              medApp.services.dadosEstaticos.calorias[i] = data[((data.length - 7) + i)].calories; 
+              medApp.services.dadosEstaticos.calorias[i] = data[((data.length - 7) + i)].calories;
             }
           }
         })
@@ -750,7 +765,7 @@ medApp.controllers = {
               }
             } else {
               for(var i = 0; i < 7; i++){
-                medApp.services.dadosEstaticos.calorias[i] = data[((data.length - 7) + i)].calories; 
+                medApp.services.dadosEstaticos.calorias[i] = data[((data.length - 7) + i)].calories;
               }
             }
           })
@@ -825,7 +840,7 @@ medApp.controllers = {
         // Captura imagem a partir da câmera do dispositivo
         medApp.services.hidePopover(medApp.services.dial);
 
-        navigator.camera.getPicture (successCallback, FailCallback, { sourceType: Camera.PictureSourceType.CAMERA, 
+        navigator.camera.getPicture (successCallback, FailCallback, { sourceType: Camera.PictureSourceType.CAMERA,
                                                                       destinationType: Camera.DestinationType.DATA_URL
                                                                     });
 
@@ -852,7 +867,7 @@ medApp.controllers = {
         // Seleciona imagem a partir da galeria de imagens do dispositivo
         medApp.services.hidePopover(medApp.services.dial);
 
-        navigator.camera.getPicture (successCallback, FailCallback, { sourceType: Camera.PictureSourceType.PHOTOLIBRARY, 
+        navigator.camera.getPicture (successCallback, FailCallback, { sourceType: Camera.PictureSourceType.PHOTOLIBRARY,
                                                                       destinationType: Camera.DestinationType.DATA_URL
                                                                     });
 
@@ -873,7 +888,7 @@ medApp.controllers = {
           };
 
       };
-      
+
     };
 
     // Verifica se algum input do formulário foi mudado
@@ -953,7 +968,7 @@ medApp.controllers = {
         // Captura imagem a partir da câmera do dispositivo
         medApp.services.hidePopover(medApp.services.dial);
 
-        navigator.camera.getPicture (successCallback, FailCallback, { sourceType: Camera.PictureSourceType.CAMERA, 
+        navigator.camera.getPicture (successCallback, FailCallback, { sourceType: Camera.PictureSourceType.CAMERA,
                                                                       destinationType: Camera.DestinationType.DATA_URL
                                                                     });
 
@@ -980,7 +995,7 @@ medApp.controllers = {
         // Seleciona imagem a partir da galeria de imagens do dispositivo
         medApp.services.hidePopover(medApp.services.dial);
 
-        navigator.camera.getPicture (successCallback, FailCallback, { sourceType: Camera.PictureSourceType.PHOTOLIBRARY, 
+        navigator.camera.getPicture (successCallback, FailCallback, { sourceType: Camera.PictureSourceType.PHOTOLIBRARY,
                                                                       destinationType: Camera.DestinationType.DATA_URL
                                                                     });
 
@@ -1001,7 +1016,7 @@ medApp.controllers = {
           };
 
       };
-      
+
     };
 
     // Botão salvar altera os dados no servidor se houve mudanças
@@ -1056,26 +1071,18 @@ medApp.controllers = {
 
   /* RETIRADO PARA TESTES
   feed: function(page) {
-
     page.addEventListener('show', function(event) {
-
       $.get('http://julianop.com.br:3000/api/paciente/geral/idMedico/' + medApp.services.getIdMedico())
         .done(function(data) {
-
           for (var i = 0, len = data.length; i < len; i++) {
-
             var pacientesNews = data[i];
-
             $.get('http://julianop.com.br:3000/api/lembrete/' + pacientesNews.idPaciente)
               .done(function(response){
-
                 // Criar feed de notícias aqui
-
             });
           };
       });
     });
-
       // Realiza a atualização do feed com pull --> TODO: funcionalidade.
         var pullHook = document.getElementById('pull-hook-feed');
         pullHook.addEventListener('changestate', function(event) {
@@ -1096,7 +1103,6 @@ medApp.controllers = {
         pullHook.onAction = function(done) {
           setTimeout(done, 1000);
         };
-
     /* RETIRADO PARA TESTES
       //Implementação de gráfico aparente no feed.
       var ctx = document.getElementById("myChart");
@@ -1121,7 +1127,7 @@ medApp.controllers = {
             responsive: false
           }
       });
-    
+
   },*/
 
   ///////////////////////////////////////
@@ -1198,10 +1204,10 @@ medApp.controllers = {
         $('#med-novo-pac').val(data[0].nome);
 
       });
-      
+
 
     });
-    
+
     // Função de adiquirir imagem de perfil
     page.querySelector('.add-foto').onclick = function snapPicture () {
 
@@ -1214,7 +1220,7 @@ medApp.controllers = {
         // Captura imagem a partir da câmera do dispositivo
         medApp.services.hidePopover(medApp.services.dial);
 
-        navigator.camera.getPicture (successCallback, FailCallback, { sourceType: Camera.PictureSourceType.CAMERA, 
+        navigator.camera.getPicture (successCallback, FailCallback, { sourceType: Camera.PictureSourceType.CAMERA,
                                                                       destinationType: Camera.DestinationType.DATA_URL
                                                                     });
 
@@ -1241,7 +1247,7 @@ medApp.controllers = {
         // Seleciona imagem a partir da galeria de imagens do dispositivo
         medApp.services.hidePopover(medApp.services.dial);
 
-        navigator.camera.getPicture (successCallback, FailCallback, { sourceType: Camera.PictureSourceType.PHOTOLIBRARY, 
+        navigator.camera.getPicture (successCallback, FailCallback, { sourceType: Camera.PictureSourceType.PHOTOLIBRARY,
                                                                       destinationType: Camera.DestinationType.DATA_URL
                                                                     });
 
@@ -1262,7 +1268,7 @@ medApp.controllers = {
           };
 
       };
-      
+
     };
 
     page.querySelector('#cadastrar-pac').onclick = function() {
@@ -1362,7 +1368,7 @@ medApp.controllers = {
       .then(function(prompt) {
 
         Oauth = prompt;
-      
+
       //Oauth = prompt("Digite o codigo da FITBIT");
 
       //pega o codigoOauth
@@ -1378,9 +1384,9 @@ medApp.controllers = {
 
           })
           .done(function(data){
-            
+
             console.log(data);
-          
+
           });
 
       });
@@ -1613,11 +1619,11 @@ medApp.controllers = {
               ons.notification.alert("Não foi possível dispensar o paciente");
             });
 
-            setTimeout(function(){ 
+            setTimeout(function(){
               modal.hide();
               document.querySelector('#pacienteNav').resetToPage('html/pacientes.html', {options: {animation: 'fade'}});
               }, 1000);
-            
+
           };
 
         });
@@ -1758,7 +1764,7 @@ medApp.controllers = {
 
       } else {
 
-        if(nomeAtual !== $('#nome-editar-grupo').val()) { 
+        if(nomeAtual !== $('#nome-editar-grupo').val()) {
 
           $.ajax({
             url: 'http://julianop.com.br:3000/api/grupoPacientes',
@@ -1774,13 +1780,13 @@ medApp.controllers = {
 
         for (var i = 0, len = integrantesEdit.length; i < len; i++) {
 
-          // Verifica os checkboxes de cada paciente e os exclui caso não estajam marcados 
+          // Verifica os checkboxes de cada paciente e os exclui caso não estajam marcados
           if(integrantesEdit[i].checked == false) {
 
             $.ajax({
               url: 'http://julianop.com.br:3000/api/grupoPacientes/pacientes',
               type: 'DELETE',
-              data: { 
+              data: {
                 idGrupoPac: medApp.services.getGrupoAtual(),
                 idPaciente: jQuery.data(integrantesEdit[i], 'idPaciente')
               }
@@ -1795,7 +1801,7 @@ medApp.controllers = {
       };
 
     };
-      
+
   }
 
 };
