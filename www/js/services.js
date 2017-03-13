@@ -192,7 +192,7 @@ medApp.services = {
 
     pacienteItem.onclick = function() {
 
-      medApp.services.setPacienteAtual( {idPaciente: $(pacienteItem).data('idPaciente'),
+      medApp.services.setPacienteAtual( { idPaciente: $(pacienteItem).data('idPaciente'),
                                           nome: data.nomePaciente,
                                           dataIntFormatoTraco: dataPacienteFormatoTraco,
                                           dataIntFormatoBarra: dataPacienteFormatoBarra,
@@ -600,7 +600,7 @@ medApp.services = {
                 idGrupoPac: $(groupListItem).data('idGrupoPac')
               }
             })
-            .done(function(data) {
+            .done(function() {
               
               grupoLista.removeChild(groupListItem);
 

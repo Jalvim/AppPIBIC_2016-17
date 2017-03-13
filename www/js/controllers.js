@@ -225,8 +225,7 @@ medApp.controllers = {
           CRM: $('#crm-cadastro').val(),
           telefone: $('#telefone-cadastro').val(),
           email: $('#email-cadastro').val(),
-          senha: $('#senha-cadastro').val() ,
-          picture: $('picture').src
+          senha: $('#senha-cadastro').val()
         })
           .done(function(data) {
             modal.hide();
@@ -249,6 +248,7 @@ medApp.controllers = {
 
       $.get('http://julianop.com.br:3000/api/medico/busca/ID/' + medApp.services.getIdMedico())
       .done(function(data) {
+
         page.querySelector('#nome-perfil').innerHTML = data[0].nome;
         page.querySelector('#crm-perfil').innerHTML = 'CRM' + ' ' + data[0].CRM;
         page.querySelector('#esp-perfil').innerHTML = data[0].especialidade;
@@ -334,23 +334,26 @@ medApp.controllers = {
       $.get('http://julianop.com.br:3000/api/paciente/geral/idMedico/' + medApp.services.getIdMedico())
         .done(function(data) {
 
-          for (var i = 0, len = data.length; i < len; i++) {
+          if(data[0].hasOwnProperty('idPaciente')) {
+            for (var i = 0, len = data.length; i < len; i++) {
 
-            var pacientesInfo = data[i];
+              var pacientesInfo = data[i];
 
-            medApp.services.createPaciente(
-              {
-                statusPaciente: (pacientesInfo.ativo == 1) ? 'ativo' : 'inativo',
-                img: 'http://www.clker.com/cliparts/A/Y/O/m/o/N/placeholder-md.png',
-                nomePaciente: pacientesInfo.nomePaciente,
-                batimentos: '--',
-                dataPaciente: pacientesInfo.dataDeNascimento,
-                causaPaciente: pacientesInfo.causaDaInternacao,
-                medicoResp: pacientesInfo.numeroDoProntuario,
-                hospital: pacientesInfo.telefone,
-                idPaciente: pacientesInfo.idPaciente,
-                medicoResp: pacientesInfo.nome
-              }, 'pacientes');
+              medApp.services.createPaciente(
+                {
+                  statusPaciente: (pacientesInfo.ativo == 1) ? 'ativo' : 'inativo',
+                  img: 'http://www.clker.com/cliparts/A/Y/O/m/o/N/placeholder-md.png',
+                  nomePaciente: pacientesInfo.nomePaciente,
+                  //batimentos: '--',
+                  dataPaciente: pacientesInfo.dataDeNascimento,
+                  causaPaciente: pacientesInfo.causaDaInternacao,
+                  medicoResp: pacientesInfo.numeroDoProntuario,
+                  hospital: pacientesInfo.telefone,
+                  idPaciente: pacientesInfo.idPaciente,
+                  medicoResp: pacientesInfo.nome
+                }, 'pacientes');
+
+            };
 
           };
 
@@ -406,13 +409,13 @@ medApp.controllers = {
            
          }
  
-         console.log(medApp.services.pulseiraAtual.idPulseira);
+         //console.log(medApp.services.pulseiraAtual.idPulseira);
   	    
   	  })
       .done(function(data) {
         if(data.length == 0){
 
-      	  page.querySelector('#pulseira-pac').innerHTML = 'Sem pulseira';
+      	  page.querySelector('#pulseira-pac').innerHTML = 'Nenhuma';
       
         } else {
       	
@@ -526,7 +529,6 @@ medApp.controllers = {
           })
         .done(function (data){
           
-          console.log(data);
           if (pacientesNovoGrupo.length == 1) {
 
             $.post("http://julianop.com.br:3000/api/grupoPacientes/pacientes",
@@ -535,7 +537,7 @@ medApp.controllers = {
               idGrupoPac: data.insertId,
               })
             .done(function (resp){
-              console.log(resp);
+              //console.log(resp);
               modal.hide();
               document.querySelector('#pacienteNav').popPage();
 
@@ -549,7 +551,7 @@ medApp.controllers = {
               idGrupoPac: data.insertId,
               })
             .done(function (resp){
-              console.log(resp);
+              //console.log(resp);
               modal.hide();
               document.querySelector('#pacienteNav').popPage();
               
@@ -722,10 +724,10 @@ medApp.controllers = {
                 medApp.services.dadosEstaticos.pulso[i] = data[((data.length - 10) + i)].heartRate;
               }
             }
-            console.log(data);
+            //console.log(data);
           })
           .done(function () {
-            console.log(medApp.services.dadosEstaticos.pulso);
+            //console.log(medApp.services.dadosEstaticos.pulso);
             var chrt3 = document.getElementById("myChart3");
             var data3 = {
               labels: ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10"],
@@ -1049,7 +1051,7 @@ medApp.controllers = {
           }
         })
         .done(function(data) {
-          console.log(data);
+          //console.log(data);
           document.querySelector('#pacienteNav').popPage( {data:
             {
               nome: dadosEditPac.nome,
@@ -1308,11 +1310,10 @@ medApp.controllers = {
           nomePaciente: $('#nome-novo-pac').val(),
           causaDaInternacao: $('#causa-novo-pac').val(),
           numeroDoProntuario: 1111,
-          telefone: 11111,
+          telefone: $('#local-novo-pac').val(),
           foto: 01010101011111011111,
           dataDeNascimento: dataNovoPaciente,
-          idMedico: medApp.services.getIdMedico(),
-          idPulseira: 50
+          idMedico: medApp.services.getIdMedico()
         })
         .done(function(data) {
           modal.hide();
@@ -1384,7 +1385,7 @@ medApp.controllers = {
 
       //pega o codigoOauth
 
-        console.log(Oauth);
+        //console.log(Oauth);
 
         $.post("http://julianop.com.br:3000/api/pulseira",
           {
@@ -1396,7 +1397,7 @@ medApp.controllers = {
           })
           .done(function(data){
             
-            console.log(data);
+            //console.log(data);
           
           });
 
@@ -1532,7 +1533,7 @@ medApp.controllers = {
                 }
         })
         .done(function(data) {
-          console.log(data);
+          //console.log(data);
           document.querySelector('#pacienteNav').popPage();
         })
         .fail(function() {
@@ -1577,10 +1578,10 @@ medApp.controllers = {
               url: 'http://julianop.com.br:3000/api/pulseira',
               type: 'PUT',
               success: function(data) {
-                console.log(data);
+                //console.log(data);
               },
               error: function(data) {
-                console.log(data);
+                //console.log(data);
               },
               data: {
                 idPulseira: medApp.services.pulseiraAtual.idPulseira,
@@ -1623,7 +1624,7 @@ medApp.controllers = {
             })
             .done(function(data) {
 
-              console.log(data);
+              //console.log(data);
 
             })
             .fail(function() {
@@ -1659,11 +1660,15 @@ medApp.controllers = {
       $.get('http://julianop.com.br:3000/api/grupoPacientes/buscarGrupo/idMedico/' + medApp.services.getIdMedico())
       .done(function(data) {
 
-          for (var i = 0, len = data.length; i < len; i++) {
+          if(data[0].hasOwnProperty('idGrupoPac')) {
+
+            for (var i = 0, len = data.length; i < len; i++) {
 
             medApp.services.listGroups({ nomeGrupo: data[i].nomeGrupo,
                                          medicoResp: data[i].MedicoResp,
                                          idGrupoPac: data[i].idGrupoPac})
+
+            };
 
           };
 
@@ -1691,13 +1696,13 @@ medApp.controllers = {
       // Seta o nome do grupo na Tollbar
       page.querySelector('.center').innerHTML = page.data.nomeGrupo;
 
-      // Limpa o paciente atual, se retornar do perfil de algum
+      // Limpa o paciente atual, se retornar do perfil de alguém
       medApp.services.deletePacienteAtual();
 
       $('#lista-pacientes-grupo').empty();
       $.get('http://julianop.com.br:3000/api/grupoPacientes/buscarGrupo/paciente/' + medApp.services.getGrupoAtual() + '/' + medApp.services.getIdMedico())
       .done(function(data) {
-
+          
           for (var i = 0, len = data.length; i < len; i++) {
 
             var pacientesInfo = data[i];
@@ -1707,12 +1712,12 @@ medApp.controllers = {
                 statusPaciente: (pacientesInfo.ativo == 1) ? 'ativo' : 'inativo',
                 img: 'http://www.clker.com/cliparts/A/Y/O/m/o/N/placeholder-md.png',
                 nomePaciente: pacientesInfo.nomePaciente,
-                batimentos: '--',
+                //batimentos: '--',
                 dataPaciente: pacientesInfo.dataDeNascimento,
                 causaPaciente: pacientesInfo.causaDaInternacao,
                 medicoResp: pacientesInfo.numeroDoProntuario,
                 hospital: pacientesInfo.telefone,
-                idPaciente: pacientesInfo.idPaciente,
+                idPaciente: pacientesInfo.idtable1,
                 medicoResp: pacientesInfo.nome
               }, 'grupo');
 
