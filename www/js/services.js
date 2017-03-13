@@ -397,6 +397,46 @@ medApp.services = {
 
     pulseiraLista.appendChild(pulseiraItem); 
 
+    document.querySelector("#item" + index).onclick = function() {
+      medApp.services.pulseiraAtual = medApp.services.pulseirasDisponiveis[index];
+      medApp.services.hidePopover(medApp.services.dial);
+
+      //Esvazia a lista de pulseiras
+      $('#lista-pulseiras').empty();
+
+      ons.notification.alert("Pulseira " + medApp.services.pulseiraAtual + " selecionada.");
+
+      //Adiciona a pulseira e o paciente na base de dados.
+      $.ajax({
+        url: 'http://julianop.com.br:3000/api/pulseira',
+        type: 'PUT',
+        success: function(data) {
+          console.log("Pulseira" + medApp.services.pulseiraAtual + "selecionada!");
+        },
+        error: function() {
+          console.log("Não Cadastrado.");
+        },
+        data: {
+          idPulseira: medApp.services.pulseiraAtual,
+          disponivel: 1,
+          idPaciente: medApp.services.getIdPaciente()
+        }
+      });
+              
+    };
+
+  },
+
+  showPulseirasDisponiveis2: function(index) {
+    var template = document.createElement('div');
+
+    template.innerHTML = '<ons-list-item modifier="nodivider"> <div> Pulseira de id '
+      + medApp.services.pulseirasDisponiveis[index] + '</div> </ons-list-item>';
+    
+    var pulseiraItem = template.firstChild;
+    var pulseiraLista = document.querySelector('#lista-pulseiras');
+
+    pulseiraLista.appendChild(pulseiraItem);
   },
 
   getDia: function(index) {

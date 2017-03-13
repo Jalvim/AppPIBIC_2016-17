@@ -18,9 +18,6 @@
           <div class="center">
             Alterar Pulseira
           </div>
-          <div class="right">
-            Pulseira #1
-          </div>
         </ons-list-item>
 
         <!-- TODO: Verificar se é possível controlar a sincronização via App
@@ -45,6 +42,14 @@
             Dispensar Paciente (Alta)
           </div>
         </ons-list-item>
+
+        <ons-dialog id="dialog" cancelable> <!-- Setar opção dialog -->
+          <ons-list id="lista-pulseiras"> 
+            <ons-list-item id="nuloPulseira" tappable>
+              <div>Desindexar a pulseira atual</div>
+            </ons-list-item>
+          </ons-list>  
+        </ons-dialog>
     
       </ons-list>
 
