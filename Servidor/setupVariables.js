@@ -173,6 +173,16 @@ module.exports = function(app) {
 			email: 'matheusbafutto@gmail.com'
 		}
 	};
+	
+	app.optionsPostTestRequestLoginMudaSenha = {
+		method:'POST',
+		url:'http://127.0.0.1:3000/api/login/mudarSenha',
+		form:{ 
+			email: 'matheusbafutto@gmail.com',
+			velhaSenha: 'senia6',
+			novaSenha: 'Sonia7'
+		}
+	};
 
 	//Opções de teste de request http para grupos de pacientes
 	app.optionsPostTestRequestGrupoPacientes = {

@@ -48,22 +48,22 @@ connection.connect();
 //setando todas as variáveis de options nos requests http de teste
 setupOptionsVariables(app);
 
-// request(app.optionsPutTestRequestLogin, function(err, httpResponse, body) { 
+// request(app.optionsPostTestRequestLoginMudaSenha, function(err, httpResponse, body) { 
 // 	console.log(err);
 // 	//console.log(httpResponse);
 // 	console.log(body);
 // });
 
 //Loop e multiplexação das pulseiras em atividade para resgate de parâmetros estáticos
-// setInterval(function(){
-// 	connection.query('SELECT idPulseira FROM Pulseira_Paciente', function(err,rows) {
-// 		if (err) console.log(err);
-// 		for (var i = 0; i < rows.length; i++) {
-// 			getStaticHealthParams(0, rows[i].idPulseira);
-// 		}
-// 	});
-// }, 900000);
-// 
+setInterval(function(){
+	connection.query('SELECT idPulseira FROM Pulseira_Paciente', function(err,rows) {
+		if (err) console.log(err);
+		for (var i = 0; i < rows.length; i++) {
+			getStaticHealthParams(0, rows[i].idPulseira);
+		}
+	});
+}, 900000);
+
 // //Loop e multiplexação das pulseiras em atividade para resgate de parâmetros dinâmicos
 // setInterval(function() {
 // 	var data = new Date(),
@@ -78,7 +78,7 @@ setupOptionsVariables(app);
 
 //request(optionsGetHR, getHRCallback);
 //getDynamicHealthParams(60, new Date(), 0);
-//getStaticHealthParams(0, 56);
+// getStaticHealthParams(0, 60);
 //getStaticHealthParams(0, 18);
 //console.log(getTodayDate());
 
@@ -193,10 +193,14 @@ function getStaticHealthParams(i, idPulseira) {
 	  
 			var authorizationHeader = `Bearer ${result[0].accessToken}`;
 		
-			var staticParamsArray = ['steps', 'calories', 'distance', 'floors'];
+// 			var staticParamsArray = ['steps', 'calories', 'distance', 'floors'];
 	
+	
+			var novaData = new Date();
+			formatDate(novaData);
 			var newStaticParamOption = {
-				url: `https://api.fitbit.com/1/user/${result[0].userID}/activities/${staticParamsArray[i]}/date/today/1d.json`,
+// 				url: `https://api.fitbit.com/1/user/${result[0].userID}/activities/${staticParamsArray[i]}/date/today/1d.json`,
+				url:`https://api.fitbit.com/1/user/${result[0].userID}/activities/date/${novaData.date}.json`,
 				headers: {
 					'Authorization': authorizationHeader,
 				}
@@ -206,37 +210,71 @@ function getStaticHealthParams(i, idPulseira) {
 				if (response.statusCode == 401) {
 					refreshOAuthToken(newStaticParamOption, getStaticHealthParamsCallback, result);
 				} else if (!errors && response.statusCode == 200) {
+					
 					var activity = JSON.parse(body);
-					var property = 'activities-' + staticParamsArray[i];
-					if (staticParamsArray[i] == 'steps') {
-						newStaticQuery = {
-							sql: `SELECT * FROM SaudeParamsEstaticos WHERE idPaciente=${res[0].pacienteAtual} AND data='${activity[property][0].dateTime}'`, 
-							timeout: 10000
-						}
-						connection.query(newStaticQuery, function(err, rows, fields) {
-							if(rows.length < 1) {
-								newStaticQuery = {
-									sql: `INSERT INTO SaudeParamsEstaticos (idPaciente, data, steps) VALUES (${res[0].pacienteAtual}, '${activity[property][0].dateTime}', ${activity[property][0].value})`,
-									timeout: 10000
-								}
-							}
-							else if (rows.length == 1){
-								newStaticQuery = {
-									sql: `UPDATE SaudeParamsEstaticos SET steps=${activity[property][0].value} WHERE data='${activity[property][0].dateTime}' AND idPaciente=${res[0].pacienteAtual}`,
-									timeout: 10000
-								}
-							} else throw new Error("Ambiguidades com id e/ou data de pacientes na base de dados");
-							connection.query(newStaticQuery);
-						});
-					} else {
-						staticQuery = {
-							sql: `UPDATE SaudeParamsEstaticos SET ${staticParamsArray[i]}=${activity[property][0].value} WHERE data='${activity[property][0].dateTime}' AND idPaciente=${res[0].pacienteAtual}`,
-							timeout: 10000
-						}
-						connection.query(staticQuery, function(err, rows, fields) {
-						});
+					console.log('teste');
+					
+					var steps = activity.summary.steps,
+						floors = activity.summary.floors,
+						distance = activity.summary.distances[0].distance,
+						calories = activity.summary.caloriesOut,
+						data = novaData.date;
+
+					newStaticQuery = {
+						sql: `SELECT * FROM SaudeParamsEstaticos WHERE idPaciente=${res[0].pacienteAtual} AND data='${data}'`, 
+						timeout: 10000
 					}
-					getStaticHealthParams(i+1, idPulseira);
+					connection.query(newStaticQuery, function(err, rows, fields) {
+						if(rows.length < 1) {
+							newStaticQuery = {
+								sql: `INSERT INTO SaudeParamsEstaticos (idPaciente, data, steps,calories, distance, floors) VALUES (${res[0].pacienteAtual}, '${data}', ${steps}, ${calories}, ${distance}, ${floors})`,
+								timeout: 10000
+							}
+						}
+						else if (rows.length == 1){
+							newStaticQuery = {
+								sql: `UPDATE SaudeParamsEstaticos SET steps=${steps},calories=${calories}, distance=${distance},floors=${floors} WHERE data='${data}' AND idPaciente=${res[0].pacienteAtual}`,
+								timeout: 10000
+							}
+						} else throw new Error("Ambiguidades com id e/ou data de pacientes na base de dados");
+						connection.query(newStaticQuery);
+					});
+					
+					
+					console.log(activity);
+					console.log(activity.summary.distances);
+					console.log(activity.summary.steps +'  '+activity.summary.floors+'  '+activity.summary.distances[0].distance +'  '+activity.summary.caloriesOut);					
+// 					var activity = JSON.parse(body);
+// 					var property = 'activities-' + staticParamsArray[i];
+// 					if (staticParamsArray[i] == 'steps') {
+// 						newStaticQuery = {
+// 							sql: `SELECT * FROM SaudeParamsEstaticos WHERE idPaciente=${res[0].pacienteAtual} AND data='${activity[property][0].dateTime}'`, 
+// 							timeout: 10000
+// 						}
+// 						connection.query(newStaticQuery, function(err, rows, fields) {
+// 							if(rows.length < 1) {
+// 								newStaticQuery = {
+// 									sql: `INSERT INTO SaudeParamsEstaticos (idPaciente, data, steps) VALUES (${res[0].pacienteAtual}, '${activity[property][0].dateTime}', ${activity[property][0].value})`,
+// 									timeout: 10000
+// 								}
+// 							}
+// 							else if (rows.length == 1){
+// 								newStaticQuery = {
+// 									sql: `UPDATE SaudeParamsEstaticos SET steps=${activity[property][0].value} WHERE data='${activity[property][0].dateTime}' AND idPaciente=${res[0].pacienteAtual}`,
+// 									timeout: 10000
+// 								}
+// 							} else throw new Error("Ambiguidades com id e/ou data de pacientes na base de dados");
+// 							connection.query(newStaticQuery);
+// 						});
+// 					} else {
+// 						staticQuery = {
+// 							sql: `UPDATE SaudeParamsEstaticos SET ${staticParamsArray[i]}=${activity[property][0].value} WHERE data='${activity[property][0].dateTime}' AND idPaciente=${res[0].pacienteAtual}`,
+// 							timeout: 10000
+// 						}
+// 						connection.query(staticQuery, function(err, rows, fields) {
+// 						});
+// 					}
+// 					getStaticHealthParams(i+1, idPulseira);
 				}
 			});
 		});
