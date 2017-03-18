@@ -1749,7 +1749,7 @@ medApp.controllers = {
       // Seta o nome atual do grupo editado
       $('#nome-editar-grupo').val(page.data.nomeGrupo);
 
-      $.get('http://julianop.com.br:3000/api/grupoPacientes/buscarGrupo/paciente/' + medApp.services.getGrupoAtual())
+      $.get('http://julianop.com.br:3000/api/grupoPacientes/buscarGrupo/paciente/' + medApp.services.getGrupoAtual() + '/' + medApp.services.getIdMedico())
       .done(function(data) {
 
         for (var i = 0, len = data.length; i < len; i++) {
@@ -1760,7 +1760,7 @@ medApp.controllers = {
               {
                 nomePaciente: integrantesInfo.nomePaciente,
                 img: 'http://www.clker.com/cliparts/A/Y/O/m/o/N/placeholder-md.png',
-                idPaciente: integrantesInfo.idPaciente
+                idPaciente: integrantesInfo.idtable1
               }, 'checked', 'edit');
 
           };
@@ -1785,7 +1785,8 @@ medApp.controllers = {
           $.ajax({
             url: 'http://julianop.com.br:3000/api/grupoPacientes',
             type: 'PUT',
-            data: { idGrupoPac: medApp.services.getGrupoAtual(),
+            data: { 
+                    idGrupoPac: medApp.services.getGrupoAtual(),
                     nome: $('#nome-editar-grupo').val()
                   }
           });
@@ -1812,7 +1813,10 @@ medApp.controllers = {
 
         };
 
-        document.querySelector('#pacienteNav').popPage();
+        setTimeout(function(){ 
+              modal.hide();
+              document.querySelector('#pacienteNav').popPage();
+              }, 500);
 
       };
 
