@@ -650,7 +650,7 @@ medApp.controllers = {
           medApp.services.dataDados = $('#data-dados').val();
 
           if(medApp.services.dataDados === ''){
-            page.querySelector('#dados-recuperados').innerHTML = 'Nenhuma busca efetuada.';
+            page.querySelector('#dados-recuperados').innerHTML = 'Escolha a Data e clique aqui';
           } 
 
           page.querySelector('#dados-rec').onclick = function(dataDados) {
@@ -670,7 +670,7 @@ medApp.controllers = {
                 //medApp.services.dadosRecuperados = data.calories;
 
                 console.log(data);
-                page.querySelector('#dados-recuperados').innerHTML = data.calories;
+                page.querySelector('#dados-recuperados').innerHTML = data.calories + ' calorias perdidas.';
 
               });
             }
@@ -743,7 +743,7 @@ medApp.controllers = {
           medApp.services.dataDados = $('#data-dados').val();
 
           if(medApp.services.dataDados === ''){
-            page.querySelector('#dados-recuperados').innerHTML = 'Nenhuma busca efetuada.';
+            page.querySelector('#dados-recuperados').innerHTML = 'Escolha a Data e clique aqui';
           } 
 
           page.querySelector('#dados-rec').onclick = function(dataDados) {
@@ -763,7 +763,7 @@ medApp.controllers = {
                 //medApp.services.dadosRecuperados = data.calories;
 
                 console.log(data);
-                page.querySelector('#dados-recuperados').innerHTML = data.steps;
+                page.querySelector('#dados-recuperados').innerHTML = data.steps + ' passos dados.';
 
               });
             }
@@ -899,7 +899,7 @@ medApp.controllers = {
           medApp.services.dataDados = $('#data-dados').val();
 
           if(medApp.services.dataDados === ''){
-            page.querySelector('#dados-recuperados').innerHTML = 'Nenhuma busca efetuada.';
+            page.querySelector('#dados-recuperados').innerHTML = 'Escolha a Data e clique aqui';
           } 
 
           page.querySelector('#dados-rec').onclick = function(dataDados) {
@@ -919,7 +919,7 @@ medApp.controllers = {
                 //medApp.services.dadosRecuperados = data.calories;
 
                 console.log(data);
-                page.querySelector('#dados-recuperados').innerHTML = data.floors;
+                page.querySelector('#dados-recuperados').innerHTML = data.floors + ' degraus escalados.';
 
               });
             }
