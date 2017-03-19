@@ -645,7 +645,36 @@ medApp.controllers = {
               }
             });
 
-          });
+          }); 
+
+          medApp.services.dataDados = $('#data-dados').val();
+
+          if(medApp.services.dataDados === ''){
+            page.querySelector('#dados-recuperados').innerHTML = 'Nenhuma busca efetuada.';
+          } 
+
+          page.querySelector('#dados-rec').onclick = function(dataDados) {
+
+            medApp.services.dataDados = $('#data-dados').val();
+ 
+            if(medApp.services.dataDados === ''){
+              page.querySelector('#dados-recuperados').innerHTML = 'Dados não recuperados.';
+            } else {
+
+              console.log(medApp.services.dataDados);
+
+              $.get('http://julianop.com.br:3000/api/paciente/health/static/' + medApp.services.dadosPacienteAtual.idAtualPaciente + '/' + medApp.services.dataDados)
+              .done(function(data) {
+
+                
+                //medApp.services.dadosRecuperados = data.calories;
+
+                console.log(data);
+                page.querySelector('#dados-recuperados').innerHTML = data.calories;
+
+              });
+            }
+          };
 
         // Fim da interface gráfica 1. TODO --> Implementar outros gráficos.
 
@@ -711,6 +740,35 @@ medApp.controllers = {
 
           });
 
+          medApp.services.dataDados = $('#data-dados').val();
+
+          if(medApp.services.dataDados === ''){
+            page.querySelector('#dados-recuperados').innerHTML = 'Nenhuma busca efetuada.';
+          } 
+
+          page.querySelector('#dados-rec').onclick = function(dataDados) {
+
+            medApp.services.dataDados = $('#data-dados').val();
+ 
+            if(medApp.services.dataDados === ''){
+              page.querySelector('#dados-recuperados').innerHTML = 'Dados não recuperados.';
+            } else {
+
+              console.log(medApp.services.dataDados);
+
+              $.get('http://julianop.com.br:3000/api/paciente/health/static/' + medApp.services.dadosPacienteAtual.idAtualPaciente + '/' + medApp.services.dataDados)
+              .done(function(data) {
+
+                
+                //medApp.services.dadosRecuperados = data.calories;
+
+                console.log(data);
+                page.querySelector('#dados-recuperados').innerHTML = data.steps;
+
+              });
+            }
+          };
+
           // Fim da interface gráfica 2. TODO --> Implementar outros gráficos.
 
   },
@@ -722,11 +780,11 @@ medApp.controllers = {
         //Request
         $.get('http://julianop.com.br:3000/api/paciente/health/dynamic/' + medApp.services.dadosPacienteAtual.idAtualPaciente + '/' + medApp.services.getToday('traco'))
           .done(function(data) {
-          	if(data.length < 10){
-          	  for(var i = 0; i < data.length; i ++) {
-          	    medApp.services.dadosEstaticos.pulso[i] = data[i].heartRate;
-          	  }
-          	} else {
+            if(data.length < 10){
+              for(var i = 0; i < data.length; i ++) {
+                medApp.services.dadosEstaticos.pulso[i] = data[i].heartRate;
+              }
+            } else {
               for(var i = 0; i < 10; i++){
                 medApp.services.dadosEstaticos.pulso[i] = data[((data.length - 10) + i)].heartRate;
               }
@@ -758,6 +816,35 @@ medApp.controllers = {
               }
             });
           });
+
+          /*medApp.services.dataDados = $('#data-dados').val();
+
+          if(medApp.services.dataDados === ''){
+            page.querySelector('#dados-recuperados').innerHTML = 'Nenhuma busca efetuada.';
+          } 
+
+          page.querySelector('#dados-rec').onclick = function(dataDados) {
+
+            medApp.services.dataDados = $('#data-dados').val();
+ 
+            if(medApp.services.dataDados === ''){
+              page.querySelector('#dados-recuperados').innerHTML = 'Dados não recuperados.';
+            } else {
+
+              console.log(medApp.services.dataDados);
+
+              $.get('http://julianop.com.br:3000/api/paciente/health/static/' + medApp.services.dadosPacienteAtual.idAtualPaciente + '/' + medApp.services.dataDados)
+              .done(function(data) {
+
+                
+                //medApp.services.dadosRecuperados = data.calories;
+
+                console.log(data);
+                page.querySelector('#dados-recuperados').innerHTML = data.calories;
+
+              });
+            }
+          }; */
 
         // Fim da interface gráfica 3. TODO --> Implementar outros gráficos.
 
@@ -809,9 +896,40 @@ medApp.controllers = {
 
           });
 
+          medApp.services.dataDados = $('#data-dados').val();
+
+          if(medApp.services.dataDados === ''){
+            page.querySelector('#dados-recuperados').innerHTML = 'Nenhuma busca efetuada.';
+          } 
+
+          page.querySelector('#dados-rec').onclick = function(dataDados) {
+
+            medApp.services.dataDados = $('#data-dados').val();
+ 
+            if(medApp.services.dataDados === ''){
+              page.querySelector('#dados-recuperados').innerHTML = 'Dados não recuperados.';
+            } else {
+
+              console.log(medApp.services.dataDados);
+
+              $.get('http://julianop.com.br:3000/api/paciente/health/static/' + medApp.services.dadosPacienteAtual.idAtualPaciente + '/' + medApp.services.dataDados)
+              .done(function(data) {
+
+                
+                //medApp.services.dadosRecuperados = data.calories;
+
+                console.log(data);
+                page.querySelector('#dados-recuperados').innerHTML = data.floors;
+
+              });
+            }
+          };
+
         // Fim da interface gráfica 4. TODO --> Implementar outros gráficos.
 
   },
+
+
 
   /////////////////////////////////////
   // Controlador de edição do Médico //

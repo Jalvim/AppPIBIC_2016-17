@@ -388,6 +388,8 @@ medApp.services = {
 
   pulseiraAtual: -1,
 
+  dataDados: new String,
+
   showPulseirasDisponiveis: function(index) {
     var template = document.createElement('div');
 
