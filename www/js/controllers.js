@@ -1800,7 +1800,6 @@ medApp.controllers = {
 
     page.querySelector('#editar-grupo').onclick = function() {
 
-      console.log('nao integram ' + listaNaoIntegrantes + ' integram ' + listaIntegrantes );
       var modal = page.querySelector('ons-modal');
       modal.show();
 
@@ -1833,14 +1832,17 @@ medApp.controllers = {
           if((listaIntegrantes.includes(idPacEditGrupo)) && integrantesEdit[i].checked == false) {
 
             // Exclui o paciente se ele pertencia ao grupo e teve sua checkbox unchecked
-            /*$.ajax({
+            $.ajax({
               url: 'http://julianop.com.br:3000/api/grupoPacientes/pacientes',
               type: 'DELETE',
               data: { 
                 idGrupoPac: medApp.services.getGrupoAtual(),
                 idPaciente: jQuery.data(integrantesEdit[i], 'idPaciente')
               }
-            });*/
+            })
+            .done(function(data) {
+              console.log(data);
+            });
 
           } else if((listaNaoIntegrantes.includes(idPacEditGrupo)) && integrantesEdit[i].checked == true) {
 
@@ -1858,7 +1860,7 @@ medApp.controllers = {
 
         setTimeout(function(){ 
               modal.hide();
-              document.querySelector('#pacienteNav').popPage();
+              document.querySelector('#pacienteNav').popPage({ data: { nomeGrupo: $('#nome-editar-grupo').val() }});
               }, 500);
 
       };
