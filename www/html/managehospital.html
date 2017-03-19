@@ -1,0 +1,45 @@
+<ons-page id="managehospital">
+
+  <ons-toolbar class="toolbar">
+  	<div class="left"> <ons-back-button>Voltar</ons-back-button></div>
+    <div class="center">Gerenciar Hospitais</div>
+  </ons-toolbar>
+
+  <!-- Lista de Grupos -->
+  <ons-list modifier="inset" style="padding-top: 10px;" id="lista-hospital">
+
+  	<ons-list-item style='border: 1px solid;'>
+
+  		<ons-list modifier="inset">
+		    <ons-list-item>
+		    	<ons-icon icon="hospital-o"></ons-icon>
+		    	Hospital #1
+		    </ons-list-item>
+		    <ons-list-item id="pac-hospital" tappable>
+		    	<ons-icon icon="md-accounts"></ons-icon>
+		    	Gerenciar Pacientes
+		    </ons-list-item>
+			<ons-list-item id="config-hospital" tappable>
+				<ons-icon icon="cog"></ons-icon>
+				Configurações
+			</ons-list-item>
+		</ons-list>
+
+  	</ons-list-item>
+
+  	<ons-list-item>
+  		<ons-list modifier="inset">
+		    <ons-list-header><ons-icon icon="hospital-o"></ons-icon>Hospital #2</ons-list-header>
+		    <ons-list-item modifier="longdivider">Item A</ons-list-item>
+			<ons-list-item modifier="longdivider">Item B</ons-list-item>
+		</ons-list>
+  	</ons-list-item>
+
+  </ons-list>
+
+  <!-- Botão para criar novo Grupo -->
+  <ons-fab position="bottom right" id="add-hospital" class="spd-dial">
+  	<ons-icon icon="md-plus"></ons-icon>
+  </ons-fab>
+
+</ons-page>

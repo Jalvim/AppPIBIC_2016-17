@@ -280,6 +280,13 @@ medApp.controllers = {
 
     };
 
+    // Chama a página de gerenciar hospitais do médico
+    page.querySelector('#manage-hospital').onclick = function() {
+
+      document.querySelector('#medicoNav').pushPage('html/managehospital.html');
+
+    };
+
     // Realiza o logoff
     page.querySelector('#logoff').onclick = function() {
 
@@ -1867,6 +1874,15 @@ medApp.controllers = {
 
     };
       
+  },
+
+  ////////////////////////////////////////
+  // Controlador de Gerenciar Hospitais //
+  ////////////////////////////////////////
+
+  managehospital: function(page) {
+
+
   }
 
 };
