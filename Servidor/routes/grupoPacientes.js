@@ -166,7 +166,7 @@ router.route('/pacientes/')
 			req.body.hasOwnProperty('idPaciente') &&
 			req.body.hasOwnProperty('idGrupoPac') ) {
 			connection.query(
-			  'DELETE FROM GrupoPac_Paciente WHERE idtable1=? AND idGrupoPac=? LIMIT 1',
+			  'DELETE FROM GrupoPac_Paciente WHERE idPaciente=? AND idGrupoPac=? LIMIT 1',
 			  [req.body.idPaciente, req.body.idGrupoPac],
 			  	function(err){
 				  	if (err != null) {
