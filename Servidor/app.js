@@ -25,17 +25,6 @@ var express = require('express'),
 	hospitaisRouter = require('./routes/hospitais.js');
 	compartilhamentoRouter = require('./routes/compartilhamento.js');
 	
-//Função de segurança para Exception handling
-process.on('uncaughtException', function(err){
- 	console.log('Caught exception: ' + err);
-	var email = {
-		to: senhas.emailMatheus,
-		subject: 'Alerta de Erro no webapp das Pulseiras Inteligentes',
-		text: `Ocorreu um erro crítico na aplicação:\n\n${err}`
-	}
-	mailSender(email);
-}); 
-	
 //Setup inicial de conecção com a base de dados 	
 connection = mysql.createConnection({
 	host : '79.170.40.183',
@@ -55,14 +44,14 @@ setupOptionsVariables(app);
 // });
 
 //Loop e multiplexação das pulseiras em atividade para resgate de parâmetros estáticos
-setInterval(function(){
-	connection.query('SELECT idPulseira FROM Pulseira_Paciente', function(err,rows) {
-		if (err) console.log(err);
-		for (var i = 0; i < rows.length; i++) {
-			getStaticHealthParams(0, rows[i].idPulseira);
-		}
-	});
-}, 900000);
+// setInterval(function(){
+// 	connection.query('SELECT idPulseira FROM Pulseira_Paciente', function(err,rows) {
+// 		if (err) console.log(err);
+// 		for (var i = 0; i < rows.length; i++) {
+// 			getStaticHealthParams(0, rows[i].idPulseira);
+// 		}
+// 	});
+// }, 900000);
 
 // //Loop e multiplexação das pulseiras em atividade para resgate de parâmetros dinâmicos
 // setInterval(function() {
