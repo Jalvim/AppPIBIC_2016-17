@@ -23,18 +23,7 @@ var express = require('express'),
 	grupoPacientesRouter = require('./routes/grupoPacientes.js'),
 	mailSender = require('./mailgunWraper.js');
 	hospitaisRouter = require('./routes/hospitais.js');
-	compartilhamentoRouter = require('./routes/compartilhamento.js');
-	
-//Função de segurança para Exception handling
-process.on('uncaughtException', function(err){
- 	console.log('Caught exception: ' + err);
-	var email = {
-		to: senhas.emailMatheus,
-		subject: 'Alerta de Erro no webapp das Pulseiras Inteligentes',
-		text: `Ocorreu um erro crítico na aplicação:\n\n${err}`
-	}
-	mailSender(email);
-}); 
+	compartilhamentoRouter = require('./routes/compartilhamento.js'); 
 	
 //Setup inicial de conecção com a base de dados 	
 connection = mysql.createConnection({
