@@ -21,7 +21,7 @@ medApp.controllers = {
       
       ons.notification.prompt({
         message:"Digite seu e-mail",
-        callback:function(email){
+        callback: function(email){
           window.open("http://www.julianop.com.br:3000/api/login/senha/change/email/" + email);
       /*
           e.preventDefault();
@@ -1501,7 +1501,7 @@ medApp.controllers = {
 
       var  Oauth;
 
-      ons.notification.prompt({message: 'Digite o codigo da FITBIT'})
+      ons.notification.prompt({message: "Digite o codigo da FITBIT"})
       .then(function(prompt) {
 
         Oauth = prompt;
@@ -2000,6 +2000,32 @@ medApp.controllers = {
 
   managehospital: function(page) {
 
+    page.querySelector('#add-hospital').onclick = function() {
+
+      ons.notification.prompt ({message: "Digite o nome do hospital a ser criado:"})
+      .then(function(nomeNovoHospital) {
+
+        if (nomeNovoHospital == '') {
+
+          ons.notification.alert("Preencha o nome do Hospital!");
+
+        } else {
+
+          $.post('http://julianop.com.br:3000/api/hospitais',
+          {
+            nome: nomeNovoHospital,
+          })
+            .done(function(data) {
+
+              ons.notification.alert(data);
+            
+            });
+
+        };
+
+      });
+
+    };
 
   }
 

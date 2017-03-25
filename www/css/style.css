@@ -1,6 +1,10 @@
 @media screen and (orientation: portrait){
   /*portrait orientation*/
-  
+
+  #medico .page__background { 
+    background-color: #EEEEEE;
+  }
+
   .logoff-button {
     width: 100%;
     margin: 0 auto;

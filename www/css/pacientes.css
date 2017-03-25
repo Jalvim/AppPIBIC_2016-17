@@ -1,5 +1,22 @@
 @media screen and (orientation: portrait){
   /*Portrait orientation design*/
+
+  #pacientes .page__background { 
+    background-color: #EEEEEE;
+  }
+
+  #grupos .page__background { 
+    background-color: #EEEEEE;
+  }
+
+  #vergrupo .page__background { 
+    background-color: #EEEEEE;
+  }
+
+  #perfilpaciente .page__background { 
+    background-color: #EEEEEE;
+  }
+
   .paciente-lista {
     margin-bottom: 7px;
     border-radius: 5px;
@@ -12,23 +29,27 @@
   }
 
   .alerta {
-	 background-color: #EF5350; 
+    background-color: white;
+	  border-left: 10px solid #EF5350; 
   }
 
   .ativo {
-	 background-color: #8BC34A; 
+	 background-color: white;
+   border-left: 10px solid #8BC34A;  
   }
 
   .inativo {
-	 background-color: #607D8B;
+    background-color: white;
+    border-left: 10px solid #607D8B; 
   }
 
   .grupo {
-    background-color: #FFEB3B;
+    background-color: white;
+    border-left: 10px solid #FFEB3B;
   }
 
   .paciente-detalhes {
-	 margin-bottom: 5px;
+	  margin-bottom: 5px;
   }
 
   .paciente-img {
