@@ -1203,22 +1203,33 @@ medApp.controllers = {
 
     page.addEventListener('show', function(event) {
 
-      $.get('http://julianop.com.br:3000/api/paciente/geral/idMedico/' + medApp.services.getIdMedico())
-        .done(function(data) {
+      $.get('http://julianop.com.br:3000/api/<feed>') Request específico do feed
+      .done(function(data){
 
-          for (var i = 0, len = data.length; i < len; i++) {
+      	if(data.length == 0){
+	      
+	      ons.notification.alert('Erro de conexão com o servidor');
+	      return;
 
-            var pacientesNews = data[i];
+      	} else {
 
-            $.get('http://julianop.com.br:3000/api/lembrete/' + pacientesNews.idPaciente)
-              .done(function(response){
+	      if(data.length > 10){//condicional para manter o tamenho do vetor ltd a 10 pacientes.
+	        
+	        for(i=0; i<10; i++){
 
-                // Criar feed de notícias aqui
+	          data[i] = data[(data.length - 10) + i];
 
-            });
-          };
+	        }
+
+	      }
+
+      	}
+
+	    for(var i=0; i<data.length; i++){
+	      medApp.services.iconeFeed(data[i], i);
+	      // onclick que redireciona está dentro da fç
+	    }
       });
-    });
 
       // Realiza a atualização do feed com pull --> TODO: funcionalidade.
         var pullHook = document.getElementById('pull-hook-feed');
@@ -1240,31 +1251,6 @@ medApp.controllers = {
         pullHook.onAction = function(done) {
           setTimeout(done, 1000);
         };
-
-    /* RETIRADO PARA TESTES
-      //Implementação de gráfico aparente no feed.
-      var ctx = document.getElementById("myChart");
-      var dados = {
-        labels: ["Domingo", "Segunda", "Terça", "Quarta", "Quinta", "Sexta", "Sábado"],
-        datasets: [
-          {
-            label: "Degraus 'subidos' durante a última semana",
-            backgroundColor: "rgba(75,192,192,0.4)",
-            borderColor: "rgba(75,192,192,1)",
-            borderWidth: 5,
-            hoverBackgroundColor: "rgba(255, 99, 132, 0.4)",
-            hoverBorderColor: "rgba:(255, 99, 132, 1)",
-            data: [10, 20, 30, 40, 50, 50, 40] // medApp.services.getDadosEstaticos().
-          }
-        ]
-      };
-      var myChart = new Chart(ctx, {
-        type: 'radar',
-        data: dados,
-          options: {
-            responsive: false
-          }
-      });
     
   },*/
 

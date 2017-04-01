@@ -370,6 +370,30 @@ medApp.services = {
 
   },
 
+  //Função responsável pela criacão de ítem no feed
+  /*
+  iconeFeed: function(info, i){
+    var template = document.createElement('div')
+
+    template.innerHTML = 
+    '<ons-list-titem id="item' + i + '">'
+    + '<div class="rigth">' + info.foto +
+    '</div>' +
+    '<div class="center">' + info.news +
+    '</div>' +
+    '<div class="left">' + info.nome +
+    '</div>'
+    + '</ons-list-item>'
+
+    document.querySelector("#item" + i).onclick = function(info){
+
+      dadosPacienteAtual.idAtualPaciente = info.id
+
+      document.querySelector('#pacienteNav').pushPage('html/perfilpaciente.html');
+    }
+  },
+  */
+
   //Ciclo de funções para as pulseiras disponiveis
 
   pulseirasDisponiveis: new Array,
