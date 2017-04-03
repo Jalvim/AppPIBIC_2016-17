@@ -30,7 +30,7 @@ module.exports = function(app) {
 		method:'PUT',
 		url:'http://127.0.0.1:3000/api/paciente/geral',
 		headers: {
-			'idPaciente': '61'
+			'idPaciente': '86'
 		},
 		form:{ 
 			nomePaciente: 'Mauricio Nunes',
@@ -70,7 +70,7 @@ module.exports = function(app) {
 			CRM: 777777777,
 			telefone: 9401900,
 			CPF: 903842093,
-			email: 'matheusbafutto@gmail.com',
+			email: 'jbowabco3biuebwacilu@gmail.com',
 			senha: 'senia'
 		}
 	};
@@ -79,8 +79,8 @@ module.exports = function(app) {
 		method:'PUT',
 		url:'http://127.0.0.1:3000/api/medico',
 		form:{ 
-			idMedico: 53,
-			email:'matheusbafutto@gmail.com'
+			idMedico: 71,
+			nomeMedico: "jonas jones"
 		}
 	};
 
@@ -179,8 +179,8 @@ module.exports = function(app) {
 		url:'http://127.0.0.1:3000/api/login/mudarSenha',
 		form:{ 
 			email: 'matheusbafutto@gmail.com',
-			velhaSenha: 'senia6',
-			novaSenha: 'Sonia7'
+			velhaSenha: 'aaaaaa',
+			novaSenha: 'Sonia8'
 		}
 	};
 

@@ -1,7 +1,7 @@
 /*
 Este módulo envelopa a funcionalidade do mailgun de envio de emails
 */
-var senhas = require('./senhas.js');
+var senhas = require('../senhas.js');
 
 module.exports = function(mail, callback) {
 

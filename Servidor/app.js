@@ -12,7 +12,8 @@ var senhas = require('./senhas.js');
 var express = require('express'),
 	app = express(),
 	request = require('request'),
-	mysql = require('mysql'),
+	mysql = require('./lib/mysqlWraper.js'),
+// 	mysql = require('mysql'),
 	bodyParser = require('body-parser'),
 	setupOptionsVariables = require('./setupVariables.js'),
 	pacienteRouter = require('./routes/paciente.js'),
@@ -21,23 +22,14 @@ var express = require('express'),
 	loginRouter = require('./routes/login.js'),
 	pulseiraRouter = require('./routes/pulseira.js'),
 	grupoPacientesRouter = require('./routes/grupoPacientes.js'),
-	mailSender = require('./mailgunWraper.js');
+	mailSender = require('./lib/mailgunWraper.js');
 	hospitaisRouter = require('./routes/hospitais.js');
 	compartilhamentoRouter = require('./routes/compartilhamento.js');
-	
-//Setup inicial de conecção com a base de dados 	
-connection = mysql.createConnection({
-	host : '79.170.40.183',
-	user : 'cl19-dbpipibic',
-	password : senhas.senha_DB,
-	database : 'cl19-dbpipibic'
-});
-connection.connect();
 
 //setando todas as variáveis de options nos requests http de teste
 setupOptionsVariables(app);
 
-// request(app.optionsPostTestRequestLoginMudaSenha, function(err, httpResponse, body) { 
+// request(app.optionsPutTestRequestMedico, function(err, httpResponse, body) { 
 // 	console.log(err);
 // 	//console.log(httpResponse);
 // 	console.log(body);
@@ -45,23 +37,29 @@ setupOptionsVariables(app);
 
 //Loop e multiplexação das pulseiras em atividade para resgate de parâmetros estáticos
 // setInterval(function(){
-// 	connection.query('SELECT idPulseira FROM Pulseira_Paciente', function(err,rows) {
-// 		if (err) console.log(err);
-// 		for (var i = 0; i < rows.length; i++) {
-// 			getStaticHealthParams(0, rows[i].idPulseira);
-// 		}
+// 	mysql.getConnection(function(err,connection) {
+// 		connection.query('SELECT idPulseira FROM Pulseira_Paciente', function(err,rows) {
+// 			if (err) console.log(err);
+// 			for (var i = 0; i < rows.length; i++) {
+// 				getStaticHealthParams(0, rows[i].idPulseira);
+// 			}
+// 		});
 // 	});
 // }, 900000);
 
-// //Loop e multiplexação das pulseiras em atividade para resgate de parâmetros dinâmicos
+//Loop e multiplexação das pulseiras em atividade para resgate de parâmetros dinâmicos
 // setInterval(function() {
-// 	var data = new Date(),
-// 		delay = 30;
-// 	connection.query('SELECT idPulseira FROM Pulseira_Paciente', function(err,rows) {
-// 		if (err) console.log(err);
-// 		for (var i = 0; i < rows.length; i++) {
-// 			getDynamicHealthParams(rows[i].idPulseira, data, delay);
-// 		}
+// 
+// 	mysql.getConnection(function(err,connection) {
+// 
+// 		var data = new Date(),
+// 			delay = 30;
+// 		connection.query('SELECT idPulseira FROM Pulseira_Paciente', function(err,rows) {
+// 			if (err) console.log(err);
+// 			for (var i = 0; i < rows.length; i++) {
+// 				getDynamicHealthParams(rows[i].idPulseira, data, delay);
+// 			}
+// 		});
 // 	});
 // }, 60000);
 
@@ -84,57 +82,60 @@ function getDynamicHealthParams(idPulseira, currDate, delay) {
 // 	date.setSeconds(date.getSeconds() - 60);
 // 	console.log(currDate);
 // 	console.log(date);
-	
-	connection.query(`SELECT A.*, PulPac.pacienteAtual FROM Autenticacao A, Pulseira_Paciente PulPac WHERE A.idPulseira=${idPulseira} AND PulPac.idPulseira = A.idPulseira`, 
-	  function(err, result, fields){
-	  	//console.log(result);
-		if (result.length < 1 || err) { return console.log('Erro ao puxar info de autenticação da base de dados para parâmetros dinâmicos.'); }
-					
-		var authorizationHeader = `Bearer ${result[0].accessToken}`;	
-		var optionsGetHR = {
-			url:`https://api.fitbit.com/1/user/${result[0].userID}/activities/heart/date/today/1d/1sec.json`, 
-			headers: {
-				'Authorization': authorizationHeader,
-			}
-		};
 
-		request(optionsGetHR,function getHRCallback(errors, response, body) {
-			console.log(response.statusCode);
-			if (!errors && response.statusCode == 200) {
-				info = JSON.parse(body);
-				console.log(info);
-				if (info.hasOwnProperty('activities-heart-intraday') &&
-					info['activities-heart-intraday'].hasOwnProperty('dataset')){
-					
-					if (info['activities-heart-intraday'].dataset.length < 1) {
-						console.log('Array vazio, a pulseira '+idPulseira+' ainda não sincronizou hoje');
-					} else {
-						formatDate(currDate);
-						var len = info["activities-heart-intraday"].dataset.length;
-						connection.query(`SELECT * FROM SaudeParamsDinamicos WHERE idPaciente=${result[0].pacienteAtual} AND hora='${info["activities-heart-intraday"].dataset[len-1].time}'`, function(err,rows) {
-							if (err) { return console.log('Error: problema na base impediu armazenamento de dados HR'); }
-							if (rows.length != 0) { return console.log('Erro:dado já armazenado! Sincronize novamente a pulseira '+idPulseira+' com o concentrador.'); }
-							else {
-								console.log(result[0].pacienteAtual +' '+ (len-1) + ' ' + info);//["activities-heart-intraday"].dataset[len-1]);
-								connection.query(`INSERT INTO SaudeParamsDinamicos (idPaciente, data, hora, heartRate) VALUES (${result[0].pacienteAtual}, '${currDate.date}', '${info["activities-heart-intraday"].dataset[len-1].time}', ${info['activities-heart-intraday'].dataset[len-1].value})`);
-								console.log('Dados de HR de pulseira '+idPulseira+' armazenados com sucesso!');						
-							} 
-						});
-						console.log('útil');
-					}
-						
-				} else {
-					console.log('Erro: Algo deu errado, faltam componentes no json retornado.');
-				}
-				
-			} 
-			//tokens em OAuth valem por 1 hora, caso tenham expirado, refresh
-			else if (response.statusCode == 401) {
-				refreshOAuthToken(optionsGetHR, getHRCallback, result);
-			}
-		});
+	mysql.getConnection(function(err, connection) {
 	
-	})
+		connection.query(`SELECT A.*, PulPac.pacienteAtual FROM Autenticacao A, Pulseira_Paciente PulPac WHERE A.idPulseira=${idPulseira} AND PulPac.idPulseira = A.idPulseira`, 
+		  function(err, result, fields){
+			//console.log(result);
+			if (result.length < 1 || err) { return console.log('Erro ao puxar info de autenticação da base de dados para parâmetros dinâmicos.'); }
+					
+			var authorizationHeader = `Bearer ${result[0].accessToken}`;	
+			var optionsGetHR = {
+				url:`https://api.fitbit.com/1/user/${result[0].userID}/activities/heart/date/today/1d/1sec.json`, 
+				headers: {
+					'Authorization': authorizationHeader,
+				}
+			};
+
+			request(optionsGetHR,function getHRCallback(errors, response, body) {
+				console.log(response.statusCode);
+				if (!errors && response.statusCode == 200) {
+					info = JSON.parse(body);
+					console.log(info);
+					if (info.hasOwnProperty('activities-heart-intraday') &&
+						info['activities-heart-intraday'].hasOwnProperty('dataset')){
+					
+						if (info['activities-heart-intraday'].dataset.length < 1) {
+							console.log('Array vazio, a pulseira '+idPulseira+' ainda não sincronizou hoje');
+						} else {
+							formatDate(currDate);
+							var len = info["activities-heart-intraday"].dataset.length;
+							connection.query(`SELECT * FROM SaudeParamsDinamicos WHERE idPaciente=${result[0].pacienteAtual} AND hora='${info["activities-heart-intraday"].dataset[len-1].time}'`, function(err,rows) {
+								if (err) { return console.log('Error: problema na base impediu armazenamento de dados HR'); }
+								if (rows.length != 0) { return console.log('Erro:dado já armazenado! Sincronize novamente a pulseira '+idPulseira+' com o concentrador.'); }
+								else {
+									console.log(result[0].pacienteAtual +' '+ (len-1) + ' ' + info);//["activities-heart-intraday"].dataset[len-1]);
+									connection.query(`INSERT INTO SaudeParamsDinamicos (idPaciente, data, hora, heartRate) VALUES (${result[0].pacienteAtual}, '${currDate.date}', '${info["activities-heart-intraday"].dataset[len-1].time}', ${info['activities-heart-intraday'].dataset[len-1].value})`);
+									console.log('Dados de HR de pulseira '+idPulseira+' armazenados com sucesso!');						
+								} 
+							});
+							console.log('útil');
+						}
+						
+					} else {
+						console.log('Erro: Algo deu errado, faltam componentes no json retornado.');
+					}
+				
+				} 
+				//tokens em OAuth valem por 1 hora, caso tenham expirado, refresh
+				else if (response.statusCode == 401) {
+					refreshOAuthToken(optionsGetHR, getHRCallback, result);
+				}
+			});
+	
+		});
+	});
 		
 }
 
@@ -171,100 +172,68 @@ TO DO:
 */
 function getStaticHealthParams(i, idPulseira) {
 
-	if (i == 4) return;
+	mysql.getConnection(function(err, connection) {
 
-	connection.query('SELECT pacienteAtual FROM Pulseira_Paciente WHERE idPulseira=?',[idPulseira],function(error, res, fields){
-		console.log(res[0].pacienteAtual);
-		connection.query('SELECT * FROM Autenticacao WHERE idPulseira=?', [idPulseira],
-		  function(erro, result, fields){
-			console.log(result);
-			if (result.length < 1 || erro) { return console.log('Erro ao puxar info de autenticação da base de dados para parâmetros estáticos.'); }
+		if (i == 4) return;
+
+		connection.query('SELECT pacienteAtual FROM Pulseira_Paciente WHERE idPulseira=?',[idPulseira],function(error, res, fields){
+			console.log(res[0].pacienteAtual);
+			connection.query('SELECT * FROM Autenticacao WHERE idPulseira=?', [idPulseira],
+			  function(erro, result, fields){
+				console.log(result);
+				if (result.length < 1 || erro) { return console.log('Erro ao puxar info de autenticação da base de dados para parâmetros estáticos.'); }
 	  
-			var authorizationHeader = `Bearer ${result[0].accessToken}`;
-		
-// 			var staticParamsArray = ['steps', 'calories', 'distance', 'floors'];
+				var authorizationHeader = `Bearer ${result[0].accessToken}`;	
 	
-	
-			var novaData = new Date();
-			formatDate(novaData);
-			var newStaticParamOption = {
-// 				url: `https://api.fitbit.com/1/user/${result[0].userID}/activities/${staticParamsArray[i]}/date/today/1d.json`,
-				url:`https://api.fitbit.com/1/user/${result[0].userID}/activities/date/${novaData.date}.json`,
-				headers: {
-					'Authorization': authorizationHeader,
-				}
-			}
-			request(newStaticParamOption, function getStaticHealthParamsCallback(errors, response, body){
-				console.log(response.statusCode);
-				if (response.statusCode == 401) {
-					refreshOAuthToken(newStaticParamOption, getStaticHealthParamsCallback, result);
-				} else if (!errors && response.statusCode == 200) {
-					
-					var activity = JSON.parse(body);
-					console.log('teste');
-					
-					var steps = activity.summary.steps,
-						floors = activity.summary.floors,
-						distance = activity.summary.distances[0].distance,
-						calories = activity.summary.caloriesOut,
-						data = novaData.date;
-
-					newStaticQuery = {
-						sql: `SELECT * FROM SaudeParamsEstaticos WHERE idPaciente=${res[0].pacienteAtual} AND data='${data}'`, 
-						timeout: 10000
+				var novaData = new Date();
+				formatDate(novaData);
+				var newStaticParamOption = {
+					url:`https://api.fitbit.com/1/user/${result[0].userID}/activities/date/${novaData.date}.json`,
+					headers: {
+						'Authorization': authorizationHeader,
 					}
-					connection.query(newStaticQuery, function(err, rows, fields) {
-						if(rows.length < 1) {
-							newStaticQuery = {
-								sql: `INSERT INTO SaudeParamsEstaticos (idPaciente, data, steps,calories, distance, floors) VALUES (${res[0].pacienteAtual}, '${data}', ${steps}, ${calories}, ${distance}, ${floors})`,
-								timeout: 10000
-							}
-						}
-						else if (rows.length == 1){
-							newStaticQuery = {
-								sql: `UPDATE SaudeParamsEstaticos SET steps=${steps},calories=${calories}, distance=${distance},floors=${floors} WHERE data='${data}' AND idPaciente=${res[0].pacienteAtual}`,
-								timeout: 10000
-							}
-						} else throw new Error("Ambiguidades com id e/ou data de pacientes na base de dados");
-						connection.query(newStaticQuery);
-					});
-					
-					
-					console.log(activity);
-					console.log(activity.summary.distances);
-					console.log(activity.summary.steps +'  '+activity.summary.floors+'  '+activity.summary.distances[0].distance +'  '+activity.summary.caloriesOut);					
-// 					var activity = JSON.parse(body);
-// 					var property = 'activities-' + staticParamsArray[i];
-// 					if (staticParamsArray[i] == 'steps') {
-// 						newStaticQuery = {
-// 							sql: `SELECT * FROM SaudeParamsEstaticos WHERE idPaciente=${res[0].pacienteAtual} AND data='${activity[property][0].dateTime}'`, 
-// 							timeout: 10000
-// 						}
-// 						connection.query(newStaticQuery, function(err, rows, fields) {
-// 							if(rows.length < 1) {
-// 								newStaticQuery = {
-// 									sql: `INSERT INTO SaudeParamsEstaticos (idPaciente, data, steps) VALUES (${res[0].pacienteAtual}, '${activity[property][0].dateTime}', ${activity[property][0].value})`,
-// 									timeout: 10000
-// 								}
-// 							}
-// 							else if (rows.length == 1){
-// 								newStaticQuery = {
-// 									sql: `UPDATE SaudeParamsEstaticos SET steps=${activity[property][0].value} WHERE data='${activity[property][0].dateTime}' AND idPaciente=${res[0].pacienteAtual}`,
-// 									timeout: 10000
-// 								}
-// 							} else throw new Error("Ambiguidades com id e/ou data de pacientes na base de dados");
-// 							connection.query(newStaticQuery);
-// 						});
-// 					} else {
-// 						staticQuery = {
-// 							sql: `UPDATE SaudeParamsEstaticos SET ${staticParamsArray[i]}=${activity[property][0].value} WHERE data='${activity[property][0].dateTime}' AND idPaciente=${res[0].pacienteAtual}`,
-// 							timeout: 10000
-// 						}
-// 						connection.query(staticQuery, function(err, rows, fields) {
-// 						});
-// 					}
-// 					getStaticHealthParams(i+1, idPulseira);
 				}
+				request(newStaticParamOption, function getStaticHealthParamsCallback(errors, response, body){
+					console.log(response.statusCode);
+					if (response.statusCode == 401) {
+						refreshOAuthToken(newStaticParamOption, getStaticHealthParamsCallback, result);
+					} else if (!errors && response.statusCode == 200) {
+					
+						var activity = JSON.parse(body);
+						console.log('teste');
+					
+						var steps = activity.summary.steps,
+							floors = activity.summary.floors,
+							distance = activity.summary.distances[0].distance,
+							calories = activity.summary.caloriesOut,
+							data = novaData.date;
+
+						newStaticQuery = {
+							sql: `SELECT * FROM SaudeParamsEstaticos WHERE idPaciente=${res[0].pacienteAtual} AND data='${data}'`, 
+							timeout: 10000
+						}
+						connection.query(newStaticQuery, function(err, rows, fields) {
+							if(rows.length < 1) {
+								newStaticQuery = {
+									sql: `INSERT INTO SaudeParamsEstaticos (idPaciente, data, steps,calories, distance, floors) VALUES (${res[0].pacienteAtual}, '${data}', ${steps}, ${calories}, ${distance}, ${floors})`,
+									timeout: 10000
+								}
+							}
+							else if (rows.length == 1){
+								newStaticQuery = {
+									sql: `UPDATE SaudeParamsEstaticos SET steps=${steps},calories=${calories}, distance=${distance},floors=${floors} WHERE data='${data}' AND idPaciente=${res[0].pacienteAtual}`,
+									timeout: 10000
+								}
+							} else throw new Error("Ambiguidades com id e/ou data de pacientes na base de dados");
+							connection.query(newStaticQuery);
+						});
+					
+					
+						console.log(activity);
+						console.log(activity.summary.distances);
+						console.log(activity.summary.steps +'  '+activity.summary.floors+'  '+activity.summary.distances[0].distance +'  '+activity.summary.caloriesOut);
+					}
+				});
 			});
 		});
 	});
@@ -279,43 +248,47 @@ sendo então necessário o uso desta função.
 TO DO:
 */
 function refreshOAuthToken(options, callback, auth) {
-	//Adicionado código de automação para refresh de token de acesso
-	var tokenRefreshAuthorization = 'Basic ' + new Buffer(`${senhas.clientID}:${senhas.clientSecret}`).toString('base64');
-	console.log(tokenRefreshAuthorization);	
-	console.log(auth[0].refreshToken);
+
+	mysql.getConnection(function(err,connection) {
+
+		//Adicionado código de automação para refresh de token de acesso
+		var tokenRefreshAuthorization = 'Basic ' + new Buffer(`${senhas.clientID}:${senhas.clientSecret}`).toString('base64');
+		console.log(tokenRefreshAuthorization);	
+		console.log(auth[0].refreshToken);
 	
-	var	optionsRefreshToken = {
-		method:'POST',
-		url:'https://api.fitbit.com/oauth2/token',
-		headers: {
-			'Authorization': tokenRefreshAuthorization,
-		},
-		form:{ 
-			grant_type:'refresh_token', 
-			refresh_token: auth[0].refreshToken
-		}
-	};
+		var	optionsRefreshToken = {
+			method:'POST',
+			url:'https://api.fitbit.com/oauth2/token',
+			headers: {
+				'Authorization': tokenRefreshAuthorization,
+			},
+			form:{ 
+				grant_type:'refresh_token', 
+				refresh_token: auth[0].refreshToken
+			}
+		};
 	
-	request(optionsRefreshToken, function(err, response, body){
-		console.log('Dando refresh no access token... DONE! ');
-		console.log(body);
-		var temp = JSON.parse(body);
-		if (temp.hasOwnProperty('errors')) {
-			console.log('Error:Chamada refresh à API mal sucedida, algo deu errado');
-		} else { 
-			connection.query(
-			  'UPDATE Autenticacao SET accessToken=?, refreshToken=? WHERE idPulseira=?',
-			  [temp.access_token, temp.refresh_token, auth[0].idPulseira],
-			  function(err){
-				if (err) console.log('Erro ao armazenar dados refreshed na base de dados');
-				else { 
-					console.log('Sucesso no refresh dos dados.');
-					options.headers['Authorization'] = 	`Bearer ${temp.access_token}`;
-					request(options, callback); 
-				} 
-			});
-		}
+		request(optionsRefreshToken, function(err, response, body){
+			console.log('Dando refresh no access token... DONE! ');
+			console.log(body);
+			var temp = JSON.parse(body);
+			if (temp.hasOwnProperty('errors')) {
+				console.log('Error:Chamada refresh à API mal sucedida, algo deu errado');
+			} else { 
+				connection.query(
+				  'UPDATE Autenticacao SET accessToken=?, refreshToken=? WHERE idPulseira=?',
+				  [temp.access_token, temp.refresh_token, auth[0].idPulseira],
+				  function(err){
+					if (err) console.log('Erro ao armazenar dados refreshed na base de dados');
+					else { 
+						console.log('Sucesso no refresh dos dados.');
+						options.headers['Authorization'] = 	`Bearer ${temp.access_token}`;
+						request(options, callback); 
+					} 
+				});
+			}
 		
+		});
 	});
 }
 
