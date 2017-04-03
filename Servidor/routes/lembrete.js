@@ -215,7 +215,7 @@ router.route('/')
 	
 router.get('/:idPaciente', function(req, res){
 
-	mysql.getConnection(function(err,conncetion) {
+	mysql.getConnection(function(err,connection) {
 		console.log(req.params.hasOwnProperty('idPaciente'));
 		if (req.params.hasOwnProperty('idPaciente')) {
 			var getPatientQuery = {
