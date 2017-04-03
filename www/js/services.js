@@ -67,55 +67,7 @@ medApp.services = {
     passos: new Array,
     pulso: new Array,
     degraus: new Array
-  }, //Seta os dados estaticos do pacientes como 'default'.
-
-  //Conjunto de funções que armazenam novos dados estáticos.
-  /*setDadosEstaticos: {
-    calorias: function(input) {
-      this.dadosEstaticos.calorias = input;
-    },
-    passos: function(input) {
-      this.dadosEstaticos.passos = input;
-    },
-    pulso: function(input) {
-      this.dadosEstaticos.pulso = input;
-    },
-    degraus: function(input) {
-      this.dadosEstaticos.degraus = input;
-    }
-  },*/
-
-  //Conjunto de Funções que retornam os dados estáticos do paciente atual.
-  /*getDadosEstaticos: {
-    calorias: function() {
-      return this.dadosEstaticos.calorias;
-    },
-    passos: function() {
-      return this.dadosEstaticos.passos;
-    },
-    pulso: function() {
-      return this.dadosEstaticos.pulso;
-    },
-    degraus: function() {
-      return this.dadosEstaticos.degraus;
-    }
-  },*/
-
-  //Função que torna os dados estáticos para o formato default.
-  /*deleteDadosEstaticos: {
-    calorias: function() {
-      this.dadosEstaticos.calorias = -1;
-    },
-    passos: function() {
-      this.dadosEstaticos.passos = -1;
-    },
-    pulso: function() {
-      this.dadosEstaticos.pulso = -1;
-    },
-    degraus: function() {
-      this.dadosEstaticos.degraus = -1;
-    }
-  },*/
+  },
 
   // Função que verifica se os dados do médico foram editados 
   checkEdit: function(novo, velho) {
@@ -385,7 +337,10 @@ medApp.services = {
     '</div>'
     + '</ons-list-item>'
 
-    document.querySelector("#item" + i).onclick = function(info){
+    var feedItem = template.firstChild;
+    var listaFeed = document.querySelector('#feed-lista');
+
+    feedItem.querySelector('.center').onclick = function(info){
 
       dadosPacienteAtual.idAtualPaciente = info.id
 
