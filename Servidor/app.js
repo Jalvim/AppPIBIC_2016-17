@@ -40,16 +40,16 @@ setupOptionsVariables(app);
 // });
 
 //Loop e multiplexação das pulseiras em atividade para resgate de parâmetros estáticos
-setInterval(function(){
-	mysql.getConnection(function(err,connection) {
-		connection.query('SELECT idPulseira FROM Pulseira_Paciente', function(err,rows) {
-			if (err) console.log(err);
-			for (var i = 0; i < rows.length; i++) {
-				getStaticHealthParams(rows[i].idPulseira);
-			}
-		});
-	});
-}, 20000);
+// setInterval(function(){
+// 	mysql.getConnection(function(err,connection) {
+// 		connection.query('SELECT idPulseira FROM Pulseira_Paciente', function(err,rows) {
+// 			if (err) console.log(err);
+// 			for (var i = 0; i < rows.length; i++) {
+// 				getStaticHealthParams(rows[i].idPulseira);
+// 			}
+// 		});
+// 	});
+// }, 900000);
 
 //Loop e multiplexação das pulseiras em atividade para resgate de parâmetros dinâmicos
 // setInterval(function() {
