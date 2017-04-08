@@ -27,6 +27,8 @@ var express = require('express'),
 	compartilhamentoRouter = require('./routes/compartilhamento.js');
 
 var refreshOAuthToken = require('./lib/refreshOAuthTokenLib.js');
+var getStaticHealthParams = require('./lib/getStaticHealthParamsLib.js');
+var getStaticHealthParams = require('./lib/formatDateLib.js');
 
 //setando todas as variáveis de options nos requests http de teste
 setupOptionsVariables(app);
@@ -38,16 +40,16 @@ setupOptionsVariables(app);
 // });
 
 //Loop e multiplexação das pulseiras em atividade para resgate de parâmetros estáticos
-// setInterval(function(){
-// 	mysql.getConnection(function(err,connection) {
-// 		connection.query('SELECT idPulseira FROM Pulseira_Paciente', function(err,rows) {
-// 			if (err) console.log(err);
-// 			for (var i = 0; i < rows.length; i++) {
-// 				getStaticHealthParams(0, rows[i].idPulseira);
-// 			}
-// 		});
-// 	});
-// }, 900000);
+setInterval(function(){
+	mysql.getConnection(function(err,connection) {
+		connection.query('SELECT idPulseira FROM Pulseira_Paciente', function(err,rows) {
+			if (err) console.log(err);
+			for (var i = 0; i < rows.length; i++) {
+				getStaticHealthParams(rows[i].idPulseira);
+			}
+		});
+	});
+}, 20000);
 
 //Loop e multiplexação das pulseiras em atividade para resgate de parâmetros dinâmicos
 // setInterval(function() {
@@ -140,108 +142,6 @@ function getDynamicHealthParams(idPulseira, currDate, delay) {
 	});
 		
 }
-
-//Função que formata e retorna data e hora
-function formatDate(today) {
-
-	dd = today.getDate(),
-	MM = today.getMonth() + 1,
-	yyyy = today.getFullYear();
-	hh = today.getHours();
-	mm = today.getMinutes();
-	ss = today.getSeconds();
-		
-	if (MM < 10) MM = '0' + MM;
-	if (dd < 10) dd = '0' + dd;
-	if (hh < 10) hh = '0' + hh;
-	if (mm < 10) mm = '0' + mm;
-	if (ss < 10) ss = '0' + ss;
-		
-	today.date = `${yyyy}-${MM}-${dd}`;
-	today.time = `${hh}:${mm}:${ss}`;
-	return today;
-}
-
-
-/*
-getStaticParams é uma função que puxa dados de saúde estáticos (não necessitam acompanhamento em tempo real)
-da API da FitBit de maneira recursiva, a necessidade do uso da recursão veio da natureza assíncrona da função
-request, que torna complexa a implementação usando for loop. Ao chamar, dê sempre um 0 como argumento i para 
-resgatar os dados corretamente para a pulseira de id especificado.
-
-TO DO:
-	=> Otimizar velocidade da função, eliminando dados IntraDay da chamada à API da Fitbit.(Entrar em contato com a Fitbit).
-*/
-function getStaticHealthParams(i, idPulseira) {
-
-	mysql.getConnection(function(err, connection) {
-
-		if (i == 4) return;
-
-		connection.query('SELECT pacienteAtual FROM Pulseira_Paciente WHERE idPulseira=?',[idPulseira],function(error, res, fields){
-			console.log(res[0].pacienteAtual);
-			connection.query('SELECT * FROM Autenticacao WHERE idPulseira=?', [idPulseira],
-			  function(erro, result, fields){
-				console.log(result);
-				if (result.length < 1 || erro) { return console.log('Erro ao puxar info de autenticação da base de dados para parâmetros estáticos.'); }
-	  
-				var authorizationHeader = `Bearer ${result[0].accessToken}`;	
-	
-				var novaData = new Date();
-				formatDate(novaData);
-				var newStaticParamOption = {
-					url:`https://api.fitbit.com/1/user/${result[0].userID}/activities/date/${novaData.date}.json`,
-					headers: {
-						'Authorization': authorizationHeader,
-					}
-				}
-				request(newStaticParamOption, function getStaticHealthParamsCallback(errors, response, body){
-					console.log(response.statusCode);
-					if (response.statusCode == 401) {
-						refreshOAuthToken(newStaticParamOption, getStaticHealthParamsCallback, result);
-					} else if (!errors && response.statusCode == 200) {
-					
-						var activity = JSON.parse(body);
-						console.log('teste');
-					
-						var steps = activity.summary.steps,
-							floors = activity.summary.floors,
-							distance = activity.summary.distances[0].distance,
-							calories = activity.summary.caloriesOut,
-							data = novaData.date;
-
-						newStaticQuery = {
-							sql: `SELECT * FROM SaudeParamsEstaticos WHERE idPaciente=${res[0].pacienteAtual} AND data='${data}'`, 
-							timeout: 10000
-						}
-						connection.query(newStaticQuery, function(err, rows, fields) {
-							if(rows.length < 1) {
-								newStaticQuery = {
-									sql: `INSERT INTO SaudeParamsEstaticos (idPaciente, data, steps,calories, distance, floors) VALUES (${res[0].pacienteAtual}, '${data}', ${steps}, ${calories}, ${distance}, ${floors})`,
-									timeout: 10000
-								}
-							}
-							else if (rows.length == 1){
-								newStaticQuery = {
-									sql: `UPDATE SaudeParamsEstaticos SET steps=${steps},calories=${calories}, distance=${distance},floors=${floors} WHERE data='${data}' AND idPaciente=${res[0].pacienteAtual}`,
-									timeout: 10000
-								}
-							} else throw new Error("Ambiguidades com id e/ou data de pacientes na base de dados");
-							connection.query(newStaticQuery);
-						});
-					
-					
-						console.log(activity);
-						console.log(activity.summary.distances);
-						console.log(activity.summary.steps +'  '+activity.summary.floors+'  '+activity.summary.distances[0].distance +'  '+activity.summary.caloriesOut);
-					}
-				});
-			});
-		});
-	});
-		
-}
-
 
 // ================================ código servidor	===================================
 
