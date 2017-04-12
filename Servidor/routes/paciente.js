@@ -280,6 +280,7 @@ router.get('/health/static/:idPaciente/:data', function(req, res){
 	});
 
 });
+
 router.get('/health/static/:idPaciente', function(req, res){
 
 	mysql.getConnection(function(err, connection) {
@@ -323,6 +324,38 @@ router.get('/health/dynamic/:idPaciente/:data', function(req, res){
 		});
 	});
 
+});
+
+
+router.get('/:idPaciente/picture', function(req, res){
+
+	mysql.getConnection(function(err, connection) {
+
+		if (err) { return res.send('Erro de conexão com base de dados Get dados estáticos'); }
+
+		connection.query(
+		  'SELECT foto FROM Paciente where idPaciente=?',
+		  [req.params.idPaciente],
+		  function(err, rows, fields) {
+			if (err) res.send('Error: não foi possível puxar dados do paciente especificado.');
+			else {
+				if(rows.length < 1){
+					res.send('Id Inválido');
+				} else {
+                    // package mysql autocast to Buffer
+                    var photoBuffer = rows[0];
+                    var bufferBase64;
+                    if (photoBuffer typeof === 'Buffer' || photoBuffer instanceof Buffer) {
+                        bufferBase64 = photoBuffer.toString('base64');
+                        res.json(bufferBase64);
+                    } else {
+                        res.send('Erro na obtenção da foto do paciente.');
+                    }
+
+				}
+			}
+		});
+	});
 });
 
 module.exports = router;
