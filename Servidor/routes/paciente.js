@@ -6,28 +6,28 @@ Este arquivo contém o módulo javascript de roteamento para as chamadas à API 
 
 FUNCIONAMENTO:
 1)API geral de pacientes "url/api/paciente/geral"
-	GET -> Recebe em seu query string o número do id do médico responsável pelo perfil de paciente desejado e 
-		retorna as informações do paciente ao cliente autor da requisição. 
+	GET -> Recebe em seu query string o número do id do médico responsável pelo perfil de paciente desejado e
+		retorna as informações do paciente ao cliente autor da requisição.
 		(ex query string "url/api/paciente/geral/[numero de prontuário]")
-	POST -> Recebe todas as informações do perfil a serem colocadas no corpo/form da requisição http e 
+	POST -> Recebe todas as informações do perfil a serem colocadas no corpo/form da requisição http e
 		acrescenta o novo paciente à base de dados. Obrigatório preenchimento de todos os campos para que
 		a adição à base de dados seja finalizada.
 	PUT -> Recebe o id identificando o paciente a ser editado no header da requisição
-		enquanto as novas informações de perfil devem estar no corpo/form. Chamada flexível aceita as 
+		enquanto as novas informações de perfil devem estar no corpo/form. Chamada flexível aceita as
 		informações novas e mantém as que não estão citadas no corpo do POST.
 		ADICIONAL PUT: Em caso de alta do paciente usuário da pulseira e o PUT for executado para mudança
 		de pacientes, parâmetro adicional isNewPatient pode ser acrescentado com valor "true" para limpar
 		dados de saúde do paciente antigo. <---- AINDA NÃO IMPLEMENTADO
-	DELETE -> Remove o perfil de paciente cujo id bate com o presente no corpo/form 
+	DELETE -> Remove o perfil de paciente cujo id bate com o presente no corpo/form
 		da requisição.
-		
+
 2)API saúde de pacientes "url/api/paciente/health"
 	Ainda a implementar...
 
-TO DO: 
+TO DO:
 	=> Discutir com o time como deve se comportar essa chamada (se é que ela deve existir) DELETE
 	=> Atualmente não deleta paciente por razão da chave extrangeira da tabela PacienteMedico DELETE
-	=> Tratar questão de multiplas pulseiras usadas por um paciente em PUT /geral. Abranger todos os 
+	=> Tratar questão de multiplas pulseiras usadas por um paciente em PUT /geral. Abranger todos os
 		edge cases (paciente em tratamento e paciente que recebeu alta).
 */
 
@@ -40,19 +40,19 @@ var router = express.Router();
 //Ações para alterar tabela paciente na base de dados
 router.route('/geral')
 	.post(function(req, res) {
-		if (req.hasOwnProperty('body') && 
-			req.body.hasOwnProperty('nomePaciente') && 
+		if (req.hasOwnProperty('body') &&
+			req.body.hasOwnProperty('nomePaciente') &&
 			req.body.hasOwnProperty('causaDaInternacao') &&
 			req.body.hasOwnProperty('numeroDoProntuario') &&
 			req.body.hasOwnProperty('telefone') &&
 			req.body.hasOwnProperty('foto') &&
 			req.body.hasOwnProperty('dataDeNascimento') &&
-			req.body.hasOwnProperty('idMedico')){	
-			
+			req.body.hasOwnProperty('idMedico')){
+
 			mysql.getConnection(function(err, connection) {
-				
+
 				if (err) { res.send('Erro de coneção com base de dados adição Paciente'); }
-				
+
 				var query = {
 					sql:`INSERT INTO Paciente (nomePaciente, numeroDoProntuario, telefone, foto, causaDaInternacao, dataDeNascimento, ativo) VALUES (${connection.escape(req.body.nomePaciente)}, ${connection.escape(req.body.numeroDoProntuario)}, ${connection.escape(req.body.telefone)}, ${connection.escape(req.body.foto)}, ${connection.escape(req.body.causaDaInternacao)}, ${connection.escape(req.body.dataDeNascimento)}, 1)`,
 					timeout: 10000
@@ -62,7 +62,7 @@ router.route('/geral')
 					if (err) {
 						res.send('Não foi possível adicionar dados ao perfil do paciente.');
 					} else {
-					
+
 						var queryRelacao = {
 							sql:`INSERT INTO Paciente_Medico (idPaciente, idMedico) VALUES (${rows.insertId}, ${connection.escape(req.body.idMedico)})`,
 							timeout: 10000
@@ -86,31 +86,31 @@ router.route('/geral')
 			throw new Error('Parâmetros POST inválidos ou inexistentes para adicionar paciente');
 			res.send('Error: Parâmetros POST inválidos ou inexistentes para adicionar paciente');
 		}
-	
+
 	})
 	.put(function(req, res){
 // 		Juntos na versão preliminar do app, as abstrações de paciente e pulseira agora estão separados
-// 		Isso tira a necessidade de se acrescentar nesse midleware a funcionalidade "isNewPatient" comentada 
+// 		Isso tira a necessidade de se acrescentar nesse midleware a funcionalidade "isNewPatient" comentada
 // 		Ao final da função
 
 		mysql.getConnection(function(err, connection) {
-		
-			if (err) { return res.send('Erro de conecção com base de dados Editar Paciente'); }
-		
+
+			if (err) { return res.send('Erro de conexão com base de dados Editar Paciente'); }
+
 			var selector = {
 				sql:`SELECT * FROM Paciente WHERE idtable1 = ${connection.escape(req.headers.idpaciente)} LIMIT 1`,
 				timeout: 10000
 			}
-		
+
 			connection.query(selector, function(err, rows, fields) {
-			
+
 				if (err != null) console.log('Erro ao selecionar perfil a ser editado na base de dados.');
 				else if (rows.length < 1) {
 					console.log('O id no header de sua requisição não existe na base de dados.');
 					res.send('O id no header de sua requisição não existe na base de dados.');
 				}
 				else {
-			
+
 					var nomePacienteNovo,
 						novoProntuario,
 						novoTelefone,
@@ -118,7 +118,7 @@ router.route('/geral')
 						novaCausa,
 						novaData,
 						ativo;
-									
+
 					if (req.body.hasOwnProperty('nomePaciente')) {
 						nomePacienteNovo = req.body.nomePaciente;
 					} else { nomePacienteNovo = rows[0].nomePaciente; }
@@ -140,32 +140,32 @@ router.route('/geral')
 					if (req.body.hasOwnProperty('ativo')){
 						ativo = req.body.ativo;
 					} else { ativo = rows[0].ativo; }
-				
+
 					connection.query(
 					'UPDATE Paciente SET nomePaciente=?, numeroDoProntuario=?, telefone=?, foto=?, causaDaInternacao=?, dataDeNascimento=?, ativo=? WHERE idtable1=?',
-					[nomePacienteNovo,novoProntuario,novoTelefone,novaFoto,novaCausa,novaData,ativo,rows[0].idtable1], 
+					[nomePacienteNovo,novoProntuario,novoTelefone,novaFoto,novaCausa,novaData,ativo,rows[0].idtable1],
 					function(error, results){
 						if (error != null) {
 							console.log('Erro ao alterar perfil de paciente na base de dados');
 							res.send('Erro ao alterar perfil de paciente na base de dados');
 						} else {
-						
+
 							res.send('Paciente editado com sucesso.');
 						}
 					});
 				}
 			});
 		});
-		
+
 	})
 	.delete(function(req, res) {
 		if (req.body.hasOwnProperty('idPaciente')) {
-		
+
 			mysql.getConnection(function(err, connection) {
-				if (err) { return res.send('Erro de conecção com base de dados Deletar Paciente'); }
+				if (err) { return res.send('Erro de conexão com base de dados Deletar Paciente'); }
 				var deletePatientQuery = {
 					sql: `DELETE FROM Paciente WHERE idtable1 = ${connection.escape(req.body.idPaciente)} LIMIT 1`,
-					timeout: 10000	
+					timeout: 10000
 				}
 				connection.query(deletePatientQuery, function(err, rows, fields) {
 					if(err) {
@@ -173,9 +173,9 @@ router.route('/geral')
 					} else { res.send('O paciente de id especificado pôde ser removido com sucesso.'); }
 				});
 			});
-			
+
 		} else {
-			res.send('Indique o número de prontuário do paciente a ser removido da base.');			
+			res.send('Indique o número de prontuário do paciente a ser removido da base.');
 		}
 	});
 
@@ -185,14 +185,14 @@ router.get('/geral/idMedico/:idMedico', function(req, res){
 		//Primeiramente, o id do Médico é buscado na tabela de Pacientes para obter os seus poacientes
 	if (req.params.hasOwnProperty('idMedico')) {
 		mysql.getConnection(function(err, connection) {
-			
-			if (err) { return res.send('Erro de conecção com base de dados Get Pacientes ativos'); }
-		
+
+			if (err) { return res.send('Erro de conexão com base de dados Get Pacientes ativos'); }
+
 			var getMedicoQuery = {
 				sql: `SELECT P.*, PM.*, M.nome  FROM Paciente_Medico PM, Paciente P, Medico M WHERE PM.idMedico = ${connection.escape(req.params.idMedico)} AND PM.idPaciente = P.idtable1 AND P.ativo<>0 AND PM.idMedico=M.idMedico`,
-				timeout: 10000	
+				timeout: 10000
 			}
-		
+
 			connection.query(getMedicoQuery, function(err, rows, fields) {
 				if(err) {
 					console.log(err);
@@ -206,15 +206,15 @@ router.get('/geral/idMedico/:idMedico', function(req, res){
 				}
 				console.log(err);
 				console.log(rows);
-				
+
 				//console.log(fields);
 				//Utilizamos o primeiro médico encontrado com o ID único para a próxima etapa
-			
+
 			});
 		});
-		
+
 	} else {
-		res.send('Indique o ID único do médico a ser puxado da base.');			
+		res.send('Indique o ID único do médico a ser puxado da base.');
 	}
 });
 
@@ -224,14 +224,14 @@ router.get('/geral/inativo/idMedico/:idMedico', function(req, res){
 	if (req.params.hasOwnProperty('idMedico')) {
 
 		mysql.getConnection(function(err, connection) {
-		
-			if (err) { return res.send('Erro de conecção com base de dados Get Pcientes inativos'); }
-				
+
+			if (err) { return res.send('Erro de conexão com base de dados Get Pcientes inativos'); }
+
 			var getMedicoQuery = {
 				sql: `SELECT * FROM Paciente_Medico PM, Paciente P WHERE PM.idMedico = ${connection.escape(req.params.idMedico)} AND PM.idPaciente = P.idtable1 AND P.ativo=0`,
-				timeout: 10000	
+				timeout: 10000
 			}
-	
+
 			connection.query(getMedicoQuery, function(err, rows, fields) {
 				if(err) {
 					console.log(err);
@@ -245,24 +245,24 @@ router.get('/geral/inativo/idMedico/:idMedico', function(req, res){
 				}
 				console.log(err);
 				console.log(rows);
-				
+
 				//console.log(fields);
 				//Utilizamos o primeiro médico encontrado com o ID único para a próxima etapa
-		
+
 			});
 		});
-		
+
 	} else {
-		res.send('Indique o ID único do médico a ser puxado da base.');			
+		res.send('Indique o ID único do médico a ser puxado da base.');
 	}
 });
-	
+
 router.get('/health/static/:idPaciente/:data', function(req, res){
 
 	mysql.getConnection(function(err, connection) {
-	
-		if (err) { return res.send('Erro de conecção com base de dados Get dados estaticos com data'); }
-		
+
+		if (err) { return res.send('Erro de conexão com base de dados Get dados estaticos com data'); }
+
 		connection.query(
 		  'SELECT * FROM SaudeParamsEstaticos where idPaciente=? AND data=?',
 		  [req.params.idPaciente, req.params.data],
@@ -278,14 +278,14 @@ router.get('/health/static/:idPaciente/:data', function(req, res){
 			}
 		});
 	});
-	
+
 });
 router.get('/health/static/:idPaciente', function(req, res){
-	
+
 	mysql.getConnection(function(err, connection) {
-	
-		if (err) { return res.send('Erro de conecção com base de dados Get dados estáticos'); }
-	
+
+		if (err) { return res.send('Erro de conexão com base de dados Get dados estáticos'); }
+
 		connection.query(
 		  'SELECT * FROM SaudeParamsEstaticos where idPaciente=?',
 		  [req.params.idPaciente],
@@ -299,15 +299,15 @@ router.get('/health/static/:idPaciente', function(req, res){
 				}
 			}
 		});
-	});	
+	});
 });
 
 router.get('/health/dynamic/:idPaciente/:data', function(req, res){
 
 	mysql.getConnection(function(err, connection) {
-		
-		if (err) { return res.send('Erro de conecção com base de dados Get dados dinamicos com data'); }
-			
+
+		if (err) { return res.send('Erro de conexão com base de dados Get dados dinamicos com data'); }
+
 		connection.query(
 		  'SELECT * FROM SaudeParamsDinamicos where idPaciente=? AND data=?',
 		  [req.params.idPaciente, req.params.data],
@@ -322,7 +322,7 @@ router.get('/health/dynamic/:idPaciente/:data', function(req, res){
 			}
 		});
 	});
-	
+
 });
 
 module.exports = router;

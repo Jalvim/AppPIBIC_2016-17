@@ -32,7 +32,7 @@ router.route('/')
 			
 			mysql.getConnection(function(err, connection){	
 			
-				if (err) { return res.send('Erro de conecção com base de dados Login Post'); }
+				if (err) { return res.send('Erro de conexão com base de dados Login Post'); }
 					
 				getPatientQuery = {
 					sql: `SELECT idMedico FROM logins WHERE (email= ${connection.escape(req.body.email)} AND senha= ${connection.escape(req.body.senha)}) `,
@@ -96,7 +96,7 @@ router.get('/senha/change/:idMedico', function(req, res) {
 	
 	mysql.getConnection(function(err, connection) {
 	
-		if(err) { return res.send('Erro de conecção mudança senha'); }
+		if(err) { return res.send('Erro de conexão mudança senha'); }
 	
 		connection.query('SELECT * FROM logins WHERE idMedico=?',[req.params.idMedico], function(err,rows){
 			if (rows.length < 1) { return res.send('id inexistente'); }
@@ -113,7 +113,7 @@ router.get('/senha/change/email/:email', function(req, res) {
 	
 	mysql.getConnection(function(err, connection){
 	
-		if(err) { return res.send('Erro de conecção mudança senha'); }
+		if(err) { return res.send('Erro de conexão mudança senha'); }
 
 		connection.query('SELECT * FROM logins WHERE email=?',[req.params.email], function(err,rows){
 			if (rows.length < 1) { return res.send('email inexistente'); }
@@ -130,7 +130,7 @@ router.post('/mudarSenha',function(req,res){
 	
 	mysql.getConnection(function(err, connection) {
 		
-		if (err) { return res.send('Erro de conecção mudança senha'); }
+		if (err) { return res.send('Erro de conexão mudança senha'); }
 			
 		connection.query('UPDATE logins SET senha=? WHERE senha=? AND email=?',[req.body.novaSenha,req.body.velhaSenha, req.body.email],
 			function(err, rows){

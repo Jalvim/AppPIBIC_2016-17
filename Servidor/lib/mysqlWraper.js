@@ -14,7 +14,7 @@ pool.on('acquire', function(connection){
 });
 
 pool.on('release', function(connection) {
-	console.log('Conecção foi liberada após call!');
+	console.log('conexão foi liberada após call!');
 });
 
 module.exports.getConnection = function(callback) {
