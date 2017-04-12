@@ -18,6 +18,7 @@
   },
   "homepage": "https://github.com/Matheusbafutto/teste-pibic#readme",
   "dependencies": {
+    "base-64": "^0.1.0",
     "body-parser": "^1.16.0",
     "express": "^4.14.0",
     "mailgun-js": "^0.8.2",
