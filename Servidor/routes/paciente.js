@@ -51,7 +51,15 @@ router.route('/geral')
 
 			mysql.getConnection(function(err, connection) {
 
-				if (err) { res.send('Erro de coneção com base de dados adição Paciente'); }
+				if (err) { res.send('Erro de conexão com base de dados adição Paciente'); }
+
+                if(canBeDecodedInBase64(req.body.foto)) {
+                    req.body.foto = Buffer.from(req.body.foto, 'base64');
+                }
+                else {
+                    return res.send('Error: Foto não está codificada em base64.');
+                }
+
 
 				var query = {
 					sql:`INSERT INTO Paciente (nomePaciente, numeroDoProntuario, telefone, foto, causaDaInternacao, dataDeNascimento, ativo) VALUES (${connection.escape(req.body.nomePaciente)}, ${connection.escape(req.body.numeroDoProntuario)}, ${connection.escape(req.body.telefone)}, ${connection.escape(req.body.foto)}, ${connection.escape(req.body.causaDaInternacao)}, ${connection.escape(req.body.dataDeNascimento)}, 1)`,
@@ -178,6 +186,11 @@ router.route('/geral')
 			res.send('Indique o número de prontuário do paciente a ser removido da base.');
 		}
 	});
+
+canBeDecodedInBase64 = function(str) {
+    var base64regex = /^([0-9a-zA-Z+/]{4})*(([0-9a-zA-Z+/]{2}==)|([0-9a-zA-Z+/]{3}=))?$/;
+    return str.length == 0 || base64regex.test(str);
+}
 
 // Busca na API por pacientes pelo ID do médico
 router.get('/geral/idMedico/:idMedico', function(req, res){
