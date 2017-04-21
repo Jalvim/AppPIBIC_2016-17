@@ -11,11 +11,18 @@ var mysql = require('./mysqlWraper.js'),
 
 module.exports = function refreshOAuthToken(options, callback, auth) {
 
-	mysql.getConnection(refreshOAuthProcedure.bind(null, auth, callback, options));
+	var parentFunctionVariables = {};
+	parentFunctionVariables.options = options;
+	parentFunctionVariables.callback = callback;
+	parentFunctionVariables.auth = auth;
+
+	mysql.getConnection(refreshOAuthProcedure.bind(null, parentFunctionVariables));
 
 }
 
-function refreshOAuthProcedure(auth, callback, options, err,connection) {
+function refreshOAuthProcedure(parentFunctionVariables, err,connection) {
+
+	parentFunctionVariables.connection = connection;
 
 	//Adicionado código de automação para refresh de token de acesso
 	var tokenRefreshAuthorization = 'Basic ' + new Buffer(`${senhas.clientID}:${senhas.clientSecret}`).toString('base64');
@@ -28,33 +35,33 @@ function refreshOAuthProcedure(auth, callback, options, err,connection) {
 		},
 		form:{ 
 			grant_type:'refresh_token', 
-			refresh_token: auth[0].refreshToken
+			refresh_token: parentFunctionVariables.auth[0].refreshToken
 		}
 	};
 
-	request(optionsRefreshToken, refreshRequestCallback.bind(null, auth, callback, options));
+	request(optionsRefreshToken, refreshRequestCallback.bind(null, parentFunctionVariables));
 }
 
-function refreshRequestCallback(auth, callback, options, err, response, body){
+function refreshRequestCallback(parentFunctionVariables, err, response, body){
 	console.log('Dando refresh no access token... DONE! ');
 	console.log(body);
-	var temp = JSON.parse(body);
-	if (temp.hasOwnProperty('errors')) {
+	parentFunctionVariables.temp = JSON.parse(body);
+	if (parentFunctionVariables.temp.hasOwnProperty('errors')) {
 		console.log('Error:Chamada refresh à API mal sucedida, algo deu errado');
 	} else { 
-		connection.query(
+		parentFunctionVariables.connection.query(
 		  'UPDATE Autenticacao SET accessToken=?, refreshToken=? WHERE idPulseira=?',
-		  [temp.access_token, temp.refresh_token, auth[0].idPulseira],
-		  storeOAuthData.bind(null, auth, callback, options));
+		  [parentFunctionVariables.temp.access_token, parentFunctionVariables.temp.refresh_token, parentFunctionVariables.auth[0].idPulseira],
+		  storeOAuthData.bind(null, parentFunctionVariables));
 	}
 
 }
 
-function storeOAuthData(auth, callback, options, err){
+function storeOAuthData(parentFunctionVariables, err){
 	if (err) console.log('Erro ao armazenar dados refreshed na base de dados');
 	else { 
 		console.log('Sucesso no refresh dos dados.');
-		options.headers['Authorization'] = 	`Bearer ${temp.access_token}`;
-		request(options, callback); 
+		parentFunctionVariables.options.headers['Authorization'] = 	`Bearer ${parentFunctionVariables.temp.access_token}`;
+		request(parentFunctionVariables.options, parentFunctionVariables.callback); 
 	} 
 }

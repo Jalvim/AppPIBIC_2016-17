@@ -44,8 +44,7 @@ function getAuthPulseiraCallback(connection, res, erro, result, fields){
 
 	var authorizationHeader = `Bearer ${result[0].accessToken}`;	
 
-	var novaData = new Date();
-	formatDate(novaData);
+	var novaData = formatDate();
 	var newStaticParamOption = {
 		url:`https://api.fitbit.com/1/user/${result[0].userID}/activities/date/${novaData.date}.json`,
 		headers: {

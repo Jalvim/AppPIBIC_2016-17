@@ -11,8 +11,8 @@ Faculdade de Tecnologia - UnB
 var senhas = require('./senhas.js');
 var express = require('express'),
 	app = express(),
-	request = require('request'),
-	mysql = require('./lib/mysqlWraper.js'),
+// 	request = require('request'),
+// 	mysql = require('./lib/mysqlWraper.js'),
 	bodyParser = require('body-parser'),
 	setupOptionsVariables = require('./setupVariables.js'),
 	pacienteRouter = require('./routes/paciente.js'),
@@ -21,7 +21,7 @@ var express = require('express'),
 	loginRouter = require('./routes/login.js'),
 	pulseiraRouter = require('./routes/pulseira.js'),
 	grupoPacientesRouter = require('./routes/grupoPacientes.js'),
-	mailSender = require('./lib/mailgunWraper.js');
+// 	mailSender = require('./lib/mailgunWraper.js');
 	hospitaisRouter = require('./routes/hospitais.js');
 	compartilhamentoRouter = require('./routes/compartilhamento.js');
 
@@ -39,39 +39,27 @@ setupOptionsVariables(app);
 // 	console.log(body);
 // });
 
-//Loop e multiplexação das pulseiras em atividade para resgate de parâmetros estáticos
-// setInterval(function(){
-// 	mysql.getConnection(function(err,connection) {
-// 		connection.query('SELECT idPulseira FROM Pulseira_Paciente', function(err,rows) {
-// 			if (err) console.log(err);
-// 			for (var i = 0; i < rows.length; i++) {
-// 				getStaticHealthParams(rows[i].idPulseira);
-// 			}
-// 		});
-// 	});
-// }, 900000);
+var spawn = require('child_process').spawn;
 
-//Loop e multiplexação das pulseiras em atividade para resgate de parâmetros dinâmicos
-// setInterval(function() {
-// 
-// 	mysql.getConnection(function(err,connection) {
-// 
-// 		var data = new Date(),
-// 			delay = 30;
-// 		connection.query('SELECT idPulseira FROM Pulseira_Paciente', function(err,rows) {
-// 			if (err) console.log(err);
-// 			for (var i = 0; i < rows.length; i++) {
-// 				getDynamicHealthParams(rows[i].idPulseira, data, delay);
-// 			}
-// 		});
-// 	});
-// }, 60000);
 
-//request(optionsGetHR, getHRCallback);
-//getDynamicHealthParams(60, new Date(), 0);
-// getStaticHealthParams(0, 60);
-//getStaticHealthParams(0, 18);
-//console.log(getTodayDate());
+var getHealthParamsProcess = spawn('node', ['./childProcesses/getStaticHealthParams.js']);
+
+getHealthParamsProcess.stdin.write("Hi there");
+
+// Listen for any response from the child:
+getHealthParamsProcess.stdout.on('data', function (data) {
+	console.log('We received a reply: ' + data);
+});
+
+// Listen for any errors:
+getHealthParamsProcess.stderr.on('data', function (data) {
+	console.log('There was an error: ' + data);
+});
+
+
+getHealthParamsProcess.on('exit', function(){
+	console.log('Erro no processo getStaticHealthParams');
+});
 
 // ================================ código servidor	===================================
 

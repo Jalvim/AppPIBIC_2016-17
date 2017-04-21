@@ -1,5 +1,7 @@
 //Função que formata e retorna data e hora
-module.exports = function formatDate(today) {
+module.exports = function formatDate() {
+
+	var today = new Date();
 
 	dd = today.getDate(),
 	MM = today.getMonth() + 1,

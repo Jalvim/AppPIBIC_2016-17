@@ -47,7 +47,7 @@ module.exports = function getDynamicHealthParams(idPulseira, currDate, delay) {
 						if (info['activities-heart-intraday'].dataset.length < 1) {
 							console.log('Array vazio, a pulseira '+idPulseira+' ainda não sincronizou hoje');
 						} else {
-							formatDate(currDate);
+							currDate = formatDate();
 							var len = info["activities-heart-intraday"].dataset.length;
 							connection.query(`SELECT * FROM SaudeParamsDinamicos WHERE idPaciente=${result[0].pacienteAtual} AND hora='${info["activities-heart-intraday"].dataset[len-1].time}'`, function(err,rows) {
 								if (err) { return console.log('Error: problema na base impediu armazenamento de dados HR'); }
