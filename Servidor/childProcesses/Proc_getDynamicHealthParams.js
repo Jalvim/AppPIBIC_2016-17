@@ -5,32 +5,31 @@ var getStaticHealthParams = require('../lib/getStaticHealthParamsLib.js');
 // var getStaticHealthParams = require('../lib/formatDateLib.js');
 
 //Loop e multiplexação das pulseiras em atividade para resgate de parâmetros estáticos
-setInterval(function(){
-	mysql.getConnection(function(err,connection) {
-		connection.query('SELECT idPulseira FROM Pulseira_Paciente', function(err,rows) {
-			if (err) console.log(err);
-			for (var i = 0; i < rows.length; i++) {
-				getStaticHealthParams(rows[i].idPulseira);
-			}
-		});
-	});
-}, 900000);
+// setInterval(function(){
+// 	mysql.getConnection(function(err,connection) {
+// 		connection.query('SELECT idPulseira FROM Pulseira_Paciente', function(err,rows) {
+// 			if (err) console.log(err);
+// 			for (var i = 0; i < rows.length; i++) {
+// 				getStaticHealthParams(rows[i].idPulseira);
+// 			}
+// 		});
+// 	});
+// }, 900000);
 
 //Loop e multiplexação das pulseiras em atividade para resgate de parâmetros dinâmicos
 // setInterval(function() {
 // 
-// 	mysql.getConnection(function(err,connection) {
-// 
-// 		var data = new Date(),
-// 			delay = 30;
-// 		connection.query('SELECT idPulseira FROM Pulseira_Paciente', function(err,rows) {
-// 			if (err) console.log(err);
-// 			for (var i = 0; i < rows.length; i++) {
-// 				getDynamicHealthParams(rows[i].idPulseira, data, delay);
-// 			}
-// 		});
-// 	});
-// }, 60000);
+mysql.getConnection(function(err,connection) {
+
+	var data = new Date(),
+	delay = 30;
+	connection.query('SELECT idPulseira FROM Pulseira_Paciente', function(err,rows) {
+		if (err) console.log(err);
+		for (var i = 0; i < rows.length; i++) {
+				getDynamicHealthParams(rows[i].idPulseira, data, delay);
+		}
+	});
+}, 60000);
 
 //request(optionsGetHR, getHRCallback);
 //getDynamicHealthParams(60, new Date(), 0);
