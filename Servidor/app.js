@@ -42,24 +42,33 @@ setupOptionsVariables(app);
 var spawn = require('child_process').spawn;
 
 
-var getHealthParamsProcess = spawn('node', ['./childProcesses/getStaticHealthParams.js']);
+function childProcessRestarter(pathAndFile, processname) {
 
-getHealthParamsProcess.stdin.write("Hi there");
+// 	console.log('oi');
 
-// Listen for any response from the child:
-getHealthParamsProcess.stdout.on('data', function (data) {
-	console.log('We received a reply: ' + data);
-});
+	var process = spawn('node', [pathAndFile]);
 
-// Listen for any errors:
-getHealthParamsProcess.stderr.on('data', function (data) {
-	console.log('There was an error: ' + data);
-});
+// 	process.stdin.write("Hi there");
+
+	process.stdout.on('data', function (data) {
+		console.log(processname + ' has a message: ' + data);
+	});
+
+	process.stderr.on('data', function (data) {
+		console.log('There was an error: ' + data);
+	});
 
 
-getHealthParamsProcess.on('exit', function(){
-	console.log('Erro no processo getStaticHealthParams');
-});
+	process.on('exit', function(){
+		console.log('Erro no processo getStaticHealthParams');
+		delete(process);
+		setTimeout(childProcessRestarter, 3000, pathAndFile);
+	});
+
+}
+
+childProcessRestarter('./childProcesses/getStaticHealthParams.js', 'getStatic');
+childProcessRestarter('./childProcesses/Proc_getDynamicHealthParams.js', 'getDynamic');
 
 // ================================ código servidor	===================================
 

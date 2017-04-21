@@ -17,17 +17,18 @@ var getStaticHealthParams = require('../lib/getStaticHealthParamsLib.js');
 // }, 900000);
 
 //Loop e multiplexação das pulseiras em atividade para resgate de parâmetros dinâmicos
-// setInterval(function() {
-// 
-mysql.getConnection(function(err,connection) {
+setInterval(function() {
 
-	var data = new Date(),
-	delay = 30;
-	connection.query('SELECT idPulseira FROM Pulseira_Paciente', function(err,rows) {
-		if (err) console.log(err);
-		for (var i = 0; i < rows.length; i++) {
-				getDynamicHealthParams(rows[i].idPulseira, data, delay);
-		}
+	mysql.getConnection(function(err,connection) {
+
+		var data = new Date(),
+		delay = 30;
+		connection.query('SELECT idPulseira FROM Pulseira_Paciente', function(err,rows) {
+			if (err) console.log(err);
+			for (var i = 0; i < rows.length; i++) {
+					getDynamicHealthParams(rows[i].idPulseira, data, delay);
+			}
+		});
 	});
 }, 60000);
 
