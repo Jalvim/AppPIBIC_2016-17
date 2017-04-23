@@ -53,7 +53,7 @@ router.route('/geral')
 
 				if (err) { res.send('Erro de conexão com base de dados adição Paciente'); }
 
-                if(canBeDecodedInBase64(req.body.foto)) {
+                if(canBeDecodedFromBase64(req.body.foto)) {
                     req.body.foto = Buffer.from(req.body.foto, 'base64');
                 }
                 else {
@@ -187,7 +187,7 @@ router.route('/geral')
 		}
 	});
 
-canBeDecodedInBase64 = function(str) {
+canBeDecodedFromBase64 = function(str) {
     var base64regex = /^([0-9a-zA-Z+/]{4})*(([0-9a-zA-Z+/]{2}==)|([0-9a-zA-Z+/]{3}=))?$/;
     return str.length == 0 || base64regex.test(str);
 }
@@ -215,7 +215,8 @@ router.get('/geral/idMedico/:idMedico', function(req, res){
 					res.send('Não existe paciente associado a este médico com esta ID na base de dados');
 				}
 				else{
-					res.json(rows);
+					var rowsWithPhotosEncondedInBase64 = encodePatientsPhotosAsBase64(rows);
+					res.json(rowsWithPhotosEncondedInBase64);
 				}
 				console.log(err);
 				console.log(rows);
@@ -230,6 +231,21 @@ router.get('/geral/idMedico/:idMedico', function(req, res){
 		res.send('Indique o ID único do médico a ser puxado da base.');
 	}
 });
+
+encodePatientsPhotosAsBase64 = function(rows) {
+	var rowsWithPhotosEncodedInBase64 = rows.slice();
+	// package mysql autocast BLOB to Buffer
+	for (row of rowsWithPhotosEncodedInBase64) {
+		var photoBuffer = row.foto;
+		if (typeof photoBuffer === 'Buffer' || photoBuffer instanceof Buffer) {
+			var bufferBase64 = photoBuffer.toString('base64');
+			row.foto = bufferBase64;
+		}
+	}
+	console.log(rowsWithPhotosEncodedInBase64);
+	return rowsWithPhotosEncodedInBase64;
+}
+
 
 router.get('/geral/inativo/idMedico/:idMedico', function(req, res){
 	console.log(req.params.hasOwnProperty('idMedico'));
@@ -337,41 +353,7 @@ router.get('/health/dynamic/:idPaciente/:data', function(req, res){
 		});
 	});
 
-});
 
-
-router.get('/:idPaciente/picture', function(req, res){
-
-	mysql.getConnection(function(err, connection) {
-
-		if (err) { return res.send('Erro de conexão com base de dados Get dados estáticos'); }
-
-		connection.query(
-		  'SELECT foto FROM Paciente where idtable1=?',
-		  [req.params.idPaciente],
-		  function(err, rows, fields) {
-			if (err) {
-                res.send('Error: não foi possível puxar dados do paciente especificado.');
-                // TODO add to logger
-                console.log(err);
-                }
-			else {
-				if(rows.length < 1){
-					res.send('Id Inválido');
-				} else {
-                    // package mysql autocast BLOB to Buffer
-                    var photoBuffer = rows[0].foto;
-                    var bufferBase64;
-                    if (typeof photoBuffer === 'Buffer' || photoBuffer instanceof Buffer) {
-                        bufferBase64 = photoBuffer.toString('base64');
-                        res.json(bufferBase64);
-                    } else
-                        res.send('Erro na obtenção da foto do paciente.');
-
-				}
-			}
-		});
-	});
 });
 
 module.exports = router;
