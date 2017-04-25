@@ -617,6 +617,35 @@ medApp.services = {
 
     this.idGrupoAtual = -1;
 
+  },
+
+  listHospital: function(data) {
+    
+    // Template de cada hospital que o médico atual pertence
+    var template = document.createElement('div');
+    template.innerHTML = 
+      '<ons-list-item>' +
+      '<ons-list modifier="inset">' +
+        '<ons-list-item>' +
+          '<ons-icon icon="hospital-o"></ons-icon>' +
+           data.nomeHospital +
+        '</ons-list-item>' +
+        '<ons-list-item id="pac-hospital" tappable>' +
+          '<ons-icon icon="md-accounts"></ons-icon>' +
+          'Gerenciar Pacientes' +
+        '</ons-list-item>' +
+      '<ons-list-item id="config-hospital" tappable>' +
+        '<ons-icon icon="cog"></ons-icon>' +
+        'Configurações' +
+      '</ons-list-item>' +
+    '</ons-list>' +
+    '</ons-list-item>';
+
+    var hospitalListItem = template.firstChild;
+    var hospitalLista = document.querySelector('#lista-hospital');
+
+    hospitalLista.appendChild(hospitalListItem);
+
   }
 
 };

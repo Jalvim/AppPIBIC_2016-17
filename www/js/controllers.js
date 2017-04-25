@@ -1986,6 +1986,23 @@ medApp.controllers = {
 
   managehospital: function(page) {
 
+    page.addEventListener('show', function(event) {
+
+      $('#lista-pacientes-grupo').empty();
+      $.get('http://julianop.com.br:3000/api/hospitais/medico/' + medApp.services.getIdMedico())
+      .done(function(data) {
+          console.log(data);
+          if(data[0].hasOwnProperty('idHospital')) {
+            for (var i = 0, len = data.length; i < len; i++) {
+              medApp.services.listHospital({ nomeHospital: data[i].nome,
+                                            idHospital: data[i].idHospital})
+            };
+
+          };
+
+      });
+    });
+
     page.querySelector('#add-hospital').onclick = function() {
 
       ons.notification.prompt ({message: "Digite o nome do hospital a ser criado:"})
@@ -2000,6 +2017,7 @@ medApp.controllers = {
           $.post('http://julianop.com.br:3000/api/hospitais',
           {
             nome: nomeNovoHospital,
+
           })
             .done(function(data) {
 
