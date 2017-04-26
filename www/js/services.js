@@ -432,6 +432,39 @@ medApp.services = {
 
   },
 
+  showHospitais: function(index, objeto){
+    var template = document.createElement('div');
+
+    template.innerHTML = '<ons-list-item modifier="nodivider" id=hospital'+ index +'> <div class="left">' + objeto[index].nome + 
+    '<div class="rigth"> <ons-radio-button><ons-radio-button> </div> </ons-list-item>';
+
+    var hospitalItem = template.firstChild;
+    var hospitalLista = document.querySelector('#lista-hospital');
+
+    hospitalLista.appendChild(hospitalItem);
+
+    document.querySelector('#hospital' + index).onclick = function(objeto){
+      
+      $.post("http://julianop.com.br:3000/api/compartilhamento/paciente",{
+        
+        idPaciente: this.idAtualPaciente,
+        idHospitalOrigem: objeto[index].idHospital,
+        idMedicoDestino: this.idAtualMedico
+
+      })
+      .done(function(data){
+        ons.notification.alert('Paciente indexado ao hospital:' + objeto[index].nome +'.');
+      })
+      .fail(function(){
+        ons.notification.alert('Paciente não indexado ao hospital por erro interno.');
+      }); //TODO --> VER SE VAI DAR CERTO COM ESSA CHAMADA
+
+      this.hidePopover(this.dial);
+    
+    };
+
+  },
+
   showPulseirasDisponiveis2: function(index) {
     var template = document.createElement('div');
 

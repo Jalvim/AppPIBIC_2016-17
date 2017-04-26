@@ -1148,6 +1148,31 @@ medApp.controllers = {
       
     };
 
+    //Função responsável por indexar paciente a um hospital na Base de dados
+    page.querySelector('#hospitalButton').onclick = function(){
+
+	  medApp.services.dial = document.getElementById('dialog').id;
+
+	  $.get('http://julianop.com.br:3000/api/hospitais/medico/' + medApp.services.idAtualMedico)
+	  .done(function(data){
+
+	  	console.log(data);
+
+	  	if(data.length == 0){
+	  	  ons.notification.alert('Erro, não foi encontrado hospital no servidor');
+	  	} else{
+
+	  	  medApp.services.showPopover(medApp.services.dial);
+
+  		  for(var i=0; i<data.length; i++){
+  		  	medApp.services.showHospitais(i, data);
+  		  }
+  		  
+	  	}
+	  });
+
+    };
+
     // Botão salvar altera os dados no servidor se houve mudanças
     page.querySelector('#editar-pac').onclick = function() {
 
@@ -1394,6 +1419,24 @@ medApp.controllers = {
       };
       
     };
+
+    //Função responsável por indexar paciente a um hospital na Base de dados
+/*    page.querySelector('#hospitalButton').onclick = function(){
+
+	  medApp.services.dial = document.getElementById('dialog').id;
+
+	  $.get('http://julianop.com.br:3000/api/hospitais/medico/' + medApp.services.idAtualMedico)
+	  .done(function(data){
+	  	if(data.length == 0){
+	  	  ons.notification.alert('Erro, não foi encontrado hospital no servidor');
+	  	} else{
+  		  for(var i=0; i<data.length; i++){
+  		  	medApp.services.showHospitais(i, data);
+  		  }
+	  	}
+	  });
+
+    };*/
 
     page.querySelector('#cadastrar-pac').onclick = function() {
 
