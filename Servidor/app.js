@@ -11,8 +11,6 @@ Faculdade de Tecnologia - UnB
 var senhas = require('./senhas.js');
 var express = require('express'),
 	app = express(),
-// 	request = require('request'),
-// 	mysql = require('./lib/mysqlWraper.js'),
 	bodyParser = require('body-parser'),
 	setupOptionsVariables = require('./setupVariables.js'),
 	pacienteRouter = require('./routes/paciente.js'),
@@ -21,17 +19,14 @@ var express = require('express'),
 	loginRouter = require('./routes/login.js'),
 	pulseiraRouter = require('./routes/pulseira.js'),
 	grupoPacientesRouter = require('./routes/grupoPacientes.js'),
-// 	mailSender = require('./lib/mailgunWraper.js');
 	hospitaisRouter = require('./routes/hospitais.js');
 	compartilhamentoRouter = require('./routes/compartilhamento.js');
 
-var refreshOAuthToken = require('./lib/refreshOAuthTokenLib.js');
-var getDynamicHealthParams = require('./lib/getDynamicHealthParamsLib.js');
-var getStaticHealthParams = require('./lib/getStaticHealthParamsLib.js');
-var getStaticHealthParams = require('./lib/formatDateLib.js');
-
 //setando todas as variáveis de options nos requests http de teste
 setupOptionsVariables(app);
+
+// var getDynamicHealthParams = require('./lib/getDynamicHealthParamsLib.js');
+// getDynamicHealthParams(58, new Date(), 30);
 
 // request(app.optionsPutTestRequestMedico, function(err, httpResponse, body) { 
 // 	console.log(err);
@@ -58,9 +53,8 @@ function childProcessRestarter(pathAndFile, processname) {
 		console.log('There was an error: ' + data);
 	});
 
-
 	process.on('exit', function(){
-		console.log('Erro no processo getStaticHealthParams');
+		console.log('Erro no processo ' + processname);
 		delete(process);
 		setTimeout(childProcessRestarter, 3000, pathAndFile);
 	});
