@@ -36,6 +36,7 @@ var express = require('express');
 var mysql = require('../lib/mysqlWraper.js');
 var request = require('request');
 var router = express.Router();
+var pacienteService = require('../lib/pacienteService.js');
 
 //Ações para alterar tabela paciente na base de dados
 router.route('/geral')
@@ -215,7 +216,7 @@ router.get('/geral/idMedico/:idMedico', function(req, res){
 					res.send('Não existe paciente associado a este médico com esta ID na base de dados');
 				}
 				else{
-					var rowsWithPhotosEncondedInBase64 = encodePatientsPhotosAsBase64(rows);
+					var rowsWithPhotosEncondedInBase64 = pacienteService.encodePatientsPhotosAsBase64(rows);
 					res.json(rowsWithPhotosEncondedInBase64);
 				}
 				console.log(err);
@@ -231,21 +232,6 @@ router.get('/geral/idMedico/:idMedico', function(req, res){
 		res.send('Indique o ID único do médico a ser puxado da base.');
 	}
 });
-
-encodePatientsPhotosAsBase64 = function(rows) {
-	var rowsWithPhotosEncodedInBase64 = rows.slice();
-	// package mysql autocast BLOB to Buffer
-	for (row of rowsWithPhotosEncodedInBase64) {
-		var photoBuffer = row.foto;
-		if (typeof photoBuffer === 'Buffer' || photoBuffer instanceof Buffer) {
-			var bufferBase64 = photoBuffer.toString('base64');
-			row.foto = bufferBase64;
-		}
-	}
-	console.log(rowsWithPhotosEncodedInBase64);
-	return rowsWithPhotosEncodedInBase64;
-}
-
 
 router.get('/geral/inativo/idMedico/:idMedico', function(req, res){
 	console.log(req.params.hasOwnProperty('idMedico'));
