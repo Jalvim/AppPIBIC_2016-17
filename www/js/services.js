@@ -432,6 +432,39 @@ medApp.services = {
 
   },
 
+  showHospitais: function(index, objeto){
+    var template = document.createElement('div');
+
+    template.innerHTML = '<ons-list-item modifier="nodivider" id=hospital'+ index +'> <div class="left">' + objeto[index].nome + 
+    '<div class="rigth"> <ons-radio-button><ons-radio-button> </div> </ons-list-item>';
+
+    var hospitalItem = template.firstChild;
+    var hospitalLista = document.querySelector('#lista-hospital');
+
+    hospitalLista.appendChild(hospitalItem);
+
+    document.querySelector('#hospital' + index).onclick = function(objeto){
+      
+      $.post("http://julianop.com.br:3000/api/compartilhamento/paciente",{
+        
+        idPaciente: this.idAtualPaciente,
+        idHospitalOrigem: objeto[index].idHospital,
+        idMedicoDestino: this.idAtualMedico
+
+      })
+      .done(function(data){
+        ons.notification.alert('Paciente indexado ao hospital:' + objeto[index].nome +'.');
+      })
+      .fail(function(){
+        ons.notification.alert('Paciente não indexado ao hospital por erro interno.');
+      }); //TODO --> VER SE VAI DAR CERTO COM ESSA CHAMADA
+
+      this.hidePopover(this.dial);
+    
+    };
+
+  },
+
   showPulseirasDisponiveis2: function(index) {
     var template = document.createElement('div');
 
@@ -616,6 +649,35 @@ medApp.services = {
   deleteGrupoAtual: function() {
 
     this.idGrupoAtual = -1;
+
+  },
+
+  listHospital: function(data) {
+    
+    // Template de cada hospital que o médico atual pertence
+    var template = document.createElement('div');
+    template.innerHTML = 
+      '<ons-list-item>' +
+      '<ons-list modifier="inset">' +
+        '<ons-list-item>' +
+          '<ons-icon icon="hospital-o"></ons-icon>' +
+           data.nomeHospital +
+        '</ons-list-item>' +
+        '<ons-list-item id="pac-hospital" tappable>' +
+          '<ons-icon icon="md-accounts"></ons-icon>' +
+          'Gerenciar Pacientes' +
+        '</ons-list-item>' +
+      '<ons-list-item id="config-hospital" tappable>' +
+        '<ons-icon icon="cog"></ons-icon>' +
+        'Configurações' +
+      '</ons-list-item>' +
+    '</ons-list>' +
+    '</ons-list-item>';
+
+    var hospitalListItem = template.firstChild;
+    var hospitalLista = document.querySelector('#lista-hospital');
+
+    hospitalLista.appendChild(hospitalListItem);
 
   }
 

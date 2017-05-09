@@ -133,6 +133,31 @@ router.route('/')
 		});
 	});
 
+router.route('/medico/:idMedico')
+	.get(function(req, res){ 
+
+		mysql.getConnection(function (err, connection){
+
+			var getHospitaisMedico = {
+				sql: `SELECT Hospital.idHospital, Hospital.nome FROM Hospital INNER JOIN Hospital_Medico ON Hospital_Medico.idHospital = Hospital.idHospital WHERE Hospital_Medico.idMedico =${req.params.idMedico}`,
+				timeout: 10000	
+			}
+			connection.query(getHospitaisMedico, function(err, rows, fields) {
+				if(err == null) {
+					res.json(rows);
+				}
+				else {
+				//Enviar código de erro http
+					res.send('Erro ao realizar a busca na base de dados, informe id do médico desejado');
+				}
+				console.log(err);
+				console.log(rows);
+				//console.log(fields);
+			
+			});
+		});
+	});
+
 router.route('/relacoes/')
 	.post(function(req, res) {
 

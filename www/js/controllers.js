@@ -1148,6 +1148,31 @@ medApp.controllers = {
       
     };
 
+    //Função responsável por indexar paciente a um hospital na Base de dados
+    page.querySelector('#hospitalButton').onclick = function(){
+
+	  medApp.services.dial = document.getElementById('dialog').id;
+
+	  $.get('http://julianop.com.br:3000/api/hospitais/medico/' + medApp.services.idAtualMedico)
+	  .done(function(data){
+
+	  	console.log(data);
+
+	  	if(data.length == 0){
+	  	  ons.notification.alert('Erro, não foi encontrado hospital no servidor');
+	  	} else{
+
+	  	  medApp.services.showPopover(medApp.services.dial);
+
+  		  for(var i=0; i<data.length; i++){
+  		  	medApp.services.showHospitais(i, data);
+  		  }
+  		  
+	  	}
+	  });
+
+    };
+
     // Botão salvar altera os dados no servidor se houve mudanças
     page.querySelector('#editar-pac').onclick = function() {
 
@@ -1395,6 +1420,24 @@ medApp.controllers = {
       
     };
 
+    //Função responsável por indexar paciente a um hospital na Base de dados
+/*    page.querySelector('#hospitalButton').onclick = function(){
+
+	  medApp.services.dial = document.getElementById('dialog').id;
+
+	  $.get('http://julianop.com.br:3000/api/hospitais/medico/' + medApp.services.idAtualMedico)
+	  .done(function(data){
+	  	if(data.length == 0){
+	  	  ons.notification.alert('Erro, não foi encontrado hospital no servidor');
+	  	} else{
+  		  for(var i=0; i<data.length; i++){
+  		  	medApp.services.showHospitais(i, data);
+  		  }
+	  	}
+	  });
+
+    };*/
+
     page.querySelector('#cadastrar-pac').onclick = function() {
 
       var modal = page.querySelector('ons-modal');
@@ -1518,7 +1561,7 @@ medApp.controllers = {
 
     page.querySelector('#linkurl').onclick = function() {
 
-      window.open( "https://www.fitbit.com/oauth2/authorize?response_type=code&client_id=227WRB&redirect_uri=http%3A%2F%2Fjulianop.com.br%3A3000%2F&scope=activity%20heartrate%20location%20nutrition%20profile%20settings%20sleep%20social%20weight&expires_in=604800");
+      window.open( "https://www.fitbit.com/oauth2/authorize?response_type=code&client_id=227WRB&redirect_uri=http%3A%2F%2Fjulianop.com.br%3A3000%2Fapi%2Fpulseira%2Fcodigo&scope=activity%20heartrate%20location%20nutrition%20profile%20settings%20sleep%20social%20weight&expires_in=604800");
 
     };
 
@@ -1986,6 +2029,23 @@ medApp.controllers = {
 
   managehospital: function(page) {
 
+    page.addEventListener('show', function(event) {
+
+      $('#lista-pacientes-grupo').empty();
+      $.get('http://julianop.com.br:3000/api/hospitais/medico/' + medApp.services.getIdMedico())
+      .done(function(data) {
+          console.log(data);
+          if(data[0].hasOwnProperty('idHospital')) {
+            for (var i = 0, len = data.length; i < len; i++) {
+              medApp.services.listHospital({ nomeHospital: data[i].nome,
+                                            idHospital: data[i].idHospital})
+            };
+
+          };
+
+      });
+    });
+
     page.querySelector('#add-hospital').onclick = function() {
 
       ons.notification.prompt ({message: "Digite o nome do hospital a ser criado:"})
@@ -2000,6 +2060,7 @@ medApp.controllers = {
           $.post('http://julianop.com.br:3000/api/hospitais',
           {
             nome: nomeNovoHospital,
+
           })
             .done(function(data) {
 
