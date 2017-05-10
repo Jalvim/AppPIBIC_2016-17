@@ -45,7 +45,6 @@ router.route('/geral')
 			req.body.hasOwnProperty('causaDaInternacao') &&
 			req.body.hasOwnProperty('numeroDoProntuario') &&
 			req.body.hasOwnProperty('telefone') &&
-			req.body.hasOwnProperty('foto') &&
 			req.body.hasOwnProperty('dataDeNascimento') &&
 			req.body.hasOwnProperty('idMedico')){
 
@@ -53,7 +52,7 @@ router.route('/geral')
 
 				if (err) { res.send('Erro de conexão com base de dados adição Paciente'); }
 
-                if(canBeDecodedFromBase64(req.body.foto)) {
+                if(req.body.hasOwnProperty('foto') && canBeDecodedFromBase64(req.body.foto)) {
                     req.body.foto = Buffer.from(req.body.foto, 'base64');
                 }
                 else {
