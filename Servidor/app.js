@@ -21,6 +21,7 @@ var express = require('express'),
 	grupoPacientesRouter = require('./routes/grupoPacientes.js'),
 	hospitaisRouter = require('./routes/hospitais.js');
 	compartilhamentoRouter = require('./routes/compartilhamento.js');
+	feedRouter = require('./routes/feed.js');
 
 //setando todas as variáveis de options nos requests http de teste
 setupOptionsVariables(app);
@@ -28,7 +29,7 @@ setupOptionsVariables(app);
 // var getDynamicHealthParams = require('./lib/getDynamicHealthParamsLib.js');
 // getDynamicHealthParams(58, new Date(), 30);
 
-// request(app.optionsPutTestRequestMedico, function(err, httpResponse, body) { 
+// request(app.optionsPutTestRequestMedico, function(err, httpResponse, body) {
 // 	console.log(err);
 // 	//console.log(httpResponse);
 // 	console.log(body);
@@ -88,7 +89,7 @@ app.get('/', function(req, res) {
 
 //Ações para alterar tabela paciente na base de dados, usar módulo local ./router/paciente.js
 app.use('/api/paciente', pacienteRouter);
-	
+
 //Ações para alterar tabela Médico na base de dados, usar módulo local ./router/medico.js
 app.use('/api/medico', medicoRouter);
 
@@ -106,6 +107,8 @@ app.use('/api/grupoPacientes', grupoPacientesRouter);
 app.use('/api/hospitais', hospitaisRouter);
 
 app.use('/api/compartilhamento', compartilhamentoRouter);
+
+app.use('/api/feed', feedRouter);
 
 port = process.env.PORT || 3000;
 
