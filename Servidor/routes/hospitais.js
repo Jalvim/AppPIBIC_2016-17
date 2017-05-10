@@ -48,7 +48,7 @@ router.route('/')
 					console.log(rows);
 					console.log(fields);
 					if(err == null){
-						res.send("Hospital criado com sucesso.");
+						res.send(rows[0]);
 					}
 					else{
 						res.send("Erro ao criar o hospital. Erro SQL.");
