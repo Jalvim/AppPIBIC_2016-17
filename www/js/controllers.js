@@ -1227,41 +1227,49 @@ medApp.controllers = {
 
     page.addEventListener('show', function(event) {
 
-      $.get('http://julianop.com.br:3000/api/feed' + medApp.services.idAtualMedico + '?limit=10'); 
+      $.get('http://julianop.com.br:3000/api/feed' + medApp.services.idAtualMedico + '?limit=10')
       .done(function(data){
 
       	if(data.length == 0){
 	      
-	      ons.notification.alert('Erro de conexão com o servidor');
-	      return;
+  	      ons.notification.alert('Erro de conexão com o servidor');
+  	      return;
 
-	    for(var i=0; i<data.length; i++){
-	      medApp.services.iconeFeed(data[i], i);
-	      // onclick que redireciona está dentro da fç
-	    }
-      
+        } else {
+
+    	     for(var i=0; i<data.length; i++){
+
+    	      medApp.services.iconeFeed(data[i], i);
+    	      // onclick que redireciona está dentro da fç
+
+    	    };
+          
+        };
+
       });
 
-      // Realiza a atualização do feed com pull --> TODO: funcionalidade.
-        var pullHook = document.getElementById('pull-hook-feed');
-        pullHook.addEventListener('changestate', function(event) {
-          var message = '';
-          switch (event.state) {
-            case 'initial':
-              message = 'Pull to refresh';
-              break;
-            case 'preaction':
-              message = 'Release';
-              break;
-            case 'action':
-              message = 'Loading...';
-              break;
-          }
-          pullHook.innerHTML = message;
-        });
-        pullHook.onAction = function(done) {
-          setTimeout(done, 1000);
-        };
+    });
+
+    // Realiza a atualização do feed com pull --> TODO: funcionalidade.
+      var pullHook = document.getElementById('pull-hook-feed');
+      pullHook.addEventListener('changestate', function(event) {
+        var message = '';
+        switch (event.state) {
+          case 'initial':
+            message = 'Pull to refresh';
+            break;
+          case 'preaction':
+            message = 'Release';
+            break;
+          case 'action':
+            message = 'Loading...';
+            break;
+        }
+        pullHook.innerHTML = message;
+      });
+      pullHook.onAction = function(done) {
+        setTimeout(done, 1000);
+      };
     
   },
 
