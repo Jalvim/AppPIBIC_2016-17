@@ -323,7 +323,7 @@ medApp.services = {
   },
 
   //Função responsável pela criacão de ítem no feed
-  /*
+  
   iconeFeed: function(info, i){
     var template = document.createElement('div')
 
@@ -342,12 +342,12 @@ medApp.services = {
 
     feedItem.querySelector('.center').onclick = function(info){
 
-      dadosPacienteAtual.idAtualPaciente = info.id
+      dadosPacienteAtual.idAtualPaciente = info.patient.idtable;
 
       document.querySelector('#pacienteNav').pushPage('html/perfilpaciente.html');
     }
   },
-  */
+  
 
   //Ciclo de funções para as pulseiras disponiveis
 

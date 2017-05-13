@@ -1223,12 +1223,11 @@ medApp.controllers = {
   // Controlador do feed de notícias //
   /////////////////////////////////////
 
-  /* RETIRADO PARA TESTES
   feed: function(page) {
 
     page.addEventListener('show', function(event) {
 
-      $.get('http://julianop.com.br:3000/api/<feed>') Request específico do feed
+      $.get('http://julianop.com.br:3000/api/feed' + medApp.services.idAtualMedico + '?limit=10'); 
       .done(function(data){
 
       	if(data.length == 0){
@@ -1236,24 +1235,11 @@ medApp.controllers = {
 	      ons.notification.alert('Erro de conexão com o servidor');
 	      return;
 
-      	} else {
-
-	      if(data.length > 10){//condicional para manter o tamenho do vetor ltd a 10 pacientes.
-	        
-	        for(i=0; i<10; i++){
-
-	          data[i] = data[(data.length - 10) + i];
-
-	        }
-
-	      }
-
-      	}
-
 	    for(var i=0; i<data.length; i++){
 	      medApp.services.iconeFeed(data[i], i);
 	      // onclick que redireciona está dentro da fç
 	    }
+      
       });
 
       // Realiza a atualização do feed com pull --> TODO: funcionalidade.
@@ -1277,7 +1263,7 @@ medApp.controllers = {
           setTimeout(done, 1000);
         };
     
-  },*/
+  },
 
   ///////////////////////////////////////
   // Controlador da lista de lembretes //
