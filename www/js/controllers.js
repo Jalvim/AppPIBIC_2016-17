@@ -280,10 +280,10 @@ medApp.controllers = {
 
     };
 
-    // Chama a página de gerenciar hospitais do médico
-    page.querySelector('#manage-hospital').onclick = function() {
+    // Chama a página de gerenciar equipes do médico
+    page.querySelector('#manage-team').onclick = function() {
 
-      document.querySelector('#medicoNav').pushPage('html/managehospital.html');
+      document.querySelector('#medicoNav').pushPage('html/manageteam.html');
 
     };
 
@@ -2017,22 +2017,22 @@ medApp.controllers = {
       
   },
 
-  ////////////////////////////////////////
-  // Controlador de Gerenciar Hospitais //
-  ////////////////////////////////////////
+  //////////////////////////////////////
+  // Controlador de Gerenciar Equipes //
+  //////////////////////////////////////
 
-  managehospital: function(page) {
+  manageteam: function(page) {
 
     page.addEventListener('show', function(event) {
 
-      $('#lista-pacientes-grupo').empty();
+      $('#lista-team').empty();
       $.get('http://julianop.com.br:3000/api/hospitais/medico/' + medApp.services.getIdMedico())
       .done(function(data) {
-          console.log(data);
+
           if(data[0].hasOwnProperty('idHospital')) {
             for (var i = 0, len = data.length; i < len; i++) {
-              medApp.services.listHospital({ nomeHospital: data[i].nome,
-                                            idHospital: data[i].idHospital})
+              medApp.services.listTeam({ nomeEquipe: data[i].nome,
+                                          idHospital: data[i].idHospital})
             };
 
           };
@@ -2040,20 +2040,20 @@ medApp.controllers = {
       });
     });
 
-    page.querySelector('#add-hospital').onclick = function() {
+    page.querySelector('#add-team').onclick = function() {
 
-      ons.notification.prompt ({message: "Digite o nome do hospital a ser criado:"})
-      .then(function(nomeNovoHospital) {
+      ons.notification.prompt ({message: "Digite o nome da equipe a ser criada:"})
+      .then(function(nomeNovaEquipe) {
 
-        if (nomeNovoHospital == '') {
+        if (nomeNovaEquipe == '') {
 
-          ons.notification.alert("Preencha o nome do Hospital!");
+          ons.notification.alert("Preencha o nome da Equipe!");
 
         } else {
 
           $.post('http://julianop.com.br:3000/api/hospitais',
           {
-            nome: nomeNovoHospital,
+            nome: nomeNovaEquipe,
 
           })
             .done(function(data) {

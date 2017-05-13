@@ -683,16 +683,16 @@ medApp.services = {
 
   },
 
-  listHospital: function(data) {
+  listTeam: function(data) {
     
-    // Template de cada hospital que o médico atual pertence
+    // Template de cada equipe que o médico atual pertence
     var template = document.createElement('div');
     template.innerHTML = 
       '<ons-list-item>' +
       '<ons-list modifier="inset">' +
         '<ons-list-item>' +
           '<ons-icon icon="hospital-o"></ons-icon>' +
-           data.nomeHospital +
+           data.nomeEquipe +
         '</ons-list-item>' +
         '<ons-list-item id="pac-hospital" tappable>' +
           '<ons-icon icon="md-accounts"></ons-icon>' +
@@ -705,10 +705,10 @@ medApp.services = {
     '</ons-list>' +
     '</ons-list-item>';
 
-    var hospitalListItem = template.firstChild;
-    var hospitalLista = document.querySelector('#lista-hospital');
+    var teamListItem = template.firstChild;
+    var teamLista = document.querySelector('#lista-team');
 
-    hospitalLista.appendChild(hospitalListItem);
+    teamLista.appendChild(teamListItem);
 
   }
 
