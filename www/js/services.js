@@ -325,24 +325,55 @@ medApp.services = {
   //Função responsável pela criacão de ítem no feed
   
   iconeFeed: function(info, i){
-    var template = document.createElement('div')
+    var template = document.createElement('div');
 
-    template.innerHTML = 
-    '<ons-list-titem id="item' + i + '">'
-    + '<div class="rigth">' + info.foto +
-    '</div>' +
-    '<div class="center">' + info.news +
-    '</div>' +
-    '<div class="left">' + info.nome +
-    '</div>'
-    + '</ons-list-item>'
+    if(info.type === "Paciente"){
+
+      timeStamp = info.patient.timestamp[6] + info.patient.timestamp[7] + "/" 
+      + info.patient.timestamp[9] + info.patient.timestamp[10] + " " 
+      + info.patient.timestamp[12] + info.patient.timestamp[13]
+      + ":" + info.patient.timestamp[15] + info.patient.timestamp[16]
+
+      template.innerHTML = 
+      '<ons-list-titem id="item' + i + '">'
+      + '<div class="rigth">' + info.foto +
+      '</div>' +
+      '<div class="center">' + info.nome +
+      '</div>' +
+      '<div class="left">' + timeStamp +
+      '</div>'
+      + '</ons-list-item>'
+
+    } else {
+
+      timeStamp = info.reminder.timestamp[6] + info.reminder.timestamp[7] + "/" 
+      + info.reminder.timestamp[9] + info.reminder.timestamp[10] + " " 
+      + info.reminder.timestamp[12] + info.reminder.timestamp[13]
+      + ":" + info.reminder.timestamp[15] + info.reminder.timestamp[16]
+
+      template.innerHTML = 
+      '<ons-list-titem id="item' + i + '">'
+      + '<div>' + info.reminder.mensagem +
+      '</div>'
+      '<div>' + timeStamp + '</div>'
+      + '</ons-list-item>'
+
+    }
 
     var feedItem = template.firstChild;
     var listaFeed = document.querySelector('#feed-lista');
 
     feedItem.querySelector('.center').onclick = function(info){
 
-      dadosPacienteAtual.idAtualPaciente = info.patient.idtable;
+      if(info.type === "Paciente"){
+
+      this.dadosPacienteAtual.idAtualPaciente = info.patient.idtable1;
+
+    } else {
+
+      this.dadosPacienteAtual.idAtualPaciente = info.reminder.idPaciente;
+    
+    }
 
       document.querySelector('#pacienteNav').pushPage('html/perfilpaciente.html');
     }
