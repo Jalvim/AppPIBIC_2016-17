@@ -683,7 +683,7 @@ medApp.services = {
 
   },
 
-  listTeam: function(data) {
+  listEquipe: function(data) {
     
     // Template de cada equipe que o médico atual pertence
     var template = document.createElement('div');
@@ -705,10 +705,10 @@ medApp.services = {
     '</ons-list>' +
     '</ons-list-item>';
 
-    var teamListItem = template.firstChild;
-    var teamLista = document.querySelector('#lista-team');
+    var equipeListItem = template.firstChild;
+    var equipeLista = document.querySelector('#lista-equipe');
 
-    teamLista.appendChild(teamListItem);
+    equipeLista.appendChild(teamListItem);
 
   }
 

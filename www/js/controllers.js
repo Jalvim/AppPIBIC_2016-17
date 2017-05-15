@@ -2021,8 +2021,9 @@ medApp.controllers = {
   // Controlador de Gerenciar Equipes //
   //////////////////////////////////////
 
-  manageteam: function(page) {
+  equipes: function(page) {
 
+    /* REMOVIDO PARA TESTES
     page.addEventListener('show', function(event) {
 
       $('#lista-team').empty();
@@ -2031,7 +2032,7 @@ medApp.controllers = {
 
           if(data[0].hasOwnProperty('idHospital')) {
             for (var i = 0, len = data.length; i < len; i++) {
-              medApp.services.listTeam({ nomeEquipe: data[i].nome,
+              medApp.services.listEquipe({ nomeEquipe: data[i].nome,
                                           idHospital: data[i].idHospital})
             };
 
@@ -2039,8 +2040,9 @@ medApp.controllers = {
 
       });
     });
+    */
 
-    page.querySelector('#add-team').onclick = function() {
+    page.querySelector('#add-equipe').onclick = function() {
 
       ons.notification.prompt ({message: "Digite o nome da equipe a ser criada:"})
       .then(function(nomeNovaEquipe) {
@@ -2068,6 +2070,20 @@ medApp.controllers = {
 
     };
 
+    // Página para gerenciar pacientes de uma equipe
+    page.querySelector('#pac-equipe').onclick = function() {
+
+      document.querySelector('#medicoNav').pushPage('html/pacientesequipe.html');
+
+    };
+
+    // Página para configurações de uma equipe
+    page.querySelector('#config-equipe').onclick = function() {
+
+      document.querySelector('#medicoNav').pushPage('html/configequipe.html');
+
+    };
+    
   }
 
 };
