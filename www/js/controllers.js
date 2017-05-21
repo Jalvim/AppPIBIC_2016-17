@@ -255,7 +255,7 @@ medApp.controllers = {
         page.querySelector('#esp-perfil').innerHTML = data[0].especialidade;
         page.querySelector('#tel-perfil').innerHTML = data[0].telefone;
         page.querySelector('#email-perfil').innerHTML = data[0].email;
-        page.querySelector('#img-med').src=data[0].foto;
+        //page.querySelector('#img-med').src=data[0].foto;
       });
 
     });
@@ -283,9 +283,9 @@ medApp.controllers = {
     };
 
     // Chama a página de gerenciar equipes do médico
-    page.querySelector('#manage-team').onclick = function() {
+    page.querySelector('#equipes').onclick = function() {
 
-      document.querySelector('#medicoNav').pushPage('html/manageteam.html');
+      document.querySelector('#medicoNav').pushPage('html/equipes.html');
 
     };
 
