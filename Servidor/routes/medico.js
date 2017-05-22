@@ -216,13 +216,13 @@ router.route('/')
 		});
 	});
 	
-router.route('/busca/CRM/:crmMedico')
+router.route('/busca/email/:emailMedico')
 	.get(function(req, res){
 	
 		mysql.getConnection(function(err, connection) {
 		
 			var getPatientQuery = {
-				sql: `SELECT * FROM Medico WHERE CRM = ${connection.escape(req.params.crmMedico)}`,
+				sql: `SELECT idMedico FROM logins WHERE email = ${connection.escape(req.params.emailMedico)}`,
 				timeout: 10000	
 			}
 			connection.query(getPatientQuery, function(err, rows, fields) {
