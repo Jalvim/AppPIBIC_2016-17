@@ -2134,7 +2134,20 @@ medApp.controllers = {
         .then( function(confirm){
 
           if(confirm) {
-            // (TODO) Remove a relação do médico atual com a equipe
+            /* (TODO) Remove a relação do médico atual com a equipe
+            $.ajax({
+              url: 'http://julianop.com.br:3000/api/hospitais/relacoes',
+              type: 'DELETE',
+              data: {
+                idHospital: medApp.services.getEquipeAtual(),
+                idMedico: medApp.services.getIdMedico()
+              }
+            })
+            .done(function(data) {
+              console.log(data);
+              document.querySelector('#medicoNav').popPage();
+            });
+            */
           };
 
         });
@@ -2146,14 +2159,48 @@ medApp.controllers = {
 
       ons.notification.prompt({
         message:"Digite o novo nome da equipe:",
-        callback: function(nomeNovaEquipe){
+        callback: function(nomeEquipeEdit){
 
-          // (TODO) Mudança do nome da equipe
-          
+          /* (TODO) Mudança do nome da equipe
+          $.ajax({
+            url: 'http://julianop.com.br:3000/api/hospitais',
+            type: 'PUT',
+            data: { idMedico: medApp.services.getEquipeAtual(),
+                    nome: nomeEquipeEdit
+                  }
+          });
+          */
         }
       });
 
     };
+
+    // Botão para apagar a equipe
+    page.querySelector('#delete-equipe').onclick = function(e) {
+
+      ons.notification.confirm({message: 'Tem certeza que quer apagar a equipe?'})
+        .then( function(confirm){
+
+          if(confirm) {
+            /* (TODO) Deleta a equipe atual
+            $.ajax({
+              url: 'http://julianop.com.br:3000/api/hospitais',
+              type: 'DELETE',
+              data: {
+                idHospital: medApp.services.getEquipeAtual()
+              }
+            })
+            .done(function(data) {
+              console.log(data);
+              document.querySelector('#medicoNav').popPage();
+            });
+            */
+          };
+
+        });
+
+    };
+
   }
 
 };
