@@ -710,6 +710,29 @@ medApp.services = {
 
     equipeLista.appendChild(teamListItem);
 
-  }
+  },
+
+  idEquipeAtual: -1,  // ID da equipe atual selecionada
+
+  // Função que seta o ID atual da equipe
+  setEquipeAtual: function(novaId) {
+
+    this.idEquipeAtual = novaId;
+
+  },
+
+  // Função que retorna o ID da equipe atual
+  getEquipeAtual: function() {
+    
+    return this.idEquipeAtual;
+
+  },
+
+  // Função que limpa o ID da equipe
+  deleteGrupoAtual: function() {
+
+    this.idEquipeAtual = -1;
+
+  },
 
 };

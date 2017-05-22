@@ -2088,6 +2088,72 @@ medApp.controllers = {
 
     };
 
+  },
+
+  ////////////////////////////////////////////
+  // Controlador de Configurações de Equipe //
+  ////////////////////////////////////////////
+
+  configequipe: function(page) {
+
+    /* (TODO) Seta a id da equipe atual
+    page.addEventListener('show', function(event) {
+
+    });
+    */
+
+    // Botão para adicionar membros à equipe através do email
+    page.querySelector('#adicionar-membro-equipe').onclick = function(e) {
+
+      ons.notification.prompt({
+        message:"Digite o e-mail do membro a ser adicionado:",
+        callback: function(email){
+
+          $.get('http://julianop.com.br:3000/api/medico/busca/email/' + email)
+          .done(function(data) {
+
+            console.log(data[0].idMedico);
+            /* (TODO) Adiciona relação do médico a ser adicionado a equipe
+            $.post("http://julianop.com.br:3000/api/hospitais/relacoes",
+              {
+                idMedico: data[0].idMedico,
+                idHospital: medApp.services.getEquipeAtual(),
+              });
+            */
+
+          });
+        }
+      });
+
+    };
+
+    // Botão para deixar de participar da equipe
+    page.querySelector('#sair-equipe').onclick = function(e) {
+
+      ons.notification.confirm({message: 'Tem certeza que quer deixa a equipe?'})
+        .then( function(confirm){
+
+          if(confirm) {
+            // (TODO) Remove a relação do médico atual com a equipe
+          };
+
+        });
+
+    };
+
+    // Botão para editar nome da equipe
+    page.querySelector('#edit-equipe').onclick = function(e) {
+
+      ons.notification.prompt({
+        message:"Digite o novo nome da equipe:",
+        callback: function(nomeNovaEquipe){
+
+          // (TODO) Mudança do nome da equipe
+          
+        }
+      });
+
+    };
   }
 
 };
