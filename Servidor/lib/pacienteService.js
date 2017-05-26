@@ -1,6 +1,7 @@
 "use strict";
 
 var mysql = require('./mysqlWraper.js');
+var base64Util = require('../lib/base64Util.js');
 
 var exports = module.exports = {};
 
@@ -25,11 +26,7 @@ var _encodePatientsPhotosAsBase64 = function(rows) {
 	var rowsWithPhotosEncodedInBase64 = rows.slice();
 	// package mysql autocast BLOB to Buffer
 	for (var row of rowsWithPhotosEncodedInBase64) {
-		var photoBuffer = row.foto;
-		if (typeof photoBuffer === 'Buffer' || photoBuffer instanceof Buffer) {
-			var bufferBase64 = photoBuffer.toString('base64');
-			row.foto = bufferBase64;
-		}
+		row.foto = base64Util.encodeBufferToBase64(row.foto);
 	}
 	return rowsWithPhotosEncodedInBase64;
 }

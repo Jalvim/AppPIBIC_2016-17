@@ -37,6 +37,7 @@ var mysql = require('../lib/mysqlWraper.js');
 var request = require('request');
 var router = express.Router();
 var pacienteService = require('../lib/pacienteService.js');
+var base64Util = require('../lib/base64Util.js');
 
 //Ações para alterar tabela paciente na base de dados
 router.route('/geral')
@@ -53,7 +54,7 @@ router.route('/geral')
 
 				if (err) { res.send('Erro de conexão com base de dados adição Paciente'); }
 
-                if(req.body.hasOwnProperty('foto') && canBeDecodedFromBase64(req.body.foto)) {
+                if(req.body.hasOwnProperty('foto') && base64Util.canBeDecodedFromBase64(req.body.foto)) {
                     req.body.foto = Buffer.from(req.body.foto, 'base64');
                 }
                 else {
@@ -186,11 +187,6 @@ router.route('/geral')
 			res.send('Indique o número de prontuário do paciente a ser removido da base.');
 		}
 	});
-
-canBeDecodedFromBase64 = function(str) {
-    var base64regex = /^([0-9a-zA-Z+/]{4})*(([0-9a-zA-Z+/]{2}==)|([0-9a-zA-Z+/]{3}=))?$/;
-    return str.length == 0 || base64regex.test(str);
-}
 
 // Busca na API por pacientes pelo ID do médico
 router.get('/geral/idMedico/:idMedico', function(req, res){
