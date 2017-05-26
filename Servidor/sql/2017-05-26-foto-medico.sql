@@ -1,0 +1,3 @@
+USE `cl19-dbpipibic`;
+
+ALTER TABLE medico ADD COLUMN `foto` MEDIUMBLOB NULL AFTER `CPF`;
