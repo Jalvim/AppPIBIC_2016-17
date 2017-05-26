@@ -12,11 +12,12 @@ var senhas = require('../senhas.js');
 var express = require('express');
 var mysql = require('../lib/mysqlWraper.js');
 // var mysql = require('mysql');
-var router = express.Router();	
+var router = express.Router();
 var mailSender = require('../lib/mailgunWraper.js');
+var base64Util = require('../lib/base64Util.js');
 
 
-//Atributos médicos: 	
+//Atributos médicos:
 /*
 idMedico
 nome
@@ -26,19 +27,24 @@ telefone
 */
 router.route('/')
 	.post(function(req, res) {
-	
+
 		mysql.getConnection(function(err,connection){
 			//TO DO: adicionar novo médico
 			if (req.hasOwnProperty('body') &&
-				req.body.hasOwnProperty('nomeMedico') && 
+				req.body.hasOwnProperty('nomeMedico') &&
 				req.body.hasOwnProperty('especialidade') &&
 				req.body.hasOwnProperty('CRM') &&
 				req.body.hasOwnProperty('telefone') &&
 				req.body.hasOwnProperty('email') &&
 				req.body.hasOwnProperty('senha') &&
-				req.body.hasOwnProperty('CPF')){	
+				req.body.hasOwnProperty('CPF')){
+
+                if(req.body.hasOwnProperty('foto') && base64Util.canBeDecodedFromBase64(req.body.foto)) {
+                    req.body.foto = Buffer.from(req.body.foto, 'base64');
+                }
+
 				var query = {
-					sql:`INSERT INTO Medico (nome, especialidade, CRM, telefone, CPF) VALUES (${connection.escape(req.body.nomeMedico)}, ${connection.escape(req.body.especialidade)}, ${connection.escape(req.body.CRM)}, ${connection.escape(req.body.telefone)}, ${connection.escape(req.body.CPF)} )`,
+					sql:`INSERT INTO Medico (nome, especialidade, CRM, telefone, CPF, foto) VALUES (${connection.escape(req.body.nomeMedico)}, ${connection.escape(req.body.especialidade)}, ${connection.escape(req.body.CRM)}, ${connection.escape(req.body.telefone)}, ${connection.escape(req.body.CPF)}, ${connection.escape(req.body.foto)} )`,
 					timeout: 10000
 
 				}
@@ -65,11 +71,11 @@ router.route('/')
 										text: `Este endereço de email foi usado no cadastro de uma nova conta no aplicativo das pulseiras inteligentes.\n\n` +
 												`Por favor confirmar seu endereço de email clicando no link abaixo.\n\n` +
 												`Caso você seja o proprietário deste email e não tenha realizado o cadastro ignore esta mensagem.`,
-										html: `Link para confirmação de email: <a>${url}</a>` 
+										html: `Link para confirmação de email: <a>${url}</a>`
 									}
 									mailSender(verificationEmail);
-								
-								
+
+
 								}
 								else {
 									res.send("Médico criado com sucesso, mas erro ao criar login");
@@ -82,13 +88,13 @@ router.route('/')
 							});
 						}
 					else{
-					
+
 						res.send('Erro ao adicionar o médico');
 
 					}
 				});
 
-			
+
 			} else {
 				throw new Error('Parâmetros POST inválidos ou inexistentes para tabela Medico');
 				res.send('Error: Parâmetros POST inválidos ou inexistentes para adicionar perfil médico');
@@ -96,18 +102,18 @@ router.route('/')
 		});
 	})
 	.put(function(req, res){
-	
+
 		mysql.getConnection(function(err, connection){
 
 			//TO DO: editar perfil médico pré existente
-			if (req.hasOwnProperty('body') && 
+			if (req.hasOwnProperty('body') &&
 				req.body.hasOwnProperty('idMedico')){
 				var selector = {
 					sql:`SELECT M.*, L.email FROM Medico M, logins L WHERE M.idMedico = ${connection.escape(req.body.idMedico)} AND L.idMedico = M.idMedico LIMIT 1`,
 					timeout: 10000
 					}
 				connection.query(selector, function(err, rows, fields) {
-			
+
 				if (err != null) console.log('Erro ao selecionar perfil a ser editado na base de dados.');
 				else if (rows.length < 1) {
 					console.log('Medico nao encontrado.');
@@ -122,7 +128,7 @@ router.route('/')
 						telefone,
 						CPF,
 						email;
-				
+
 					if (req.body.hasOwnProperty('idMedico')) {
 						idMedico = req.body.idMedico;
 					} else { idMedico = rows[0].idMedico; }
@@ -141,30 +147,30 @@ router.route('/')
 					if (req.body.hasOwnProperty('CRM')){
 						CRM = req.body.CRM;
 					} else { CRM = rows[0].CRM; }
-				
+
 
 					connection.query(
 					'UPDATE Medico SET nome=?, especialidade=?, telefone=?, CPF=?, CRM=? WHERE idMedico=? LIMIT 1',
-					[nome, especialidade, telefone, CPF, CRM, req.body.idMedico], 
+					[nome, especialidade, telefone, CPF, CRM, req.body.idMedico],
 					function(error, results){
 						if (error != null) {
 							console.log(error);
 							console.log('Erro ao alterar perfil de medico na base de dados');
 							res.send('Erro ao alterar perfil de medico na base de dados');
 						} else {
-							connection.query('UPDATE logins SET email=?, emailConfirmado=0 WHERE idMedico=?', 
+							connection.query('UPDATE logins SET email=?, emailConfirmado=0 WHERE idMedico=?',
 							[email, req.body.idMedico], function(err) {
-							
+
 								if (err) {
 									return res.send("Informações de perfil editadas porém houve um problema ao editar email.");
 								}
-							
+
 								res.send('Medico editado com sucesso.');
-						
+
 							});
 						}
-					});				
-				
+					});
+
 					if (req.body.hasOwnProperty('email')){
 						var url = `http://julianop.com.br:3000/api/medico/confirm/${idMedico}`;
 						var verificationEmail = {
@@ -173,13 +179,13 @@ router.route('/')
 							text: `Este endereço de email foi usado no cadastro de uma nova conta no aplicativo das pulseiras inteligentes.\n\n` +
 									`Por favor confirmar seu endereço de email clicando no link abaixo.\n\n` +
 									`Caso você seja o proprietário deste email e não tenha realizado o cadastro ignore esta mensagem.`,
-							html: `Link para confirmação de email: <a>${url}</a>` 
+							html: `Link para confirmação de email: <a>${url}</a>`
 						}
 						mailSender(verificationEmail, function(error, body){
 							console.log(body);
 						});
-					
-					
+
+
 						email = req.body.email;
 					} else { email = rows[0].email; }
 
@@ -211,19 +217,19 @@ router.route('/')
 						}
 				  });
 			} else {
-				res.send('Indique o id único de medico a ser removido da base.');			
+				res.send('Indique o id único de medico a ser removido da base.');
 			}
 		});
 	});
-	
+
 router.route('/busca/email/:emailMedico')
 	.get(function(req, res){
-	
+
 		mysql.getConnection(function(err, connection) {
-		
+
 			var getPatientQuery = {
 				sql: `SELECT idMedico FROM logins WHERE email = ${connection.escape(req.params.emailMedico)}`,
-				timeout: 10000	
+				timeout: 10000
 			}
 			connection.query(getPatientQuery, function(err, rows, fields) {
 				if(err == null) {
@@ -236,19 +242,19 @@ router.route('/busca/email/:emailMedico')
 				console.log(err);
 				console.log(rows);
 				//console.log(fields);
-			
+
 			});
 		});
 	});
-	
+
 router.route('/confirm/:idMedico')
 	.get(function(req, res){
-		
+
 		mysql.getConnection(function(err, connection) {
-		
+
 			var getPatientQuery = {
 				sql: `UPDATE logins SET emailConfirmado=1 WHERE idMedico=${req.params.idMedico}`,
-				timeout: 10000	
+				timeout: 10000
 			}
 			connection.query(getPatientQuery, function(err, rows, fields) {
 				if(err == null) {
@@ -261,22 +267,22 @@ router.route('/confirm/:idMedico')
 				console.log(err);
 				console.log(rows);
 				//console.log(fields);
-			
+
 			});
 		});
 	});
-	
+
 router.route('/busca/ID/:idMedico')
 	.get(function(req, res){
-	
+
 		mysql.getConnection(function(err, connection) {
-	
+
 			if (req.params.idMedico < 0) { res.send('Ids de medicos são estritamente positivos.'); }
 			else {
 				//Request para encontrar médico na tabela
 				var getMedicQuery = {
 					sql: `SELECT * FROM Medico WHERE idMedico = ${connection.escape(req.params.idMedico)}`,
-					timeout: 10000	
+					timeout: 10000
 				}
 				var response;
 				connection.query(getMedicQuery, function(err, rows, fields) {
@@ -290,7 +296,7 @@ router.route('/busca/ID/:idMedico')
 					console.log(err);
 					//console.log(rows);
 					//console.log(fields);
-			
+
 				});
 
 				var getEmailQuery = {
@@ -301,6 +307,7 @@ router.route('/busca/ID/:idMedico')
 				connection.query(getEmailQuery, function(err, rows, fields) {
 					if(err == null) {
 						response[0].email = rows[0].email;
+                        response[0].foto = base64Util.encodeBufferToBase64(response[0].foto);
 						console.log(response);
 						res.json(response);
 					}
@@ -311,10 +318,10 @@ router.route('/busca/ID/:idMedico')
 					console.log(err);
 					console.log(rows[0].email);
 					//console.log(fields);
-			
+
 				});
-			
-			
+
+
 			}
 		});
 	});
