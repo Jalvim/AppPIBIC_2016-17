@@ -1229,10 +1229,12 @@ medApp.controllers = {
 
   feed: function(page) {
 
-    page.addEventListener('show', function(event) {
+    ons.ready(function(event) {
 
-      $.get('http://julianop.com.br:3000/api/feed' + medApp.services.idAtualMedico + '?limit=10')
+      $.get('http://julianop.com.br:3000/api/feed/' + medApp.services.idAtualMedico) //+ '?limit=10')
       .done(function(data){
+
+      	console.log(data);
 
       	if(data.length == 0){
 
@@ -1241,7 +1243,7 @@ medApp.controllers = {
 
         } else {
 
-    	     for(var i=0; i<data.length; i++){
+    	    for(var i=0; i<data.length; i++){
 
     	      medApp.services.iconeFeed(data[i], i);
     	      // onclick que redireciona está dentro da fç
