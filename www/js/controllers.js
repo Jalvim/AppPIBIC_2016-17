@@ -454,8 +454,7 @@ medApp.controllers = {
 
       document.querySelector('#pacienteNav').pushPage('html/lembretes.html');
 
-    }
-
+    };
 
     // Chama página de dados de saúde
     page.querySelector('#graf').onclick = function() {
@@ -463,6 +462,14 @@ medApp.controllers = {
       document.querySelector('#pacienteNav').pushPage('html/dadossaude.html');
 
     };
+
+    // Chama página de compartilhamento de paciente
+    page.querySelector('#compart-pac').onclick = function() {
+
+      document.querySelector('#pacienteNav').pushPage('html/compartilhar.html');
+
+    };
+
 
     // Chama página de configurações do paciente
     page.querySelector('#config-pac').onclick = function() {
@@ -2076,15 +2083,8 @@ medApp.controllers = {
 
     };
 
-    // Página para gerenciar pacientes de uma equipe
-    page.querySelector('#pac-equipe').onclick = function() {
-
-      document.querySelector('#medicoNav').pushPage('html/pacientesequipe.html');
-
-    };
-
-    // Página para configurações de uma equipe
-    page.querySelector('#config-equipe').onclick = function() {
+    // Página para gerenciar uma equipe
+    page.querySelector('#ver-equipe').onclick = function() {
 
       document.querySelector('#medicoNav').pushPage('html/configequipe.html');
 
