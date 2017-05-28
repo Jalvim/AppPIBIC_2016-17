@@ -222,6 +222,7 @@ router.route('/')
 		});
 	});
 
+
 router.route('/busca/email/:emailMedico')
 	.get(function(req, res){
 
@@ -237,7 +238,7 @@ router.route('/busca/email/:emailMedico')
 				}
 				else {
 				//Enviar código de erro http
-					res.send('Erro ao realizar a busca na base de dados por CRM');
+					res.send('Erro ao realizar a de id na busca de dados por email');
 				}
 				console.log(err);
 				console.log(rows);
