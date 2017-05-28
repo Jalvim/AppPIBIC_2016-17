@@ -222,7 +222,6 @@ router.route('/')
 		});
 	});
 
-
 router.route('/busca/email/:emailMedico')
 	.get(function(req, res){
 
