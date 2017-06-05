@@ -142,6 +142,8 @@ router.route('/medico/:idMedico')
 				sql: `SELECT Hospital.idHospital, Hospital.nome FROM Hospital INNER JOIN Hospital_Medico ON Hospital_Medico.idHospital = Hospital.idHospital WHERE Hospital_Medico.idMedico =${req.params.idMedico}`,
 				timeout: 10000
 			}
+			
+			if (err) throw err;
 			connection.query(getHospitaisMedico, function(err, rows, fields) {
 				if(err == null) {
 					res.json(rows);
