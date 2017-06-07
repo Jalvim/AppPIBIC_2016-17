@@ -2073,7 +2073,7 @@ medApp.controllers = {
           })
             .done(function(data) {
 
-              ons.notification.alert(data);
+              console.log(data);
 
             });
 
@@ -2163,15 +2163,26 @@ medApp.controllers = {
         message:"Digite o novo nome da equipe:",
         callback: function(nomeEquipeEdit){
 
-          /* (TODO) Mudança do nome da equipe
-          $.ajax({
-            url: 'http://julianop.com.br:3000/api/hospitais',
-            type: 'PUT',
-            data: { idMedico: medApp.services.getEquipeAtual(),
-                    nome: nomeEquipeEdit
-                  }
-          });
-          */
+          if (nomeEquipeEdit !== '') { 
+            /* (TODO) Mudança do nome da equipe
+            $.ajax({
+              url: 'http://julianop.com.br:3000/api/hospitais',
+              type: 'PUT',
+              data: { idMedico: medApp.services.getEquipeAtual(),
+                      nome: nomeEquipeEdit
+                    }
+            })
+            .done(function(data) {
+              console.log(data);
+              page.querySelector('#nome-equipe').innerHTML = nomeEquipeEdit;
+            });
+            */
+
+          } else if (nomeEquipeEdit == '') {
+
+            ons.notification.alert("A Equipe precisa ter um nome!");
+
+          };
         }
       });
 

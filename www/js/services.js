@@ -694,19 +694,22 @@ medApp.services = {
           '<ons-icon icon="hospital-o"></ons-icon>' +
            data.nomeEquipe +
         '</ons-list-item>' +
-        '<ons-list-item id="pac-hospital" tappable>' +
-          '<ons-icon icon="md-accounts"></ons-icon>' +
-          'Gerenciar Pacientes' +
-        '</ons-list-item>' +
-      '<ons-list-item id="config-hospital" tappable>' +
-        '<ons-icon icon="cog"></ons-icon>' +
-        'Configurações' +
-      '</ons-list-item>' +
-    '</ons-list>' +
+        '<ons-list-item class="ver-equipe" tappable>' +
+        '<ons-icon icon="md-accounts"></ons-icon>' +
+        'Gerenciar Equipe' +
     '</ons-list-item>';
 
     var equipeListItem = template.firstChild;
+    $(equipeListItem).data('idEquipe', data.idEquipe);
     var equipeLista = document.querySelector('#lista-equipe');
+
+    // Funcionalidade de gerenciar equipe
+    equipeListItem.querySelector('.ver-equipe').onclick = function() {
+
+      medApp.services.setEquipeAtual($(equipeListItem).data('idEquipe'));
+      document.querySelector('#medicoNav').pushPage('html/configequipe.html', {data: { nomeEquipe: data.nomeEquipe } });
+
+    };
 
     equipeLista.appendChild(teamListItem);
 
