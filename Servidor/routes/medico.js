@@ -39,8 +39,12 @@ router.route('/')
 				req.body.hasOwnProperty('senha') &&
 				req.body.hasOwnProperty('CPF')){
 
-                if(req.body.hasOwnProperty('foto') && base64Util.canBeDecodedFromBase64(req.body.foto)) {
-                    req.body.foto = Buffer.from(req.body.foto, 'base64');
+                if(req.body.hasOwnProperty('foto')) {
+                    if (base64Util.canBeDecodedFromBase64(req.body.foto)) {
+                        req.body.foto = Buffer.from(req.body.foto, 'base64');
+                    } else {
+                        res.send('A foto não é uma string base64 válida.');
+                    }
                 }
 
 				var query = {

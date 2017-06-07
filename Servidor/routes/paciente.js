@@ -54,8 +54,12 @@ router.route('/geral')
 
 				if (err) { res.send('Erro de conexão com base de dados adição Paciente'); }
 
-                if(req.body.hasOwnProperty('foto') && base64Util.canBeDecodedFromBase64(req.body.foto)) {
-                    req.body.foto = Buffer.from(req.body.foto, 'base64');
+                if(req.body.hasOwnProperty('foto')) {
+                    if (base64Util.canBeDecodedFromBase64(req.body.foto)) {
+                        req.body.foto = Buffer.from(req.body.foto, 'base64');
+                    } else {
+                        res.send('A foto não é uma string base64 válida.');
+                    }
                 }
 
 				var query = {
@@ -146,8 +150,12 @@ router.route('/geral')
 					if (req.body.hasOwnProperty('ativo')){
 						ativo = req.body.ativo;
 					} else { ativo = rows[0].ativo; }
-                    if(req.body.hasOwnProperty('foto') && base64Util.canBeDecodedFromBase64(req.body.foto)) {
-                        novaFoto = Buffer.from(req.body.foto, 'base64');
+                    if(req.body.hasOwnProperty('foto')) {
+                        if (base64Util.canBeDecodedFromBase64(req.body.foto)) {
+                            novaFoto = Buffer.from(req.body.foto, 'base64');
+                        } else {
+                            res.send('A foto não é uma string base64 válida.');
+                        }
                     }
 
 					connection.query(
