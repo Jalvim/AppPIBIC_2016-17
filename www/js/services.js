@@ -683,7 +683,7 @@ medApp.services = {
 
   },
 
-  listEquipe: function(data) {
+  listEquipe: function(equipe) {
     
     // Template de cada equipe que o médico atual pertence
     var template = document.createElement('div');
@@ -692,7 +692,7 @@ medApp.services = {
       '<ons-list modifier="inset">' +
         '<ons-list-item>' +
           '<ons-icon icon="hospital-o"></ons-icon>' +
-           data.nomeEquipe +
+           equipe.nomeEquipe +
         '</ons-list-item>' +
         '<ons-list-item class="ver-equipe" tappable>' +
         '<ons-icon icon="md-accounts"></ons-icon>' +
@@ -700,18 +700,19 @@ medApp.services = {
     '</ons-list-item>';
 
     var equipeListItem = template.firstChild;
-    $(equipeListItem).data('idEquipe', data.idEquipe);
+    $(equipeListItem).data('idEquipe', equipe.idEquipe);
+    console.log($(equipeListItem).data('idEquipe') + ' ' + equipe.nomeEquipe);
     var equipeLista = document.querySelector('#lista-equipe');
 
     // Funcionalidade de gerenciar equipe
     equipeListItem.querySelector('.ver-equipe').onclick = function() {
 
       medApp.services.setEquipeAtual($(equipeListItem).data('idEquipe'));
-      document.querySelector('#medicoNav').pushPage('html/configequipe.html', {data: { nomeEquipe: data.nomeEquipe } });
+      document.querySelector('#medicoNav').pushPage('html/configequipe.html', {data: { nomeEquipe: equipe.nomeEquipe } });
 
     };
 
-    equipeLista.appendChild(teamListItem);
+    equipeLista.appendChild(equipeListItem);
 
   },
 
