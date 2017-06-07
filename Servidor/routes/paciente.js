@@ -57,18 +57,14 @@ router.route('/geral')
                 if(req.body.hasOwnProperty('foto') && base64Util.canBeDecodedFromBase64(req.body.foto)) {
                     req.body.foto = Buffer.from(req.body.foto, 'base64');
                 }
-                else {
-                    return res.send('Error: Foto não está codificada em base64.');
-                }
-
 
 				var query = {
 					sql:`INSERT INTO Paciente (nomePaciente, numeroDoProntuario, telefone, foto, causaDaInternacao, dataDeNascimento, ativo) VALUES (${connection.escape(req.body.nomePaciente)}, ${connection.escape(req.body.numeroDoProntuario)}, ${connection.escape(req.body.telefone)}, ${connection.escape(req.body.foto)}, ${connection.escape(req.body.causaDaInternacao)}, ${connection.escape(req.body.dataDeNascimento)}, 1)`,
 					timeout: 10000
 				}
 				connection.query(query, function(err, rows, fields) {
-					//console.log(err);
 					if (err) {
+                        console.log(err);
 						res.send('Não foi possível adicionar dados ao perfil do paciente.');
 					} else {
 
