@@ -47,8 +47,13 @@ router.route('/')
 					console.log(err);
 					console.log(rows);
 					console.log(fields);
-					if(err == null){
-						res.send(rows[0]);
+					if(err == null) {
+                        // evitando fazer outra query no banco.
+                        var createdHospital = {
+                            "nome": req.body.nome,
+                            "idHospital": rows.insertId
+                        }
+						res.json(createdHospital);
 					}
 					else{
 						res.send("Erro ao criar o hospital. Erro SQL.");
@@ -142,7 +147,7 @@ router.route('/medico/:idMedico')
 				sql: `SELECT Hospital.idHospital, Hospital.nome FROM Hospital INNER JOIN Hospital_Medico ON Hospital_Medico.idHospital = Hospital.idHospital WHERE Hospital_Medico.idMedico =${req.params.idMedico}`,
 				timeout: 10000
 			}
-			
+
 			if (err) throw err;
 			connection.query(getHospitaisMedico, function(err, rows, fields) {
 				if(err == null) {
