@@ -54,21 +54,21 @@ router.route('/geral')
 
 				if (err) { res.send('Erro de conexão com base de dados adição Paciente'); }
 
-                if(req.body.hasOwnProperty('foto') && base64Util.canBeDecodedFromBase64(req.body.foto)) {
-                    req.body.foto = Buffer.from(req.body.foto, 'base64');
+                if(req.body.hasOwnProperty('foto')) {
+                    if (base64Util.canBeDecodedFromBase64(req.body.foto)) {
+                        req.body.foto = Buffer.from(req.body.foto, 'base64');
+                    } else {
+                        res.send('A foto não é uma string base64 válida.');
+                    }
                 }
-                else {
-                    return res.send('Error: Foto não está codificada em base64.');
-                }
-
 
 				var query = {
 					sql:`INSERT INTO Paciente (nomePaciente, numeroDoProntuario, telefone, foto, causaDaInternacao, dataDeNascimento, ativo) VALUES (${connection.escape(req.body.nomePaciente)}, ${connection.escape(req.body.numeroDoProntuario)}, ${connection.escape(req.body.telefone)}, ${connection.escape(req.body.foto)}, ${connection.escape(req.body.causaDaInternacao)}, ${connection.escape(req.body.dataDeNascimento)}, 1)`,
 					timeout: 10000
 				}
 				connection.query(query, function(err, rows, fields) {
-					//console.log(err);
 					if (err) {
+                        console.log(err);
 						res.send('Não foi possível adicionar dados ao perfil do paciente.');
 					} else {
 
@@ -126,7 +126,8 @@ router.route('/geral')
 						novaFoto,
 						novaCausa,
 						novaData,
-						ativo;
+						ativo,
+                        novaFoto;
 
 					if (req.body.hasOwnProperty('nomePaciente')) {
 						nomePacienteNovo = req.body.nomePaciente;
@@ -149,10 +150,17 @@ router.route('/geral')
 					if (req.body.hasOwnProperty('ativo')){
 						ativo = req.body.ativo;
 					} else { ativo = rows[0].ativo; }
+                    if(req.body.hasOwnProperty('foto')) {
+                        if (base64Util.canBeDecodedFromBase64(req.body.foto)) {
+                            novaFoto = Buffer.from(req.body.foto, 'base64');
+                        } else {
+                            res.send('A foto não é uma string base64 válida.');
+                        }
+                    }
 
 					connection.query(
-					'UPDATE Paciente SET nomePaciente=?, numeroDoProntuario=?, telefone=?, foto=?, causaDaInternacao=?, dataDeNascimento=?, ativo=? WHERE idtable1=?',
-					[nomePacienteNovo,novoProntuario,novoTelefone,novaFoto,novaCausa,novaData,ativo,rows[0].idtable1],
+					'UPDATE Paciente SET nomePaciente=?, numeroDoProntuario=?, telefone=?, foto=?, causaDaInternacao=?, dataDeNascimento=?, ativo=?, foto=? WHERE idtable1=?',
+					[nomePacienteNovo,novoProntuario,novoTelefone,novaFoto,novaCausa,novaData,ativo,novaFoto,rows[0].idtable1],
 					function(error, results){
 						if (error != null) {
 							console.log('Erro ao alterar perfil de paciente na base de dados');

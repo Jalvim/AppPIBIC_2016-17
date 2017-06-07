@@ -39,8 +39,12 @@ router.route('/')
 				req.body.hasOwnProperty('senha') &&
 				req.body.hasOwnProperty('CPF')){
 
-                if(req.body.hasOwnProperty('foto') && base64Util.canBeDecodedFromBase64(req.body.foto)) {
-                    req.body.foto = Buffer.from(req.body.foto, 'base64');
+                if(req.body.hasOwnProperty('foto')) {
+                    if (base64Util.canBeDecodedFromBase64(req.body.foto)) {
+                        req.body.foto = Buffer.from(req.body.foto, 'base64');
+                    } else {
+                        res.send('A foto não é uma string base64 válida.');
+                    }
                 }
 
 				var query = {
@@ -121,17 +125,14 @@ router.route('/')
 				}
 				else {
 					console.log(rows);
-					var idMedico,
-						nome,
+					var nome,
 						especialidade,
 						CRM,
 						telefone,
 						CPF,
-						email;
+						email,
+                        foto;
 
-					if (req.body.hasOwnProperty('idMedico')) {
-						idMedico = req.body.idMedico;
-					} else { idMedico = rows[0].idMedico; }
 					if (req.body.hasOwnProperty('nomeMedico')){
 						nome = req.body.nomeMedico;
 					} else { nome = rows[0].nome; }
@@ -147,11 +148,17 @@ router.route('/')
 					if (req.body.hasOwnProperty('CRM')){
 						CRM = req.body.CRM;
 					} else { CRM = rows[0].CRM; }
-
+                    if(req.body.hasOwnProperty('foto')) {
+                        if (base64Util.canBeDecodedFromBase64(req.body.foto)) {
+                            foto = Buffer.from(req.body.foto, 'base64');
+                        } else {
+                            res.send('A foto não é uma string base64 válida.');
+                        }
+                    }
 
 					connection.query(
-					'UPDATE Medico SET nome=?, especialidade=?, telefone=?, CPF=?, CRM=? WHERE idMedico=? LIMIT 1',
-					[nome, especialidade, telefone, CPF, CRM, req.body.idMedico],
+					'UPDATE Medico SET nome=?, especialidade=?, telefone=?, CPF=?, CRM=?, foto=? WHERE idMedico=?',
+					[nome, especialidade, telefone, CPF, CRM, foto, req.body.idMedico],
 					function(error, results){
 						if (error != null) {
 							console.log(error);
@@ -172,7 +179,7 @@ router.route('/')
 					});
 
 					if (req.body.hasOwnProperty('email')){
-						var url = `http://julianop.com.br:3000/api/medico/confirm/${idMedico}`;
+						var url = `http://julianop.com.br:3000/api/medico/confirm/${req.body.idMedico}`;
 						var verificationEmail = {
 							to: req.body.email,
 							subject: 'Confirmação de mudança de Email',
