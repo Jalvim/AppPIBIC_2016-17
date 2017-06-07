@@ -122,7 +122,8 @@ router.route('/geral')
 						novaFoto,
 						novaCausa,
 						novaData,
-						ativo;
+						ativo,
+                        novaFoto;
 
 					if (req.body.hasOwnProperty('nomePaciente')) {
 						nomePacienteNovo = req.body.nomePaciente;
@@ -145,10 +146,13 @@ router.route('/geral')
 					if (req.body.hasOwnProperty('ativo')){
 						ativo = req.body.ativo;
 					} else { ativo = rows[0].ativo; }
+                    if(req.body.hasOwnProperty('foto') && base64Util.canBeDecodedFromBase64(req.body.foto)) {
+                        novaFoto = Buffer.from(req.body.foto, 'base64');
+                    }
 
 					connection.query(
-					'UPDATE Paciente SET nomePaciente=?, numeroDoProntuario=?, telefone=?, foto=?, causaDaInternacao=?, dataDeNascimento=?, ativo=? WHERE idtable1=?',
-					[nomePacienteNovo,novoProntuario,novoTelefone,novaFoto,novaCausa,novaData,ativo,rows[0].idtable1],
+					'UPDATE Paciente SET nomePaciente=?, numeroDoProntuario=?, telefone=?, foto=?, causaDaInternacao=?, dataDeNascimento=?, ativo=?, foto=? WHERE idtable1=?',
+					[nomePacienteNovo,novoProntuario,novoTelefone,novaFoto,novaCausa,novaData,ativo,novaFoto,rows[0].idtable1],
 					function(error, results){
 						if (error != null) {
 							console.log('Erro ao alterar perfil de paciente na base de dados');
