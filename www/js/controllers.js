@@ -2036,10 +2036,11 @@ medApp.controllers = {
 
   equipes: function(page) {
 
-    /* REMOVIDO PARA TESTES
+    /* REMOVIDO PARA TESTES */
+    // Lista as equipes as quais o médico pertence
     page.addEventListener('show', function(event) {
 
-      $('#lista-team').empty();
+      $('#lista-equipe').empty();
       $.get('http://julianop.com.br:3000/api/hospitais/medico/' + medApp.services.getIdMedico())
       .done(function(data) {
 
@@ -2053,7 +2054,7 @@ medApp.controllers = {
 
       });
     });
-    */
+    
 
     page.querySelector('#add-equipe').onclick = function() {
 
@@ -2068,12 +2069,31 @@ medApp.controllers = {
 
           $.post('http://julianop.com.br:3000/api/hospitais',
           {
-            nome: nomeNovaEquipe,
+            nome: nomeNovaEquipe
 
           })
             .done(function(data) {
 
-              ons.notification.alert(data);
+              if ( data.hasOwnProperty('idHospital') ) {
+
+                console.log(data.idHospital);
+                $.post('http://julianop.com.br:3000/api/hospitais/relacoes',
+                {
+                  idMedico: medApp.services.getIdMedico(),
+                  idHospital: data.idHospital
+
+                })
+                  .done(function(resp) {
+
+                    console.log(resp);
+
+                  });
+
+              } else {
+
+                ons.notification.alert("Não foi possível criar a Equipe.");
+
+              };
 
             });
 
@@ -2098,11 +2118,14 @@ medApp.controllers = {
 
   configequipe: function(page) {
 
-    /* (TODO) Seta a id da equipe atual
+    /* (TODO) Seta a id da equipe atual */
     page.addEventListener('show', function(event) {
 
+      // Seta o nome da equipe no espaço correspondente
+      //page.querySelector('#nome-equipe').innerHTML = page.data.nomeEquipe;
+      console.log(page.data);
+      
     });
-    */
 
     // Botão para adicionar membros à equipe através do email
     page.querySelector('#adicionar-membro-equipe').onclick = function(e) {
@@ -2163,15 +2186,26 @@ medApp.controllers = {
         message:"Digite o novo nome da equipe:",
         callback: function(nomeEquipeEdit){
 
-          /* (TODO) Mudança do nome da equipe
-          $.ajax({
-            url: 'http://julianop.com.br:3000/api/hospitais',
-            type: 'PUT',
-            data: { idMedico: medApp.services.getEquipeAtual(),
-                    nome: nomeEquipeEdit
-                  }
-          });
-          */
+          if (nomeEquipeEdit !== '') { 
+            /* (TODO) Mudança do nome da equipe
+            $.ajax({
+              url: 'http://julianop.com.br:3000/api/hospitais',
+              type: 'PUT',
+              data: { idMedico: medApp.services.getEquipeAtual(),
+                      nome: nomeEquipeEdit
+                    }
+            })
+            .done(function(data) {
+              console.log(data);
+              page.querySelector('#nome-equipe').innerHTML = nomeEquipeEdit;
+            });
+            */
+
+          } else if (nomeEquipeEdit == '') {
+
+            ons.notification.alert("A Equipe precisa ter um nome!");
+
+          };
         }
       });
 
