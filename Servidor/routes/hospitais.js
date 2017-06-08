@@ -125,11 +125,11 @@ router.route('/')
 				  [req.body.idHospital],
 					function(err){
 						if (err != null) {
-							console.log('Erro ao remover hospital');
+							res.send('Erro ao remover hospital');
 							return;
 						}
 						else{
-							console.log('Hospital removido com sucesso');
+							res.send('Hospital removido com sucesso');
 						}
 				  });
 			} else {
