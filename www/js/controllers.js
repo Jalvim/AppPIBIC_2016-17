@@ -2123,17 +2123,37 @@ medApp.controllers = {
 
   configequipe: function(page) {
 
-    /* (TODO) Seta a id da equipe atual */
     page.addEventListener('show', function(event) {
 
       // Seta o nome da equipe no espaço correspondente
       //page.querySelector('#nome-equipe').innerHTML = page.data.nomeEquipe;
       console.log(page.data);
 
+      // Limpa e popula a lista de membros da equipes
+      $('#membros-equipe').empty();
       $.get('http://julianop.com.br:3000/api/hospitais/' + medApp.services.getEquipeAtual() + '/medicos')
           .done(function(data) {
      
-            console.log(data);
+            if(data[0].hasOwnProperty('idMedico')) {
+
+              for (var i = 0, len = data.length; i < len; i++) {
+
+                var membroInfo = data[i];
+
+                if (membroInfo.idMedico !== medApp.services.getIdMedico() ) {
+
+                  medApp.services.listMembrosEquipe(
+                    {
+                      nome: membroInfo.nome,
+                      telefone: membroInfo.telefone,
+                      idMedico: membroInfo.idMedico
+                    });
+
+                };
+
+              };
+
+            };
             
           });
       
@@ -2146,19 +2166,21 @@ medApp.controllers = {
         message:"Digite o e-mail do membro a ser adicionado:",
         callback: function(email){
 
-          $.get('http://julianop.com.br:3000/api/medico/busca/email/' + email)
-          .done(function(data) {
+          if (email !== '') {
 
-            console.log(data[0].idMedico);
-            /* (TODO) Adiciona relação do médico a ser adicionado a equipe
-            $.post("http://julianop.com.br:3000/api/hospitais/relacoes",
-              {
-                idMedico: data[0].idMedico,
-                idHospital: medApp.services.getEquipeAtual(),
-              });
-            */
+            $.get('http://julianop.com.br:3000/api/medico/busca/email/' + email)
+            .done(function(data) {
 
-          });
+              console.log(data[0].idMedico);
+              
+              $.post("http://julianop.com.br:3000/api/hospitais/relacoes",
+                {
+                  idMedico: data[0].idMedico,
+                  idHospital: medApp.services.getEquipeAtual(),
+                });
+
+            });
+          }
         }
       });
 
@@ -2199,7 +2221,7 @@ medApp.controllers = {
         callback: function(nomeEquipeEdit){
 
           if (nomeEquipeEdit !== '') { 
-            console.log(nomeEquipeEdit + ' '  + medApp.services.getEquipeAtual());
+            
             $.ajax({
               url: 'http://julianop.com.br:3000/api/hospitais',
               type: 'PUT',

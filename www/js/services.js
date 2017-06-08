@@ -785,7 +785,35 @@ medApp.services = {
       '</ons-list-item>';
 
     var membroListItem = template.firstChild;
+    $(membroListItem).data('idMedico', membro.idMedico);
     var membroLista = document.querySelector('#membros-equipe');
+
+    // Funcionalidade de remover médico da equipe
+    membroListItem.querySelector('.right').onclick = function() {
+        
+        ons.notification.confirm({message: 'Deseja remover este médico da equipe?'})
+        .then( function(confirm){
+
+          if(confirm) {
+            $.ajax({
+              url: 'http://julianop.com.br:3000/api/hospitais/relacoes',
+              type: 'DELETE',
+              data: {
+                idHospital: medApp.services.getEquipeAtual(),
+                idMedico: $(membroListItem).data('idMedico')
+              }
+            })
+            .done(function(data) {
+
+              ons.notification.alert(data);
+              membroLista.removeChild(membroListItem);
+
+            });
+          };
+
+        });
+        
+    };
 
     membroLista.appendChild(membroListItem);
 
