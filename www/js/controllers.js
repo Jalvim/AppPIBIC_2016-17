@@ -226,7 +226,7 @@ medApp.controllers = {
           telefone: $('#telefone-cadastro').val(),
           email: $('#email-cadastro').val(),
           senha: $('#senha-cadastro').val(),
-          foto: $('#picture').src
+          foto: medApp.services.getBase64Image(document.getElementById('picture'))
         })
           .done(function(data) {
             modal.hide();
@@ -255,7 +255,7 @@ medApp.controllers = {
         page.querySelector('#esp-perfil').innerHTML = data[0].especialidade;
         page.querySelector('#tel-perfil').innerHTML = data[0].telefone;
         page.querySelector('#email-perfil').innerHTML = data[0].email;
-        //page.querySelector('#img-med').src=data[0].foto;
+        document.getElementById('#img-med').src= "data:image/jpeg;base64, " + data[0].foto;
       });
 
     });
@@ -962,6 +962,7 @@ medApp.controllers = {
         $('#tel-medico').val(data[0].telefone);
         $('#email-medico').val(data[0].email);
         $('#cpf-medico').val(data[0].CPF);
+        document.getElementById('img-medico').src="data:image/jpeg;base64, "+ data[0].foto;
       });
 
     });
@@ -1049,7 +1050,7 @@ medApp.controllers = {
           tel: $('#tel-medico').val(),
           email: $('#email-medico').val(),
           cpf: $('#cpf-medico').cleanVal(),
-          foto:$('#img-medico').src,
+          foto:medApp.services.getBase64Image(document.getElementById('img-medico')),
           idMedico: medApp.services.getIdMedico(),
 
         };
