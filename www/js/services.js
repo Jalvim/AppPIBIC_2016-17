@@ -707,7 +707,7 @@ medApp.services = {
     equipeListItem.querySelector('.ver-equipe').onclick = function() {
 
       medApp.services.setEquipeAtual($(equipeListItem).data('idEquipe'));
-      document.querySelector('#medicoNav').pushPage('html/configequipe.html', {data: {title: 'Page 2'}});
+      document.querySelector('#medicoNav').pushPage('html/configequipe.html', {data: { nomeEquipe: equipe.nomeEquipe } });
 
     };
 

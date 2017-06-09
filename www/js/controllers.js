@@ -2108,13 +2108,6 @@ medApp.controllers = {
 
     };
 
-    // Página para gerenciar uma equipe
-    page.querySelector('#ver-equipe').onclick = function() {
-
-      document.querySelector('#medicoNav').pushPage('html/configequipe.html');
-
-    };
-
   },
 
   ////////////////////////////////////////////
@@ -2126,8 +2119,7 @@ medApp.controllers = {
     page.addEventListener('show', function(event) {
 
       // Seta o nome da equipe no espaço correspondente
-      //page.querySelector('#nome-equipe').innerHTML = page.data.nomeEquipe;
-      console.log(page.data);
+      page.querySelector('#nome-equipe').innerHTML = page.data.nomeEquipe;
 
       // Limpa e popula a lista de membros da equipes
       $('#membros-equipe').empty();
