@@ -226,7 +226,7 @@ medApp.controllers = {
           telefone: $('#telefone-cadastro').val(),
           email: $('#email-cadastro').val(),
           senha: $('#senha-cadastro').val(),
-          foto: $('#picture').src
+          foto: medApp.services.getBase64Image(document.getElementById('picture'))
         })
           .done(function(data) {
             modal.hide();
@@ -255,7 +255,7 @@ medApp.controllers = {
         page.querySelector('#esp-perfil').innerHTML = data[0].especialidade;
         page.querySelector('#tel-perfil').innerHTML = data[0].telefone;
         page.querySelector('#email-perfil').innerHTML = data[0].email;
-        //page.querySelector('#img-med').src=data[0].foto;
+        document.getElementById('#img-med').src= "data:image/jpeg;base64, " + data[0].foto;
       });
 
     });
@@ -962,6 +962,7 @@ medApp.controllers = {
         $('#tel-medico').val(data[0].telefone);
         $('#email-medico').val(data[0].email);
         $('#cpf-medico').val(data[0].CPF);
+        document.getElementById('img-medico').src="data:image/jpeg;base64, "+ data[0].foto;
       });
 
     });
@@ -1049,7 +1050,7 @@ medApp.controllers = {
           tel: $('#tel-medico').val(),
           email: $('#email-medico').val(),
           cpf: $('#cpf-medico').cleanVal(),
-          foto:$('#img-medico').src,
+          foto:medApp.services.getBase64Image(document.getElementById('img-medico')),
           idMedico: medApp.services.getIdMedico(),
 
         };
@@ -2036,10 +2037,13 @@ medApp.controllers = {
 
   equipes: function(page) {
 
-    /* REMOVIDO PARA TESTES */
     // Lista as equipes as quais o médico pertence
     page.addEventListener('show', function(event) {
 
+      // Limpa a equipe atual selecionada
+      medApp.services.deleteEquipeAtual();
+
+      // Limpa e popula a lista de equipes
       $('#lista-equipe').empty();
       $.get('http://julianop.com.br:3000/api/hospitais/medico/' + medApp.services.getIdMedico())
       .done(function(data) {
@@ -2047,7 +2051,7 @@ medApp.controllers = {
           if(data[0].hasOwnProperty('idHospital')) {
             for (var i = 0, len = data.length; i < len; i++) {
               medApp.services.listEquipe({ nomeEquipe: data[i].nome,
-                                          idHospital: data[i].idHospital})
+                                           idEquipe: data[i].idHospital})
             };
 
           };
@@ -2074,9 +2078,9 @@ medApp.controllers = {
           })
             .done(function(data) {
 
-              if ( data.hasOwnProperty('idHospital') ) {
+              if (data.hasOwnProperty('idHospital')) {
 
-                console.log(data.idHospital);
+                console.log(data);
                 $.post('http://julianop.com.br:3000/api/hospitais/relacoes',
                 {
                   idMedico: medApp.services.getIdMedico(),
@@ -2085,7 +2089,8 @@ medApp.controllers = {
                 })
                   .done(function(resp) {
 
-                    console.log(resp);
+                    medApp.services.listEquipe({ nomeEquipe: data.nome,
+                                                 idEquipe: data.idHospital});
 
                   });
 
@@ -2103,13 +2108,6 @@ medApp.controllers = {
 
     };
 
-    // Página para gerenciar uma equipe
-    page.querySelector('#ver-equipe').onclick = function() {
-
-      document.querySelector('#medicoNav').pushPage('html/configequipe.html');
-
-    };
-
   },
 
   ////////////////////////////////////////////
@@ -2118,12 +2116,38 @@ medApp.controllers = {
 
   configequipe: function(page) {
 
-    /* (TODO) Seta a id da equipe atual */
     page.addEventListener('show', function(event) {
 
       // Seta o nome da equipe no espaço correspondente
-      //page.querySelector('#nome-equipe').innerHTML = page.data.nomeEquipe;
-      console.log(page.data);
+      page.querySelector('#nome-equipe').innerHTML = page.data.nomeEquipe;
+
+      // Limpa e popula a lista de membros da equipes
+      $('#membros-equipe').empty();
+      $.get('http://julianop.com.br:3000/api/hospitais/' + medApp.services.getEquipeAtual() + '/medicos')
+          .done(function(data) {
+     
+            if(data[0].hasOwnProperty('idMedico')) {
+
+              for (var i = 0, len = data.length; i < len; i++) {
+
+                var membroInfo = data[i];
+
+                if (membroInfo.idMedico !== medApp.services.getIdMedico() ) {
+
+                  medApp.services.listMembrosEquipe(
+                    {
+                      nome: membroInfo.nome,
+                      telefone: membroInfo.telefone,
+                      idMedico: membroInfo.idMedico
+                    });
+
+                };
+
+              };
+
+            };
+            
+          });
       
     });
 
@@ -2134,19 +2158,21 @@ medApp.controllers = {
         message:"Digite o e-mail do membro a ser adicionado:",
         callback: function(email){
 
-          $.get('http://julianop.com.br:3000/api/medico/busca/email/' + email)
-          .done(function(data) {
+          if (email !== '') {
 
-            console.log(data[0].idMedico);
-            /* (TODO) Adiciona relação do médico a ser adicionado a equipe
-            $.post("http://julianop.com.br:3000/api/hospitais/relacoes",
-              {
-                idMedico: data[0].idMedico,
-                idHospital: medApp.services.getEquipeAtual(),
-              });
-            */
+            $.get('http://julianop.com.br:3000/api/medico/busca/email/' + email)
+            .done(function(data) {
 
-          });
+              console.log(data[0].idMedico);
+              
+              $.post("http://julianop.com.br:3000/api/hospitais/relacoes",
+                {
+                  idMedico: data[0].idMedico,
+                  idHospital: medApp.services.getEquipeAtual(),
+                });
+
+            });
+          }
         }
       });
 
@@ -2159,7 +2185,7 @@ medApp.controllers = {
         .then( function(confirm){
 
           if(confirm) {
-            /* (TODO) Remove a relação do médico atual com a equipe
+            console.log(medApp.services.getEquipeAtual() + ' ' + medApp.services.getIdMedico())
             $.ajax({
               url: 'http://julianop.com.br:3000/api/hospitais/relacoes',
               type: 'DELETE',
@@ -2172,7 +2198,7 @@ medApp.controllers = {
               console.log(data);
               document.querySelector('#medicoNav').popPage();
             });
-            */
+    
           };
 
         });
@@ -2187,11 +2213,11 @@ medApp.controllers = {
         callback: function(nomeEquipeEdit){
 
           if (nomeEquipeEdit !== '') { 
-            /* (TODO) Mudança do nome da equipe
+            
             $.ajax({
               url: 'http://julianop.com.br:3000/api/hospitais',
               type: 'PUT',
-              data: { idMedico: medApp.services.getEquipeAtual(),
+              data: { idHospital: medApp.services.getEquipeAtual(),
                       nome: nomeEquipeEdit
                     }
             })
@@ -2199,7 +2225,6 @@ medApp.controllers = {
               console.log(data);
               page.querySelector('#nome-equipe').innerHTML = nomeEquipeEdit;
             });
-            */
 
           } else if (nomeEquipeEdit == '') {
 
@@ -2218,7 +2243,7 @@ medApp.controllers = {
         .then( function(confirm){
 
           if(confirm) {
-            /* (TODO) Deleta a equipe atual
+
             $.ajax({
               url: 'http://julianop.com.br:3000/api/hospitais',
               type: 'DELETE',
@@ -2230,7 +2255,7 @@ medApp.controllers = {
               console.log(data);
               document.querySelector('#medicoNav').popPage();
             });
-            */
+
           };
 
         });

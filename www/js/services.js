@@ -332,7 +332,7 @@ medApp.services = {
       timeStamp = info.patient.timestamp[6] + info.patient.timestamp[7] + "/" 
       + info.patient.timestamp[9] + info.patient.timestamp[10] + " " 
       + info.patient.timestamp[12] + info.patient.timestamp[13]
-      + ":" + info.patient.timestamp[15] + info.patient.timestamp[16]
+      + ":" + info.patient.timestamp[15] + info.patient.timestamp[16];
 
       template.innerHTML = 
       '<ons-list-titem id="item' + i + '">'
@@ -342,21 +342,25 @@ medApp.services = {
       '</div>' +
       '<div class="left">' + timeStamp +
       '</div>'
-      + '</ons-list-item>'
+      + '</ons-list-item>';
 
     } else {
 
       timeStamp = info.reminder.timestamp[6] + info.reminder.timestamp[7] + "/" 
       + info.reminder.timestamp[9] + info.reminder.timestamp[10] + " " 
       + info.reminder.timestamp[12] + info.reminder.timestamp[13]
-      + ":" + info.reminder.timestamp[15] + info.reminder.timestamp[16]
+      + ":" + info.reminder.timestamp[15] + info.reminder.timestamp[16];
 
       template.innerHTML = 
       '<ons-list-titem id="item' + i + '">'
       + '<div>' + info.reminder.mensagem +
       '</div>'
-      '<div>' + timeStamp + '</div>'
-      + '</ons-list-item>'
+      '<div>' + timeStamp + '</div>' +
+      '<div> Dados alterados: K - ' + info.reminder.K + ' Na - ' + info.reminder.Na + 
+      ' Cl - ' + info.reminder.Cl+ ' Co2 - '+ info.reminder.Co2+ ' Bun - '+info.reminder.Bun+ ' Great - '+ info.reminder.Great
+      + ' Gluc - ' +info.reminder.Gluc+ ' Wcb - '+info.reminder.wcb+' HgB - '+info.reminder.HgB+ ' Hct - ' +info.reminder.Hct+
+      ' Plt - '+info.reminder.Plt+ '</div>'
+      + '</ons-list-item>';
 
     }
 
@@ -689,7 +693,6 @@ medApp.services = {
     var template = document.createElement('div');
     template.innerHTML = 
       '<ons-list-item>' +
-      '<ons-list modifier="inset">' +
         '<ons-list-item>' +
           '<ons-icon icon="hospital-o"></ons-icon>' +
            equipe.nomeEquipe +
@@ -697,11 +700,11 @@ medApp.services = {
         '<ons-list-item class="ver-equipe" tappable>' +
         '<ons-icon icon="md-accounts"></ons-icon>' +
         'Gerenciar Equipe' +
-    '</ons-list-item>';
+        '</ons-list-item>' +
+      '</ons-list-item>';
 
     var equipeListItem = template.firstChild;
     $(equipeListItem).data('idEquipe', equipe.idEquipe);
-    console.log($(equipeListItem).data('idEquipe') + ' ' + equipe.nomeEquipe);
     var equipeLista = document.querySelector('#lista-equipe');
 
     // Funcionalidade de gerenciar equipe
@@ -733,10 +736,94 @@ medApp.services = {
   },
 
   // Função que limpa o ID da equipe
-  deleteGrupoAtual: function() {
+  deleteEquipeAtual: function() {
 
     this.idEquipeAtual = -1;
 
   },
 
+  // Função para conseguir as imagens
+  getBase64Image: function(img) {
+
+    var canvas = document.createElement("canvas");
+    canvas.width = img.width;
+    canvas.height = img.height;
+    var ctx = canvas.getContext("2d");
+    ctx.drawImage(img, 0, 0);
+    var dataURL = canvas.toDataURL("image/png");
+    return dataURL.replace(/^data:image\/(png|jpg);base64,/, "");
+
+  },
+
+  listMembrosEquipe: function(membro) {
+    
+    // Template de cada médico membro da equipe
+    var template = document.createElement('div');
+    template.innerHTML = 
+      '<ons-list-item>' +
+        '<div class="left">' +
+          '<img class="list__item__thumbnail" src="http://www.clker.com/cliparts/A/Y/O/m/o/N/placeholder-md.png">' +
+        '</div>' +
+        '<div class="center">' +
+          '<span class="list__item__title">' +
+          membro.nome +
+          '</span>' +
+            '<ons-row>' +
+              '<ons-icon icon="md-email" class="list__item__icon">' +
+                '<span class="list__item__subtitle">'+
+                'email' +
+                '</span>' +
+              '</ons-icon>' +
+            '</ons-row>' +
+            '<ons-row>' +
+              '<ons-icon icon="md-phone" class="list__item__icon">' +
+                '<span class="list__item__subtitle">' +
+                membro.telefone +
+                '</span>' +
+              '</ons-icon>' +
+            '</ons-row>' +
+        '</div>' +
+        '<div class="right">' +
+          '<ons-icon icon="md-close" size="24px" class="list__item__icon"></ons-icon>' +
+        '</div>' +
+      '</ons-list-item>';
+
+    var membroListItem = template.firstChild;
+    $(membroListItem).data('idMedico', membro.idMedico);
+    var membroLista = document.querySelector('#membros-equipe');
+
+    // Funcionalidade de remover médico da equipe
+    membroListItem.querySelector('.right').onclick = function() {
+        
+        ons.notification.confirm({message: 'Deseja remover este médico da equipe?'})
+        .then( function(confirm){
+
+          if(confirm) {
+            $.ajax({
+              url: 'http://julianop.com.br:3000/api/hospitais/relacoes',
+              type: 'DELETE',
+              data: {
+                idHospital: medApp.services.getEquipeAtual(),
+                idMedico: $(membroListItem).data('idMedico')
+              }
+            })
+            .done(function(data) {
+
+              ons.notification.alert(data);
+              membroLista.removeChild(membroListItem);
+
+            });
+          };
+
+        });
+        
+    };
+
+    membroLista.appendChild(membroListItem);
+
+  }
+
+
 };
+
+
