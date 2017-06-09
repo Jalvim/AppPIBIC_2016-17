@@ -9,7 +9,7 @@ Este arquivo contém o módulo javascript de roteamento para as chamadas à API 
 var senhas = require('../senhas');
 var express = require('express');
 var mysql = require('../lib/mysqlWraper.js');
-// var mysql = require('mysql');
+var base64Util = require('../lib/base64Util.js');
 var router = express.Router();
 
 router.route('/')
@@ -247,6 +247,7 @@ router.route('/:idHospital/medicos')
                     .then(emails => {
                         rows.forEach(function(doctor, i) {
                             doctor.email = emails[i];
+                            doctor.foto = base64Util.encodeBufferToBase64(doctor.foto);
                         });
                         res.json(rows);
                     });
