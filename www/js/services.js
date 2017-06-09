@@ -332,7 +332,7 @@ medApp.services = {
       timeStamp = info.patient.timestamp[6] + info.patient.timestamp[7] + "/" 
       + info.patient.timestamp[9] + info.patient.timestamp[10] + " " 
       + info.patient.timestamp[12] + info.patient.timestamp[13]
-      + ":" + info.patient.timestamp[15] + info.patient.timestamp[16]
+      + ":" + info.patient.timestamp[15] + info.patient.timestamp[16];
 
       template.innerHTML = 
       '<ons-list-titem id="item' + i + '">'
@@ -342,21 +342,25 @@ medApp.services = {
       '</div>' +
       '<div class="left">' + timeStamp +
       '</div>'
-      + '</ons-list-item>'
+      + '</ons-list-item>';
 
     } else {
 
       timeStamp = info.reminder.timestamp[6] + info.reminder.timestamp[7] + "/" 
       + info.reminder.timestamp[9] + info.reminder.timestamp[10] + " " 
       + info.reminder.timestamp[12] + info.reminder.timestamp[13]
-      + ":" + info.reminder.timestamp[15] + info.reminder.timestamp[16]
+      + ":" + info.reminder.timestamp[15] + info.reminder.timestamp[16];
 
       template.innerHTML = 
       '<ons-list-titem id="item' + i + '">'
       + '<div>' + info.reminder.mensagem +
       '</div>'
-      '<div>' + timeStamp + '</div>'
-      + '</ons-list-item>'
+      '<div>' + timeStamp + '</div>' +
+      '<div> Dados alterados: K - ' + info.reminder.K + ' Na - ' + info.reminder.Na + 
+      ' Cl - ' + info.reminder.Cl+ ' Co2 - '+ info.reminder.Co2+ ' Bun - '+info.reminder.Bun+ ' Great - '+ info.reminder.Great
+      + ' Gluc - ' +info.reminder.Gluc+ ' Wcb - '+info.reminder.wcb+' HgB - '+info.reminder.HgB+ ' Hct - ' +info.reminder.Hct+
+      ' Plt - '+info.reminder.Plt+ '</div>'
+      + '</ons-list-item>';
 
     }
 
@@ -821,3 +825,5 @@ medApp.services = {
 
 
 };
+
+
