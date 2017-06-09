@@ -58,7 +58,7 @@ router.route('/geral')
                     if (base64Util.canBeDecodedFromBase64(req.body.foto)) {
                         req.body.foto = Buffer.from(req.body.foto, 'base64');
                     } else {
-                        res.send('A foto não é uma string base64 válida.');
+                        return res.send('A foto não é uma string base64 válida.');
                     }
                 }
 
@@ -154,7 +154,7 @@ router.route('/geral')
                         if (base64Util.canBeDecodedFromBase64(req.body.foto)) {
                             novaFoto = Buffer.from(req.body.foto, 'base64');
                         } else {
-                            res.send('A foto não é uma string base64 válida.');
+                            return res.send('A foto não é uma string base64 válida.');
                         }
                     }
 
