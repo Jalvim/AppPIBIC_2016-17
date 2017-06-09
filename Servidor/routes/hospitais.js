@@ -236,11 +236,33 @@ router.route('/:idHospital/medicos')
 					console.log('Erro ao recuperar médicos de um hospital.');
 					res.send('Erro ao recuperar médicos do hospital.');
 				} else {
-					res.json(rows);
+                    var doctorEmails = rows.map(function(doctor) {
+                        return retrieveDoctorEmail(doctor.idMedico);
+                    });
+                    Promise.all(doctorEmails)
+                    .then(emails => {
+                        rows.forEach(function(doctor, i) {
+                            doctor.email = emails[i];
+                        });
+                        res.json(rows);
+                    });
 				}
 			});
 
 		});
 
 	});
+
+    retrieveDoctorEmail = function(doctorId) {
+        return new Promise(function(resolve, reject) {
+            mysql.getConnection(function(err,connection) {
+                connection.query('SELECT l.email FROM logins l WHERE l.idMedico = ?',
+                    [doctorId], function(error, results) {
+                        if(error) reject();
+                        resolve(results[0].email);
+                    });
+            });
+        });
+    }
+
 	module.exports = router;
