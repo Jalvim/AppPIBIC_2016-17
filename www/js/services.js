@@ -771,7 +771,7 @@ medApp.services = {
             '<ons-row>' +
               '<ons-icon icon="md-email" class="list__item__icon">' +
                 '<span class="list__item__subtitle">'+
-                'email' +
+                membro.email +
                 '</span>' +
               '</ons-icon>' +
             '</ons-row>' +

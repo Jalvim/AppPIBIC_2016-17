@@ -2138,7 +2138,8 @@ medApp.controllers = {
                     {
                       nome: membroInfo.nome,
                       telefone: membroInfo.telefone,
-                      idMedico: membroInfo.idMedico
+                      idMedico: membroInfo.idMedico,
+                      email: membroInfo.email
                     });
 
                 };
