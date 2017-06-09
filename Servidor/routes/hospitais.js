@@ -80,7 +80,10 @@ router.route('/')
 
 				connection.query(selector, function(err, rows, fields) {
 
-					if (err != null) console.log('Erro ao selecionar hospital a ser editado na base de dados.');
+					if (err != null) {
+						console.log('Erro ao selecionar hospital a ser editado na base de dados.');
+						res.send('Erro ao selecionar hospital a ser editado na base de dados.');
+					}
 					else if (rows.length < 1) {
 						console.log('Hospital nao encontrado.');
 						res.send('Hospital nao encontrado.');
