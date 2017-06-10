@@ -164,6 +164,7 @@ medApp.controllers = {
 
           };
 
+
       };
 
     };
@@ -177,6 +178,7 @@ medApp.controllers = {
       var confirm = $('#senha-confirm').val();
       var email = $('#email-cadastro').val();
       var CPF = $('#cpf-cadastro').cleanVal();
+
 
       var inputs = page.getElementsByTagName('input');
 
@@ -213,7 +215,6 @@ medApp.controllers = {
         ons.notification.alert("E-mail invalido");
 
       }
-
 
        else {
 
@@ -256,7 +257,7 @@ medApp.controllers = {
         page.querySelector('#tel-perfil').innerHTML = data[0].telefone;
         page.querySelector('#email-perfil').innerHTML = data[0].email;
         page.querySelector('#img-med').src = medApp.services.verificarFoto(data[0].foto);
-        
+
       });
 
     });
@@ -1095,6 +1096,8 @@ medApp.controllers = {
     $('#data-pac-edit').val(medApp.services.dadosPacienteAtual.dataIntFormatoTraco);
     $('#causa-pac-edit').val(medApp.services.dadosPacienteAtual.causa);
     $('#hospital-pac-edit').val(medApp.services.dadosPacienteAtual.hospital);
+document.getElementById('edit-pac').src= "data:image/jpeg;base64, " + medApp.services.dadosPacienteAtual.foto;
+
 
     // Função de adiquirir imagem de perfil
     page.querySelector('.add-foto').onclick = function snapPicture () {
@@ -1116,7 +1119,7 @@ medApp.controllers = {
         function successCallback (imageData) {
 
           //Display image
-          var image = document.getElementById ('picture');
+          var image = document.getElementById ('edit-pac');
           image.src = "data:image/jpeg;base64, " + imageData;
 
         };
@@ -1143,7 +1146,7 @@ medApp.controllers = {
           function successCallback (imageData) {
 
             //Display image
-            var image = document.getElementById ('picture');
+            var image = document.getElementById ('edit-pac');
             image.src = "data:image/jpeg;base64, " + imageData;
 
           };
@@ -1194,8 +1197,8 @@ medApp.controllers = {
       medico: $('#med-pac-edit').val(),
       dataInt: $('#data-pac-edit').val(),
       causa: $('#causa-pac-edit').val(),
-      hospital: $('#hospital-pac-edit').val()
-
+      hospital: $('#hospital-pac-edit').val(),
+foto:medApp.services.getBase64Image(document.getElementById('edit-pac'))
       };
 
 
@@ -1208,7 +1211,8 @@ medApp.controllers = {
           data: {
             nomePaciente: dadosEditPac.nome,
             causaDaInternacao: dadosEditPac.causa,
-            dataDeNascimento: dadosEditPac.dataInt
+            dataDeNascimento: dadosEditPac.dataInt,
+            foto:dadosEditPac.foto
           }
         })
         .done(function(data) {
@@ -1452,6 +1456,7 @@ medApp.controllers = {
 
       var inputs = page.getElementsByTagName('input');
 
+
       // Checa se há algum input vazio
       if(medApp.services.checkEmptyField(inputs)) {
 
@@ -1510,7 +1515,7 @@ medApp.controllers = {
     page.querySelector('#manage-pulseiras').onclick = function() {
 
       // Template dentro de html/configuracoes
-      document.querySelector('#configuracoesNav').pushPage('pulseiras.html'); 
+      document.querySelector('#configuracoesNav').pushPage('pulseiras.html');
 
     };
 
@@ -2057,7 +2062,7 @@ medApp.controllers = {
 
       });
     });
-    
+
 
     page.querySelector('#add-equipe').onclick = function() {
 
@@ -2124,7 +2129,7 @@ medApp.controllers = {
       $('#membros-equipe').empty();
       $.get('http://julianop.com.br:3000/api/hospitais/' + medApp.services.getEquipeAtual() + '/medicos')
           .done(function(data) {
-     
+
             if(data[0].hasOwnProperty('idMedico')) {
 
               for (var i = 0, len = data.length; i < len; i++) {
@@ -2147,9 +2152,9 @@ medApp.controllers = {
               };
 
             };
-            
+
           });
-      
+
     });
 
     // Botão para adicionar membros à equipe através do email
@@ -2165,7 +2170,7 @@ medApp.controllers = {
             .done(function(data) {
 
               console.log(data[0].idMedico);
-              
+
               $.post("http://julianop.com.br:3000/api/hospitais/relacoes",
                 {
                   idMedico: data[0].idMedico,
@@ -2199,7 +2204,7 @@ medApp.controllers = {
               console.log(data);
               document.querySelector('#medicoNav').popPage();
             });
-    
+
           };
 
         });
@@ -2213,8 +2218,8 @@ medApp.controllers = {
         message:"Digite o novo nome da equipe:",
         callback: function(nomeEquipeEdit){
 
-          if (nomeEquipeEdit !== '') { 
-            
+          if (nomeEquipeEdit !== '') {
+
             $.ajax({
               url: 'http://julianop.com.br:3000/api/hospitais',
               type: 'PUT',
@@ -2281,12 +2286,12 @@ medApp.controllers = {
 
           if(equipes[0].hasOwnProperty('idHospital')) {
 
-            for (var i = 0, equipesLen = equipes.length; i < equipesLen; i++) {     
+            for (var i = 0, equipesLen = equipes.length; i < equipesLen; i++) {
 
               var listaMembros = medApp.services.getMembrosEquipe(equipes[i]);
 
             };
-            
+
           };
 
       });
