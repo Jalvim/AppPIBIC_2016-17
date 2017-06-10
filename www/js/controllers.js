@@ -255,7 +255,8 @@ medApp.controllers = {
         page.querySelector('#esp-perfil').innerHTML = data[0].especialidade;
         page.querySelector('#tel-perfil').innerHTML = data[0].telefone;
         page.querySelector('#email-perfil').innerHTML = data[0].email;
-        document.getElementById('#img-med').src= "data:image/jpeg;base64, " + data[0].foto;
+        page.querySelector('#img-med').src = medApp.services.verificarFoto(data[0].foto);
+        
       });
 
     });
@@ -2139,7 +2140,8 @@ medApp.controllers = {
                       nome: membroInfo.nome,
                       telefone: membroInfo.telefone,
                       idMedico: membroInfo.idMedico,
-                      email: membroInfo.email
+                      email: membroInfo.email,
+                      foto: membroInfo.foto
                     });
 
                 };

@@ -755,14 +755,34 @@ medApp.services = {
 
   },
 
+  // Função para verificar as imagens
+  verificarFoto: function(img) {
+
+    // Verifica existe foto, se não, retorna o placeholder
+    if(img == null) {
+
+      return 'http://www.clker.com/cliparts/A/Y/O/m/o/N/placeholder-md.png';
+
+    } else {
+
+      return ('data:image/jpeg;base64,' + img);
+
+    };
+
+  },
+
   listMembrosEquipe: function(membro) {
     
+    // Verifica se o médico possui foto
+    membro.foto = medApp.services.verificarFoto(membro.foto);
+
     // Template de cada médico membro da equipe
     var template = document.createElement('div');
     template.innerHTML = 
       '<ons-list-item>' +
         '<div class="left">' +
-          '<img class="list__item__thumbnail" src="http://www.clker.com/cliparts/A/Y/O/m/o/N/placeholder-md.png">' +
+          //'<img class="list__item__thumbnail" src="http://www.clker.com/cliparts/A/Y/O/m/o/N/placeholder-md.png">' +
+          '<img class="list__item__thumbnail" src="'+ membro.foto + '">' + 
         '</div>' +
         '<div class="center">' +
           '<span class="list__item__title">' +
@@ -822,7 +842,6 @@ medApp.services = {
     membroLista.appendChild(membroListItem);
 
   }
-
 
 };
 
