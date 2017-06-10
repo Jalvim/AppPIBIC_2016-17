@@ -32,7 +32,8 @@ medApp.services = {
     causa: '',
     dataIntFormatoBarra: '',
     dataIntFormatoTraco: '',
-    hospital: ''
+    hospital: '',
+    foto: ''
   }, //Dados 'default' do paciente.
 
   //Função que seta o ID do paciente de interesse do médico --> 'onclick' no ícone.
@@ -44,6 +45,7 @@ medApp.services = {
     this.dadosPacienteAtual.dataIntFormatoBarra = dados.dataIntFormatoBarra;
     this.dadosPacienteAtual.dataIntFormatoTraco = dados.dataIntFormatoTraco;
     this.dadosPacienteAtual.hospital = dados.hospital;
+    this.dadosPacienteAtual.foto = dados.foto;
   },
 
   //Função que retorna o ID do paciente de interesse.
@@ -60,6 +62,7 @@ medApp.services = {
     this.dadosPacienteAtual.dataIntFormatoBarra = '';
     this.dadosPacienteAtual.dataIntFormatoTraco = '';
     this.dadosPacienteAtual.hospital = '';
+    this.dadosPacienteAtual.foto = '';
   },
 
   dadosEstaticos: {
@@ -150,7 +153,8 @@ medApp.services = {
                                           dataIntFormatoBarra: dataPacienteFormatoBarra,
                                           causa: data.causaPaciente,
                                           medicoResp: data.medicoResp,
-                                          hospital: data.hospital
+                                          hospital: data.hospital,
+                                          foto: data.img
                                         });
 
       document.querySelector('#pacienteNav').pushPage('html/perfilpaciente.html'); 
@@ -223,7 +227,7 @@ medApp.services = {
                            data.horario.substring(5,7) + '/' +
                            data.horario.substring(0,4);
 
-    // Template de paciente
+    // Template de lembrete
     var template = document.createElement('div');
     template.innerHTML =
       '<ons-list-item>' +
@@ -595,6 +599,7 @@ medApp.services = {
 
   },
 
+  // Lista os grupos de pacientes
   listGroups: function(data) {
     
     // Template de cada grupo linkado ao médico atual
@@ -687,6 +692,7 @@ medApp.services = {
 
   },
 
+  // Lista as equipes a que um médico pertence
   listEquipe: function(equipe) {
     
     // Template de cada equipe que o médico atual pertence
@@ -755,14 +761,35 @@ medApp.services = {
 
   },
 
+  // Função para verificar as imagens
+  verificarFoto: function(img) {
+
+    // Verifica existe foto, se não, retorna o placeholder
+    if(img == null) {
+
+      return 'http://www.clker.com/cliparts/A/Y/O/m/o/N/placeholder-md.png';
+
+    } else {
+
+      return ('data:image/jpeg;base64,' + img);
+
+    };
+
+  },
+
+  // Lista os membros de uma equipe visualizada
   listMembrosEquipe: function(membro) {
     
+    // Verifica se o médico possui foto
+    membro.foto = medApp.services.verificarFoto(membro.foto);
+
     // Template de cada médico membro da equipe
     var template = document.createElement('div');
     template.innerHTML = 
       '<ons-list-item>' +
         '<div class="left">' +
-          '<img class="list__item__thumbnail" src="http://www.clker.com/cliparts/A/Y/O/m/o/N/placeholder-md.png">' +
+          //'<img class="list__item__thumbnail" src="http://www.clker.com/cliparts/A/Y/O/m/o/N/placeholder-md.png">' +
+          '<img class="list__item__thumbnail" src="'+ membro.foto + '">' + 
         '</div>' +
         '<div class="center">' +
           '<span class="list__item__title">' +
@@ -771,7 +798,7 @@ medApp.services = {
             '<ons-row>' +
               '<ons-icon icon="md-email" class="list__item__icon">' +
                 '<span class="list__item__subtitle">'+
-                'email' +
+                membro.email +
                 '</span>' +
               '</ons-icon>' +
             '</ons-row>' +
@@ -821,8 +848,104 @@ medApp.services = {
 
     membroLista.appendChild(membroListItem);
 
-  }
+  },
 
+  // Retorna uma lista com os membros de uma equipe para o compartilhamento
+  getMembrosEquipe: function(equipe) {
+
+    $.get('http://julianop.com.br:3000/api/hospitais/' + equipe.idHospital + '/medicos')
+        .done(function(membros) {
+
+          console.log(equipe);
+          if(membros[0].hasOwnProperty('idMedico')) {
+
+            // Lista vazia dos membros da equipe atual
+            var listaMembros = [];
+
+            for (var j = 0, membrosLen = membros.length; j < membrosLen; j++) {
+
+              if (membros[j].idMedico != medApp.services.getIdMedico()) {
+                  listaMembros.push({ nomeMembro: membros[j].nome,
+                                      idMembro: membros[j].idMedico });
+              };
+
+            };
+
+            console.log(listaMembros);
+
+            // LISTA CONTEM OS MEMBROS DA EQUIPE ATUAL AQUI
+            medApp.services.listEquipesCompart({ nomeEquipe: equipe.nome,
+                                                 idEquipe: equipe.idHospital,
+                                                 membros: listaMembros});
+
+      };
+                
+    });
+
+  },
+
+  // Lista equipes do médico para compartilhamento de pacientes
+  listEquipesCompart: function(equipe) {
+    console.log(equipe);
+    var template = document.createElement('div');
+    template.innerHTML = 
+      '<ons-list-header>' +
+          '<ons-icon icon="hospital-o"></ons-icon>' +
+          equipe.nomeEquipe +
+      '</ons-list-header>';
+
+    var equipesCompartItem = template.firstChild;
+    var compartLista = document.querySelector('#lista-compartilhar');
+
+    for (var i = 0, len = equipe.membros.length; i < len; i++) {
+
+      equipesCompartItem.appendChild(medApp.services.listMembrosCompart(equipe.membros[i], equipe.idEquipe));
+
+    };
+
+    compartLista.appendChild(equipesCompartItem);
+
+  },
+
+  // Retorna membros da equipe selecionada para compartilhamento de pacientes
+  listMembrosCompart: function(membro, equipe) {
+
+    var template = document.createElement('div');
+    template.innerHTML = 
+      '<ons-list-item tappable>' +
+        '<ons-icon icon="user-md"></ons-icon>' +
+          membro.nomeMembro +
+      '</ons-list-item>';
+
+    var membroCompartItem = template.firstChild;
+    $(membroCompartItem).data('idMedico', membro.idMembro);
+    $(membroCompartItem).data('equipe', equipe);
+    membroCompartItem.onclick = function() {
+
+      ons.notification.confirm({message: 'Deseja compartilhar com esse médico?'})
+        .then( function(confirm){
+
+          if(confirm) {
+            $.post("http://julianop.com.br:3000/api/compartilhamento/paciente",
+              {
+              idPaciente: medApp.services.getIdPaciente(),
+              idHospitalOrigem: $(membroCompartItem).data('equipe'),
+              idMedicoDestino: $(membroCompartItem).data('idMedico'),
+              })
+            .done(function (data){
+
+              ons.notification.alert(data);
+
+            });
+          };
+
+        });
+
+    };
+
+    return membroCompartItem;
+
+  }
 
 };
 
