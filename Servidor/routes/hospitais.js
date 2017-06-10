@@ -203,24 +203,24 @@ router.route('/relacoes/')
 
 		mysql.getConnection(function(err, connection) {
 
-			console.log(req.body.hasOwnProperty('idMedico'));
 			if (req.hasOwnProperty('body') &&
 				req.body.hasOwnProperty('idMedico') &&
 				req.body.hasOwnProperty('idHospital') ) {
 				connection.query(
-				  'DELETE FROM Hospital_Medico WHERE idMedico=? AND idHospital=? LIMIT 1',
-				  [req.body.idMedico, req.body.idGrupoPac],
-					function(err){
+				  'DELETE FROM hospital_medico WHERE idMedico=? AND idHospital=?',
+				  [req.body.idMedico, req.body.idHospital],
+					function(err) {
 						if (err != null) {
 							console.log('Error ao remover medico do hospital');
-							return;
+							return res.send('Error ao remover medico do hospital');
 						}
-						else{
+						else {
 							console.log('Medico removido do hospital com sucesso');
+							return res.send('Medico removido do hospital com sucesso');
 						}
 				  });
 			} else {
-				res.send('Indique o id único do hospital e do medico a ser removido.');
+				return res.send('Indique o id único do hospital e do medico a ser removido.');
 			}
 		});
 	});
