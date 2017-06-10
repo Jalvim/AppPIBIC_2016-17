@@ -160,7 +160,7 @@ medApp.controllers = {
           //Error CallBack
           function FailCallback (message) {
 
-            alert ('Erro!!!: ' + message);
+            ons.notification.alert('Erro!!!: ' + message);
 
           };
 
@@ -256,7 +256,7 @@ medApp.controllers = {
         page.querySelector('#tel-perfil').innerHTML = data[0].telefone;
         page.querySelector('#email-perfil').innerHTML = data[0].email;
         page.querySelector('#img-med').src = medApp.services.verificarFoto(data[0].foto);
-
+        
       });
 
     });
@@ -352,9 +352,8 @@ medApp.controllers = {
               medApp.services.createPaciente(
                 {
                   statusPaciente: (pacientesInfo.ativo == 1) ? 'ativo' : 'inativo',
-                  img:"data:image/jpeg;base64, " + pacientesInfo.foto,
+                  img: medApp.services.verificarFoto(pacientesInfo.foto),
                   nomePaciente: pacientesInfo.nomePaciente,
-                  //batimentos: '--',
                   dataPaciente: pacientesInfo.dataDeNascimento,
                   causaPaciente: pacientesInfo.causaDaInternacao,
                   medicoResp: pacientesInfo.numeroDoProntuario,
@@ -404,6 +403,7 @@ medApp.controllers = {
       page.querySelector('#data-int').innerHTML = medApp.services.dadosPacienteAtual.dataIntFormatoBarra;
       page.querySelector('#causa').innerHTML = medApp.services.dadosPacienteAtual.causa;
       page.querySelector('#hospital').innerHTML = medApp.services.dadosPacienteAtual.hospital;
+      page.querySelector('.profile-image').src = medApp.services.dadosPacienteAtual.foto;
 
       //get da pulseira indexada ao paciente.
   	  $.get('http://julianop.com.br:3000/api/pulseira/idPaciente/' + medApp.services.dadosPacienteAtual.idAtualPaciente)
@@ -418,8 +418,6 @@ medApp.controllers = {
            medApp.services.pulseiraAtual = data[0];
 
          }
-
-         //console.log(medApp.services.pulseiraAtual.idPulseira);
 
   	  })
       .done(function(data) {
@@ -1413,7 +1411,7 @@ medApp.controllers = {
           function successCallback (imageData) {
 
             //Display image
-            var image = document.getElementById ('add-pac');
+            var image = document.getElementById ('img-pac');
             image.src = "data:image/jpeg;base64, " + imageData;
 
           };
@@ -1474,7 +1472,7 @@ medApp.controllers = {
           causaDaInternacao: $('#causa-novo-pac').val(),
           numeroDoProntuario: 1111,
           telefone: $('#local-novo-pac').val(),
-          foto:medApp.services.getBase64Image(document.getElementById('add-pac')),
+          foto: medApp.services.getBase64Image(document.getElementById('img-pac')),
           dataDeNascimento: dataNovoPaciente,
           idMedico: medApp.services.getIdMedico()
         })
@@ -1511,7 +1509,8 @@ medApp.controllers = {
 
     page.querySelector('#manage-pulseiras').onclick = function() {
 
-      document.querySelector('#configuracoesNav').pushPage('pulseiras.html');
+      // Template dentro de html/configuracoes
+      document.querySelector('#configuracoesNav').pushPage('pulseiras.html'); 
 
     };
 
@@ -1873,9 +1872,8 @@ medApp.controllers = {
             medApp.services.createPaciente(
               {
                 statusPaciente: (pacientesInfo.ativo == 1) ? 'ativo' : 'inativo',
-                img: 'http://www.clker.com/cliparts/A/Y/O/m/o/N/placeholder-md.png',
+                img: medApp.services.verificarFoto(pacientesInfo.foto),
                 nomePaciente: pacientesInfo.nomePaciente,
-                //batimentos: '--',
                 dataPaciente: pacientesInfo.dataDeNascimento,
                 causaPaciente: pacientesInfo.causaDaInternacao,
                 medicoResp: pacientesInfo.numeroDoProntuario,
@@ -2059,7 +2057,7 @@ medApp.controllers = {
 
       });
     });
-
+    
 
     page.querySelector('#add-equipe').onclick = function() {
 
@@ -2126,7 +2124,7 @@ medApp.controllers = {
       $('#membros-equipe').empty();
       $.get('http://julianop.com.br:3000/api/hospitais/' + medApp.services.getEquipeAtual() + '/medicos')
           .done(function(data) {
-
+     
             if(data[0].hasOwnProperty('idMedico')) {
 
               for (var i = 0, len = data.length; i < len; i++) {
@@ -2149,9 +2147,9 @@ medApp.controllers = {
               };
 
             };
-
+            
           });
-
+      
     });
 
     // Botão para adicionar membros à equipe através do email
@@ -2167,7 +2165,7 @@ medApp.controllers = {
             .done(function(data) {
 
               console.log(data[0].idMedico);
-
+              
               $.post("http://julianop.com.br:3000/api/hospitais/relacoes",
                 {
                   idMedico: data[0].idMedico,
@@ -2201,7 +2199,7 @@ medApp.controllers = {
               console.log(data);
               document.querySelector('#medicoNav').popPage();
             });
-
+    
           };
 
         });
@@ -2215,8 +2213,8 @@ medApp.controllers = {
         message:"Digite o novo nome da equipe:",
         callback: function(nomeEquipeEdit){
 
-          if (nomeEquipeEdit !== '') {
-
+          if (nomeEquipeEdit !== '') { 
+            
             $.ajax({
               url: 'http://julianop.com.br:3000/api/hospitais',
               type: 'PUT',
@@ -2264,6 +2262,35 @@ medApp.controllers = {
         });
 
     };
+
+  },
+
+  //////////////////////////////////////////////////
+  // Controlador de Compartilhamento de Pacientes //
+  //////////////////////////////////////////////////
+
+  compartilhar: function(page) {
+
+    // Lista as equipes as quais o médico pertence e seus respectivos membros
+    page.addEventListener('show', function(event) {
+
+      // Limpa e popula a lista de equipes
+      $('#lista-compartilhar').empty();
+      $.get('http://julianop.com.br:3000/api/hospitais/medico/' + medApp.services.getIdMedico())
+      .done(function(equipes) {
+
+          if(equipes[0].hasOwnProperty('idHospital')) {
+
+            for (var i = 0, equipesLen = equipes.length; i < equipesLen; i++) {     
+
+              var listaMembros = medApp.services.getMembrosEquipe(equipes[i]);
+
+            };
+            
+          };
+
+      });
+    });
 
   }
 
