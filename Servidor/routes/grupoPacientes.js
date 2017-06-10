@@ -14,10 +14,10 @@ var router = express.Router();
 
 router.route('/')
 	.post(function(req, res) {
-	
+
 		mysql.getConnection(function(err,connection) {
 			if (req.hasOwnProperty('body') &&
-				req.body.hasOwnProperty('nome') && 
+				req.body.hasOwnProperty('nome') &&
 				req.body.hasOwnProperty('idMedico') ){
 				var query = {
 					sql: `INSERT INTO GrupoPacientes (nome) VALUES (${connection.escape(req.body.nome)})`,
@@ -57,19 +57,19 @@ router.route('/')
 		});
 	})
 	.put(function(req, res) {
-	
+
 		mysql.getConnection(function(err, connection) {
 			if (req.hasOwnProperty('body') &&
 				req.body.hasOwnProperty('idGrupoPac') &&
 				req.body.hasOwnProperty('nome')){
-			
+
 				var selector = {
 					sql:`SELECT * FROM GrupoPacientes WHERE idGrupoPac = ${connection.escape(req.body.idGrupoPac)} LIMIT 1`,
 					timeout: 10000
 					}
 
 				connection.query(selector, function(err, rows, fields) {
-			
+
 					if (err != null) console.log('Erro ao selecionar grupo a ser editado na base de dados.');
 					else if (rows.length < 1) {
 						console.log('Grupo nao encontrado.');
@@ -78,9 +78,9 @@ router.route('/')
 					else {
 						console.log(rows);
 						var nome;
-					
+
 							nome = req.body.nome;
-					
+
 						queryString = {
 							sql: `UPDATE GrupoPacientes SET nome= '${nome}' WHERE idGrupoPac= ${connection.escape(req.body.idGrupoPac)} LIMIT 1`,
 							timeout: 100000
@@ -105,7 +105,7 @@ router.route('/')
 		});
 	})
 	.delete(function(req, res) {
-	
+
 		mysql.getConnection(function(err, connection) {
 
 			console.log(req.body.hasOwnProperty('idGrupoPac'));
@@ -123,16 +123,16 @@ router.route('/')
 						}
 				  });
 			} else {
-				res.send('Indique o id único do grupo a ser removido da base.');			
+				res.send('Indique o id único do grupo a ser removido da base.');
 			}
 		});
 	});
 
 router.route('/pacientes/')
 	.post(function(req, res) {
-	
+
 		mysql.getConnection(function(err, connection){
-	
+
 			if (req.hasOwnProperty('body') &&
 				req.body.hasOwnProperty('idPaciente') &&
 				req.body.hasOwnProperty('idGrupoPac')){
@@ -163,8 +163,7 @@ router.route('/pacientes/')
 
 		mysql.getConnection(function(err, connection){
 
-			console.log(req.body.hasOwnProperty('idPaciente'));
-			if (req,hasOwnProperty('body') &&
+			if (req.hasOwnProperty('body') &&
 				req.body.hasOwnProperty('idPaciente') &&
 				req.body.hasOwnProperty('idGrupoPac') ) {
 				connection.query(
@@ -173,29 +172,30 @@ router.route('/pacientes/')
 					function(err){
 						if (err != null) {
 							console.log('Error ao remover paciente do grupo');
-							return;
+							return res.send('Error ao remover paciente do grupo');
 						}
 						else{
 							console.log('Paciente removido do grupo com sucesso');
+                            return res.send('Paciente removido do grupo com sucesso');
 						}
 				  });
 			} else {
-				res.send('Indique o id único do paciente e do grupo a ser removido.');			
+				return res.send('Indique o id único do paciente e do grupo a ser removido.');
 			}
 		});
 	});
 
 	router.route('/pacientes/multiplos')
 	.post(function(req, res) {
-		
+
 		mysql.getConnection(function(err, connection) {
-	
+
 			if (req.hasOwnProperty('body') &&
 				req.body.hasOwnProperty('idPaciente') &&
 				req.body.hasOwnProperty('idGrupoPac')){
 
 				var values, start_row, new_row;
-			
+
 				start_row = `(`+ req.body.idPaciente[0] +` ,`+ req.body.idGrupoPac +` )`;
 				values = start_row;
 
@@ -229,9 +229,9 @@ router.route('/pacientes/')
 
 router.route('/medicos/')
 	.post(function(req, res) {
-	
+
 		mysql.getConnection(function(err, connection) {
-	
+
 			if (req.hasOwnProperty('body') &&
 				req.body.hasOwnProperty('idMedico') &&
 				req.body.hasOwnProperty('idGrupoPac')){
@@ -279,7 +279,7 @@ router.route('/medicos/')
 						}
 				  });
 			} else {
-				res.send('Indique o id único do Medico responsavel e do grupo a serem desrelacionados.');			
+				res.send('Indique o id único do Medico responsavel e do grupo a serem desrelacionados.');
 			}
 		});
 	});
@@ -290,7 +290,7 @@ router.route('/medicos/')
 			if (req.params.hasOwnProperty('idGrupoPac')) {
 				var query = {
 					sql: `SELECT P.*, M.nome FROM  Paciente P, GrupoPac_Paciente GP, GrupoPac_Medico GM, Medico M WHERE GP.idPaciente	 = P.idtable1 AND GP.idGrupoPac = ${connection.escape(req.params.idGrupoPac)} AND M.idMedico = ${connection.escape(req.params.idMedico)} AND GP.idGrupoPac=GM.idGrupoPac`,//SELECT P.* FROM  Paciente P, GrupoPac_Paciente GP WHERE GP.idPaciente	 = P.idtable1 AND GP.idGrupoPac = ${connection.escape(req.params.idGrupoPac)}`,
-					timeout: 10000	
+					timeout: 10000
 				}
 				connection.query(query, function(err, rows, fields) {
 					if(err) {
@@ -304,7 +304,7 @@ router.route('/medicos/')
 					}
 				});
 			} else {
-				res.send('Indique o grupo desejado. Erro');			
+				res.send('Indique o grupo desejado. Erro');
 			}
 		});
 	});
@@ -315,7 +315,7 @@ router.route('/buscarGrupo/grupo/:nome')
 			if (req.params.hasOwnProperty('nome')) {
 				var query = {
 					sql: `SELECT * FROM  GrupoPacientes WHERE nome LIKE '${connection.escape(req.params.nome)}'`,
-					timeout: 10000	
+					timeout: 10000
 				}
 				connection.query(query, function(err, rows, fields) {
 					if(err) {
@@ -329,7 +329,7 @@ router.route('/buscarGrupo/grupo/:nome')
 					}
 				});
 			} else {
-				res.send('Indique o grupo desejado. Erro');			
+				res.send('Indique o grupo desejado. Erro');
 			}
 		});
 	});
@@ -343,9 +343,9 @@ router.get('/buscarGrupo/idMedico/:idMedico', function(req, res){
 		if (req.params.hasOwnProperty('idMedico')) {
 			var getMedicoQuery = {
 				sql: `SELECT GP.idGrupoPac idGrupoPac, GP.nome nomeGrupo, M.nome MedicoResp FROM GrupoPac_Medico GM, GrupoPacientes GP, Medico M WHERE GM.idMedico = ${connection.escape(req.params.idMedico)} AND GM.idGrupoPac = GP.idGrupoPac AND GM.idMedico=M.idMedico`,
-				timeout: 10000	
+				timeout: 10000
 			}
-	
+
 			connection.query(getMedicoQuery, function(err, rows, fields) {
 				if(err) {
 					console.log(err);
@@ -361,10 +361,10 @@ router.get('/buscarGrupo/idMedico/:idMedico', function(req, res){
 				console.log(rows);
 				//console.log(fields);
 				//Utilizamos o primeiro médico encontrado com o ID único para a próxima etapa
-		
+
 			});
 		} else {
-			res.send('Indique o ID único do médico a ser puxado da base.');			
+			res.send('Indique o ID único do médico a ser puxado da base.');
 		}
 	});
 });
