@@ -256,7 +256,7 @@ medApp.controllers = {
         page.querySelector('#tel-perfil').innerHTML = data[0].telefone;
         page.querySelector('#email-perfil').innerHTML = data[0].email;
         page.querySelector('#img-med').src = medApp.services.verificarFoto(data[0].foto);
-        
+
       });
 
     });
@@ -352,7 +352,7 @@ medApp.controllers = {
               medApp.services.createPaciente(
                 {
                   statusPaciente: (pacientesInfo.ativo == 1) ? 'ativo' : 'inativo',
-                  img: 'http://www.clker.com/cliparts/A/Y/O/m/o/N/placeholder-md.png',
+                  img:"data:image/jpeg;base64, " + pacientesInfo.foto,
                   nomePaciente: pacientesInfo.nomePaciente,
                   //batimentos: '--',
                   dataPaciente: pacientesInfo.dataDeNascimento,
@@ -1413,7 +1413,7 @@ medApp.controllers = {
           function successCallback (imageData) {
 
             //Display image
-            var image = document.getElementById ('picture');
+            var image = document.getElementById ('add-pac');
             image.src = "data:image/jpeg;base64, " + imageData;
 
           };
@@ -1474,7 +1474,7 @@ medApp.controllers = {
           causaDaInternacao: $('#causa-novo-pac').val(),
           numeroDoProntuario: 1111,
           telefone: $('#local-novo-pac').val(),
-          foto: 01010101011111011111,
+          foto:medApp.services.getBase64Image(document.getElementById('add-pac')),
           dataDeNascimento: dataNovoPaciente,
           idMedico: medApp.services.getIdMedico()
         })
@@ -2059,7 +2059,7 @@ medApp.controllers = {
 
       });
     });
-    
+
 
     page.querySelector('#add-equipe').onclick = function() {
 
@@ -2126,7 +2126,7 @@ medApp.controllers = {
       $('#membros-equipe').empty();
       $.get('http://julianop.com.br:3000/api/hospitais/' + medApp.services.getEquipeAtual() + '/medicos')
           .done(function(data) {
-     
+
             if(data[0].hasOwnProperty('idMedico')) {
 
               for (var i = 0, len = data.length; i < len; i++) {
@@ -2149,9 +2149,9 @@ medApp.controllers = {
               };
 
             };
-            
+
           });
-      
+
     });
 
     // Botão para adicionar membros à equipe através do email
@@ -2167,7 +2167,7 @@ medApp.controllers = {
             .done(function(data) {
 
               console.log(data[0].idMedico);
-              
+
               $.post("http://julianop.com.br:3000/api/hospitais/relacoes",
                 {
                   idMedico: data[0].idMedico,
@@ -2201,7 +2201,7 @@ medApp.controllers = {
               console.log(data);
               document.querySelector('#medicoNav').popPage();
             });
-    
+
           };
 
         });
@@ -2215,8 +2215,8 @@ medApp.controllers = {
         message:"Digite o novo nome da equipe:",
         callback: function(nomeEquipeEdit){
 
-          if (nomeEquipeEdit !== '') { 
-            
+          if (nomeEquipeEdit !== '') {
+
             $.ajax({
               url: 'http://julianop.com.br:3000/api/hospitais',
               type: 'PUT',
