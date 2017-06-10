@@ -95,7 +95,7 @@ router.route('/')
 							nome = req.body.nome;
 
 						queryString = {
-							sql: `UPDATE Hospital SET nome= '${connection.escape(req.body.nome)}' WHERE idHospital= ${connection.escape(req.body.idHospital)} LIMIT 1`,
+							sql: `UPDATE Hospital SET nome= ${connection.escape(req.body.nome)} WHERE idHospital= ${connection.escape(req.body.idHospital)} LIMIT 1`,
 							timeout: 100000
 						}
 						console.log(queryString.sql);
@@ -106,7 +106,7 @@ router.route('/')
 								res.send('Erro ao alterar o hospital de pacientes na base de dados');
 							} else {
 								console.log('Hospital editado com sucesso.');
-								res.send('Erro ao alterar o hospital de pacientes na base de dados');
+								res.send('Hospital editado com sucesso.');
 							}
 
 						});
