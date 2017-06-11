@@ -1251,8 +1251,22 @@ medApp.controllers = {
 
       	if(data.length == 0){
 
-  	      ons.notification.alert('Sem novas atualizações no feed.');
-  	      return;
+  	      var template = document.createElement('div');
+
+          template.innerHTML = '<ons-list-item class="paciente-lista" modifier="longdivider" tappable>' +
+           '<div class="center">'+
+             '<ons-row class="paciente-header">'+
+               '<ons-col>' +
+                 '<span class="list__item__title nome">' + 'Sem atualizações de pacientes no momento, por favor, cheque a lista.' + '</span>' +
+               '</ons-col>' +
+             '</ons-row>' +
+           '</div>' +
+         '</ons-list-item>';
+
+          var feedItem = template.firstChild;
+          var listaFeed = document.querySelector('#feed-lista');
+
+          listaFeed.appendChild(feedItem);
 
         } else {
 
