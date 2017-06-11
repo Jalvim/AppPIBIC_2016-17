@@ -1249,7 +1249,7 @@ foto:medApp.services.getBase64Image(document.getElementById('edit-pac'))
 
       	if(data.length == 0){
 
-  	      ons.notification.alert('Erro de conexão com o servidor');
+  	      //ons.notification.alert('Erro de conexão com o servidor');
   	      return;
 
         } else {
