@@ -945,6 +945,24 @@ medApp.services = {
 
     return membroCompartItem;
 
+  },
+
+  // Função para preencher a tela de compartilhamento de pacientes caso esteja vazia
+  compartVazio: function() { 
+
+    var template = document.createElement('div');
+    template.innerHTML = 
+      '<ons-list-item>' +
+        'O compartilhamento de pacientes é feito por meio de suas equipes.' +
+        '<br>' +
+        'Crie uma equipe a partir da página de perfil médico!' +
+      '</ons-list-item>';
+
+    var msgVazio = template.firstChild;
+    var compartLista = document.querySelector('#lista-compartilhar');
+
+    compartLista.appendChild(msgVazio);
+
   }
 
 };
