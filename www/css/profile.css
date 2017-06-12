@@ -32,11 +32,11 @@
     font-size: 25px;
   }
 
-    .profile-id {
-      margin: 0 0 5px 0;
-      font-size: 14px;
-      opacity: 0.6;
-    }
+  .profile-id {
+    margin: 0 0 5px 0;
+    font-size: 14px;
+    opacity: 0.6;
+  }
 
   .profile-desc {
     font-size: 17px;

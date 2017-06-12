@@ -801,12 +801,12 @@ medApp.services = {
   getBase64Image: function(img) {
 
     var canvas = document.createElement("canvas");
-    canvas.width = img.width;
-    canvas.height = img.height;
+    canvas.width = 100;
+    canvas.height = 100;
     var ctx = canvas.getContext("2d");
     ctx.drawImage(img, 0, 0);
-    var dataURL = canvas.toDataURL("image/png");
-    return dataURL.replace(/^data:image\/(png|jpg);base64,/, "");
+    var dataURL = canvas.toDataURL('image/jpeg', 1.0);
+    return dataURL.replace("data:image/jpeg;base64,", "");
 
   },
 
@@ -820,7 +820,14 @@ medApp.services = {
 
     } else {
 
-      return ('data:image/jpeg;base64,' + img);
+      var image = new Image;
+      image.src = 'data:image/jpeg;base64,' + img;
+      var canvas = document.createElement("canvas");
+      canvas.width = 100;
+      canvas.height = 100;
+      var ctx = canvas.getContext("2d");
+      ctx.drawImage(image, 0, 0);
+      return canvas.toDataURL();
 
     };
 

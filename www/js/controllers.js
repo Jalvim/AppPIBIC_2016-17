@@ -117,16 +117,22 @@ medApp.controllers = {
       	// Captura imagem a partir da câmera do dispositivo
       	medApp.services.hidePopover(medApp.services.dial);
 
-        navigator.camera.getPicture (successCallback, FailCallback, { sourceType: Camera.PictureSourceType.CAMERA,
-                                                                      destinationType: Camera.DestinationType.DATA_URL
+        navigator.camera.getPicture (successCallback, FailCallback, {
+                                                                      quality: 50,
+                                                                      targetWidth : 120,
+                                                                      targetHeight : 120,
+                                                                      allowEdit: true,
+                                                                      sourceType: Camera.PictureSourceType.CAMERA,
+                                                                      destinationType: Camera.DestinationType.FILE_URI
                                                                     });
 
         //Success Callback
-        function successCallback (imageData) {
+        function successCallback (imageURI) {
 
           //Display image
+
           var image = document.getElementById ('picture');
-          image.src = "data:image/jpeg;base64, " + imageData;
+          image.src = imageURI;
 
         };
 
@@ -144,16 +150,21 @@ medApp.controllers = {
       	// Seleciona imagem a partir da galeria de imagens do dispositivo
       	medApp.services.hidePopover(medApp.services.dial);
 
-        navigator.camera.getPicture (successCallback, FailCallback, { sourceType: Camera.PictureSourceType.PHOTOLIBRARY,
-                                                                      destinationType: Camera.DestinationType.DATA_URL
+        navigator.camera.getPicture (successCallback, FailCallback, { 
+                                                                      quality: 100,
+                                                                      targetWidth : 120,
+                                                                      targetHeight : 120,
+                                                                      allowEdit: true,
+                                                                      sourceType: Camera.PictureSourceType.PHOTOLIBRARY,
+                                                                      destinationType: Camera.DestinationType.FILE_URI
                                                                     });
 
           //Success Callback
-          function successCallback (imageData) {
+          function successCallback (imageURI) {
 
             //Display image
             var image = document.getElementById ('picture');
-            image.src = "data:image/jpeg;base64, " + imageData;
+            image.src = imageURI;
 
           };
 
@@ -227,7 +238,7 @@ medApp.controllers = {
           telefone: $('#telefone-cadastro').val(),
           email: $('#email-cadastro').val(),
           senha: $('#senha-cadastro').val(),
-          foto: medApp.services.getBase64Image(document.getElementById('picture'))
+          foto: medApp.services.getBase64Image(document.getElementById('picture').src)
         })
           .done(function(data) {
             modal.hide();
@@ -250,7 +261,7 @@ medApp.controllers = {
 
       $.get('http://julianop.com.br:3000/api/medico/busca/ID/' + medApp.services.getIdMedico())
       .done(function(data) {
-
+        console.log(data[0].foto);
         page.querySelector('#nome-perfil').innerHTML = data[0].nome;
         page.querySelector('#crm-perfil').innerHTML = 'CRM' + ' ' + data[0].CRM;
         page.querySelector('#esp-perfil').innerHTML = data[0].especialidade;
