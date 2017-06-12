@@ -1251,6 +1251,8 @@ medApp.controllers = {
 
       	if(data.length == 0){
 
+          $('#feed-lista').empty();
+
   	      var template = document.createElement('div');
 
           template.innerHTML = '<ons-list-item class="paciente-lista" modifier="longdivider" tappable>' +
@@ -1269,6 +1271,8 @@ medApp.controllers = {
           listaFeed.appendChild(feedItem);
 
         } else {
+
+          $('#feed-lista').empty();
 
     	    for(var i=0; i<data.length; i++){
 
