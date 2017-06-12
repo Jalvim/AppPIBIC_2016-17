@@ -1,53 +1,15 @@
-<!-- Página da Lista de Pacientes -->
+<ons-navigator id="pacienteNav" page="html/pacientes.html">
+
 <ons-page>
 
-  <ons-navigator id="pacienteNav" page="listas.html">
+    <ons-tabbar position="top" id="tab-pac">
+      <ons-tab label="Pacientes" class="tabbar" page="html/listapacientes.html" active>
+      </ons-tab>
+      <ons-tab label="Grupos" class="tabbar" page="html/listagrupos.html">
+      </ons-tab>
+    </ons-tabbar>
 
-  <ons-template id="listas.html"> 
-    <ons-page id="listas">
-
-      <ons-tabbar position="top" id="tab-pac">
-        <ons-tab label="Pacientes" class="tabbar" page="pacientes.html" active>
-        </ons-tab>
-        <ons-tab label="Grupos" class="tabbar" page="grupos.html">
-        </ons-tab>
-      </ons-tabbar>
-
-    <ons-template id="pacientes.html"> 
-      <ons-page id="pacientes">
-
-        <!-- Lista de Pacientes -->
-        <ons-list modifier="inset" style="padding-top: 10px;" id="lista-pacientes"> 
-
-        </ons-list>
-
-        <!-- Botão para criar novo Paciente -->
-        <ons-fab position="bottom right" id="buscar-pac" class="spd-dial">
-          <ons-icon icon="md-account-add"></ons-icon>
-        </ons-fab>
-
-      </ons-page>
-    </ons-template>
-
-    <ons-template id="grupos.html"> 
-      <ons-page id="grupos">
-
-        <!-- Lista de Grupos -->
-        <ons-list modifier="inset" style="padding-top: 10px;" id="lista-grupos">
-
-        </ons-list>
-
-        <!-- Botão para criar novo Grupo -->
-        <ons-fab position="bottom right" id="add-grupo" class="spd-dial">
-          <ons-icon icon="md-accounts-add"></ons-icon>
-        </ons-fab>
-
-      </ons-page>
-    </ons-template>
-
-    </ons-page>
-  </ons-template>
-
-  </ons-navigator>
 
 </ons-page>
+
+</ons-navigator>

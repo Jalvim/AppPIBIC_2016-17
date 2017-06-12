@@ -339,7 +339,7 @@ medApp.services = {
       + ":" + info.patient.timestamp[15] + info.patient.timestamp[16];
 
       template.innerHTML = 
-      '<ons-list-item id="item'+ i '" class="paciente-lista " modifier="longdivider" tappable>' +
+      '<ons-list-item id="item' + i + '" class="paciente-lista " modifier="longdivider" tappable>' +
         '<div class="left">' +
           '<img class="list__item__thumbnail" src="'+ info.foto + '">' +
         '</div>' +
@@ -379,7 +379,7 @@ medApp.services = {
       + ":" + info.reminder.timestamp[15] + info.reminder.timestamp[16];
 
       template.innerHTML = 
-      '<ons-list-item id="item'+ i '" class="paciente-lista " modifier="longdivider" tappable>' +
+      '<ons-list-item id="item'+ i + '" class="paciente-lista " modifier="longdivider" tappable>' +
         '<div class="center">'+
           '<ons-row class="paciente-header">'+
             '<ons-col>' +
@@ -430,6 +430,7 @@ medApp.services = {
     }
 
       document.querySelector('#pacienteNav').pushPage('html/perfilpaciente.html');
+
     }
 
     listaFeed.appendChild(feedItem);
@@ -1010,6 +1011,22 @@ medApp.services = {
     var compartLista = document.querySelector('#lista-compartilhar');
 
     compartLista.appendChild(msgVazio);
+
+  },
+
+  isUpdatedPaciente: 0,
+
+  isUpdatedGrupo: 0,
+
+  changeUpdatePaciente: function() {
+
+    this.isUpdatedPaciente = !(this.isUpdatedPaciente);
+
+  },
+
+  changeUpdateGrupo: function() {
+
+    this.isUpdatedGrupo = !(this.isUpdatedGrupo);
 
   }
 

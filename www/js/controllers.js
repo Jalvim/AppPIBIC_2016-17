@@ -61,7 +61,7 @@ medApp.controllers = {
     if( emailLogin === 'a' && senhaLogin === 'a' ){
 
       medApp.services.setIdMedico(20);
-      document.querySelector('#loginNav').pushPage('inicial.html');
+      document.querySelector('#loginNav').pushPage('html/inicial.html');
 
     };
 
@@ -79,7 +79,7 @@ medApp.controllers = {
             $('#email-login').val("");
             $('#senha-login').val("");
             medApp.services.setIdMedico(data.idMedico);
-            document.querySelector('#loginNav').pushPage('inicial.html');
+            document.querySelector('#loginNav').pushPage('html/inicial.html');
 
           } else {
 
@@ -299,7 +299,7 @@ medApp.controllers = {
 
           if(confirm) {
             medApp.services.deleteIdMedico();
-            document.querySelector('#loginNav').resetToPage( 'login.html', {options: {animation: 'fade'}});
+            document.querySelector('#loginNav').resetToPage('login.html', {options: {animation: 'fade'}});
           };
 
         });
@@ -339,12 +339,15 @@ medApp.controllers = {
     // Função que gera e autaliza a lista de pacientes a partir de dados do sevidor
     function gerarListaPacientes () {
 
+      medApp.services.changeUpdatePaciente();
       $('#lista-pacientes').empty();
 
+      if(medApp.services.isUpdatedPaciente) {
       $.get('http://julianop.com.br:3000/api/paciente/geral/idMedico/' + medApp.services.getIdMedico())
         .done(function(data) {
 
           if(data[0].hasOwnProperty('idPaciente')) {
+
             for (var i = 0, len = data.length; i < len; i++) {
 
               var pacientesInfo = data[i];
@@ -367,13 +370,13 @@ medApp.controllers = {
           };
 
       });
-
+      };
     };
 
     // Atualiza a lista de pacientes sempre que a página for mostrada
     page.addEventListener('show', function(event) {
 
-      medApp.services.deletePacienteAtual();
+      event.stopPropagation();
       gerarListaPacientes();
 
     });
@@ -491,17 +494,21 @@ medApp.controllers = {
       $.get('http://julianop.com.br:3000/api/paciente/geral/idMedico/' + medApp.services.getIdMedico())
         .done(function(data) {
 
-          // Preenche a lista de integrantes com os pacientes do médico atual
-          for (var i = 0, len = data.length; i < len; i++) {
+          if(data[0].hasOwnProperty('idPaciente')) {
 
-            var pacientesInfo = data[i];
+            // Preenche a lista de integrantes com os pacientes do médico atual
+            for (var i = 0, len = data.length; i < len; i++) {
 
-            medApp.services.listAddGroup(
-              {
-                nomePaciente: pacientesInfo.nomePaciente,
-                img: 'http://www.clker.com/cliparts/A/Y/O/m/o/N/placeholder-md.png',
-                idPaciente: pacientesInfo.idPaciente
-              }, 'unchecked', 'add');
+              var pacientesInfo = data[i];
+
+              medApp.services.listAddGroup(
+                {
+                  nomePaciente: pacientesInfo.nomePaciente,
+                  img: pacientesInfo.foto,
+                  idPaciente: pacientesInfo.idPaciente
+                }, 'unchecked', 'add');
+
+            };
 
           };
 
@@ -669,7 +676,7 @@ medApp.controllers = {
               page.querySelector('#dados-recuperados').innerHTML = 'Dados não recuperados.';
             } else {
 
-              console.log(medApp.services.dataDados);
+              //console.log(medApp.services.dataDados);
 
               $.get('http://julianop.com.br:3000/api/paciente/health/static/' + medApp.services.dadosPacienteAtual.idAtualPaciente + '/' + medApp.services.dataDados)
               .done(function(data) {
@@ -677,7 +684,7 @@ medApp.controllers = {
 
                 //medApp.services.dadosRecuperados = data.calories;
 
-                console.log(data);
+                //console.log(data);
                 page.querySelector('#dados-recuperados').innerHTML = data.calories + ' calorias perdidas.';
 
               });
@@ -762,7 +769,7 @@ medApp.controllers = {
               page.querySelector('#dados-recuperados').innerHTML = 'Dados não recuperados.';
             } else {
 
-              console.log(medApp.services.dataDados);
+              //console.log(medApp.services.dataDados);
 
               $.get('http://julianop.com.br:3000/api/paciente/health/static/' + medApp.services.dadosPacienteAtual.idAtualPaciente + '/' + medApp.services.dataDados)
               .done(function(data) {
@@ -770,7 +777,7 @@ medApp.controllers = {
 
                 //medApp.services.dadosRecuperados = data.calories;
 
-                console.log(data);
+                //console.log(data);
                 page.querySelector('#dados-recuperados').innerHTML = data.steps + ' passos dados.';
 
               });
@@ -918,7 +925,7 @@ medApp.controllers = {
               page.querySelector('#dados-recuperados').innerHTML = 'Dados não recuperados.';
             } else {
 
-              console.log(medApp.services.dataDados);
+              //console.log(medApp.services.dataDados);
 
               $.get('http://julianop.com.br:3000/api/paciente/health/static/' + medApp.services.dadosPacienteAtual.idAtualPaciente + '/' + medApp.services.dataDados)
               .done(function(data) {
@@ -926,7 +933,7 @@ medApp.controllers = {
 
                 //medApp.services.dadosRecuperados = data.calories;
 
-                console.log(data);
+                //console.log(data);
                 page.querySelector('#dados-recuperados').innerHTML = data.floors + ' degraus escalados.';
 
               });
@@ -961,7 +968,7 @@ medApp.controllers = {
         $('#tel-medico').val(data[0].telefone);
         $('#email-medico').val(data[0].email);
         $('#cpf-medico').val(data[0].CPF);
-        document.getElementById('img-medico').src="data:image/jpeg;base64, "+ data[0].foto;
+        document.getElementById('img-medico').src = "data:image/jpeg;base64, "+ data[0].foto;
       });
 
     });
@@ -1242,14 +1249,16 @@ medApp.controllers = {
 
   feed: function(page) {
 
-    ons.ready(function(event) {
+    page.addEventListener('show', function(event) {
 
       $.get('http://julianop.com.br:3000/api/feed/' + medApp.services.getIdMedico()) //+ '?limit=10')
       .done(function(data){
 
-      	console.log(data);
+      	//console.log(data);
 
-      	if(data.length == 0){
+      	if(data.length == 0) {
+
+          $('#feed-lista').empty();
 
   	      var template = document.createElement('div');
 
@@ -1257,11 +1266,13 @@ medApp.controllers = {
            '<div class="center">'+
              '<ons-row class="paciente-header">'+
                '<ons-col>' +
-                 '<span class="list__item__title nome">' + 'Sem atualizações de pacientes no momento, por favor, cheque a lista.' + '</span>' +
+                 '<span class="list__item__title nome">' + 
+                 'Sem atualizações de pacientes no momento. Adicione um paciente na aba "Pacientes"'
+                 + '</span>' +
                '</ons-col>' +
              '</ons-row>' +
            '</div>' +
-         '</ons-list-item>';
+          '</ons-list-item>';
 
           var feedItem = template.firstChild;
           var listaFeed = document.querySelector('#feed-lista');
@@ -1269,6 +1280,8 @@ medApp.controllers = {
           listaFeed.appendChild(feedItem);
 
         } else {
+
+          $('#feed-lista').empty();
 
     	    for(var i=0; i<data.length; i++){
 
@@ -1853,8 +1866,10 @@ medApp.controllers = {
       // Limpa o grupo atual selecionado
       medApp.services.deleteGrupoAtual();
       // Limpa e popula a lista de grupos
+      medApp.services.changeUpdateGrupo();
       $('#lista-grupos').empty();
 
+      if(medApp.services.isUpdatedGrupo) {
       $.get('http://julianop.com.br:3000/api/grupoPacientes/buscarGrupo/idMedico/' + medApp.services.getIdMedico())
       .done(function(data) {
 
@@ -1872,8 +1887,8 @@ medApp.controllers = {
 
         });
 
-    });
-
+    };
+  });
     // Página para criar um novo grupo de pacientes
     page.querySelector('#add-grupo').onclick = function() {
 
@@ -1961,7 +1976,7 @@ medApp.controllers = {
             medApp.services.listAddGroup(
               {
                 nomePaciente: integrantesInfo.nomePaciente,
-                img: 'http://www.clker.com/cliparts/A/Y/O/m/o/N/placeholder-md.png',
+                img: integrantesInfo.foto,
                 idPaciente: integrantesInfo.idtable1
               }, 'checked', 'edit');
 
@@ -1981,7 +1996,7 @@ medApp.controllers = {
               medApp.services.listAddGroup(
                 {
                   nomePaciente: notIntegrantesInfo.nomePaciente,
-                  img: 'http://www.clker.com/cliparts/A/Y/O/m/o/N/placeholder-md.png',
+                  img: notIntegrantesInfo.foto,
                   idPaciente: notIntegrantesInfo.idtable1
                 }, 'unchecked', 'edit');
 
