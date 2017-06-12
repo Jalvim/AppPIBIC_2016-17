@@ -1242,7 +1242,7 @@ medApp.controllers = {
 
   feed: function(page) {
 
-    ons.ready(function(event) {
+    //ons.ready(function(event) {
 
       $.get('http://julianop.com.br:3000/api/feed/' + medApp.services.getIdMedico()) //+ '?limit=10')
       .done(function(data){
@@ -1285,7 +1285,7 @@ medApp.controllers = {
 
       });
 
-    });
+    //});
 
     /* Realiza a atualização do feed com pull --> TODO: funcionalidade.
       var pullHook = document.getElementById('pull-hook-feed');
