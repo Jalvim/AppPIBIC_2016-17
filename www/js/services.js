@@ -339,14 +339,37 @@ medApp.services = {
       + ":" + info.patient.timestamp[15] + info.patient.timestamp[16];
 
       template.innerHTML = 
-      '<ons-list-titem id="item' + i + '">'
+      '<ons-list-item id="item'+ i '" class="paciente-lista " modifier="longdivider" tappable>' +
+        '<div class="left">' +
+          '<img class="list__item__thumbnail" src="'+ info.foto + '">' +
+        '</div>' +
+        '<div class="center">'+
+          '<ons-row class="paciente-header">'+
+            '<ons-col>' +
+              '<span class="list__item__title nome">' + info.nome + '</span>' +
+            '</ons-col>' +
+          '</ons-row>' +
+          '<ons-row>' +
+            '<ons-col class="paciente-detalhes">' +
+              '<ons-icon icon="md-calendar" class="list__item__icon"></ons-icon>' +
+              '<span class="list__item__subtitle">' + timeStamp + '</span>' +
+            '</ons-col>' +
+            '<ons-col class="paciente-detalhes">' +
+              '<ons-icon icon="md-plaster" class="list__item__icon"></ons-icon>' +
+              '<span class="list__item__subtitle">' + 'Paciente novo Adicionado, clique para conhecer o perfil' + '</span>' +  
+            '</ons-col>' +
+          '</ons-row>' +
+          '<ons-row>' +
+        '</div>' +
+      '</ons-list-item>';
+      /*'<ons-list-item id="item' + i + '">'
       + '<div class="rigth">' + info.foto +
       '</div>' +
       '<div class="center">' + info.nome +
       '</div>' +
       '<div class="left">' + timeStamp +
       '</div>'
-      + '</ons-list-item>';
+      + '</ons-list-item>';*/
 
     } else {
 
@@ -356,7 +379,30 @@ medApp.services = {
       + ":" + info.reminder.timestamp[15] + info.reminder.timestamp[16];
 
       template.innerHTML = 
-      '<ons-list-titem id="item' + i + '">'
+      '<ons-list-item id="item'+ i '" class="paciente-lista " modifier="longdivider" tappable>' +
+        '<div class="center">'+
+          '<ons-row class="paciente-header">'+
+            '<ons-col>' +
+              '<span class="list__item__title nome">' + info.reminder + '</span>' +
+            '</ons-col>' +
+          '</ons-row>' +
+          '<ons-row>' +
+            '<ons-col class="paciente-detalhes">' +
+              '<ons-icon icon="md-calendar" class="list__item__icon"></ons-icon>' +
+              '<span class="list__item__subtitle">' + timeStamp + '</span>' +
+            '</ons-col>' +
+            '<ons-col class="paciente-detalhes">' +
+              '<ons-icon icon="md-plaster" class="list__item__icon"></ons-icon>' +
+              '<span class="list__item__subtitle">' + 'Dados Alterados: K - ' + info.reminder.K + ' Na - ' + info.reminder.Na + 
+              ' Cl - ' + info.reminder.Cl+ ' Co2 - '+ info.reminder.Co2+ ' Bun - '+info.reminder.Bun+ ' Great - '+ info.reminder.Great
+              + ' Gluc - ' +info.reminder.Gluc+ ' Wcb - '+info.reminder.wcb+' HgB - '+info.reminder.HgB+ ' Hct - ' +info.reminder.Hct+
+              ' Plt - '+info.reminder.Plt+ + '</span>' +  
+            '</ons-col>' +
+          '</ons-row>' +
+          '<ons-row>' +
+        '</div>' +
+      '</ons-list-item>';
+      /*'<ons-list-titem id="item' + i + '">'
       + '<div>' + info.reminder.mensagem +
       '</div>'
       '<div>' + timeStamp + '</div>' +
@@ -364,7 +410,7 @@ medApp.services = {
       ' Cl - ' + info.reminder.Cl+ ' Co2 - '+ info.reminder.Co2+ ' Bun - '+info.reminder.Bun+ ' Great - '+ info.reminder.Great
       + ' Gluc - ' +info.reminder.Gluc+ ' Wcb - '+info.reminder.wcb+' HgB - '+info.reminder.HgB+ ' Hct - ' +info.reminder.Hct+
       ' Plt - '+info.reminder.Plt+ '</div>'
-      + '</ons-list-item>';
+      + '</ons-list-item>';*/
 
     }
 
@@ -385,6 +431,8 @@ medApp.services = {
 
       document.querySelector('#pacienteNav').pushPage('html/perfilpaciente.html');
     }
+
+    listaFeed.appendChild(feedItem);
   },
   
 
@@ -944,6 +992,24 @@ medApp.services = {
     };
 
     return membroCompartItem;
+
+  },
+
+  // Função para preencher a tela de compartilhamento de pacientes caso esteja vazia
+  compartVazio: function() { 
+
+    var template = document.createElement('div');
+    template.innerHTML = 
+      '<ons-list-item>' +
+        'O compartilhamento de pacientes é feito por meio de suas equipes.' +
+        '<br>' +
+        'Crie uma equipe a partir da página de perfil médico!' +
+      '</ons-list-item>';
+
+    var msgVazio = template.firstChild;
+    var compartLista = document.querySelector('#lista-compartilhar');
+
+    compartLista.appendChild(msgVazio);
 
   }
 

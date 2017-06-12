@@ -85,7 +85,7 @@ medApp.controllers = {
 
             $('#email-login').val("");
             $('#senha-login').val("");
-            ons.notification.alert("Senha ou E-mail errados, por favor refaça o Log-In");
+            ons.notification.alert("E-mail ou Senha incorretos");
 
           };
       });
@@ -164,6 +164,7 @@ medApp.controllers = {
 
           };
 
+
       };
 
     };
@@ -177,6 +178,7 @@ medApp.controllers = {
       var confirm = $('#senha-confirm').val();
       var email = $('#email-cadastro').val();
       var CPF = $('#cpf-cadastro').cleanVal();
+
 
       var inputs = page.getElementsByTagName('input');
 
@@ -213,7 +215,6 @@ medApp.controllers = {
         ons.notification.alert("E-mail invalido");
 
       }
-
 
        else {
 
@@ -256,7 +257,7 @@ medApp.controllers = {
         page.querySelector('#tel-perfil').innerHTML = data[0].telefone;
         page.querySelector('#email-perfil').innerHTML = data[0].email;
         page.querySelector('#img-med').src = medApp.services.verificarFoto(data[0].foto);
-        
+
       });
 
     });
@@ -338,7 +339,6 @@ medApp.controllers = {
     // Função que gera e autaliza a lista de pacientes a partir de dados do sevidor
     function gerarListaPacientes () {
 
-      medApp.services.deletePacienteAtual();
       $('#lista-pacientes').empty();
 
       $.get('http://julianop.com.br:3000/api/paciente/geral/idMedico/' + medApp.services.getIdMedico())
@@ -370,12 +370,10 @@ medApp.controllers = {
 
     };
 
-    // Gera a lista de pacientes na primeira vez que a página é carregada
-    // gerarListaPacientes ();
-
     // Atualiza a lista de pacientes sempre que a página for mostrada
     page.addEventListener('show', function(event) {
 
+      medApp.services.deletePacienteAtual();
       gerarListaPacientes();
 
     });
@@ -421,6 +419,7 @@ medApp.controllers = {
 
   	  })
       .done(function(data) {
+
         if(data.length == 0){
 
       	  page.querySelector('#pulseira-pac').innerHTML = 'Nenhuma';
@@ -429,7 +428,8 @@ medApp.controllers = {
 
       	  page.querySelector('#pulseira-pac').innerHTML = medApp.services.pulseiraAtual.idPulseira;
 
-        }
+        };
+
       });
 
     });
@@ -1029,17 +1029,17 @@ medApp.controllers = {
 
     };
 
-    // Verifica se algum input do formulário foi mudado
+    /* Verifica se algum input do formulário foi mudado
     $("#medico-edit-form :input").change(function() {
 
       $("#medico-edit-form").data("changed",true);
 
     });
-
-    // Botão salvar altera os dados no servidor se houve mudanças
+    */
+    // Botão salvar altera os dados no servidor (se houve mudanças => ALTERADO PARA ENVIAR FOTO)
     page.querySelector('#salvar-med').onclick = function() {
 
-      if ($("#medico-edit-form").data("changed")) {
+      //if ($("#medico-edit-form").data("changed")) {
 
         var dadosEdit = {
 
@@ -1070,11 +1070,12 @@ medApp.controllers = {
 
         document.querySelector('#medicoNav').popPage();
 
-      } else {
+      /*} else {
 
         document.querySelector('#medicoNav').popPage();
 
       };
+      */
 
     };
 
@@ -1095,6 +1096,8 @@ medApp.controllers = {
     $('#data-pac-edit').val(medApp.services.dadosPacienteAtual.dataIntFormatoTraco);
     $('#causa-pac-edit').val(medApp.services.dadosPacienteAtual.causa);
     $('#hospital-pac-edit').val(medApp.services.dadosPacienteAtual.hospital);
+    document.getElementById('edit-pac').src= "data:image/jpeg;base64, " + medApp.services.dadosPacienteAtual.foto;
+
 
     // Função de adiquirir imagem de perfil
     page.querySelector('.add-foto').onclick = function snapPicture () {
@@ -1116,7 +1119,7 @@ medApp.controllers = {
         function successCallback (imageData) {
 
           //Display image
-          var image = document.getElementById ('picture');
+          var image = document.getElementById ('edit-pac');
           image.src = "data:image/jpeg;base64, " + imageData;
 
         };
@@ -1143,7 +1146,7 @@ medApp.controllers = {
           function successCallback (imageData) {
 
             //Display image
-            var image = document.getElementById ('picture');
+            var image = document.getElementById ('edit-pac');
             image.src = "data:image/jpeg;base64, " + imageData;
 
           };
@@ -1159,7 +1162,7 @@ medApp.controllers = {
 
     };
 
-    //Função responsável por indexar paciente a um hospital na Base de dados
+    /*Função responsável por indexar paciente a um hospital na Base de dados
     page.querySelector('#hospitalButton').onclick = function(){
 
 	  medApp.services.dial = document.getElementById('dialog').id;
@@ -1183,6 +1186,7 @@ medApp.controllers = {
 	  });
 
     };
+    */
 
     // Botão salvar altera os dados no servidor se houve mudanças
     page.querySelector('#editar-pac').onclick = function() {
@@ -1194,8 +1198,8 @@ medApp.controllers = {
       medico: $('#med-pac-edit').val(),
       dataInt: $('#data-pac-edit').val(),
       causa: $('#causa-pac-edit').val(),
-      hospital: $('#hospital-pac-edit').val()
-
+      hospital: $('#hospital-pac-edit').val(),
+      foto:medApp.services.getBase64Image(document.getElementById('edit-pac'))
       };
 
 
@@ -1208,7 +1212,9 @@ medApp.controllers = {
           data: {
             nomePaciente: dadosEditPac.nome,
             causaDaInternacao: dadosEditPac.causa,
-            dataDeNascimento: dadosEditPac.dataInt
+            dataDeNascimento: dadosEditPac.dataInt,
+            telefone: dadosEdit.hospital,
+            foto: dadosEditPac.foto
           }
         })
         .done(function(data) {
@@ -1238,15 +1244,29 @@ medApp.controllers = {
 
     ons.ready(function(event) {
 
-      $.get('http://julianop.com.br:3000/api/feed/' + medApp.services.idAtualMedico) //+ '?limit=10')
+      $.get('http://julianop.com.br:3000/api/feed/' + medApp.services.getIdMedico()) //+ '?limit=10')
       .done(function(data){
 
       	console.log(data);
 
       	if(data.length == 0){
 
-  	      ons.notification.alert('Erro de conexão com o servidor');
-  	      return;
+  	      var template = document.createElement('div');
+
+          template.innerHTML = '<ons-list-item class="paciente-lista" modifier="longdivider" tappable>' +
+           '<div class="center">'+
+             '<ons-row class="paciente-header">'+
+               '<ons-col>' +
+                 '<span class="list__item__title nome">' + 'Sem atualizações de pacientes no momento, por favor, cheque a lista.' + '</span>' +
+               '</ons-col>' +
+             '</ons-row>' +
+           '</div>' +
+         '</ons-list-item>';
+
+          var feedItem = template.firstChild;
+          var listaFeed = document.querySelector('#feed-lista');
+
+          listaFeed.appendChild(feedItem);
 
         } else {
 
@@ -1263,7 +1283,7 @@ medApp.controllers = {
 
     });
 
-    // Realiza a atualização do feed com pull --> TODO: funcionalidade.
+    /* Realiza a atualização do feed com pull --> TODO: funcionalidade.
       var pullHook = document.getElementById('pull-hook-feed');
       pullHook.addEventListener('changestate', function(event) {
         var message = '';
@@ -1283,7 +1303,7 @@ medApp.controllers = {
       pullHook.onAction = function(done) {
         setTimeout(done, 1000);
       };
-
+    */
   },
 
   ///////////////////////////////////////
@@ -1427,8 +1447,8 @@ medApp.controllers = {
 
     };
 
-    //Função responsável por indexar paciente a um hospital na Base de dados
-/*    page.querySelector('#hospitalButton').onclick = function(){
+    /*Função responsável por indexar paciente a um hospital na Base de dados
+    page.querySelector('#hospitalButton').onclick = function(){
 
 	  medApp.services.dial = document.getElementById('dialog').id;
 
@@ -1451,6 +1471,7 @@ medApp.controllers = {
       modal.show();
 
       var inputs = page.getElementsByTagName('input');
+
 
       // Checa se há algum input vazio
       if(medApp.services.checkEmptyField(inputs)) {
@@ -1510,7 +1531,22 @@ medApp.controllers = {
     page.querySelector('#manage-pulseiras').onclick = function() {
 
       // Template dentro de html/configuracoes
-      document.querySelector('#configuracoesNav').pushPage('pulseiras.html'); 
+      document.querySelector('#configuracoesNav').pushPage('pulseiras.html');
+
+    };
+
+    // Realiza o logoff do app
+    page.querySelector('#logoff-config').onclick = function() {
+
+      ons.notification.confirm({message: 'Tem certeza?'})
+        .then( function(confirm){
+
+          if(confirm) {
+            medApp.services.deleteIdMedico();
+            document.querySelector('#loginNav').resetToPage( 'login.html', {options: {animation: 'fade'}});
+          };
+
+        });
 
     };
 
@@ -1534,7 +1570,7 @@ medApp.controllers = {
       }
     });*/
 
-    page.querySelector('#addpulseira').onclick = function(){
+    /*page.querySelector('#addpulseira').onclick = function(){
 
       var  Oauth;
 
@@ -1565,9 +1601,9 @@ medApp.controllers = {
 
       });
 
-    };
+    };*/
 
-    page.querySelector('#linkurl').onclick = function() {
+    page.querySelector('#link-fitbit').onclick = function() {
 
       window.open( "https://www.fitbit.com/oauth2/authorize?response_type=code&client_id=227WRB&redirect_uri=http%3A%2F%2Fjulianop.com.br%3A3000%2Fapi%2Fpulseira%2Fcodigo&scope=activity%20heartrate%20location%20nutrition%20profile%20settings%20sleep%20social%20weight&expires_in=604800");
 
@@ -2057,7 +2093,7 @@ medApp.controllers = {
 
       });
     });
-    
+
 
     page.querySelector('#add-equipe').onclick = function() {
 
@@ -2124,7 +2160,7 @@ medApp.controllers = {
       $('#membros-equipe').empty();
       $.get('http://julianop.com.br:3000/api/hospitais/' + medApp.services.getEquipeAtual() + '/medicos')
           .done(function(data) {
-     
+
             if(data[0].hasOwnProperty('idMedico')) {
 
               for (var i = 0, len = data.length; i < len; i++) {
@@ -2147,9 +2183,9 @@ medApp.controllers = {
               };
 
             };
-            
+
           });
-      
+
     });
 
     // Botão para adicionar membros à equipe através do email
@@ -2164,8 +2200,6 @@ medApp.controllers = {
             $.get('http://julianop.com.br:3000/api/medico/busca/email/' + email)
             .done(function(data) {
 
-              console.log(data[0].idMedico);
-              
               $.post("http://julianop.com.br:3000/api/hospitais/relacoes",
                 {
                   idMedico: data[0].idMedico,
@@ -2186,7 +2220,7 @@ medApp.controllers = {
         .then( function(confirm){
 
           if(confirm) {
-            console.log(medApp.services.getEquipeAtual() + ' ' + medApp.services.getIdMedico())
+
             $.ajax({
               url: 'http://julianop.com.br:3000/api/hospitais/relacoes',
               type: 'DELETE',
@@ -2199,7 +2233,7 @@ medApp.controllers = {
               console.log(data);
               document.querySelector('#medicoNav').popPage();
             });
-    
+
           };
 
         });
@@ -2213,8 +2247,8 @@ medApp.controllers = {
         message:"Digite o novo nome da equipe:",
         callback: function(nomeEquipeEdit){
 
-          if (nomeEquipeEdit !== '') { 
-            
+          if (nomeEquipeEdit !== '') {
+
             $.ajax({
               url: 'http://julianop.com.br:3000/api/hospitais',
               type: 'PUT',
@@ -2281,12 +2315,16 @@ medApp.controllers = {
 
           if(equipes[0].hasOwnProperty('idHospital')) {
 
-            for (var i = 0, equipesLen = equipes.length; i < equipesLen; i++) {     
+            for (var i = 0, equipesLen = equipes.length; i < equipesLen; i++) {
 
               var listaMembros = medApp.services.getMembrosEquipe(equipes[i]);
 
             };
-            
+
+          } else {
+
+            medApp.services.compartVazio();
+
           };
 
       });
