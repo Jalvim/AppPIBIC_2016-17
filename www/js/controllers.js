@@ -117,22 +117,20 @@ medApp.controllers = {
       	// Captura imagem a partir da câmera do dispositivo
       	medApp.services.hidePopover(medApp.services.dial);
 
-        navigator.camera.getPicture (successCallback, FailCallback, {
-                                                                      quality: 50,
-                                                                      targetWidth : 120,
-                                                                      targetHeight : 120,
+        navigator.camera.getPicture (successCallback, FailCallback, {  quality: 100,
+                                                                      targetWidth :110,
+                                                                      targetHeight :110,
                                                                       allowEdit: true,
                                                                       sourceType: Camera.PictureSourceType.CAMERA,
-                                                                      destinationType: Camera.DestinationType.FILE_URI
+                                                                      destinationType: Camera.DestinationType.DATA_URL
                                                                     });
 
         //Success Callback
-        function successCallback (imageURI) {
+        function successCallback (imageData) {
 
           //Display image
-
           var image = document.getElementById ('picture');
-          image.src = imageURI;
+          image.src = "data:image/jpeg;base64, " + imageData;
 
         };
 
@@ -150,21 +148,20 @@ medApp.controllers = {
       	// Seleciona imagem a partir da galeria de imagens do dispositivo
       	medApp.services.hidePopover(medApp.services.dial);
 
-        navigator.camera.getPicture (successCallback, FailCallback, { 
-                                                                      quality: 100,
-                                                                      targetWidth : 120,
-                                                                      targetHeight : 120,
+        navigator.camera.getPicture (successCallback, FailCallback, { quality: 100,
+                                                                      targetWidth : 110,
+                                                                      targetHeight : 110,
                                                                       allowEdit: true,
                                                                       sourceType: Camera.PictureSourceType.PHOTOLIBRARY,
-                                                                      destinationType: Camera.DestinationType.FILE_URI
+                                                                      destinationType: Camera.DestinationType.DATA_URL
                                                                     });
 
           //Success Callback
-          function successCallback (imageURI) {
+          function successCallback (imageData) {
 
             //Display image
             var image = document.getElementById ('picture');
-            image.src = imageURI;
+            image.src = "data:image/jpeg;base64, " + imageData;
 
           };
 
@@ -238,7 +235,7 @@ medApp.controllers = {
           telefone: $('#telefone-cadastro').val(),
           email: $('#email-cadastro').val(),
           senha: $('#senha-cadastro').val(),
-          foto: medApp.services.getBase64Image(document.getElementById('picture').src)
+          foto: medApp.services.getBase64Image(document.getElementById('picture'))
         })
           .done(function(data) {
             modal.hide();
@@ -261,7 +258,7 @@ medApp.controllers = {
 
       $.get('http://julianop.com.br:3000/api/medico/busca/ID/' + medApp.services.getIdMedico())
       .done(function(data) {
-        console.log(data[0].foto);
+
         page.querySelector('#nome-perfil').innerHTML = data[0].nome;
         page.querySelector('#crm-perfil').innerHTML = 'CRM' + ' ' + data[0].CRM;
         page.querySelector('#esp-perfil').innerHTML = data[0].especialidade;
@@ -989,27 +986,21 @@ medApp.controllers = {
 
       medApp.services.dial = document.getElementById('fotosource').id;
 
-      medApp.services.showPopover(medApp.services.dial)
+      medApp.services.showPopover(medApp.services.dial);
 
       document.querySelector('#camera-add').onclick = function() {
 
         // Captura imagem a partir da câmera do dispositivo
         medApp.services.hidePopover(medApp.services.dial);
 
-        navigator.camera.getPicture (successCallback, FailCallback, { sourceType: Camera.PictureSourceType.CAMERA,
+        navigator.camera.getPicture (successCallback, FailCallback, {  quality: 100,
+                                                                      targetWidth :110,
+                                                                      targetHeight :110,
+                                                                      allowEdit: true,
+                                                                      sourceType: Camera.PictureSourceType.CAMERA,
                                                                       destinationType: Camera.DestinationType.DATA_URL
                                                                     });
-
-        //Success Callback
-        function successCallback (imageData) {
-
-          //Display image
-          var image = document.getElementById ('img-medico');
-          image.src = "data:image/jpeg;base64, " + imageData;
-
-        };
-
-        //Error CallBack
+  //Error CallBack
         function FailCallback (message) {
 
             alert ('Erro!!!: ' + message);
@@ -1018,30 +1009,44 @@ medApp.controllers = {
 
       };
 
+        //Success Callback
+        function successCallback (imageData) {
+
+          //Display image
+          var image = document.getElementById ('img-medico');
+          image.src = "data:image/jpeg;base64, " + imageData;
+
+
+};
+
       document.querySelector('#galeria').onclick = function() {
 
         // Seleciona imagem a partir da galeria de imagens do dispositivo
         medApp.services.hidePopover(medApp.services.dial);
 
-        navigator.camera.getPicture (successCallback, FailCallback, { sourceType: Camera.PictureSourceType.PHOTOLIBRARY,
+        navigator.camera.getPicture (successCallback, FailCallback, {
+                                                                      quality: 100,
+                                                                      targetWidth :110,
+                                                                      targetHeight :110,
+                                                                      allowEdit: true,
+                                                                      sourceType: Camera.PictureSourceType.PHOTOLIBRARY,
                                                                       destinationType: Camera.DestinationType.DATA_URL
                                                                     });
+  //Error CallBack
+          function FailCallback (message) {
 
+            alert ('Erro!!!: ' + message);
+
+          };
           //Success Callback
           function successCallback (imageData) {
 
             //Display image
             var image = document.getElementById ('img-medico');
             image.src = "data:image/jpeg;base64, " + imageData;
-
           };
 
-          //Error CallBack
-          function FailCallback (message) {
 
-            alert ('Erro!!!: ' + message);
-
-          };
 
       };
 
@@ -1129,7 +1134,11 @@ medApp.controllers = {
         // Captura imagem a partir da câmera do dispositivo
         medApp.services.hidePopover(medApp.services.dial);
 
-        navigator.camera.getPicture (successCallback, FailCallback, { sourceType: Camera.PictureSourceType.CAMERA,
+        navigator.camera.getPicture (successCallback, FailCallback, { quality: 100,
+                                                                      targetWidth :110,
+                                                                      targetHeight :110,
+                                                                      allowEdit: true,
+                                                                      sourceType: Camera.PictureSourceType.CAMERA,
                                                                       destinationType: Camera.DestinationType.DATA_URL
                                                                     });
 
@@ -1156,7 +1165,11 @@ medApp.controllers = {
         // Seleciona imagem a partir da galeria de imagens do dispositivo
         medApp.services.hidePopover(medApp.services.dial);
 
-        navigator.camera.getPicture (successCallback, FailCallback, { sourceType: Camera.PictureSourceType.PHOTOLIBRARY,
+        navigator.camera.getPicture (successCallback, FailCallback, {  quality: 100,
+                                                                      targetWidth :110,
+                                                                      targetHeight :110,
+                                                                      allowEdit: true,
+                                                                      sourceType: Camera.PictureSourceType.PHOTOLIBRARY,
                                                                       destinationType: Camera.DestinationType.DATA_URL
                                                                     });
 
@@ -1231,7 +1244,7 @@ medApp.controllers = {
             nomePaciente: dadosEditPac.nome,
             causaDaInternacao: dadosEditPac.causa,
             dataDeNascimento: dadosEditPac.dataInt,
-            telefone: dadosEdit.hospital,
+            telefone: dadosEditPac.hospital,
             foto: dadosEditPac.foto
           }
         })
@@ -1277,7 +1290,7 @@ medApp.controllers = {
            '<div class="center">'+
              '<ons-row class="paciente-header">'+
                '<ons-col>' +
-                 '<span class="list__item__title nome">' + 
+                 '<span class="list__item__title nome">' +
                  'Sem atualizações de pacientes no momento. Adicione um paciente na aba "Pacientes"'
                  + '</span>' +
                '</ons-col>' +
@@ -1420,7 +1433,11 @@ medApp.controllers = {
         // Captura imagem a partir da câmera do dispositivo
         medApp.services.hidePopover(medApp.services.dial);
 
-        navigator.camera.getPicture (successCallback, FailCallback, { sourceType: Camera.PictureSourceType.CAMERA,
+        navigator.camera.getPicture (successCallback, FailCallback, {  quality: 100,
+                                                                      targetWidth :110,
+                                                                      targetHeight :110,
+                                                                      allowEdit: true,
+                                                                      sourceType: Camera.PictureSourceType.CAMERA,
                                                                       destinationType: Camera.DestinationType.DATA_URL
                                                                     });
 
@@ -1447,7 +1464,11 @@ medApp.controllers = {
         // Seleciona imagem a partir da galeria de imagens do dispositivo
         medApp.services.hidePopover(medApp.services.dial);
 
-        navigator.camera.getPicture (successCallback, FailCallback, { sourceType: Camera.PictureSourceType.PHOTOLIBRARY,
+        navigator.camera.getPicture (successCallback, FailCallback, {  quality: 100,
+                                                                      targetWidth :110,
+                                                                      targetHeight :110,
+                                                                      allowEdit: true,
+                                                                      sourceType: Camera.PictureSourceType.PHOTOLIBRARY,
                                                                       destinationType: Camera.DestinationType.DATA_URL
                                                                     });
 
