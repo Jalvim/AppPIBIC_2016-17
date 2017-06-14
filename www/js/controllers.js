@@ -9,27 +9,6 @@ medApp.controllers = {
   ///////////////////////////////////
   login: function(page) {
 
-
-
-if(localStorage.getItem("email")!='' &&localStorage.getItem("senha")!=''){
-
-
-    $.post('http://julianop.com.br:3000/api/login/',
-      {
-        email: localStorage.getItem("email"),
-        senha: localStorage.getItem("senha")
-      })
-        .done(function(data) {
-
-
-            $('#email-login').val("");
-            $('#senha-login').val("");
-            medApp.services.setIdMedico(data.idMedico);
-            document.querySelector('#loginNav').pushPage('html/inicial.html');
-          });
-
-};
-
     // Botão de mostrar o texto da senha
     page.querySelector('#olho').ontouchstart = function() {
       $('#senha-login').attr('type', 'text');
@@ -68,49 +47,71 @@ if(localStorage.getItem("email")!='' &&localStorage.getItem("senha")!=''){
 
     // Chama página de cadastro
     page.querySelector('#cadastro-button').onclick = function() {
+
       document.querySelector('#loginNav').pushPage('html/cadastromedico.html');
+
     };
 
     // Tenta realizar o login
     page.querySelector('#login-button').onclick = function() {
 
-    var modal = page.querySelector('ons-modal');
-    modal.show();
-    var emailLogin = $('#email-login').val();
-    var senhaLogin = $('#senha-login').val();
+      var modal = page.querySelector('ons-modal');
+      modal.show();
+      var emailLogin = $('#email-login').val();
+      var senhaLogin = $('#senha-login').val();
 
-    if( emailLogin === 'a' && senhaLogin === 'a' ){
+      if( emailLogin === 'a' && senhaLogin === 'a' ){
 
-      medApp.services.setIdMedico(20);
-      document.querySelector('#loginNav').pushPage('html/inicial.html');
+        medApp.services.setIdMedico(20);
+        document.querySelector('#loginNav').pushPage('html/inicial.html');
+
+      };
+
+      $.post('http://julianop.com.br:3000/api/login/',
+        {
+          email: emailLogin,
+          senha: senhaLogin
+        })
+          .done(function(data) {
+
+            modal.hide();
+
+            if ( data.hasOwnProperty('idMedico') ) {
+
+              if ($('#lembrar-login').is(':checked')) {
+
+                var storage = window.localStorage;
+                storage.setItem('idMedico', data.idMedico);
+
+              };
+
+              $('#email-login').val("");
+              $('#senha-login').val("");
+              medApp.services.setIdMedico(data.idMedico);
+              document.querySelector('#loginNav').pushPage('html/inicial.html');
+
+            } else {
+
+              $('#email-login').val("");
+              $('#senha-login').val("");
+              ons.notification.alert("E-mail ou Senha incorretos");
+
+            };
+        });
 
     };
 
-    $.post('http://julianop.com.br:3000/api/login/',
-      {
-        email: emailLogin,
-        senha: senhaLogin
-      })
-        .done(function(data) {
+    // Sai do app ao apertar o botão de voltar do aparelho
+    document.querySelector('#loginNav').onDeviceBackButton = function(event) {
 
-          modal.hide();
+      ons.notification.confirm({message: 'Deseja fechar o aplicativo?'})
+        .then( function(confirm){
 
-          if ( data.hasOwnProperty('idMedico') ) {
-localStorage.setItem("email",$('#email-login').val())
-localStorage.setItem("senha",$('#senha-login').val())
-            $('#email-login').val("");
-            $('#senha-login').val("");
-            medApp.services.setIdMedico(data.idMedico);
-            document.querySelector('#loginNav').pushPage('html/inicial.html');
-
-          } else {
-
-            $('#email-login').val("");
-            $('#senha-login').val("");
-            ons.notification.alert("E-mail ou Senha incorretos");
-
+          if(confirm) {
+            navigator.app.exitApp();
           };
-      });
+
+        });
 
     };
 
@@ -329,7 +330,22 @@ localStorage.setItem("senha",$('#senha-login').val())
 
           if(confirm) {
             medApp.services.deleteIdMedico();
+            window.localStorage.removeItem('idMedico');
             document.querySelector('#loginNav').resetToPage('login.html', {options: {animation: 'fade'}});
+          };
+
+        });
+
+    };
+
+    // Sai do app ao apertar o botão de voltar do aparelho
+    document.querySelector('#loginNav').onDeviceBackButton = function(event) {
+
+      ons.notification.confirm({message: 'Deseja fechar o aplicativo?'})
+        .then( function(confirm){
+
+          if(confirm) {
+            navigator.app.exitApp();
           };
 
         });
@@ -415,6 +431,20 @@ localStorage.setItem("senha",$('#senha-login').val())
     page.querySelector('#buscar-pac').onclick = function() {
 
       document.querySelector('#pacienteNav').pushPage('html/addpaciente.html');
+
+    };
+
+    // Sai do app ao apertar o botão de voltar do aparelho
+    document.querySelector('#loginNav').onDeviceBackButton = function(event) {
+
+      ons.notification.confirm({message: 'Deseja fechar o aplicativo?'})
+        .then( function(confirm){
+
+          if(confirm) {
+            navigator.app.exitApp();
+          };
+
+        });
 
     };
 
@@ -998,7 +1028,7 @@ localStorage.setItem("senha",$('#senha-login').val())
         $('#tel-medico').val(data[0].telefone);
         $('#email-medico').val(data[0].email);
         $('#cpf-medico').val(data[0].CPF);
-        document.getElementById('img-medico').src = "data:image/jpeg;base64, "+ data[0].foto;
+        document.getElementById('img-medico').src = "data:image/jpeg;base64, " + data[0].foto;
       });
 
     });
@@ -1022,14 +1052,14 @@ localStorage.setItem("senha",$('#senha-login').val())
                                                                       sourceType: Camera.PictureSourceType.CAMERA,
                                                                       destinationType: Camera.DestinationType.DATA_URL
                                                                     });
-  //Error CallBack
+        //Error CallBack
         function FailCallback (message) {
 
             alert ('Erro!!!: ' + message);
 
-        };
+          };
 
-      };
+        };
 
         //Success Callback
         function successCallback (imageData) {
@@ -1039,7 +1069,7 @@ localStorage.setItem("senha",$('#senha-login').val())
           image.src = "data:image/jpeg;base64, " + imageData;
 
 
-};
+        };
 
       document.querySelector('#galeria').onclick = function() {
 
@@ -1054,12 +1084,13 @@ localStorage.setItem("senha",$('#senha-login').val())
                                                                       sourceType: Camera.PictureSourceType.PHOTOLIBRARY,
                                                                       destinationType: Camera.DestinationType.DATA_URL
                                                                     });
-  //Error CallBack
+          //Error CallBack
           function FailCallback (message) {
 
             alert ('Erro!!!: ' + message);
 
           };
+
           //Success Callback
           function successCallback (imageData) {
 
@@ -1094,7 +1125,7 @@ localStorage.setItem("senha",$('#senha-login').val())
           tel: $('#tel-medico').val(),
           email: $('#email-medico').val(),
           cpf: $('#cpf-medico').cleanVal(),
-          foto:medApp.services.getBase64Image(document.getElementById('img-medico')),
+          foto: medApp.services.getBase64Image(document.getElementById('img-medico')),
           idMedico: medApp.services.getIdMedico(),
 
         };
@@ -1109,7 +1140,7 @@ localStorage.setItem("senha",$('#senha-login').val())
                   telefone: dadosEdit.tel,
                   CPF: dadosEdit.cpf,
                   email: dadosEdit.email,
-                  foto:dadosEdit.foto
+                  foto: dadosEdit.foto
                 }
         });
 
@@ -1341,6 +1372,20 @@ localStorage.setItem("senha",$('#senha-login').val())
       });
 
     });
+
+    // Sai do app ao apertar o botão de voltar do aparelho
+    document.querySelector('#loginNav').onDeviceBackButton = function(event) {
+
+      ons.notification.confirm({message: 'Deseja fechar o aplicativo?'})
+        .then( function(confirm){
+
+          if(confirm) {
+            navigator.app.exitApp();
+          };
+
+        });
+
+    };
 
     /* Realiza a atualização do feed com pull --> TODO: funcionalidade.
       var pullHook = document.getElementById('pull-hook-feed');
@@ -1610,9 +1655,22 @@ localStorage.setItem("senha",$('#senha-login').val())
 
           if(confirm) {
             medApp.services.deleteIdMedico();
-            localStorage.setItem("email","");
-            localStorage.setItem("senha","");
-            document.querySelector('#loginNav').resetToPage( 'login.html', {options: {animation: 'fade'}});
+            window.localStorage.removeItem('idMedico');
+            document.querySelector('#loginNav').resetToPage('login.html', {options: {animation: 'fade'}});
+          };
+
+        });
+
+    };
+
+    // Sai do app ao apertar o botão de voltar do aparelho
+    document.querySelector('#loginNav').onDeviceBackButton = function(event) {
+
+      ons.notification.confirm({message: 'Deseja fechar o aplicativo?'})
+        .then( function(confirm){
+
+          if(confirm) {
+            navigator.app.exitApp();
           };
 
         });

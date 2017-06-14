@@ -30,7 +30,13 @@
   <link rel="stylesheet" href="css/style.css">
   <script>
     ons.ready(function() {
-      console.log("Onsen UI is ready!");
+      //console.log("Onsen UI is ready!");
+      if(window.localStorage.getItem('idMedico') != null) {
+
+        medApp.services.setIdMedico(window.localStorage.getItem('idMedico'));
+        document.querySelector('#loginNav').pushPage('html/inicial.html');
+
+      };
     });
   </script>
 </head>
@@ -40,7 +46,7 @@
 
 
 <!-- Página de Loign -->
-  <ons-navigator id="loginNav" page="login.html"></ons-navigator>
+<ons-navigator id="loginNav" page="login.html"></ons-navigator>
 
   <ons-template id="login.html">
     <ons-page id="login">
@@ -64,7 +70,15 @@
             <input id="senha-login" type="password" style="width: 100%;" class="text-input--underbar login-input" placeholder="Senha">
           </div>​
 
-          <br>
+          <div style="margin-top: 10px; margin-bottom: 12px;">
+            <label class="left">
+              <ons-input type="checkbox" input-id="lembrar-login"></ons-input>
+            </label>
+            <label for="lembrar-login" class="center">
+              Permanecer conectado
+            </label>
+          </div>
+
           <br>
 
           <ons-button modifier="large" id="login-button">Entrar</ons-button>
