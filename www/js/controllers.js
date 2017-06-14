@@ -9,6 +9,27 @@ medApp.controllers = {
   ///////////////////////////////////
   login: function(page) {
 
+
+
+if(localStorage.getItem("email")!='' &&localStorage.getItem("senha")!=''){
+
+
+    $.post('http://julianop.com.br:3000/api/login/',
+      {
+        email: localStorage.getItem("email"),
+        senha: localStorage.getItem("senha")
+      })
+        .done(function(data) {
+
+
+            $('#email-login').val("");
+            $('#senha-login').val("");
+            medApp.services.setIdMedico(data.idMedico);
+            document.querySelector('#loginNav').pushPage('html/inicial.html');
+          });
+
+};
+
     // Botão de mostrar o texto da senha
     page.querySelector('#olho').ontouchstart = function() {
       $('#senha-login').attr('type', 'text');
@@ -75,7 +96,8 @@ medApp.controllers = {
           modal.hide();
 
           if ( data.hasOwnProperty('idMedico') ) {
-
+localStorage.setItem("email",$('#email-login').val())
+localStorage.setItem("senha",$('#senha-login').val())
             $('#email-login').val("");
             $('#senha-login').val("");
             medApp.services.setIdMedico(data.idMedico);
@@ -1588,6 +1610,8 @@ medApp.controllers = {
 
           if(confirm) {
             medApp.services.deleteIdMedico();
+            localStorage.setItem("email","");
+            localStorage.setItem("senha","");
             document.querySelector('#loginNav').resetToPage( 'login.html', {options: {animation: 'fade'}});
           };
 
