@@ -351,14 +351,14 @@ medApp.services = {
             '</ons-col>' +
           '</ons-row>' +
           '<ons-row>' +
-            '<ons-col class="paciente-detalhes">' +
+            '<ons-row class="paciente-detalhes">' +
               '<ons-icon icon="md-plaster" class="list__item__icon"></ons-icon>' +
               '<span class="list__item__subtitle">' + 'Paciente novo Adicionado' + '</span>' +
-            '</ons-col>' +
-            '<ons-col class="paciente-detalhes">' +
+            '</ons-row>' +
+            '<ons-row class="paciente-detalhes">' +
               '<ons-icon icon="md-calendar" class="list__item__icon"></ons-icon>' +
               '<span class="list__item__subtitle">' + info.timestamp + '</span>' +
-            '</ons-col>' +
+            '</ons-row>' +
           '</ons-row>' +
         '</div>' +
       '</ons-list-item>';
@@ -387,17 +387,17 @@ medApp.services = {
             '</ons-col>' +
           '</ons-row>' +
           '<ons-row>' +
-            '<ons-col class="paciente-detalhes">' +
+            '<ons-row class="paciente-detalhes">' +
               '<ons-icon icon="md-plaster" class="list__item__icon"></ons-icon>' +
               '<span class="list__item__subtitle">' + 'Dados Alterados: K - ' + info.reminder.K + ' Na - ' + info.reminder.Na +
               ' Cl - ' + info.reminder.Cl+ ' Co2 - '+ info.reminder.Co2+ ' Bun - '+info.reminder.Bun+ ' Great - '+ info.reminder.Great
               + ' Gluc - ' +info.reminder.Gluc+ ' Wcb - '+info.reminder.wcb+' HgB - '+info.reminder.HgB+ ' Hct - ' +info.reminder.Hct+
               ' Plt - '+info.reminder.Plt+ + '</span>' +
-              '<ons-col class="paciente-detalhes">' +
+              '<ons-row class="paciente-detalhes">' +
               '<ons-icon icon="md-calendar" class="list__item__icon"></ons-icon>' +
               '<span class="list__item__subtitle">' + info.timestamp + '</span>' +
-            '</ons-col>' +
-            '</ons-col>' +
+            '</ons-row>' +
+            '</ons-row>' +
           '</ons-row>' +
         '</div>' +
       '</ons-list-item>';
