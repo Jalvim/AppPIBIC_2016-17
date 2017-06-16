@@ -6,6 +6,7 @@ Este arquivo contém o módulo javascript de roteamento para as chamadas à API 
 
 TO DO:
 	=>Completar a endpoint para dados dos perfis de médico GET, PUT e DELETE.
+	=> COMENTAR CHAMADAS
 
 */
 var senhas = require('../senhas.js');
