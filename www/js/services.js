@@ -420,15 +420,21 @@ medApp.services = {
 
       if(info.type === "Paciente"){
 
-      this.dadosPacienteAtual.idAtualPaciente = info.patient.idtable1;
+        this.dadosPacienteAtual.idAtualPaciente = info.patient.idtable1;
+        
+        //document.querySelector('#pacienteNav').pushPage('html/perfilpaciente.html');
+
+        
+      
 
     } else {
 
       this.dadosPacienteAtual.idAtualPaciente = info.reminder.idPaciente;
+      
+      //document.querySelector('#pacienteNav').pushPage('html/perfilpaciente.html');
+
 
     }
-
-      document.querySelector('#pacienteNav').pushPage('html/perfilpaciente.html');
 
     }
 
