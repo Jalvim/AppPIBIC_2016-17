@@ -9,17 +9,32 @@ var pool = mysql.createPool({
 	database : 'cl19-dbpipibic'
 });
 
+//Servidor Aws Bruno
+// var pool = mysql.createPool({
+// 	connectionLimit:100,
+// 	host : 'dev.cj01emk8l0tb.us-west-2.rds.amazonaws.com',
+// 	user : 'root',
+// 	password : 'apppibic',
+// 	database : 'dbpibic'
+// });
 
-/* Servidor Digital Ocean
-var pool = mysql.createPool({
-	connectionLimit:100,
-	host : 'julianop.com.br',
-	user : 'root',
-	password : 'pibicfitbit',
-	database : 'dbpibic'
 
-});
-*/
+
+
+ // Servidor Digital Ocean
+// var pool = mysql.createPool({
+// 	connectionLimit:100,
+// 	host : '138.197.124.95',
+// 	port:22,
+// 	dstHost:'127.0.0.1',
+//   	dstPort:3306,
+// 	user : 'root',
+// 	password : 'pibicfitbit',
+// 	database : 'dbpibic'
+
+// });
+
+
 
 pool.on('acquire', function(connection){
 	console.log('Acquired');

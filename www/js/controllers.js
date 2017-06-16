@@ -1,4 +1,3 @@
-
 /******************************************************************
  * Controllers do App, chamados em cada inicialização das páginas *
  ******************************************************************/
@@ -17,7 +16,8 @@ medApp.controllers = {
     page.querySelector('#olho').ontouchend = function() {
       $('#senha-login').attr('type', 'password');
     };
-//função para mandar o e-mail de esquecimento de senha
+
+    // Função para mandar o e-mail de esquecer de senha
     page.querySelector('#esquecer-senha').onclick = function() {
       ons.notification.prompt({
         message:"Digite seu e-mail",
@@ -36,7 +36,7 @@ medApp.controllers = {
             ons.notification.alert(erro);
             }
           });
-     */
+     
         }
       });
 
@@ -308,7 +308,7 @@ medApp.controllers = {
     // Chama a página de editar perfil do médico
     page.querySelector('#edit-med').onclick = function() {
 
-      document.querySelector('#medicoNav').pushPage('editarmedico.html');
+      document.querySelector('#medicoNav').pushPage('html/editarmedico.html');
 
     };
 
@@ -444,6 +444,25 @@ medApp.controllers = {
         });
 
     };
+
+    // Funcionalidade reativa da tabbar (Ao clicar na aba ativa atual, reseta a página incial da aba)
+    document.querySelector('#tab-inicial').addEventListener('reactive', function(event) {
+
+      switch(event.index) {
+          case 0:
+              break;
+          case 1:
+              document.querySelector('#pacienteNav').resetToPage('html/pacientes.html');
+              break;
+          case 2:
+              document.querySelector('#medicoNav').resetToPage('html/medico.html');
+              break;
+          case 3:
+              document.querySelector('#configuracoesNav').resetToPage('html/configuracoes.html');
+              break;
+      };
+
+    });
 
   },
 
@@ -683,10 +702,10 @@ medApp.controllers = {
 
             var chrt1 = document.getElementById("myChart1");
             var data1 = {
-              labels: ["Dia 1", "Dia 2", "Dia 3", "Dia 4", "Dia 5", "Dia 6", "Dia 7"], //medApp.services.semana,
+              labels: ["Últimas atualizações."],//["Dia 1", "Dia 2", "Dia 3", "Dia 4", "Dia 5", "Dia 6", "Dia 7"], //medApp.services.semana,
               datasets: [
                 {
-                  label: "Calorias perdidas ao longo da semana",
+                  label: "Calorias perdidas nas 7 últimas atualizações",
                   fill: false,
                   lineTension: 0.1,
                   backgroundColor: "rgba(75,192,192,0.4)",
@@ -730,7 +749,7 @@ medApp.controllers = {
             medApp.services.dataDados = $('#data-dados').val();
 
             if(medApp.services.dataDados === ''){
-              page.querySelector('#dados-recuperados').innerHTML = 'Dados não recuperados.';
+              page.querySelector('#dados-recuperados').innerHTML = 'Dados não recuperados nesta data.';
             } else {
 
               //console.log(medApp.services.dataDados);
@@ -776,10 +795,10 @@ medApp.controllers = {
 
             var chrt2 = document.getElementById("myChart2");
             var data2 = {
-              labels: ["Dia 1", "Dia 2", "Dia 3", "Dia 4", "Dia 5", "Dia 6", "Dia 7"], //medApp.services.semana, //["Domingo", "Segunda", "Terça", "Quarta", "Quinta", "Sexta", "Sábado"],
+              labels: ["Últimas atualizações."],//["Dia 1", "Dia 2", "Dia 3", "Dia 4", "Dia 5", "Dia 6", "Dia 7"], //medApp.services.semana, //["Domingo", "Segunda", "Terça", "Quarta", "Quinta", "Sexta", "Sábado"],
                 datasets: [
                   {
-                    label: "Número de passos dados na última semana",
+                    label: "Número de passos dados nas 7 últimas atualizações",
                     fill: false,
                     lineTension: 0.1,
                     backgroundColor: "rgba(75,192,192,0.4)",
@@ -823,7 +842,7 @@ medApp.controllers = {
             medApp.services.dataDados = $('#data-dados').val();
 
             if(medApp.services.dataDados === ''){
-              page.querySelector('#dados-recuperados').innerHTML = 'Dados não recuperados.';
+              page.querySelector('#dados-recuperados').innerHTML = 'Dados não recuperados nesta data.';
             } else {
 
               //console.log(medApp.services.dataDados);
@@ -890,20 +909,30 @@ medApp.controllers = {
           });
 
           /*medApp.services.dataDados = $('#data-dados').val();
+
           if(medApp.services.dataDados === ''){
             page.querySelector('#dados-recuperados').innerHTML = 'Nenhuma busca efetuada.';
           }
+
           page.querySelector('#dados-rec').onclick = function(dataDados) {
+
             medApp.services.dataDados = $('#data-dados').val();
+
             if(medApp.services.dataDados === ''){
               page.querySelector('#dados-recuperados').innerHTML = 'Dados não recuperados.';
             } else {
+
               console.log(medApp.services.dataDados);
+
               $.get('http://julianop.com.br:3000/api/paciente/health/static/' + medApp.services.dadosPacienteAtual.idAtualPaciente + '/' + medApp.services.dataDados)
               .done(function(data) {
+
+
                 //medApp.services.dadosRecuperados = data.calories;
+
                 console.log(data);
                 page.querySelector('#dados-recuperados').innerHTML = data.calories;
+
               });
             }
           }; */
@@ -935,10 +964,10 @@ medApp.controllers = {
 
             var chrt4 = document.getElementById("myChart4");
             var data4 = {
-              labels: ["Dia 1", "Dia 2", "Dia 3", "Dia 4", "Dia 5", "Dia 6", "Dia 7"], //medApp.services.semana, //["Domingo", "Segunda", "Terça", "Quarta", "Quinta", "Sexta", "Sábado"],
+              labels: ["Últimas atualizações."],//["Dia 1", "Dia 2", "Dia 3", "Dia 4", "Dia 5", "Dia 6", "Dia 7"], //medApp.services.semana, //["Domingo", "Segunda", "Terça", "Quarta", "Quinta", "Sexta", "Sábado"],
               datasets: [
                 {
-                  label: "Número de degraus subidos na última semana",
+                  label: "Número de degraus subidos.",
                   backgroundColor: "rgba(75,192,192,0.4)",
                   borderColor: "rgba(75,192,192,1)",
                   borderWidth: 5,
@@ -969,7 +998,7 @@ medApp.controllers = {
             medApp.services.dataDados = $('#data-dados').val();
 
             if(medApp.services.dataDados === ''){
-              page.querySelector('#dados-recuperados').innerHTML = 'Dados não recuperados.';
+              page.querySelector('#dados-recuperados').innerHTML = 'Dados não recuperados nesta data;.';
             } else {
 
               //console.log(medApp.services.dataDados);
@@ -1155,7 +1184,7 @@ medApp.controllers = {
     $('#data-pac-edit').val(medApp.services.dadosPacienteAtual.dataIntFormatoTraco);
     $('#causa-pac-edit').val(medApp.services.dadosPacienteAtual.causa);
     $('#hospital-pac-edit').val(medApp.services.dadosPacienteAtual.hospital);
-    document.getElementById('edit-pac').src= "data:image/jpeg;base64, " + medApp.services.dadosPacienteAtual.foto;
+    document.getElementById('edit-pac').src = medApp.services.dadosPacienteAtual.foto;
 
 
     // Função de adiquirir imagem de perfil
@@ -2204,7 +2233,6 @@ medApp.controllers = {
 
               if (data.hasOwnProperty('idHospital')) {
 
-                console.log(data);
                 $.post('http://julianop.com.br:3000/api/hospitais/relacoes',
                 {
                   idMedico: medApp.services.getIdMedico(),

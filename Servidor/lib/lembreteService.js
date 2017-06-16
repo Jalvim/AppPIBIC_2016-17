@@ -8,7 +8,7 @@ exports.getAllByOrderedByLastModification = function(idMedico) {
     return new Promise(function(resolve, reject) {
         mysql.getConnection(function(err,connection) {
             var query = {
-                sql: `SELECT L.* FROM Lembrete L WHERE L.idMedico = ${connection.escape(idMedico)} ORDER BY l.timestamp DESC`,
+                sql: `SELECT L.* FROM Lembrete L WHERE L.idMedico = ${connection.escape(idMedico)} ORDER BY L.timestamp DESC`,
                 timeout: 10000
             }
 

@@ -332,6 +332,7 @@ medApp.services = {
     var template = document.createElement('div');
 
     if(info.type === "Paciente"){
+      var foto="data:image/jpeg;base64, "+ info.patient.foto;
 
       timeStamp = info.patient.timestamp[6] + info.patient.timestamp[7] + "/"
       + info.patient.timestamp[9] + info.patient.timestamp[10] + " "
@@ -341,25 +342,24 @@ medApp.services = {
       template.innerHTML =
       '<ons-list-item id="item' + i + '" class="paciente-lista " modifier="longdivider" tappable>' +
         '<div class="left">' +
-          '<img class="list__item__thumbnail" src="'+ info.foto + '">' +
+          '<img class="list__item__thumbnail" src="'+ foto + '">' +
         '</div>' +
         '<div class="center">'+
           '<ons-row class="paciente-header">'+
             '<ons-col>' +
-              '<span class="list__item__title nome">' + info.nome + '</span>' +
+              '<span class="list__item__title nome">' + info.patient.nomePaciente + '</span>' +
             '</ons-col>' +
           '</ons-row>' +
           '<ons-row>' +
-            '<ons-col class="paciente-detalhes">' +
-              '<ons-icon icon="md-calendar" class="list__item__icon"></ons-icon>' +
-              '<span class="list__item__subtitle">' + timeStamp + '</span>' +
-            '</ons-col>' +
-            '<ons-col class="paciente-detalhes">' +
+            '<ons-row class="paciente-detalhes">' +
               '<ons-icon icon="md-plaster" class="list__item__icon"></ons-icon>' +
-              '<span class="list__item__subtitle">' + 'Paciente novo Adicionado, clique para conhecer o perfil' + '</span>' +
-            '</ons-col>' +
+              '<span class="list__item__subtitle">' + 'Paciente novo Adicionado' + '</span>' +
+            '</ons-row>' +
+            '<ons-row class="paciente-detalhes">' +
+              '<ons-icon icon="md-calendar" class="list__item__icon"></ons-icon>' +
+              '<span class="list__item__subtitle">' + info.timestamp + '</span>' +
+            '</ons-row>' +
           '</ons-row>' +
-          '<ons-row>' +
         '</div>' +
       '</ons-list-item>';
       /*'<ons-list-item id="item' + i + '">'
@@ -372,7 +372,7 @@ medApp.services = {
       + '</ons-list-item>';*/
 
     } else {
-
+      //console.log(JSON.stringify(info));
       timeStamp = info.reminder.timestamp[6] + info.reminder.timestamp[7] + "/"
       + info.reminder.timestamp[9] + info.reminder.timestamp[10] + " "
       + info.reminder.timestamp[12] + info.reminder.timestamp[13]
@@ -383,23 +383,22 @@ medApp.services = {
         '<div class="center">'+
           '<ons-row class="paciente-header">'+
             '<ons-col>' +
-              '<span class="list__item__title nome">' + info.reminder + '</span>' +
+              '<span class="list__item__title nome">' + 'Lembrete' + '</span>' +
             '</ons-col>' +
           '</ons-row>' +
           '<ons-row>' +
-            '<ons-col class="paciente-detalhes">' +
-              '<ons-icon icon="md-calendar" class="list__item__icon"></ons-icon>' +
-              '<span class="list__item__subtitle">' + timeStamp + '</span>' +
-            '</ons-col>' +
-            '<ons-col class="paciente-detalhes">' +
+            '<ons-row class="paciente-detalhes">' +
               '<ons-icon icon="md-plaster" class="list__item__icon"></ons-icon>' +
               '<span class="list__item__subtitle">' + 'Dados Alterados: K - ' + info.reminder.K + ' Na - ' + info.reminder.Na +
               ' Cl - ' + info.reminder.Cl+ ' Co2 - '+ info.reminder.Co2+ ' Bun - '+info.reminder.Bun+ ' Great - '+ info.reminder.Great
               + ' Gluc - ' +info.reminder.Gluc+ ' Wcb - '+info.reminder.wcb+' HgB - '+info.reminder.HgB+ ' Hct - ' +info.reminder.Hct+
               ' Plt - '+info.reminder.Plt+ + '</span>' +
-            '</ons-col>' +
+              '<ons-row class="paciente-detalhes">' +
+              '<ons-icon icon="md-calendar" class="list__item__icon"></ons-icon>' +
+              '<span class="list__item__subtitle">' + info.timestamp + '</span>' +
+            '</ons-row>' +
+            '</ons-row>' +
           '</ons-row>' +
-          '<ons-row>' +
         '</div>' +
       '</ons-list-item>';
       /*'<ons-list-titem id="item' + i + '">'
@@ -435,7 +434,6 @@ medApp.services = {
 
     listaFeed.appendChild(feedItem);
   },
-
 
   //Ciclo de funções para as pulseiras disponiveis
 
@@ -905,7 +903,6 @@ medApp.services = {
     $.get('http://julianop.com.br:3000/api/hospitais/' + equipe.idHospital + '/medicos')
         .done(function(membros) {
 
-          console.log(equipe);
           if(membros[0].hasOwnProperty('idMedico')) {
 
             // Lista vazia dos membros da equipe atual
@@ -920,9 +917,6 @@ medApp.services = {
 
             };
 
-            console.log(listaMembros);
-
-            // LISTA CONTEM OS MEMBROS DA EQUIPE ATUAL AQUI
             medApp.services.listEquipesCompart({ nomeEquipe: equipe.nome,
                                                  idEquipe: equipe.idHospital,
                                                  membros: listaMembros});
@@ -935,7 +929,7 @@ medApp.services = {
 
   // Lista equipes do médico para compartilhamento de pacientes
   listEquipesCompart: function(equipe) {
-    console.log(equipe);
+
     var template = document.createElement('div');
     template.innerHTML =
       '<ons-list-header>' +

@@ -1,0 +1,102 @@
+<ons-page id="editarmedico">
+
+  <ons-toolbar class="toolbar">
+    <div class="left"><ons-back-button>Cancelar</ons-back-button></div>
+    <div class="center">Editar Perfil</div>
+  </ons-toolbar>
+
+  <!-- Formulário de Edição do Médico -->
+
+  <div class="editar-form">
+
+    <form id="medico-edit-form">
+    <ons-list modifier="noborder" disable-auto-styling>
+      <ons-list-item modifier="nodivider">
+        <div class="left registro-image">
+          <img src="http://www.clker.com/cliparts/A/Y/O/m/o/N/placeholder-md.png" class="editar-image" id="img-medico">
+        </div>
+        <div class="center">
+          <ons-input input-id="nome-medico" placeholder="Nome" class="text-input--underbar registro-input-top" disable-auto-styling></ons-input>
+          <ons-input input-id="cpf-medico" placeholder="CPF" class="text-input--underbar registro-input-top" disable-auto-styling></ons-input>
+        </div>
+      </ons-list-item>
+
+      <ons-list-item tappable class="add-foto">
+        <ons-icon icon="md-camera" class="list_item_icon"></ons-icon>
+          <span style="margin-left: 10px;">Editar foto</span>
+      </ons-list-item>
+
+      <ons-list-item modifier="nodivider" disable-auto-styling>
+        <div class="left registro-icone">
+          <ons-icon icon="fa-medkit" class="list__item__icon"></ons-icon>
+        </div>
+        <div class="center">
+          <ons-input input-id="crm-medico" placeholder="CRM" class="text-input--underbar registro-input-icon" disable-auto-styling></ons-input>
+        </div>  
+      </ons-list-item>
+
+      <ons-list-item modifier="nodivider" disable-auto-styling>
+        <ons-input input-id="esp-medico" placeholder="Especialidade" class="text-input--underbar registro-input" disable-auto-styling></ons-input>
+      </ons-list-item>
+
+      <ons-list-item modifier="nodivider" disable-auto-styling>
+        <div class="left registro-icone">
+          <ons-icon icon="md-email" class="list__item__icon"></ons-icon>
+        </div>
+        <div class="center">
+          <ons-input input-id="email-medico" type="email" placeholder="Email" class="text-input--underbar registro-input-icon" disable-auto-styling></ons-input>
+        </div>
+      </ons-list-item>
+
+      <ons-list-item modifier="nodivider" disable-auto-styling>
+        <div class="left registro-icone">
+          <ons-icon icon="md-phone" class="list__item__icon"></ons-icon>
+        </div>
+        <div class="center">
+          <ons-input input-id="tel-medico" type="tel" placeholder="Telefone" class="text-input--underbar registro-input-icon" disable-auto-styling></ons-input>
+        </div>
+      </ons-list-item>
+
+    </ons-list>
+    </form>    
+
+    <ons-button position="center" class="button-send" id="salvar-med">Salvar</ons-button>
+
+  </div>
+
+  <ons-modal direction="up">
+    <div style="text-align: center">
+      <p>
+        <ons-icon icon="md-spinner" size="28px" spin></ons-icon> Carregando...
+      </p>
+    </div>
+  </ons-modal>
+
+  <!-- Diálogo para selecionar fonte da imagem de perfil --> 
+
+  <ons-dialog id="fotosource">
+        <ons-toolbar class="toolbar" inline>
+          <div class="center">
+            Editar imagem
+          </div>
+        </ons-toolbar>
+
+        <div style="text-align: center">
+          <p>
+            Escolha de onde deseja selecionar a imagem:
+          </p>
+
+          <ons-list>
+            <ons-row>
+              <ons-col>
+                <ons-list-item style="text-align: center" id="camera-add" tappable>Câmera</ons-list-item>
+              </ons-col>
+              <ons-col>
+                <ons-list-item style="text-align: center" id="galeria" tappable>Galeria</ons-list-item>
+              </ons-col>
+            </ons-row>
+          </ons-list>
+        </div>
+  </ons-dialog>
+  
+</ons-page>
