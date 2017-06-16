@@ -683,10 +683,10 @@ medApp.controllers = {
 
             var chrt1 = document.getElementById("myChart1");
             var data1 = {
-              labels: ["Dia 1", "Dia 2", "Dia 3", "Dia 4", "Dia 5", "Dia 6", "Dia 7"], //medApp.services.semana,
+              labels: ["Últimas atualizações."],//["Dia 1", "Dia 2", "Dia 3", "Dia 4", "Dia 5", "Dia 6", "Dia 7"], //medApp.services.semana,
               datasets: [
                 {
-                  label: "Calorias perdidas ao longo da semana",
+                  label: "Calorias perdidas nas 7 últimas atualizações",
                   fill: false,
                   lineTension: 0.1,
                   backgroundColor: "rgba(75,192,192,0.4)",
@@ -730,7 +730,7 @@ medApp.controllers = {
             medApp.services.dataDados = $('#data-dados').val();
 
             if(medApp.services.dataDados === ''){
-              page.querySelector('#dados-recuperados').innerHTML = 'Dados não recuperados.';
+              page.querySelector('#dados-recuperados').innerHTML = 'Dados não recuperados nesta data.';
             } else {
 
               //console.log(medApp.services.dataDados);
@@ -776,10 +776,10 @@ medApp.controllers = {
 
             var chrt2 = document.getElementById("myChart2");
             var data2 = {
-              labels: ["Dia 1", "Dia 2", "Dia 3", "Dia 4", "Dia 5", "Dia 6", "Dia 7"], //medApp.services.semana, //["Domingo", "Segunda", "Terça", "Quarta", "Quinta", "Sexta", "Sábado"],
+              labels: ["Últimas atualizações."],//["Dia 1", "Dia 2", "Dia 3", "Dia 4", "Dia 5", "Dia 6", "Dia 7"], //medApp.services.semana, //["Domingo", "Segunda", "Terça", "Quarta", "Quinta", "Sexta", "Sábado"],
                 datasets: [
                   {
-                    label: "Número de passos dados na última semana",
+                    label: "Número de passos dados nas 7 últimas atualizações",
                     fill: false,
                     lineTension: 0.1,
                     backgroundColor: "rgba(75,192,192,0.4)",
@@ -823,7 +823,7 @@ medApp.controllers = {
             medApp.services.dataDados = $('#data-dados').val();
 
             if(medApp.services.dataDados === ''){
-              page.querySelector('#dados-recuperados').innerHTML = 'Dados não recuperados.';
+              page.querySelector('#dados-recuperados').innerHTML = 'Dados não recuperados nesta data.';
             } else {
 
               //console.log(medApp.services.dataDados);
@@ -890,20 +890,30 @@ medApp.controllers = {
           });
 
           /*medApp.services.dataDados = $('#data-dados').val();
+
           if(medApp.services.dataDados === ''){
             page.querySelector('#dados-recuperados').innerHTML = 'Nenhuma busca efetuada.';
           }
+
           page.querySelector('#dados-rec').onclick = function(dataDados) {
+
             medApp.services.dataDados = $('#data-dados').val();
+
             if(medApp.services.dataDados === ''){
               page.querySelector('#dados-recuperados').innerHTML = 'Dados não recuperados.';
             } else {
+
               console.log(medApp.services.dataDados);
+
               $.get('http://julianop.com.br:3000/api/paciente/health/static/' + medApp.services.dadosPacienteAtual.idAtualPaciente + '/' + medApp.services.dataDados)
               .done(function(data) {
+
+
                 //medApp.services.dadosRecuperados = data.calories;
+
                 console.log(data);
                 page.querySelector('#dados-recuperados').innerHTML = data.calories;
+
               });
             }
           }; */
@@ -935,10 +945,10 @@ medApp.controllers = {
 
             var chrt4 = document.getElementById("myChart4");
             var data4 = {
-              labels: ["Dia 1", "Dia 2", "Dia 3", "Dia 4", "Dia 5", "Dia 6", "Dia 7"], //medApp.services.semana, //["Domingo", "Segunda", "Terça", "Quarta", "Quinta", "Sexta", "Sábado"],
+              labels: ["Últimas atualizações."],//["Dia 1", "Dia 2", "Dia 3", "Dia 4", "Dia 5", "Dia 6", "Dia 7"], //medApp.services.semana, //["Domingo", "Segunda", "Terça", "Quarta", "Quinta", "Sexta", "Sábado"],
               datasets: [
                 {
-                  label: "Número de degraus subidos na última semana",
+                  label: "Número de degraus subidos.",
                   backgroundColor: "rgba(75,192,192,0.4)",
                   borderColor: "rgba(75,192,192,1)",
                   borderWidth: 5,
@@ -969,7 +979,7 @@ medApp.controllers = {
             medApp.services.dataDados = $('#data-dados').val();
 
             if(medApp.services.dataDados === ''){
-              page.querySelector('#dados-recuperados').innerHTML = 'Dados não recuperados.';
+              page.querySelector('#dados-recuperados').innerHTML = 'Dados não recuperados nesta data;.';
             } else {
 
               //console.log(medApp.services.dataDados);
