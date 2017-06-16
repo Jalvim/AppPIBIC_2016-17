@@ -35,7 +35,7 @@ router.route('/')
 				if (err) { return res.send('Erro de conexão com base de dados Login Post'); }
 					
 				getPatientQuery = {
-					sql: `SELECT idMedico FROM logins WHERE (email= ${connection.escape(req.body.email)} AND senha= ${connection.escape(req.body.senha)}) `,
+					sql: `SELECT L.idMedico, M.nome FROM logins L, Medico M WHERE (L.email= ${connection.escape(req.body.email)} AND L.senha= ${connection.escape(req.body.senha)}) AND M.idMedico=L.idMedico`,
 					timeout: 10000	
 				}
 				connection.query(getPatientQuery, function(err, rows, fields) {
@@ -51,6 +51,8 @@ router.route('/')
 			
 				});
 			});
+		} else {
+			res.send('Escreva ambos email e senha para realizar o login');
 		} 
 	})
 	.put(function(req, res) {

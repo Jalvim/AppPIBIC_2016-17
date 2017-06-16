@@ -48,7 +48,8 @@ router.route('/geral')
 			req.body.hasOwnProperty('numeroDoProntuario') &&
 			req.body.hasOwnProperty('telefone') &&
 			req.body.hasOwnProperty('dataDeNascimento') &&
-			req.body.hasOwnProperty('idMedico')){
+			req.body.hasOwnProperty('idMedico') &&
+			req.body.hasOwnProperty('nomeMedico')){
 
 			mysql.getConnection(function(err, connection) {
 
@@ -63,7 +64,7 @@ router.route('/geral')
                 }
 
 				var query = {
-					sql:`INSERT INTO Paciente (nomePaciente, numeroDoProntuario, telefone, foto, causaDaInternacao, dataDeNascimento, ativo) VALUES (${connection.escape(req.body.nomePaciente)}, ${connection.escape(req.body.numeroDoProntuario)}, ${connection.escape(req.body.telefone)}, ${connection.escape(req.body.foto)}, ${connection.escape(req.body.causaDaInternacao)}, ${connection.escape(req.body.dataDeNascimento)}, 1)`,
+					sql:`INSERT INTO Paciente (nomePaciente, numeroDoProntuario, telefone, foto, causaDaInternacao, dataDeNascimento, ativo, medicoResposavel) VALUES (${connection.escape(req.body.nomePaciente)}, ${connection.escape(req.body.numeroDoProntuario)}, ${connection.escape(req.body.telefone)}, ${connection.escape(req.body.foto)}, ${connection.escape(req.body.causaDaInternacao)}, ${connection.escape(req.body.dataDeNascimento)}, 1, ${connection.escape(req.body.nomeMedico)})`,
 					timeout: 10000
 				}
 				connection.query(query, function(err, rows, fields) {
