@@ -332,7 +332,7 @@ medApp.services = {
     var template = document.createElement('div');
 
     if(info.type === "Paciente"){
-var foto="data:image/jpeg;base64, "+ info.patient.foto;
+      var foto="data:image/jpeg;base64, "+ info.patient.foto;
 
       timeStamp = info.patient.timestamp[6] + info.patient.timestamp[7] + "/"
       + info.patient.timestamp[9] + info.patient.timestamp[10] + " "
@@ -372,7 +372,7 @@ var foto="data:image/jpeg;base64, "+ info.patient.foto;
       + '</ons-list-item>';*/
 
     } else {
-//console.log(JSON.stringify(info));
+      //console.log(JSON.stringify(info));
       timeStamp = info.reminder.timestamp[6] + info.reminder.timestamp[7] + "/"
       + info.reminder.timestamp[9] + info.reminder.timestamp[10] + " "
       + info.reminder.timestamp[12] + info.reminder.timestamp[13]
@@ -434,7 +434,6 @@ var foto="data:image/jpeg;base64, "+ info.patient.foto;
 
     listaFeed.appendChild(feedItem);
   },
-
 
   //Ciclo de funções para as pulseiras disponiveis
 
@@ -904,7 +903,6 @@ var foto="data:image/jpeg;base64, "+ info.patient.foto;
     $.get('http://julianop.com.br:3000/api/hospitais/' + equipe.idHospital + '/medicos')
         .done(function(membros) {
 
-          console.log(equipe);
           if(membros[0].hasOwnProperty('idMedico')) {
 
             // Lista vazia dos membros da equipe atual
@@ -919,9 +917,6 @@ var foto="data:image/jpeg;base64, "+ info.patient.foto;
 
             };
 
-            console.log(listaMembros);
-
-            // LISTA CONTEM OS MEMBROS DA EQUIPE ATUAL AQUI
             medApp.services.listEquipesCompart({ nomeEquipe: equipe.nome,
                                                  idEquipe: equipe.idHospital,
                                                  membros: listaMembros});
@@ -934,7 +929,7 @@ var foto="data:image/jpeg;base64, "+ info.patient.foto;
 
   // Lista equipes do médico para compartilhamento de pacientes
   listEquipesCompart: function(equipe) {
-    console.log(equipe);
+
     var template = document.createElement('div');
     template.innerHTML =
       '<ons-list-header>' +

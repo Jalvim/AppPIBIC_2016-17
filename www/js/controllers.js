@@ -1,4 +1,3 @@
-
 /******************************************************************
  * Controllers do App, chamados em cada inicialização das páginas *
  ******************************************************************/
@@ -17,7 +16,8 @@ medApp.controllers = {
     page.querySelector('#olho').ontouchend = function() {
       $('#senha-login').attr('type', 'password');
     };
-//função para mandar o e-mail de esquecimento de senha
+
+    // Função para mandar o e-mail de esquecer de senha
     page.querySelector('#esquecer-senha').onclick = function() {
       ons.notification.prompt({
         message:"Digite seu e-mail",
@@ -36,7 +36,7 @@ medApp.controllers = {
             ons.notification.alert(erro);
             }
           });
-     */
+     
         }
       });
 
@@ -308,7 +308,7 @@ medApp.controllers = {
     // Chama a página de editar perfil do médico
     page.querySelector('#edit-med').onclick = function() {
 
-      document.querySelector('#medicoNav').pushPage('editarmedico.html');
+      document.querySelector('#medicoNav').pushPage('html/editarmedico.html');
 
     };
 
@@ -444,6 +444,25 @@ medApp.controllers = {
         });
 
     };
+
+    // Funcionalidade reativa da tabbar (Ao clicar na aba ativa atual, reseta a página incial da aba)
+    document.querySelector('#tab-inicial').addEventListener('reactive', function(event) {
+
+      switch(event.index) {
+          case 0:
+              break;
+          case 1:
+              document.querySelector('#pacienteNav').resetToPage('html/pacientes.html');
+              break;
+          case 2:
+              document.querySelector('#medicoNav').resetToPage('html/medico.html');
+              break;
+          case 3:
+              document.querySelector('#configuracoesNav').resetToPage('html/configuracoes.html');
+              break;
+      };
+
+    });
 
   },
 
@@ -1165,7 +1184,7 @@ medApp.controllers = {
     $('#data-pac-edit').val(medApp.services.dadosPacienteAtual.dataIntFormatoTraco);
     $('#causa-pac-edit').val(medApp.services.dadosPacienteAtual.causa);
     $('#hospital-pac-edit').val(medApp.services.dadosPacienteAtual.hospital);
-    document.getElementById('edit-pac').src= "data:image/jpeg;base64, " + medApp.services.dadosPacienteAtual.foto;
+    document.getElementById('edit-pac').src = medApp.services.dadosPacienteAtual.foto;
 
 
     // Função de adiquirir imagem de perfil
@@ -2214,7 +2233,6 @@ medApp.controllers = {
 
               if (data.hasOwnProperty('idHospital')) {
 
-                console.log(data);
                 $.post('http://julianop.com.br:3000/api/hospitais/relacoes',
                 {
                   idMedico: medApp.services.getIdMedico(),
