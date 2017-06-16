@@ -9,7 +9,7 @@ module.exports = function(mail, callback) {
 	var domain = 'julianop.com.br';
 	var mailgun = require('mailgun-js')({apiKey: api_key, domain: domain});
  
- 	mail.from = 'Pulseiras Inteligentes <projetoPulseiras@julianop.com.br>';
+ 	mail.from = 'Life Tracker <projetoPulseiras@julianop.com.br>';
 
 	mailgun.messages().send(mail, callback);
 	
