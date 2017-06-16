@@ -4,6 +4,8 @@ medApp.services = {
 
   idAtualMedico: -1,  // ID do médico no login atual
 
+  nomeMedicoAtual: null
+  , 
   // Função que seta o ID atual a cada login
   setIdMedico: function(novaId) {
 
@@ -22,6 +24,27 @@ medApp.services = {
   deleteIdMedico: function() {
 
     this.idAtualMedico = -1;
+
+  },
+
+  // Função que seta o nome do médico atual a cada login
+  setNomeMedico: function(nome) {
+
+    this.nomeMedicoAtual = nome;
+
+  },
+
+  // Função que retorna o nome do médico do login atual
+  getNomeMedico: function() {
+    
+    return this.nomeMedicoAtual;
+
+  },
+
+  // Função que limpa o nome do médico no logoff
+  deleteNomeMedico: function() {
+
+    this.nomeMedicoAtual = null;
 
   },
 
@@ -329,18 +352,23 @@ medApp.services = {
   //Função responsável pela criacão de ítem no feed
 
   iconeFeed: function(info, i){
+
     var template = document.createElement('div');
 
     if(info.type === "Paciente"){
-      var foto="data:image/jpeg;base64, "+ info.patient.foto;
 
-      timeStamp = info.patient.timestamp[6] + info.patient.timestamp[7] + "/"
-      + info.patient.timestamp[9] + info.patient.timestamp[10] + " "
-      + info.patient.timestamp[12] + info.patient.timestamp[13]
-      + ":" + info.patient.timestamp[15] + info.patient.timestamp[16];
+      var foto = "data:image/jpeg;base64, " + info.patient.foto;
+
+      var data =  info.patient.timestamp.substring(8,10) + '/' +
+                  info.patient.timestamp.substring(5,7) + '/' +
+                  info.patient.timestamp.substring(0,4);
+
+      var hora = info.patient.timestamp.substring(11,16);
 
       template.innerHTML =
-      '<ons-list-item id="item' + i + '" class="paciente-lista " modifier="longdivider" tappable>' +
+      '<ons-list-item id="item' + i + '" class="paciente-lista " modifier="longdivider"' +
+        // Atributo tappable apenas se o paciente estiver ativo
+        ((info.patient.ativo == 1) ? 'tappable>' : '>') +
         '<div class="left">' +
           '<img class="list__item__thumbnail" src="'+ foto + '">' +
         '</div>' +
@@ -353,11 +381,13 @@ medApp.services = {
           '<ons-row>' +
             '<ons-row class="paciente-detalhes">' +
               '<ons-icon icon="md-plaster" class="list__item__icon"></ons-icon>' +
-              '<span class="list__item__subtitle">' + 'Paciente novo Adicionado' + '</span>' +
+              '<span class="list__item__subtitle">' + 
+              ((info.patient.ativo == 1) ? 'Paciente novo adicionado' : 'Paciente teve alta') + 
+              '</span>' +
             '</ons-row>' +
             '<ons-row class="paciente-detalhes">' +
               '<ons-icon icon="md-calendar" class="list__item__icon"></ons-icon>' +
-              '<span class="list__item__subtitle">' + info.timestamp + '</span>' +
+              '<span class="list__item__subtitle">' + data + ' ' + hora + '</span>' +
             '</ons-row>' +
           '</ons-row>' +
         '</div>' +
@@ -372,11 +402,13 @@ medApp.services = {
       + '</ons-list-item>';*/
 
     } else {
+      console.log(info);
       //console.log(JSON.stringify(info));
-      timeStamp = info.reminder.timestamp[6] + info.reminder.timestamp[7] + "/"
-      + info.reminder.timestamp[9] + info.reminder.timestamp[10] + " "
-      + info.reminder.timestamp[12] + info.reminder.timestamp[13]
-      + ":" + info.reminder.timestamp[15] + info.reminder.timestamp[16];
+      var data =  info.reminder.timestamp.substring(8,10) + '/' +
+                  info.reminder.timestamp.substring(5,7) + '/' +
+                  info.reminder.timestamp.substring(0,4);
+
+      var hora = info.reminder.timestamp.substring(11,16);
 
       template.innerHTML =
       '<ons-list-item id="item'+ i + '" class="paciente-lista " modifier="longdivider" tappable>' +
@@ -390,12 +422,12 @@ medApp.services = {
             '<ons-row class="paciente-detalhes">' +
               '<ons-icon icon="md-plaster" class="list__item__icon"></ons-icon>' +
               '<span class="list__item__subtitle">' + 'Dados Alterados: K - ' + info.reminder.K + ' Na - ' + info.reminder.Na +
-              ' Cl - ' + info.reminder.Cl+ ' Co2 - '+ info.reminder.Co2+ ' Bun - '+info.reminder.Bun+ ' Great - '+ info.reminder.Great
+              ' Cl - ' + info.reminder.Cl+ ' Co2 - '+ info.reminder.Co2 + ' Bun - '+info.reminder.Bun+ ' Great - '+ info.reminder.Great
               + ' Gluc - ' +info.reminder.Gluc+ ' Wcb - '+info.reminder.wcb+' HgB - '+info.reminder.HgB+ ' Hct - ' +info.reminder.Hct+
               ' Plt - '+info.reminder.Plt+ + '</span>' +
               '<ons-row class="paciente-detalhes">' +
               '<ons-icon icon="md-calendar" class="list__item__icon"></ons-icon>' +
-              '<span class="list__item__subtitle">' + info.timestamp + '</span>' +
+              '<span class="list__item__subtitle">' + data + ' ' + hora + '</span>' +
             '</ons-row>' +
             '</ons-row>' +
           '</ons-row>' +
@@ -416,29 +448,51 @@ medApp.services = {
     var feedItem = template.firstChild;
     var listaFeed = document.querySelector('#feed-lista');
 
-    feedItem.querySelector('.center').onclick = function(info){
+    //feedItem.querySelector('.center').onclick = function(info) {
 
       if(info.type === "Paciente"){
 
-        this.dadosPacienteAtual.idAtualPaciente = info.patient.idtable1;
-        
-        //document.querySelector('#pacienteNav').pushPage('html/perfilpaciente.html');
+        if (info.patient.ativo == 1) {
 
-        
-      
+          // Funcionalidade de mostrar paciente adicionado se ele ainda estiver ativo
+          feedItem.querySelector('.center').onclick = function() {
 
-    } else {
+            var dataPacienteFormatoBarra = info.patient.dataDeNascimento.substring(8,10) + '/' +
+                                           info.patient.dataDeNascimento.substring(5,7) + '/' +
+                                           info.patient.dataDeNascimento.substring(0,4);
 
-      this.dadosPacienteAtual.idAtualPaciente = info.reminder.idPaciente;
-      
-      //document.querySelector('#pacienteNav').pushPage('html/perfilpaciente.html');
+            var dataPacienteFormatoTraco = info.patient.dataDeNascimento.substring(0,10);
 
+            document.querySelector('#tab-inicial').setActiveTab( 1 , {options: {animation: 'slide'}});
+            medApp.services.setPacienteAtual( { idPaciente: info.patient.idtable1,
+                                                nome: info.patient.nomePaciente,
+                                                dataIntFormatoTraco: dataPacienteFormatoTraco,
+                                                dataIntFormatoBarra: dataPacienteFormatoBarra,
+                                                causa: info.patient.causaDaInternacao,
+                                                medicoResp: info.patient.medicoResposavel,
+                                                hospital: info.patient.telefone,
+                                                foto: "data:image/jpeg;base64, " + info.patient.foto
+                                              });
+            document.querySelector('#pacienteNav').pushPage('html/perfilpaciente.html');
 
-    }
+          };
+        };
 
-    }
+      } else if(info.type === "Lembrete") {
+
+        // Funcionalidade de mostrar paciente adicionado
+        feedItem.querySelector('.center').onclick = function() {
+
+          medApp.services.dial = document.getElementById('dialog-lembrete').id;
+          console.log($('#dialog-lembrete').children());
+          medApp.services.showPopover(medApp.services.dial);
+
+        };
+
+      };
 
     listaFeed.appendChild(feedItem);
+
   },
 
   //Ciclo de funções para as pulseiras disponiveis

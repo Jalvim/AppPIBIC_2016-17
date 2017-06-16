@@ -20,7 +20,7 @@ medApp.controllers = {
     // Função para mandar o e-mail de esquecer de senha
     page.querySelector('#esquecer-senha').onclick = function() {
       ons.notification.prompt({
-        message:"Digite seu e-mail",
+        message:"Digite seu e-mail:",
         callback: function(email){
           $.ajax({
           url:'http://www.julianop.com.br:3000/api/login/',
@@ -29,10 +29,10 @@ medApp.controllers = {
               email:email
             },
             jsonp:true,
-            success:function(info){
+            success: function(info){
               ons.notification.alert(info);
             },
-            error:function(erro){
+            error: function(erro){
             ons.notification.alert(erro);
             }
           });
@@ -60,6 +60,7 @@ medApp.controllers = {
       if( emailLogin === 'a' && senhaLogin === 'a' ){
 
         medApp.services.setIdMedico(20);
+        medApp.services.setNomeMedico('Roberto Silva');
         document.querySelector('#loginNav').pushPage('html/inicial.html');
 
       };
@@ -79,12 +80,14 @@ medApp.controllers = {
 
                 var storage = window.localStorage;
                 storage.setItem('idMedico', data.idMedico);
+                storage.setItem('nomeMedico', data.nome);
 
               };
 
               $('#email-login').val("");
               $('#senha-login').val("");
               medApp.services.setIdMedico(data.idMedico);
+              medApp.services.setNomeMedico(data.nome);
               document.querySelector('#loginNav').pushPage('html/inicial.html');
 
             } else {
@@ -327,7 +330,9 @@ medApp.controllers = {
 
           if(confirm) {
             medApp.services.deleteIdMedico();
+            medApp.services.deleteNomeMedico();
             window.localStorage.removeItem('idMedico');
+            window.localStorage.removeItem('nomeMedico');
             document.querySelector('#loginNav').resetToPage('login.html', {options: {animation: 'fade'}});
           };
 
@@ -382,6 +387,7 @@ medApp.controllers = {
     // Função que gera e autaliza a lista de pacientes a partir de dados do sevidor
     function gerarListaPacientes () {
 
+      // Função que evita a dupla atualização na build do app
       medApp.services.changeUpdatePaciente();
       $('#lista-pacientes').empty();
 
@@ -402,10 +408,9 @@ medApp.controllers = {
                   nomePaciente: pacientesInfo.nomePaciente,
                   dataPaciente: pacientesInfo.dataDeNascimento,
                   causaPaciente: pacientesInfo.causaDaInternacao,
-                  medicoResp: pacientesInfo.numeroDoProntuario,
                   hospital: pacientesInfo.telefone,
                   idPaciente: pacientesInfo.idPaciente,
-                  medicoResp: pacientesInfo.nome
+                  medicoResp: pacientesInfo.medicoResposavel
                 }, 'pacientes');
 
             };
@@ -1348,8 +1353,8 @@ medApp.controllers = {
              '<ons-row class="paciente-header">'+
                '<ons-col>' +
                  '<span class="list__item__title nome">' +
-                 'Sem atualizações de pacientes no momento. Adicione um paciente na aba "Pacientes"'
-                 + '</span>' +
+                 'Sem atualizações de pacientes no momento. Adicione um paciente na aba "Pacientes"!' +
+                 '</span>' +
                '</ons-col>' +
              '</ons-row>' +
            '</div>' +
@@ -1367,14 +1372,13 @@ medApp.controllers = {
     	    for(var i=0; i<data.length; i++){
 
     	      medApp.services.iconeFeed(data[i], i);
-    	      // onclick que redireciona está dentro da fç
+    	      /* onclick que redireciona está dentro da fç
 		    
               page.querySelector('#ietm'+ i +'').onclick = function(){
-	        document.querySelector('#pacienteNav').pushPage('html/pacientes.html', {options: {animation: 'fade'}});
-	      };
-		    
-              
+	            document.querySelector('#pacienteNav').pushPage('html/pacientes.html', {options: {animation: 'fade'}});
 
+            */
+            
     	    };
 
         };
@@ -1485,16 +1489,10 @@ medApp.controllers = {
 
   addpaciente: function(page) {
 
-    // Preencher o nome do Médico Responsável para o médico atual (não-editável)
+    // Preenche o nome do Médico Responsável para o médico atual (não-editável)
     page.addEventListener('show', function(event) {
 
-      $.get('http://julianop.com.br:3000/api/medico/busca/ID/' + medApp.services.getIdMedico())
-      .done(function(data) {
-
-        $('#med-novo-pac').val(data[0].nome);
-
-      });
-
+      $('#med-novo-pac').val(medApp.services.getNomeMedico());
 
     });
 
@@ -1510,7 +1508,7 @@ medApp.controllers = {
         // Captura imagem a partir da câmera do dispositivo
         medApp.services.hidePopover(medApp.services.dial);
 
-        navigator.camera.getPicture (successCallback, FailCallback, {  quality: 100,
+        navigator.camera.getPicture (successCallback, FailCallback, { quality: 100,
                                                                       targetWidth :110,
                                                                       targetHeight :110,
                                                                       allowEdit: true,
@@ -1541,7 +1539,7 @@ medApp.controllers = {
         // Seleciona imagem a partir da galeria de imagens do dispositivo
         medApp.services.hidePopover(medApp.services.dial);
 
-        navigator.camera.getPicture (successCallback, FailCallback, {  quality: 100,
+        navigator.camera.getPicture (successCallback, FailCallback, { quality: 100,
                                                                       targetWidth :110,
                                                                       targetHeight :110,
                                                                       allowEdit: true,
@@ -1609,6 +1607,7 @@ medApp.controllers = {
         $.post('http://julianop.com.br:3000/api/paciente/geral',
         {
           nomePaciente: $('#nome-novo-pac').val(),
+          nomeMedico: medApp.services.getNomeMedico(),
           causaDaInternacao: $('#causa-novo-pac').val(),
           numeroDoProntuario: 1111,
           telefone: $('#local-novo-pac').val(),
@@ -1662,7 +1661,9 @@ medApp.controllers = {
 
           if(confirm) {
             medApp.services.deleteIdMedico();
+            medApp.services.deleteNomeMedico();
             window.localStorage.removeItem('idMedico');
+            window.localStorage.removeItem('nomeMedico');
             document.querySelector('#loginNav').resetToPage('login.html', {options: {animation: 'fade'}});
           };
 
@@ -1875,7 +1876,7 @@ medApp.controllers = {
 
   	page.querySelector('#manage-pulseiras').onclick = function() {
 
-  		medApp.services.dial = document.getElementById('dialog').id;
+  		medApp.services.dial = document.getElementById('dialog-pulseiras').id;
 
         //Método responsável por encontrar na base as pulseiras disponíveis.
         $.get('http://julianop.com.br:3000/api/pulseira/disponivel')
@@ -2036,10 +2037,9 @@ medApp.controllers = {
                 nomePaciente: pacientesInfo.nomePaciente,
                 dataPaciente: pacientesInfo.dataDeNascimento,
                 causaPaciente: pacientesInfo.causaDaInternacao,
-                medicoResp: pacientesInfo.numeroDoProntuario,
                 hospital: pacientesInfo.telefone,
                 idPaciente: pacientesInfo.idtable1,
-                medicoResp: pacientesInfo.nome
+                medicoResp: pacientesInfo.medicoResposavel
               }, 'grupo');
 
           };

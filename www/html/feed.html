@@ -104,4 +104,76 @@
     </ons-list-item> -->
   </ons-list> 
 
+  <ons-dialog id="dialog-lembrete" cancelable>
+    <div class="lembrete-container">
+        <ons-icon icon="md-assignment" size="35px" class="lembrete-header-icon"></ons-icon>
+        <div class="lembrete-header" id="paciente-feed-lembrete">Matheus</div>
+    </div>
+    <br>
+    <br>
+    <div class="lembrete-container">
+      <ons-icon icon="md-calendar" size="25px" class="lembrete-description-icon"></ons-icon>
+      <div class="lembrete-description" style="float: left;" id="data-feed-lembrete">02/02/2012</div>
+    </div>
+    <br>
+    <div class="lembrete-container">
+      <ons-icon icon="user-md" size="25px" class="lembrete-description-icon"></ons-icon>
+      <div class="lembrete-description" style="float: left;" id="medico-feed-lembrete">MEDICAO</div>
+    </div>
+
+    <br>
+    
+    <div class="lembrete-container">
+        <div class="lembrete-input">
+        <textarea class="textarea" id="texto-ver-lembrete" placeholder="Escreva seu lembrete aqui" style="width: 100%; height: 200px;">
+        </textarea>
+        </div>
+    </div>
+
+    <br>
+
+    <div class="lembrete-container">
+    <ons-row>
+
+        <ons-col>
+            <div class="BMP">
+             <img src="img/BMP.png" width="150" height="50">
+
+                <div class="dados-lembrete" id="NA-diagrama" style="top: 3px; left: 8px;">NA</div>
+
+                <div class="dados-lembrete" id="K-diagrama" style="top: 28px; left: 13px;">K</div>
+
+                <div class="dados-lembrete" id="Cl-diagrama" style="top: 3px; left: 50px;">Cl</div>
+
+                <div class="dados-lembrete" id="Co2-diagrama" style="top: 28px; left: 43px;">Co2</div>
+
+                <div class="dados-lembrete" id="Bun-diagrama" style="top: 3px; right: 48px;">Bun</div>
+
+                <div class="dados-lembrete" id="Creat-diagrama" style="top: 29px; right: 43px; font-size: 14px">Creat</div>
+
+                <div class="dados-lembrete" id="Gluc-diagrama" style="top: 15px; right: 0px;">Gluc</div>
+            </div>
+        </ons-col>
+    </ons-row>
+
+    <ons-row>
+        <ons-col>
+            <div class="CBC">
+
+             <img src="img/CBC.png" width="100" height="50">
+
+                <div class="dados-lembrete" id="wbc-diagrama" style="top: 15px; left: 0px;">wbc</div>
+
+                <div class="dados-lembrete" id="HgB-diagrama" style="top: 3px; right: 50px;">HgB</div>
+
+                <div class="dados-lembrete" id="Hct-diagrama" style="top: 30px; right: 53px;">Hct</div>
+
+                <div class="dados-lembrete" id="Plt-diagrama" style="top: 15px; right: 5px;">Plt</div>
+            </div>
+      </ons-col>
+
+    </ons-row>
+    </div>
+  </ons-dialog>
+
 </ons-page>
