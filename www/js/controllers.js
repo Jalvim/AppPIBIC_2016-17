@@ -1,3 +1,4 @@
+
 /******************************************************************
  * Controllers do App, chamados em cada inicialização das páginas *
  ******************************************************************/
@@ -16,16 +17,11 @@ medApp.controllers = {
     page.querySelector('#olho').ontouchend = function() {
       $('#senha-login').attr('type', 'password');
     };
-
-    page.querySelector('#esquecer-senha').onclick = function(e) {
-
+//função para mandar o e-mail de esquecimento de senha
+    page.querySelector('#esquecer-senha').onclick = function() {
       ons.notification.prompt({
         message:"Digite seu e-mail",
         callback: function(email){
-          window.open("http://www.julianop.com.br:3000/api/login/senha/change/email/" + email);
-      /*
-          e.preventDefault();
-
           $.ajax({
           url:'http://www.julianop.com.br:3000/api/login/',
             type:'PUT',
@@ -33,10 +29,11 @@ medApp.controllers = {
               email:email
             },
             jsonp:true,
-            complete:function(info){
-
-              console.log(JSON.stringify(info));
-
+            success:function(info){
+              ons.notification.alert(info);
+            },
+            error:function(erro){
+            ons.notification.alert(erro);
             }
           });
      */
@@ -893,30 +890,20 @@ medApp.controllers = {
           });
 
           /*medApp.services.dataDados = $('#data-dados').val();
-
           if(medApp.services.dataDados === ''){
             page.querySelector('#dados-recuperados').innerHTML = 'Nenhuma busca efetuada.';
           }
-
           page.querySelector('#dados-rec').onclick = function(dataDados) {
-
             medApp.services.dataDados = $('#data-dados').val();
-
             if(medApp.services.dataDados === ''){
               page.querySelector('#dados-recuperados').innerHTML = 'Dados não recuperados.';
             } else {
-
               console.log(medApp.services.dataDados);
-
               $.get('http://julianop.com.br:3000/api/paciente/health/static/' + medApp.services.dadosPacienteAtual.idAtualPaciente + '/' + medApp.services.dataDados)
               .done(function(data) {
-
-
                 //medApp.services.dadosRecuperados = data.calories;
-
                 console.log(data);
                 page.querySelector('#dados-recuperados').innerHTML = data.calories;
-
               });
             }
           }; */
@@ -1107,9 +1094,7 @@ medApp.controllers = {
 
     /* Verifica se algum input do formulário foi mudado
     $("#medico-edit-form :input").change(function() {
-
       $("#medico-edit-form").data("changed",true);
-
     });
     */
     // Botão salvar altera os dados no servidor (se houve mudanças => ALTERADO PARA ENVIAR FOTO)
@@ -1147,9 +1132,7 @@ medApp.controllers = {
         document.querySelector('#medicoNav').popPage();
 
       /*} else {
-
         document.querySelector('#medicoNav').popPage();
-
       };
       */
 
@@ -1248,27 +1231,19 @@ medApp.controllers = {
 
     /*Função responsável por indexar paciente a um hospital na Base de dados
     page.querySelector('#hospitalButton').onclick = function(){
-
 	  medApp.services.dial = document.getElementById('dialog').id;
-
 	  $.get('http://julianop.com.br:3000/api/hospitais/medico/' + medApp.services.idAtualMedico)
 	  .done(function(data){
-
 	  	console.log(data);
-
 	  	if(data.length == 0){
 	  	  ons.notification.alert('Erro, não foi encontrado hospital no servidor');
 	  	} else{
-
 	  	  medApp.services.showPopover(medApp.services.dial);
-
   		  for(var i=0; i<data.length; i++){
   		  	medApp.services.showHospitais(i, data);
   		  }
-
 	  	}
 	  });
-
     };
     */
 
@@ -1561,9 +1536,7 @@ medApp.controllers = {
 
     /*Função responsável por indexar paciente a um hospital na Base de dados
     page.querySelector('#hospitalButton').onclick = function(){
-
 	  medApp.services.dial = document.getElementById('dialog').id;
-
 	  $.get('http://julianop.com.br:3000/api/hospitais/medico/' + medApp.services.idAtualMedico)
 	  .done(function(data){
 	  	if(data.length == 0){
@@ -1574,7 +1547,6 @@ medApp.controllers = {
   		  }
 	  	}
 	  });
-
     };*/
 
     page.querySelector('#cadastrar-pac').onclick = function() {
@@ -1698,36 +1670,24 @@ medApp.controllers = {
     });*/
 
     /*page.querySelector('#addpulseira').onclick = function(){
-
       var  Oauth;
-
       ons.notification.prompt({message: "Digite o codigo da FITBIT"})
       .then(function(prompt) {
-
         Oauth = prompt;
-
       //Oauth = prompt("Digite o codigo da FITBIT");
-
       //pega o codigoOauth
-
         //console.log(Oauth);
-
         $.post("http://julianop.com.br:3000/api/pulseira",
           {
             redirectUri :"http://julianop.com.br:3000/",
             ClientID: "227WRB",
             ClientSecret: "---",  // Inserir secret
             CodigoOauth: Oauth
-
           })
           .done(function(data){
-
             //console.log(data);
-
           });
-
       });
-
     };*/
 
     page.querySelector('#link-fitbit').onclick = function() {
