@@ -32,7 +32,8 @@ medApp.services = {
     causa: '',
     dataIntFormatoBarra: '',
     dataIntFormatoTraco: '',
-    hospital: ''
+    hospital: '',
+    foto: ''
   }, //Dados 'default' do paciente.
 
   //Função que seta o ID do paciente de interesse do médico --> 'onclick' no ícone.
@@ -44,6 +45,7 @@ medApp.services = {
     this.dadosPacienteAtual.dataIntFormatoBarra = dados.dataIntFormatoBarra;
     this.dadosPacienteAtual.dataIntFormatoTraco = dados.dataIntFormatoTraco;
     this.dadosPacienteAtual.hospital = dados.hospital;
+    this.dadosPacienteAtual.foto = dados.foto;
   },
 
   //Função que retorna o ID do paciente de interesse.
@@ -60,6 +62,7 @@ medApp.services = {
     this.dadosPacienteAtual.dataIntFormatoBarra = '';
     this.dadosPacienteAtual.dataIntFormatoTraco = '';
     this.dadosPacienteAtual.hospital = '';
+    this.dadosPacienteAtual.foto = '';
   },
 
   dadosEstaticos: {
@@ -69,12 +72,12 @@ medApp.services = {
     degraus: new Array
   },
 
-  // Função que verifica se os dados do médico foram editados 
+  // Função que verifica se os dados do médico foram editados
   checkEdit: function(novo, velho) {
 
     if ( novo.nomeEdit == velho.nomeEdit &&
         novo.crmEdit == velho.crmEdit &&
-        novo.espEdit == velho.espEdit && 
+        novo.espEdit == velho.espEdit &&
         novo.telEdit == velho.telEdit &&
         novo.emailEdit == velho.emailEdit &&
         novo.cpfEdit == velho.cpfEdit) {
@@ -84,7 +87,7 @@ medApp.services = {
     } else {
 
       return true;
-    }; 
+    };
 
   },
 
@@ -111,7 +114,7 @@ medApp.services = {
             '</ons-col>' +
             /* TODO: Adicionar os dados dinâmicos de batimentos cardíacos
             '<ons-col>' +
-              '<ons-icon icon="heartbeat" class="list__item__icon"></ons-icon>' + 
+              '<ons-icon icon="heartbeat" class="list__item__icon"></ons-icon>' +
               '<span class="list__item__title">' + data.batimentos + ' bpm</span>' +
             '</ons-col>' +
             */
@@ -123,7 +126,7 @@ medApp.services = {
             '</ons-col>' +
             '<ons-col class="paciente-detalhes">' +
               '<ons-icon icon="md-plaster" class="list__item__icon"></ons-icon>' +
-              '<span class="list__item__subtitle">' + data.causaPaciente + '</span>' +  
+              '<span class="list__item__subtitle">' + data.causaPaciente + '</span>' +
             '</ons-col>' +
           '</ons-row>' +
           '<ons-row>' +
@@ -150,10 +153,11 @@ medApp.services = {
                                           dataIntFormatoBarra: dataPacienteFormatoBarra,
                                           causa: data.causaPaciente,
                                           medicoResp: data.medicoResp,
-                                          hospital: data.hospital
+                                          hospital: data.hospital,
+                                          foto: data.img
                                         });
 
-      document.querySelector('#pacienteNav').pushPage('html/perfilpaciente.html'); 
+      document.querySelector('#pacienteNav').pushPage('html/perfilpaciente.html');
 
     };
 
@@ -166,7 +170,7 @@ medApp.services = {
       var pacientesLista = document.querySelector('#lista-pacientes-grupo');
 
     };
-    
+
     pacientesLista.appendChild(pacienteItem);
 
   },
@@ -200,7 +204,7 @@ medApp.services = {
     document
       .getElementById(id)
       .hide();
-  }, 
+  },
 
   //Variável global q armazena o id do Dialog
   dial: '',
@@ -223,7 +227,7 @@ medApp.services = {
                            data.horario.substring(5,7) + '/' +
                            data.horario.substring(0,4);
 
-    // Template de paciente
+    // Template de lembrete
     var template = document.createElement('div');
     template.innerHTML =
       '<ons-list-item>' +
@@ -232,13 +236,13 @@ medApp.services = {
       '</div>' +
       '<div class="center">' +
         '<ons-row style="padding-bottom: 10px">' +
-          '<ons-icon icon="md-assignment" class="list__item__icon"></ons-icon>' + 
+          '<ons-icon icon="md-assignment" class="list__item__icon"></ons-icon>' +
           '<div class="lembrete-lista-header">' + textoLembrete + ((data.texto.length < 30) ? '' : '...') +
           '</div>' +
-        '</ons-row>' + 
+        '</ons-row>' +
         '<ons-row>' +
           '<ons-col>' +
-            '<ons-icon icon="md-calendar" size="20px" class="list__item__icon"></ons-icon>' + 
+            '<ons-icon icon="md-calendar" size="20px" class="list__item__icon"></ons-icon>' +
             '<span>' + dataFormatoBarra + '</span>' +
           '</ons-col>' +
           '<ons-col>' +
@@ -269,7 +273,7 @@ medApp.services = {
 
     // Funcionalidade de remover lembrete
     lembreteItem.querySelector('.right').onclick = function() {
-        
+
         ons.notification.confirm({message: 'Tem certeza?'})
         .then( function(confirm){
 
@@ -277,7 +281,7 @@ medApp.services = {
             $.ajax({
               url: 'http://julianop.com.br:3000/api/lembrete',
               type: 'DELETE',
-              data: { 
+              data: {
                 idLembrete: $(lembreteItem).data('idLembrete')
               }
             })
@@ -291,13 +295,13 @@ medApp.services = {
           };
 
         });
-        
+
 
     };
 
     // Funcionalidade de ver lembrete
     lembreteItem.querySelector('.center').onclick = function() {
-        
+
       document.querySelector('#pacienteNav').pushPage('html/verlembrete.html',
         {data: {texto: $(lembreteItem).data('fullText'),
                 horario: $(lembreteItem).data('horario'),
@@ -323,40 +327,90 @@ medApp.services = {
   },
 
   //Função responsável pela criacão de ítem no feed
-  
+
   iconeFeed: function(info, i){
     var template = document.createElement('div');
 
     if(info.type === "Paciente"){
 
-      timeStamp = info.patient.timestamp[6] + info.patient.timestamp[7] + "/" 
-      + info.patient.timestamp[9] + info.patient.timestamp[10] + " " 
+      timeStamp = info.patient.timestamp[6] + info.patient.timestamp[7] + "/"
+      + info.patient.timestamp[9] + info.patient.timestamp[10] + " "
       + info.patient.timestamp[12] + info.patient.timestamp[13]
-      + ":" + info.patient.timestamp[15] + info.patient.timestamp[16]
+      + ":" + info.patient.timestamp[15] + info.patient.timestamp[16];
 
-      template.innerHTML = 
-      '<ons-list-titem id="item' + i + '">'
+      template.innerHTML =
+      '<ons-list-item id="item' + i + '" class="paciente-lista " modifier="longdivider" tappable>' +
+        '<div class="left">' +
+          '<img class="list__item__thumbnail" src="'+ info.foto + '">' +
+        '</div>' +
+        '<div class="center">'+
+          '<ons-row class="paciente-header">'+
+            '<ons-col>' +
+              '<span class="list__item__title nome">' + info.nome + '</span>' +
+            '</ons-col>' +
+          '</ons-row>' +
+          '<ons-row>' +
+            '<ons-col class="paciente-detalhes">' +
+              '<ons-icon icon="md-calendar" class="list__item__icon"></ons-icon>' +
+              '<span class="list__item__subtitle">' + timeStamp + '</span>' +
+            '</ons-col>' +
+            '<ons-col class="paciente-detalhes">' +
+              '<ons-icon icon="md-plaster" class="list__item__icon"></ons-icon>' +
+              '<span class="list__item__subtitle">' + 'Paciente novo Adicionado, clique para conhecer o perfil' + '</span>' +
+            '</ons-col>' +
+          '</ons-row>' +
+          '<ons-row>' +
+        '</div>' +
+      '</ons-list-item>';
+      /*'<ons-list-item id="item' + i + '">'
       + '<div class="rigth">' + info.foto +
       '</div>' +
       '<div class="center">' + info.nome +
       '</div>' +
       '<div class="left">' + timeStamp +
       '</div>'
-      + '</ons-list-item>'
+      + '</ons-list-item>';*/
 
     } else {
 
-      timeStamp = info.reminder.timestamp[6] + info.reminder.timestamp[7] + "/" 
-      + info.reminder.timestamp[9] + info.reminder.timestamp[10] + " " 
+      timeStamp = info.reminder.timestamp[6] + info.reminder.timestamp[7] + "/"
+      + info.reminder.timestamp[9] + info.reminder.timestamp[10] + " "
       + info.reminder.timestamp[12] + info.reminder.timestamp[13]
-      + ":" + info.reminder.timestamp[15] + info.reminder.timestamp[16]
+      + ":" + info.reminder.timestamp[15] + info.reminder.timestamp[16];
 
-      template.innerHTML = 
-      '<ons-list-titem id="item' + i + '">'
+      template.innerHTML =
+      '<ons-list-item id="item'+ i + '" class="paciente-lista " modifier="longdivider" tappable>' +
+        '<div class="center">'+
+          '<ons-row class="paciente-header">'+
+            '<ons-col>' +
+              '<span class="list__item__title nome">' + info.reminder + '</span>' +
+            '</ons-col>' +
+          '</ons-row>' +
+          '<ons-row>' +
+            '<ons-col class="paciente-detalhes">' +
+              '<ons-icon icon="md-calendar" class="list__item__icon"></ons-icon>' +
+              '<span class="list__item__subtitle">' + timeStamp + '</span>' +
+            '</ons-col>' +
+            '<ons-col class="paciente-detalhes">' +
+              '<ons-icon icon="md-plaster" class="list__item__icon"></ons-icon>' +
+              '<span class="list__item__subtitle">' + 'Dados Alterados: K - ' + info.reminder.K + ' Na - ' + info.reminder.Na +
+              ' Cl - ' + info.reminder.Cl+ ' Co2 - '+ info.reminder.Co2+ ' Bun - '+info.reminder.Bun+ ' Great - '+ info.reminder.Great
+              + ' Gluc - ' +info.reminder.Gluc+ ' Wcb - '+info.reminder.wcb+' HgB - '+info.reminder.HgB+ ' Hct - ' +info.reminder.Hct+
+              ' Plt - '+info.reminder.Plt+ + '</span>' +
+            '</ons-col>' +
+          '</ons-row>' +
+          '<ons-row>' +
+        '</div>' +
+      '</ons-list-item>';
+      /*'<ons-list-titem id="item' + i + '">'
       + '<div>' + info.reminder.mensagem +
       '</div>'
-      '<div>' + timeStamp + '</div>'
-      + '</ons-list-item>'
+      '<div>' + timeStamp + '</div>' +
+      '<div> Dados alterados: K - ' + info.reminder.K + ' Na - ' + info.reminder.Na +
+      ' Cl - ' + info.reminder.Cl+ ' Co2 - '+ info.reminder.Co2+ ' Bun - '+info.reminder.Bun+ ' Great - '+ info.reminder.Great
+      + ' Gluc - ' +info.reminder.Gluc+ ' Wcb - '+info.reminder.wcb+' HgB - '+info.reminder.HgB+ ' Hct - ' +info.reminder.Hct+
+      ' Plt - '+info.reminder.Plt+ '</div>'
+      + '</ons-list-item>';*/
 
     }
 
@@ -372,13 +426,16 @@ medApp.services = {
     } else {
 
       this.dadosPacienteAtual.idAtualPaciente = info.reminder.idPaciente;
-    
+
     }
 
       document.querySelector('#pacienteNav').pushPage('html/perfilpaciente.html');
+
     }
+
+    listaFeed.appendChild(feedItem);
   },
-  
+
 
   //Ciclo de funções para as pulseiras disponiveis
 
@@ -405,16 +462,16 @@ medApp.services = {
 
     template.innerHTML = '<ons-list-item modifier="tappable" id=item' + index + ' onclick="hidePopover(' + $('#dialog') + ')"> <div> Pulseira de id '
       + medApp.services.pulseirasDisponiveis[index] + '</div> </ons-list-item>';
-    
+
     var pulseiraItem = template.firstChild;
     var pulseiraLista = document.querySelector('#lista-pulseiras');
 
-    pulseiraLista.appendChild(pulseiraItem); 
+    pulseiraLista.appendChild(pulseiraItem);
 
     document.querySelector("#item" + index).onclick = function() {
 
       if(medApp.services.pulseiraAtual.length != 0){
- 
+
          $.ajax({
            url: 'http://julianop.com.br:3000/api/pulseira',
            type: 'PUT',
@@ -430,9 +487,9 @@ medApp.services = {
              idPaciente: medApp.services.getIdPaciente()
            }
          });
- 
+
       }
-      
+
       medApp.services.pulseiraAtual = medApp.services.pulseirasDisponiveis[index];
       medApp.services.hidePopover(medApp.services.dial);
 
@@ -458,7 +515,7 @@ medApp.services = {
           idPaciente: medApp.services.getIdPaciente()
         }
       });
-              
+
     };
 
   },
@@ -466,7 +523,7 @@ medApp.services = {
   showHospitais: function(index, objeto){
     var template = document.createElement('div');
 
-    template.innerHTML = '<ons-list-item modifier="nodivider" id=hospital'+ index +'> <div class="left">' + objeto[index].nome + 
+    template.innerHTML = '<ons-list-item modifier="nodivider" id=hospital'+ index +'> <div class="left">' + objeto[index].nome +
     '<div class="rigth"> <ons-radio-button><ons-radio-button> </div> </ons-list-item>';
 
     var hospitalItem = template.firstChild;
@@ -475,9 +532,9 @@ medApp.services = {
     hospitalLista.appendChild(hospitalItem);
 
     document.querySelector('#hospital' + index).onclick = function(objeto){
-      
+
       $.post("http://julianop.com.br:3000/api/compartilhamento/paciente",{
-        
+
         idPaciente: this.idAtualPaciente,
         idHospitalOrigem: objeto[index].idHospital,
         idMedicoDestino: this.idAtualMedico
@@ -491,7 +548,7 @@ medApp.services = {
       }); //TODO --> VER SE VAI DAR CERTO COM ESSA CHAMADA
 
       this.hidePopover(this.dial);
-    
+
     };
 
   },
@@ -501,7 +558,7 @@ medApp.services = {
 
     template.innerHTML = '<ons-list-item modifier="nodivider"> <div> Pulseira #'
       + medApp.services.pulseirasDisponiveis[index] + '</div> </ons-list-item>';
-    
+
     var pulseiraItem = template.firstChild;
     var pulseiraLista = document.querySelector('#lista-pulseiras');
 
@@ -519,7 +576,7 @@ medApp.services = {
   idPacVec: new Array,
 
   getToday: function(tipo) {
-    
+
     var hoje = new Date();
     var dia = hoje.getDate();
     var mes = hoje.getMonth()+1;
@@ -548,7 +605,7 @@ medApp.services = {
   },
 
   listAddGroup: function(data, status, list) {
-    
+
     // Template de paciente na lista de adicionar ou editar grupo
     var template = document.createElement('div');
     template.innerHTML =
@@ -586,23 +643,24 @@ medApp.services = {
       var novoGrupoLista = document.querySelector('#editar-grupo-pacientes');
 
     }
-    
+
     novoGrupoLista.appendChild(pacienteGroupListItem);
 
   },
 
+  // Lista os grupos de pacientes
   listGroups: function(data) {
-    
+
     // Template de cada grupo linkado ao médico atual
     var template = document.createElement('div');
-    template.innerHTML = 
+    template.innerHTML =
       '<ons-list-item class="paciente-lista grupo" modifier="longdivider" tappable>' +
         '<div class="center">' +
           '<ons-row class="paciente-header">' +
             '<span class="list__item__title">' + data.nomeGrupo + '</span>' +
           '</ons-row>' +
           '<ons-row>' +
-            /* TODO: Adicionar número de membros de um grupo ao request 
+            /* TODO: Adicionar número de membros de um grupo ao request
             '<ons-col class="paciente-detalhes">' +
               '<ons-icon icon="md-accounts" class="list__item__icon"></ons-icon>' +
               '<span class="list__item__subtitle">' + data.tamanhoGrupo + '</span>' +
@@ -631,9 +689,9 @@ medApp.services = {
 
     };
 
-    // Funcionalidade de excluír grupo 
+    // Funcionalidade de excluír grupo
     groupListItem.querySelector('.right').onclick = function() {
-        
+
       ons.notification.confirm({message: 'Tem certeza?'})
       .then( function(confirm){
 
@@ -641,19 +699,19 @@ medApp.services = {
             $.ajax({
               url: 'http://julianop.com.br:3000/api/grupoPacientes',
               type: 'DELETE',
-              data: { 
+              data: {
                 idGrupoPac: $(groupListItem).data('idGrupoPac')
               }
             })
             .done(function() {
-              
+
               grupoLista.removeChild(groupListItem);
 
             });
           };
 
       });
-        
+
     };
 
     grupoLista.appendChild(groupListItem);
@@ -671,7 +729,7 @@ medApp.services = {
 
   // Função que retorna o ID do grupo atual
   getGrupoAtual: function() {
-    
+
     return this.idGrupoAtual;
 
   },
@@ -683,33 +741,295 @@ medApp.services = {
 
   },
 
-  listEquipe: function(data) {
-    
+  // Lista as equipes a que um médico pertence
+  listEquipe: function(equipe) {
+
     // Template de cada equipe que o médico atual pertence
     var template = document.createElement('div');
-    template.innerHTML = 
+    template.innerHTML =
       '<ons-list-item>' +
-      '<ons-list modifier="inset">' +
         '<ons-list-item>' +
           '<ons-icon icon="hospital-o"></ons-icon>' +
-           data.nomeEquipe +
+           equipe.nomeEquipe +
         '</ons-list-item>' +
-        '<ons-list-item id="pac-hospital" tappable>' +
-          '<ons-icon icon="md-accounts"></ons-icon>' +
-          'Gerenciar Pacientes' +
+        '<ons-list-item class="ver-equipe" tappable>' +
+        '<ons-icon icon="md-accounts"></ons-icon>' +
+        'Gerenciar Equipe' +
         '</ons-list-item>' +
-      '<ons-list-item id="config-hospital" tappable>' +
-        '<ons-icon icon="cog"></ons-icon>' +
-        'Configurações' +
-      '</ons-list-item>' +
-    '</ons-list>' +
-    '</ons-list-item>';
+      '</ons-list-item>';
 
     var equipeListItem = template.firstChild;
+    $(equipeListItem).data('idEquipe', equipe.idEquipe);
     var equipeLista = document.querySelector('#lista-equipe');
 
-    equipeLista.appendChild(teamListItem);
+    // Funcionalidade de gerenciar equipe
+    equipeListItem.querySelector('.ver-equipe').onclick = function() {
+
+      medApp.services.setEquipeAtual($(equipeListItem).data('idEquipe'));
+      document.querySelector('#medicoNav').pushPage('html/configequipe.html', {data: { nomeEquipe: equipe.nomeEquipe } });
+
+    };
+
+    equipeLista.appendChild(equipeListItem);
+
+  },
+
+  idEquipeAtual: -1,  // ID da equipe atual selecionada
+
+  // Função que seta o ID atual da equipe
+  setEquipeAtual: function(novaId) {
+
+    this.idEquipeAtual = novaId;
+
+  },
+
+  // Função que retorna o ID da equipe atual
+  getEquipeAtual: function() {
+
+    return this.idEquipeAtual;
+
+  },
+
+  // Função que limpa o ID da equipe
+  deleteEquipeAtual: function() {
+
+    this.idEquipeAtual = -1;
+
+  },
+
+  // Função para conseguir as imagens
+  getBase64Image: function(img) {
+
+    var canvas = document.createElement("canvas");
+    canvas.width = 100;
+    canvas.height = 100;
+    var ctx = canvas.getContext("2d");
+    ctx.drawImage(img, 0, 0);
+    var dataURL = canvas.toDataURL("image/jpg");
+    return dataURL.replace(/^data:image\/(png|jpg);base64,/, "");
+
+  },
+
+  // Função para verificar as imagens
+  verificarFoto: function(img) {
+
+    // Verifica existe foto, se não, retorna o placeholder
+    if(img == null) {
+
+      return 'http://www.clker.com/cliparts/A/Y/O/m/o/N/placeholder-md.png';
+
+    } else {
+
+      return ('data:image/jpeg;base64,' + img);
+
+    };
+
+  },
+
+  // Lista os membros de uma equipe visualizada
+  listMembrosEquipe: function(membro) {
+
+    // Verifica se o médico possui foto
+    membro.foto = medApp.services.verificarFoto(membro.foto);
+
+    // Template de cada médico membro da equipe
+    var template = document.createElement('div');
+    template.innerHTML =
+      '<ons-list-item>' +
+        '<div class="left">' +
+          //'<img class="list__item__thumbnail" src="http://www.clker.com/cliparts/A/Y/O/m/o/N/placeholder-md.png">' +
+          '<img class="list__item__thumbnail" src="'+ membro.foto + '">' +
+        '</div>' +
+        '<div class="center">' +
+          '<span class="list__item__title">' +
+          membro.nome +
+          '</span>' +
+            '<ons-row>' +
+              '<ons-icon icon="md-email" class="list__item__icon">' +
+                '<span class="list__item__subtitle">'+
+                membro.email +
+                '</span>' +
+              '</ons-icon>' +
+            '</ons-row>' +
+            '<ons-row>' +
+              '<ons-icon icon="md-phone" class="list__item__icon">' +
+                '<span class="list__item__subtitle">' +
+                membro.telefone +
+                '</span>' +
+              '</ons-icon>' +
+            '</ons-row>' +
+        '</div>' +
+        '<div class="right">' +
+          '<ons-icon icon="md-close" size="24px" class="list__item__icon"></ons-icon>' +
+        '</div>' +
+      '</ons-list-item>';
+
+    var membroListItem = template.firstChild;
+    $(membroListItem).data('idMedico', membro.idMedico);
+    var membroLista = document.querySelector('#membros-equipe');
+
+    // Funcionalidade de remover médico da equipe
+    membroListItem.querySelector('.right').onclick = function() {
+
+        ons.notification.confirm({message: 'Deseja remover este médico da equipe?'})
+        .then( function(confirm){
+
+          if(confirm) {
+            $.ajax({
+              url: 'http://julianop.com.br:3000/api/hospitais/relacoes',
+              type: 'DELETE',
+              data: {
+                idHospital: medApp.services.getEquipeAtual(),
+                idMedico: $(membroListItem).data('idMedico')
+              }
+            })
+            .done(function(data) {
+
+              ons.notification.alert(data);
+              membroLista.removeChild(membroListItem);
+
+            });
+          };
+
+        });
+
+    };
+
+    membroLista.appendChild(membroListItem);
+
+  },
+
+  // Retorna uma lista com os membros de uma equipe para o compartilhamento
+  getMembrosEquipe: function(equipe) {
+
+    $.get('http://julianop.com.br:3000/api/hospitais/' + equipe.idHospital + '/medicos')
+        .done(function(membros) {
+
+          console.log(equipe);
+          if(membros[0].hasOwnProperty('idMedico')) {
+
+            // Lista vazia dos membros da equipe atual
+            var listaMembros = [];
+
+            for (var j = 0, membrosLen = membros.length; j < membrosLen; j++) {
+
+              if (membros[j].idMedico != medApp.services.getIdMedico()) {
+                  listaMembros.push({ nomeMembro: membros[j].nome,
+                                      idMembro: membros[j].idMedico });
+              };
+
+            };
+
+            console.log(listaMembros);
+
+            // LISTA CONTEM OS MEMBROS DA EQUIPE ATUAL AQUI
+            medApp.services.listEquipesCompart({ nomeEquipe: equipe.nome,
+                                                 idEquipe: equipe.idHospital,
+                                                 membros: listaMembros});
+
+      };
+
+    });
+
+  },
+
+  // Lista equipes do médico para compartilhamento de pacientes
+  listEquipesCompart: function(equipe) {
+    console.log(equipe);
+    var template = document.createElement('div');
+    template.innerHTML =
+      '<ons-list-header>' +
+          '<ons-icon icon="hospital-o"></ons-icon>' +
+          equipe.nomeEquipe +
+      '</ons-list-header>';
+
+    var equipesCompartItem = template.firstChild;
+    var compartLista = document.querySelector('#lista-compartilhar');
+
+    for (var i = 0, len = equipe.membros.length; i < len; i++) {
+
+      equipesCompartItem.appendChild(medApp.services.listMembrosCompart(equipe.membros[i], equipe.idEquipe));
+
+    };
+
+    compartLista.appendChild(equipesCompartItem);
+
+  },
+
+  // Retorna membros da equipe selecionada para compartilhamento de pacientes
+  listMembrosCompart: function(membro, equipe) {
+
+    var template = document.createElement('div');
+    template.innerHTML =
+      '<ons-list-item tappable>' +
+        '<ons-icon icon="user-md"></ons-icon>' +
+          membro.nomeMembro +
+      '</ons-list-item>';
+
+    var membroCompartItem = template.firstChild;
+    $(membroCompartItem).data('idMedico', membro.idMembro);
+    $(membroCompartItem).data('equipe', equipe);
+    membroCompartItem.onclick = function() {
+
+      ons.notification.confirm({message: 'Deseja compartilhar com esse médico?'})
+        .then( function(confirm){
+
+          if(confirm) {
+            $.post("http://julianop.com.br:3000/api/compartilhamento/paciente",
+              {
+              idPaciente: medApp.services.getIdPaciente(),
+              idHospitalOrigem: $(membroCompartItem).data('equipe'),
+              idMedicoDestino: $(membroCompartItem).data('idMedico'),
+              })
+            .done(function (data){
+
+              ons.notification.alert(data);
+
+            });
+          };
+
+        });
+
+    };
+
+    return membroCompartItem;
+
+  },
+
+  // Função para preencher a tela de compartilhamento de pacientes caso esteja vazia
+  compartVazio: function() {
+
+    var template = document.createElement('div');
+    template.innerHTML =
+      '<ons-list-item>' +
+        'O compartilhamento de pacientes é feito por meio de suas equipes.' +
+        '<br>' +
+        'Crie uma equipe a partir da página de perfil médico!' +
+      '</ons-list-item>';
+
+    var msgVazio = template.firstChild;
+    var compartLista = document.querySelector('#lista-compartilhar');
+
+    compartLista.appendChild(msgVazio);
+
+  },
+
+  isUpdatedPaciente: 0,
+
+  isUpdatedGrupo: 0,
+
+  changeUpdatePaciente: function() {
+
+    this.isUpdatedPaciente = !(this.isUpdatedPaciente);
+
+  },
+
+  changeUpdateGrupo: function() {
+
+    this.isUpdatedGrupo = !(this.isUpdatedGrupo);
 
   }
 
 };
+
+

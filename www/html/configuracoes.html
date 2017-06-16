@@ -1,4 +1,3 @@
-<!-- Página de Configurações -->
 <ons-page>
 
   <ons-navigator id="configuracoesNav" page="configuracoes.html"></ons-navigator>
@@ -21,7 +20,7 @@
             <ons-icon icon="md-watch" class="list__item__icon"></ons-icon>
           </div>
           <div class="center">
-            Gerenciar Pulseiras
+            Adicionar Pulseiras
           </div>
         </ons-list-item>
 
@@ -41,6 +40,14 @@
         </ons-list-item>
       </ons-list>
 
+      <div class="profile-list">
+        <p>
+          <ons-button position="center" id="logoff-config" class="logoff-button">
+            Sair da Conta
+          </ons-button>
+        </p>
+      </div>
+
     </ons-page>
   </ons-template>
 
@@ -49,7 +56,7 @@
 
       <ons-toolbar class="toolbar">
         <div class="left"><ons-back-button>Voltar</ons-back-button></div>
-        <div class="center">Gerenciar Pulseiras</div>
+        <div class="center">Adicionar Pulseiras</div>
       </ons-toolbar>
 
       <br>
@@ -62,7 +69,7 @@
         2. Entre com sua conta FITBIT e clique em "Allow";
         <br>
         
-        <ons-button id="linkurl" class="center button-send">
+        <ons-button id="link-fitbit" class="center button-send">
           Link
         </ons-button>
 

@@ -1,8 +1,8 @@
 <ons-page id="perfilpaciente">
 
  <ons-toolbar class="toolbar">
+  <div class="left"> <ons-back-button>Voltar</ons-back-button></div>
   <div class="center"></div>
-  <div class="left"><ons-back-button>Voltar</ons-back-button></div>
  </ons-toolbar>
 
 
@@ -122,78 +122,26 @@
         </div>
       </ons-list-item>
 
+      <ons-list-item id="compart-pac" modifier="chevron" tappable>
+        <div class="left registro-icone">
+          <ons-icon icon="md-share" class="list__item__icon"></ons-icon>
+        </div>
+        <div class="center">
+          Compartilhar Paciente
+        </div>
+      </ons-list-item>
+
       <ons-list-item id="config-pac" modifier="chevron" tappable>
         <div class="left registro-icone">
           <ons-icon icon="md-settings" class="list__item__icon"></ons-icon>
         </div>
         <div class="center">
-          Configurações
+          Configurações do Paciente
         </div>
       </ons-list-item>
 
     </ons-list>
 
   </div>
-
-  <ons-template id="lembretes.html">
-      <ons-page id="lembretes">
-
-          <ons-toolbar class="toolbar">
-              <div class="center">Lembretes</div>
-              <div class="left"><ons-back-button>Voltar</ons-back-button></div>
-              <div class="right">
-                  <ons-toolbar-button>
-                      <ons-icon icon="md-plus" class="right" size="24px" id="add-lembrete"></ons-icon>
-                  </ons-toolbar-button>
-              </div>
-          </ons-toolbar>
-
-              <ons-list id="lista-lembretes">
-
-                  <ons-list-item>
-                      <div class="right">
-                          <ons-icon icon="md-delete" class="list__item__icon delete"></ons-icon>
-                      </div>
-                      <div>
-                          Lembrete #1
-                      </div>
-                  </ons-list-item>
-
-              </ons-list>
-
-      </ons-page>
-  </ons-template>
-
-  <!--<br>
-
-  <div id="lembretes-pac">
-
-    <ons-list class="menu-list" class="menu-list" id="lista-lembretes">
-
-    <div class="block-container">
-      <ons-list-header style="width: 100%;">
-        <div class="left">Lembretes</div>
-        <div class="right">
-          <ons-icon icon="md-plus" class="right" size="24px" id="add-lembrete"></ons-icon>
-        </div>
-      </ons-list-header>
-    </div>
-    
-      <ons-list-item style="width: 100%;">
-        <div class="right">
-          <ons-icon icon="md-delete" class="list__item__icon delete"></ons-icon>
-        </div>
-        <div>
-          Lembrete #1
-        </div>
-      </ons-list-item>
-
-    </ons-list>
-
-  </div>
-
-  <br> -->
 
 </ons-page>
-
-<!-- Página de Perfil do Paciente -->
