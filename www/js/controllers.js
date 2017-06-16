@@ -1368,6 +1368,12 @@ medApp.controllers = {
 
     	      medApp.services.iconeFeed(data[i], i);
     	      // onclick que redireciona está dentro da fç
+		    
+              page.querySelector('#ietm'+ i +'').onclick = function(){
+	        document.querySelector('#pacienteNav').pushPage('html/pacientes.html', {options: {animation: 'fade'}});
+	      };
+		    
+              
 
     	    };
 
