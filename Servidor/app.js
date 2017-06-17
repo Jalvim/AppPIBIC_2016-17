@@ -132,7 +132,7 @@ app.get('/teste', function(req, res){
 
 app.get('/cookie', function(req,res){
 	res.cookie('lifeTrackerIdM', 20);
-	res.redirect('http://127.0.0.1:3000/?idMedico='+req.cookies.lifeTrackerIdM);
+	res.redirect('http://julianop.com.br:3000/?idMedico='+req.cookies.lifeTrackerIdM);
 });
 
 app.listen(port);
