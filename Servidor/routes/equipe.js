@@ -16,7 +16,7 @@ router.route('/')
 	.get(function(req, res){
 		mysql.getConnection(function(err, connection) {
 			var query = {
-					sql: `SELECT * FROM Hospital`,
+					sql: `SELECT * FROM Equipe`,
 					timeout: 1000
 				}
 
@@ -28,7 +28,7 @@ router.route('/')
 						res.json(rows);
 					}
 					else{
-						res.send("Erro ao buscar o hospital selecionado. Erro SQL.");
+						res.send("Erro ao buscar a Equipe selecionado. Erro SQL.");
 					}
 			});
 		});
@@ -39,7 +39,7 @@ router.route('/')
 			if (req.hasOwnProperty('body') &&
 				req.body.hasOwnProperty('nome')){
 				var query = {
-					sql: `INSERT INTO Hospital (nome) VALUES (${connection.escape(req.body.nome)})`,
+					sql: `INSERT INTO Equipe (nome) VALUES (${connection.escape(req.body.nome)})`,
 					timeout: 1000
 				}
 
@@ -49,20 +49,20 @@ router.route('/')
 					console.log(fields);
 					if(err == null) {
                         // evitando fazer outra query no banco.
-                        var createdHospital = {
+                        var createdEquipe = {
                             "nome": req.body.nome,
-                            "idHospital": rows.insertId
+                            "idEquipe": rows.insertId
                         }
-						res.json(createdHospital);
+						res.json(createdEquipe);
 					}
 					else{
-						res.send("Erro ao criar o hospital. Erro SQL.");
+						res.send("Erro ao criar o Equipe. Erro SQL.");
 					}
 
 				});
 			}
 			else {
-				res.send('Insira o nome do hospital a ser criado. Erro.');
+				res.send('Insira o nome do Equipe a ser criado. Erro.');
 			}
 		});
 	})
@@ -70,23 +70,23 @@ router.route('/')
 
 		mysql.getConnection(function(err, connection) {
 			if (req.hasOwnProperty('body') &&
-				req.body.hasOwnProperty('idHospital') &&
+				req.body.hasOwnProperty('idEquipe') &&
 				req.body.hasOwnProperty('nome')){
 
 				var selector = {
-					sql:`SELECT * FROM Hospital WHERE idHospital = ${connection.escape(req.body.idHospital)} LIMIT 1`,
+					sql:`SELECT * FROM Equipe WHERE idEquipe = ${connection.escape(req.body.idEquipe)} LIMIT 1`,
 					timeout: 10000
 					}
 
 				connection.query(selector, function(err, rows, fields) {
 
 					if (err != null) {
-						console.log('Erro ao selecionar hospital a ser editado na base de dados.');
-						res.send('Erro ao selecionar hospital a ser editado na base de dados.');
+						console.log('Erro ao selecionar Equipe a ser editado na base de dados.');
+						res.send('Erro ao selecionar Equipe a ser editado na base de dados.');
 					}
 					else if (rows.length < 1) {
-						console.log('Hospital nao encontrado.');
-						res.send('Hospital nao encontrado.');
+						console.log('Equipe nao encontrado.');
+						res.send('Equipe nao encontrado.');
 					}
 					else {
 						console.log(rows);
@@ -95,18 +95,18 @@ router.route('/')
 							nome = req.body.nome;
 
 						queryString = {
-							sql: `UPDATE Hospital SET nome= ${connection.escape(req.body.nome)} WHERE idHospital= ${connection.escape(req.body.idHospital)} LIMIT 1`,
+							sql: `UPDATE Equipe SET nome= ${connection.escape(req.body.nome)} WHERE idEquipe= ${connection.escape(req.body.idEquipe)} LIMIT 1`,
 							timeout: 100000
 						}
 						console.log(queryString.sql);
 						connection.query(queryString, function(error, results){
 							if (error != null) {
 								console.log(error);
-								console.log('Erro ao alterar o hospital na base de dados');
-								res.send('Erro ao alterar o hospital de pacientes na base de dados');
+								console.log('Erro ao alterar o Equipe na base de dados');
+								res.send('Erro ao alterar o Equipe de pacientes na base de dados');
 							} else {
-								console.log('Hospital editado com sucesso.');
-								res.send('Hospital editado com sucesso.');
+								console.log('Equipe editado com sucesso.');
+								res.send('Equipe editado com sucesso.');
 							}
 
 						});
@@ -114,7 +114,7 @@ router.route('/')
 				});
 			}
 			else {
-				res.send('Insira o nome do hospital a ser editado. Erro.');
+				res.send('Insira o nome do Equipe a ser editado. Erro.');
 			}
 		});
 	})
@@ -122,22 +122,22 @@ router.route('/')
 
 		mysql.getConnection(function(err, connection) {
 
-			console.log(req.body.hasOwnProperty('idHospital'));
-			if (req.body.hasOwnProperty('idHospital')) {
+			console.log(req.body.hasOwnProperty('idEquipe'));
+			if (req.body.hasOwnProperty('idEquipe')) {
 				connection.query(
-				  'DELETE FROM Hospital WHERE idHospital=? LIMIT 1',
-				  [req.body.idHospital],
+				  'DELETE FROM Equipe WHERE idEquipe=? LIMIT 1',
+				  [req.body.idEquipe],
 					function(err){
 						if (err != null) {
-							res.send('Erro ao remover hospital');
+							res.send('Erro ao remover Equipe');
 							return;
 						}
 						else{
-							res.send('Hospital removido com sucesso');
+							res.send('Equipe removido com sucesso');
 						}
 				  });
 			} else {
-				res.send('Indique o id único do hospital a ser removido da base.');
+				res.send('Indique o id único do Equipe a ser removido da base.');
 			}
 		});
 	});
@@ -148,7 +148,7 @@ router.route('/medico/:idMedico')
 		mysql.getConnection(function (err, connection){
 
 			var getHospitaisMedico = {
-				sql: `SELECT Hospital.idHospital, Hospital.nome FROM Hospital INNER JOIN Hospital_Medico ON Hospital_Medico.idHospital = Hospital.idHospital WHERE Hospital_Medico.idMedico =${req.params.idMedico}`,
+				sql: `SELECT Equipe.idEquipe, Equipe.nome FROM Equipe INNER JOIN Equipe_Medico ON Equipe_Medico.idEquipe = Equipe.idEquipe WHERE Equipe_Medico.idMedico =${req.params.idMedico}`,
 				timeout: 10000
 			}
 
@@ -175,9 +175,9 @@ router.route('/relacoes/')
 		mysql.getConnection(function(err, connection) {
 			if (req.hasOwnProperty('body') &&
 				req.body.hasOwnProperty('idMedico') &&
-				req.body.hasOwnProperty('idHospital')){
+				req.body.hasOwnProperty('idEquipe')){
 				var query ={
-					sql: `INSERT INTO Hospital_Medico (idMedico, idHospital) VALUES (${connection.escape(req.body.idMedico)}, ${connection.escape(req.body.idHospital)})`,
+					sql: `INSERT INTO Equipe_Medico (idMedico, idEquipe) VALUES (${connection.escape(req.body.idMedico)}, ${connection.escape(req.body.idEquipe)})`,
 					timeout: 1000
 				}
 
@@ -186,16 +186,16 @@ router.route('/relacoes/')
 					console.log(rows);
 					console.log(fields);
 					if(err == null){
-						res.send("Medico adicionado ao Hospital com sucesso.");
+						res.send("Medico adicionado ao Equipe com sucesso.");
 					}
 					else{
-						res.send("Erro ao adicionar o medico ao hospital. Erro SQL.");
+						res.send("Erro ao adicionar o medico ao Equipe. Erro SQL.");
 					}
 
 				});
 			}
 			else {
-				res.send('Medico não foi adicionado ao Hospital. Erro.');
+				res.send('Medico não foi adicionado ao Equipe. Erro.');
 			}
 		});
 	})
@@ -205,40 +205,40 @@ router.route('/relacoes/')
 
 			if (req.hasOwnProperty('body') &&
 				req.body.hasOwnProperty('idMedico') &&
-				req.body.hasOwnProperty('idHospital') ) {
+				req.body.hasOwnProperty('idEquipe') ) {
 				connection.query(
-				  'DELETE FROM hospital_medico WHERE idMedico=? AND idHospital=?',
-				  [req.body.idMedico, req.body.idHospital],
+				  'DELETE FROM Equipe_medico WHERE idMedico=? AND idEquipe=?',
+				  [req.body.idMedico, req.body.idEquipe],
 					function(err) {
 						if (err != null) {
-							console.log('Error ao remover medico do hospital');
-							return res.send('Error ao remover medico do hospital');
+							console.log('Error ao remover medico do Equipe');
+							return res.send('Error ao remover medico do Equipe');
 						}
 						else {
-							console.log('Medico removido do hospital com sucesso');
-							return res.send('Medico removido do hospital com sucesso');
+							console.log('Medico removido do Equipe com sucesso');
+							return res.send('Medico removido do Equipe com sucesso');
 						}
 				  });
 			} else {
-				return res.send('Indique o id único do hospital e do medico a ser removido.');
+				return res.send('Indique o id único do Equipe e do medico a ser removido.');
 			}
 		});
 	});
 
-router.route('/:idHospital/medicos')
+router.route('/:idEquipe/medicos')
 	.get(function(req, res) {
 		mysql.getConnection(function(err, connection) {
 
 			var query = {
-				sql: `SELECT * FROM Medico med WHERE med.idMedico IN (SELECT hm.idMedico FROM Hospital_Medico as hm WHERE hm.idHospital = ${req.params.idHospital})`,
+				sql: `SELECT * FROM Medico med WHERE med.idMedico IN (SELECT hm.idMedico FROM Equipe_Medico as hm WHERE hm.idEquipe = ${req.params.idEquipe})`,
 				timeout: 1000
 			}
 
 			connection.query(query, function(error, rows) {
 				if (error != null) {
 					console.log(error);
-					console.log('Erro ao recuperar médicos de um hospital.');
-					res.send('Erro ao recuperar médicos do hospital.');
+					console.log('Erro ao recuperar médicos de um Equipe.');
+					res.send('Erro ao recuperar médicos do Equipe.');
 				} else {
                     var doctorEmails = rows.map(function(doctor) {
                         return retrieveDoctorEmail(doctor.idMedico);
