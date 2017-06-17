@@ -1378,7 +1378,7 @@ medApp.controllers = {
 	            document.querySelector('#pacienteNav').pushPage('html/pacientes.html', {options: {animation: 'fade'}});
 
             */
-            
+
     	    };
 
         };
@@ -1436,7 +1436,7 @@ medApp.controllers = {
       $('#lista-lembretes').empty();
       $.get('http://julianop.com.br:3000/api/lembrete/' + medApp.services.getIdPaciente())
       .done(function(data){
-
+        console.log(data);
         // Cria os lembretes no inverso dos id's retornados (ordem cronológica)
         for (var i = data.length - 1; i >= 0; i--) {
 
