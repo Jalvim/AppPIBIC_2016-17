@@ -2319,14 +2319,14 @@ medApp.controllers = {
 
           if (email !== '') {
 
-            $.get('http://julianop.com.br:3000/api/equipe/busca/email/' + email)
+            $.post('http://julianop.com.br:3000/api/equipe/relacoes/medicos/email',
+            {
+              email: email,
+              idEquipe: medApp.services.getEquipeAtual()
+            })
             .done(function(data) {
 
-              $.post("http://julianop.com.br:3000/api/hospitais/relacoes",
-                {
-                  idMedico: data[0].idMedico,
-                  idEquipe: medApp.services.getEquipeAtual(),
-                });
+                ons.notification.alert(data);
 
             });
           }
@@ -2344,7 +2344,7 @@ medApp.controllers = {
           if(confirm) {
 
             $.ajax({
-              url: 'http://julianop.com.br:3000/api/equipe/relacoes',
+              url: 'http://julianop.com.br:3000/api/equipe/relacoes/medicos',
               type: 'DELETE',
               data: {
                 idEquipe: medApp.services.getEquipeAtual(),
@@ -2352,8 +2352,10 @@ medApp.controllers = {
               }
             })
             .done(function(data) {
-              console.log(data);
+
+              ons.notification.alert(data);
               document.querySelector('#medicoNav').popPage();
+
             });
 
           };
@@ -2430,14 +2432,14 @@ medApp.controllers = {
 
       // Limpa e popula a lista de equipes
       $('#lista-compartilhar').empty();
-      $.get('http://julianop.com.br:3000/api/hospitais/medico/' + medApp.services.getIdMedico())
+      $.get('http://julianop.com.br:3000/api/equipe/medico/' + medApp.services.getIdMedico())
       .done(function(equipes) {
 
-          if(equipes[0].hasOwnProperty('idHospital')) {
+          if(equipes[0].hasOwnProperty('idEquipe')) {
+            
+            for (var i = 0, len = equipes.length; i < len; i++) {
 
-            for (var i = 0, equipesLen = equipes.length; i < equipesLen; i++) {
-
-              var listaMembros = medApp.services.getMembrosEquipe(equipes[i]);
+              medApp.services.listEquipesCompart(equipes[i]);
 
             };
 
@@ -2450,6 +2452,88 @@ medApp.controllers = {
       });
     });
 
-  }
+  },
+
+  ////////////////////////////////////////
+  // Controlador de Pacientes de Equipe //
+  ////////////////////////////////////////
+
+  pacientesequipe: function(page) {
+
+    // Lista os pacientes de uma determinada equipe
+    page.addEventListener('show', function(event) {
+
+      // Limpa e popula a lista de pacientes da equipe
+      $('#lista-pac-equipe').empty();
+      $.get('http://julianop.com.br:3000/api/equipe/' + medApp.services.getEquipeAtual() + '/pacientes')
+      .done(function(pacientes) {
+
+        if(pacientes[0].hasOwnProperty('idPaciente')) {
+
+            for (var i = 0, len = pacientes.length; i < len; i++) {
+
+              var pacientesInfo = pacientes[i];
+
+              medApp.services.createPaciente(
+                {
+                  statusPaciente: (pacientesInfo.ativo == 1) ? 'ativo' : 'inativo',
+                  img: medApp.services.verificarFoto(pacientesInfo.foto),
+                  nomePaciente: pacientesInfo.nomePaciente,
+                  dataPaciente: pacientesInfo.dataDeNascimento,
+                  causaPaciente: pacientesInfo.causaDaInternacao,
+                  hospital: pacientesInfo.telefone,
+                  idPaciente: pacientesInfo.idPaciente,
+                  medicoResp: pacientesInfo.medicoResposavel
+                }, 'equipes');
+
+            };
+
+          };
+
+      });
+
+    });
+
+    // Chama a página de editar pacientes da equipe
+    page.querySelector('#edit-pac-equipe').onclick = function() {
+
+      document.querySelector('#medicoNav').pushPage('html/deletepacienteequipe.html', {options: {animation: 'slide'}});
+
+    };
+
+  },
+
+  ///////////////////////////////////////////////
+  // Controlador de Editar Pacientes de Equipe //
+  ///////////////////////////////////////////////
+
+  deletepacienteequipe: function(page) {
+
+    // Lista os pacientes de uma determinada equipe para remoção
+    page.addEventListener('show', function(event) {
+
+      // Limpa e popula a lista de pacientes da equipe para remoção
+      $('#delete-pac-equipe').empty();
+      $.get('http://julianop.com.br:3000/api/equipe/' + medApp.services.getEquipeAtual() + '/pacientes')
+      .done(function(pacientes) {
+
+        if(pacientes[0].hasOwnProperty('idPaciente')) {
+
+            for (var i = 0, len = pacientes.length; i < len; i++) {
+
+              var pacientesInfo = pacientes[i];
+
+              medApp.services.editPacientesEquipe({ nome: pacientesInfo.nome,
+                                                    idPaciente: pacientesInfo.idPaciente });
+
+            };
+
+          };
+
+      });
+
+    });
+
+  }  
 
 };

@@ -1006,10 +1006,10 @@ medApp.services = {
 
           if(confirm) {
             $.ajax({
-              url: 'http://julianop.com.br:3000/api/hospitais/relacoes',
+              url: 'http://julianop.com.br:3000/api/equipe/relacoes/medicos',
               type: 'DELETE',
               data: {
-                idHospital: medApp.services.getEquipeAtual(),
+                idEquipe: medApp.services.getEquipeAtual(),
                 idMedico: $(membroListItem).data('idMedico')
               }
             })
@@ -1064,17 +1064,45 @@ medApp.services = {
 
     var template = document.createElement('div');
     template.innerHTML =
-      '<ons-list-header>' +
-          '<ons-icon icon="hospital-o"></ons-icon>' +
-          equipe.nomeEquipe +
-      '</ons-list-header>';
+      '<ons-list-item class="equipes-lista" modifier="longdivider" tappable>' +
+        '<div class="left">' +
+          '<ons-icon icon="hospital-o" class="list__item__thumbnail" size="30px"></ons-icon>' +
+        '</div>' +
+        '<div class="center">' +
+          '<ons-row class="equipes-header">' +
+            '<span class="list__item__title nome">' +
+            equipe.nome
+            '</span>' +
+          '</ons-row>' +
+        '</div>' +
+        '<div class="right">' +
+          '<ons-icon icon="md-chevron-right" size="20px"></ons-icon>' +
+        '</div>' +
+      '</ons-list-item>';
 
     var equipesCompartItem = template.firstChild;
+    $(equipesCompartItem).data('idEquipe', equipe.idEquipe);
     var compartLista = document.querySelector('#lista-compartilhar');
 
-    for (var i = 0, len = equipe.membros.length; i < len; i++) {
+    equipesCompartItem.onclick = function() {
 
-      equipesCompartItem.appendChild(medApp.services.listMembrosCompart(equipe.membros[i], equipe.idEquipe));
+      ons.notification.confirm({message: 'Deseja compartilhar com essa equipe?'})
+        .then( function(confirm){
+
+          if(confirm) {
+            $.post("http://julianop.com.br:3000/api/equipe/relacoes/pacientes",
+              {
+              idPaciente: medApp.services.getIdPaciente(),
+              idEquipe: $(equipesCompartItem).data('idEquipe'),
+              })
+            .done(function (data){
+
+              ons.notification.alert(data);
+
+            });
+          };
+
+        });
 
     };
 
@@ -1082,7 +1110,7 @@ medApp.services = {
 
   },
 
-  // Retorna membros da equipe selecionada para compartilhamento de pacientes
+  /* Retorna membros da equipe selecionada para compartilhamento de pacientes
   listMembrosCompart: function(membro, equipe) {
 
     var template = document.createElement('div');
@@ -1121,6 +1149,7 @@ medApp.services = {
     return membroCompartItem;
 
   },
+  */
 
   // Função para preencher a tela de compartilhamento de pacientes caso esteja vazia
   compartVazio: function() {
@@ -1153,6 +1182,59 @@ medApp.services = {
   changeUpdateGrupo: function() {
 
     this.isUpdatedGrupo = !(this.isUpdatedGrupo);
+
+  },
+
+  editPacientesEquipe: function(paciente) {
+
+    var template = document.createElement('div');
+    template.innerHTML =
+      '<ons-list-item>' +
+        '<div class="left">' +
+          '<img class="list__item__thumbnail" src="http://www.clker.com/cliparts/A/Y/O/m/o/N/placeholder-md.png">' +
+        '</div>' +
+        '<div class="center">' +
+          '<span class="list__item__title">' +
+          paciente.nome +
+          '</span>' +
+        '</div>' +
+        '<div class="right">' +
+          '<ons-icon icon="md-delete" size="24px" class="list__item__icon"></ons-icon>' +
+        '</div>' +
+      '</ons-list-item>';
+
+    var pacEditEquipe = template.firstChild;
+    $(pacEditEquipe).data('idPaciente', paciente.idPaciente);
+    var editEquipeLista = document.querySelector('#delete-pac-equipe');
+
+    // Funcionalidade de remover paciente da equipe
+    pacEditEquipe.querySelector('.right').onclick = function() {
+
+        ons.notification.confirm({message: 'Deseja remover este paciente da equipe?'})
+        .then( function(confirm){
+
+          if(confirm) {
+            $.ajax({
+              url: 'http://julianop.com.br:3000/api/equipe/relacoes/pacientes',
+              type: 'DELETE',
+              data: {
+                idEquipe: medApp.services.getEquipeAtual(),
+                idPaciente: $(pacEditEquipe).data('idPaciente')
+              }
+            })
+            .done(function(data) {
+
+              ons.notification.alert(data);
+              editEquipeLista.removeChild(pacEditEquipe);
+
+            });
+          };
+
+        });
+
+    };
+
+    editEquipeLista.appendChild(pacEditEquipe);
 
   }
 
