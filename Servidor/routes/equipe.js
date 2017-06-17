@@ -156,7 +156,7 @@ router.route('/medico/:idMedico')
 			}
 
 			if (err) throw err;
-			connection.query(getHEquipeMedico, function(err, rows, fields) {
+			connection.query(getEquipeMedico, function(err, rows, fields) {
 				if(err == null) {
 					res.json(rows);
 				}
