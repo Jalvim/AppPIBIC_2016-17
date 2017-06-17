@@ -168,19 +168,44 @@ medApp.services = {
     var pacienteItem = template.firstChild;
     $(pacienteItem).data('idPaciente', data.idPaciente);
 
-    pacienteItem.onclick = function() {
+    // Mostra o perfil do paciente selecionado a partir da lista de pacientes ou grupos
+    if ((lista === 'pacientes') || (lista === 'grupo')) {
 
-      medApp.services.setPacienteAtual( { idPaciente: $(pacienteItem).data('idPaciente'),
-                                          nome: data.nomePaciente,
-                                          dataIntFormatoTraco: dataPacienteFormatoTraco,
-                                          dataIntFormatoBarra: dataPacienteFormatoBarra,
-                                          causa: data.causaPaciente,
-                                          medicoResp: data.medicoResp,
-                                          hospital: data.hospital,
-                                          foto: data.img
-                                        });
+      pacienteItem.onclick = function() {
 
-      document.querySelector('#pacienteNav').pushPage('html/perfilpaciente.html');
+        medApp.services.setPacienteAtual( { idPaciente: $(pacienteItem).data('idPaciente'),
+                                            nome: data.nomePaciente,
+                                            dataIntFormatoTraco: dataPacienteFormatoTraco,
+                                            dataIntFormatoBarra: dataPacienteFormatoBarra,
+                                            causa: data.causaPaciente,
+                                            medicoResp: data.medicoResp,
+                                            hospital: data.hospital,
+                                            foto: data.img
+                                          });
+
+        document.querySelector('#pacienteNav').pushPage('html/perfilpaciente.html');
+
+      };
+
+    // Muda para a aba de pacientes e mostra o perfil do paciente selecionado a partir de equipes
+    } else if (lista === 'equipes'){
+
+      pacienteItem.onclick = function() {
+
+        document.querySelector('#tab-inicial').setActiveTab(1, {options: {animation: 'slide'}});
+        medApp.services.setPacienteAtual( { idPaciente: $(pacienteItem).data('idPaciente'),
+                                            nome: data.nomePaciente,
+                                            dataIntFormatoTraco: dataPacienteFormatoTraco,
+                                            dataIntFormatoBarra: dataPacienteFormatoBarra,
+                                            causa: data.causaPaciente,
+                                            medicoResp: data.medicoResp,
+                                            hospital: data.hospital,
+                                            foto: data.img
+                                          });
+
+        document.querySelector('#pacienteNav').pushPage('html/perfilpaciente.html');
+
+      };
 
     };
 
@@ -191,6 +216,10 @@ medApp.services = {
     } else if (lista === 'grupo') {
 
       var pacientesLista = document.querySelector('#lista-pacientes-grupo');
+
+    } else if (lista === 'equipes') {
+
+      var pacientesLista = document.querySelector('#lista-pac-equipe');
 
     };
 
@@ -402,7 +431,7 @@ medApp.services = {
       + '</ons-list-item>';*/
 
     } else {
-      console.log(info);
+
       //console.log(JSON.stringify(info));
       var data =  info.reminder.timestamp.substring(8,10) + '/' +
                   info.reminder.timestamp.substring(5,7) + '/' +
@@ -601,6 +630,7 @@ medApp.services = {
 
   },
 
+  /*
   showHospitais: function(index, objeto){
     var template = document.createElement('div');
 
@@ -633,6 +663,7 @@ medApp.services = {
     };
 
   },
+  */
 
   showPulseirasDisponiveis2: function(index) {
     var template = document.createElement('div');
@@ -828,20 +859,38 @@ medApp.services = {
     // Template de cada equipe que o médico atual pertence
     var template = document.createElement('div');
     template.innerHTML =
-      '<ons-list-item>' +
-        '<ons-list-item>' +
-          '<ons-icon icon="hospital-o"></ons-icon>' +
-           equipe.nomeEquipe +
+      '<ons-list-item class="equipes-lista" modifier="longdivider">' +
+      '<div class="left">' +
+        '<ons-icon icon="hospital-o" class="list__item__thumbnail" size="40px"></ons-icon>' +
+      '</div>' +
+      '<div class="center">' +
+        '<ons-row class="equipes-header">' +
+          '<span class="list__item__title nome">' +
+          equipe.nomeEquipe +
+          '</span>' +
+        '</ons-row>' +
+        '<ons-list-item class="pac-equipe" tappable>' +
+          '<ons-icon icon="md-accounts" class="list__item__icon"></ons-icon>' +
+          'Ver Pacientes' +
         '</ons-list-item>' +
         '<ons-list-item class="ver-equipe" tappable>' +
-        '<ons-icon icon="md-accounts"></ons-icon>' +
-        'Gerenciar Equipe' +
+          '<ons-icon icon="ion-medkit" class="list__item__icon"></ons-icon>' +
+          'Gerenciar Equipe' +
         '</ons-list-item>' +
-      '</ons-list-item>';
+      '</div>' +
+    '</ons-list-item>';
 
     var equipeListItem = template.firstChild;
     $(equipeListItem).data('idEquipe', equipe.idEquipe);
     var equipeLista = document.querySelector('#lista-equipe');
+
+    // Funcionalidade de ver pacientes da equipe
+    equipeListItem.querySelector('.pac-equipe').onclick = function() {
+
+      medApp.services.setEquipeAtual($(equipeListItem).data('idEquipe'));
+      document.querySelector('#medicoNav').pushPage('html/pacientesequipe.html');
+
+    };
 
     // Funcionalidade de gerenciar equipe
     equipeListItem.querySelector('.ver-equipe').onclick = function() {
