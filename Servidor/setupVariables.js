@@ -251,46 +251,88 @@ module.exports = function(app) {
 			idPulseira: 57
 		}
 	};
-	app.optionsPostTestRequestHospitais= {
+
+	//Rotas de testes de criação de equipes
+	app.optionsPostTestRequestEquipe= {
 		method:'POST',
-		url:'http://127.0.0.1:3000/api/hospitais/',
+		url:'http://127.0.0.1:3000/api/equipe/',
 		form:{ 
 			nome: 'Sriio-Libanês'	
 		}
 	};
-	app.optionsPutTestRequestHospitais = {
+	app.optionsPutTestRequestEquipe = {
 		method:'PUT',
-		url:'http://127.0.0.1:3000/api/hospitais/',
+		url:'http://127.0.0.1:3000/api/equipe/',
 		form:{
-			idHospital: 1,
+			idEquipe: 20,
 			nome: 'Sírio-Libanês'	
 		}
 	};
-	app.optionsDeleteTestRequestHospitais = {
+	app.optionsDeleteTestRequestEquipe = {
 		method:'DELETE',
-		url:'http://127.0.0.1:3000/api/hospitais/',
+		url:'http://127.0.0.1:3000/api/equipe/',
 		form:{ 
-			idHospital: 2
-		}
-	};
-	app.optionsPostTestRequestHospitaisRelac = {
-		method:'POST',
-		url:'http://127.0.0.1:3000/api/hospitais/relacoes/',
-		form:{ 
-			idHospital: 1,
-			idMedico: 16
-		}
-	};
-	app.optionsDeleteTestRequestHospitaisRelac = {
-		method:'DELETE',
-		url:'http://127.0.0.1:3000/api/hospitais/relacoes/',
-		form:{ 
-			idHosPac: 1,
-			idHospital: 1,
-			idMedico: 16
+			idEquipe: 20
 		}
 	};
 
+	//Rotas de testes de inserção de médicos na equipe
+	app.optionsPostTestRequestEquipeRelacMedico = {
+		method:'POST',
+		url:'http://127.0.0.1:3000/api/equipe/relacoes/medicos',
+		form:{ 
+			idEquipe: 1,
+			idMedico: 18
+		}
+	};
+	app.optionsDeleteTestRequestEquipeRelacMedico = {
+		method:'DELETE',
+		url:'http://127.0.0.1:3000/api/equipe/relacoes/medicos',
+		form:{ 
+			idEquMed: 26,
+			idEquipe: 1,
+			idMedico: 18
+		}
+	};
+
+	//Rotas de testes de inserção de pacientes na equipe
+	app.optionsPostTestRequestEquipeRelacPaciente = {
+		method:'POST',
+		url:'http://127.0.0.1:3000/api/equipe/relacoes/pacientes',
+		form:{ 
+			idEquipe: 1,
+			idPaciente: 20
+		}
+	};
+	app.optionsDeleteTestRequestEquipeRelacPaciente = {
+		method:'DELETE',
+		url:'http://127.0.0.1:3000/api/equipe/relacoes/pacientes',
+		form:{ 
+			idEquPac: 1,
+			idEquipe: 1,
+			idPaciente: 20
+		}
+	};
+
+	//Rotas de testes de inserção de pulseiras na equipe
+	app.optionsPostTestRequestEquipeRelacPulseira = {
+		method:'POST',
+		url:'http://127.0.0.1:3000/api/equipe/relacoes/pulseiras',
+		form:{ 
+			idEquipe: 1,
+			idPulseira: 47
+		}
+	};
+	app.optionsDeleteTestRequestEquipeRelacPulseira = {
+		method:'DELETE',
+		url:'http://127.0.0.1:3000/api/equipe/relacoes/pulseiras',
+		form:{ 
+			idEquPul: 1,
+			idEquipe: 1,
+			idPulseira: 47
+		}
+	};
+	
 	app.optionsPostTestRequestCompartilharPaciente = {
 		method:'POST',
 		url:'http://127.0.0.1:3000/api/compartilhamento/',

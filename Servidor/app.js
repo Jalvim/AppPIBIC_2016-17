@@ -22,20 +22,20 @@ var express = require('express'),
 	equipeRouter = require('./routes/equipe.js');
 	compartilhamentoRouter = require('./routes/compartilhamento.js');
 	feedRouter = require('./routes/feed.js');
-
+	//request = require('request');
 
 //setando todas as variáveis de options nos requests http de teste
 setupOptionsVariables(app);
 
 // var getDynamicHealthParams = require('./lib/getDynamicHealthParamsLib.js');
 // getDynamicHealthParams(58, new Date(), 30);
-
-// request(app.optionsPutTestRequestMedico, function(err, httpResponse, body) {
-// 	console.log(err);
-// 	//console.log(httpResponse);
-// 	console.log(body);
-// });
-
+/*
+ request(app.optionsDeleteTestRequestEquipeRelacPulseira, function(err, httpResponse, body) {
+ 	console.log(err);
+ 	//console.log(httpResponse);
+ 	console.log(body);
+ });
+*/
 var spawn = require('child_process').spawn;
 
 

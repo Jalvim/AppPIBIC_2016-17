@@ -98,7 +98,7 @@ router.route('/')
 
 						queryString = {
 							sql: `UPDATE Equipe SET nome= ${connection.escape(req.body.nome)} WHERE idEquipe= ${connection.escape(req.body.idEquipe)} LIMIT 1`,
-							timeout: 100000
+							timeout: 10000
 						}
 						console.log(queryString.sql);
 						connection.query(queryString, function(error, results){
@@ -150,13 +150,13 @@ router.route('/medico/:idMedico')
 
 		mysql.getConnection(function (err, connection){
 
-			var getHospitaisMedico = {
+			var getEquipeMedico = {
 				sql: `SELECT Equipe.idEquipe, Equipe.nome FROM Equipe INNER JOIN Equipe_Medico ON Equipe_Medico.idEquipe = Equipe.idEquipe WHERE Equipe_Medico.idMedico =${req.params.idMedico}`,
 				timeout: 10000
 			}
 
 			if (err) throw err;
-			connection.query(getHospitaisMedico, function(err, rows, fields) {
+			connection.query(getHEquipeMedico, function(err, rows, fields) {
 				if(err == null) {
 					res.json(rows);
 				}
@@ -190,16 +190,16 @@ router.route('/relacoes/medicos')
 					console.log(rows);
 					console.log(fields);
 					if(err == null){
-						res.send("Medico adicionado ao Equipe com sucesso.");
+						res.send("Medico adicionado à equipe com sucesso.");
 					}
 					else{
-						res.send("Erro ao adicionar o medico ao Equipe. Erro SQL.");
+						res.send("Erro ao adicionar o medico è equipe. Erro SQL.");
 					}
 
 				});
 			}
 			else {
-				res.send('Medico não foi adicionado ao Equipe. Erro.');
+				res.send('Medico não foi adicionado à equipe. Erro.');
 			}
 		});
 	})
@@ -211,16 +211,18 @@ router.route('/relacoes/medicos')
 				req.body.hasOwnProperty('idMedico') &&
 				req.body.hasOwnProperty('idEquipe') ) {
 				connection.query(
-				  'DELETE FROM Equipe_medico WHERE idMedico=? AND idEquipe=?',
+				  'DELETE FROM Equipe_Medico WHERE idMedico=? AND idEquipe=?',
 				  [req.body.idMedico, req.body.idEquipe],
-					function(err) {
+					function(err, rows, fields) {
 						if (err != null) {
+							console.log(rows);
+							console.log(fields);
 							console.log('Error ao remover medico do Equipe');
 							return res.send('Error ao remover medico do Equipe');
 						}
 						else {
-							console.log('Medico removido do Equipe com sucesso');
-							return res.send('Medico removido do Equipe com sucesso');
+							console.log('Medico removido da equipe com sucesso');
+							return res.send('Medico removido da equipe com sucesso');
 						}
 				  });
 			} else {
@@ -276,7 +278,7 @@ router.route('/relacoes/medicos/email')
 		});
 	});
 
-	
+
 //Operações sobre a tabela Equipe_Paciente, adicionando pacientes à equipe.
 	router.route('/relacoes/pacientes')
 	.post(function(req, res) {
@@ -286,7 +288,7 @@ router.route('/relacoes/medicos/email')
 				req.body.hasOwnProperty('idPaciente') &&
 				req.body.hasOwnProperty('idEquipe')){
 				var query ={
-					sql: `INSERT INTO Equipe_Paciente (idMedico, idEquipe) VALUES (${connection.escape(req.body.idPaciente)}, ${connection.escape(req.body.idEquipe)})`,
+					sql: `INSERT INTO Equipe_Paciente (idPaciente, idEquipe) VALUES (${connection.escape(req.body.idPaciente)}, ${connection.escape(req.body.idEquipe)})`,
 					timeout: 1000
 				}
 
@@ -316,16 +318,16 @@ router.route('/relacoes/medicos/email')
 				req.body.hasOwnProperty('idPaciente') &&
 				req.body.hasOwnProperty('idEquipe') ) {
 				connection.query(
-				  'DELETE FROM Equipe_Paciente WHERE idPaciente=? AND idEquipe=?',
-				  [req.body.idMedico, req.body.idEquipe],
+				  'DELETE FROM Equipe_Paciente WHERE idPaciente=? AND idEquipe=? LIMIT 1',
+				  [req.body.idPaciente, req.body.idEquipe],
 					function(err) {
 						if (err != null) {
 							console.log('Error ao remover Paciente do Equipe');
 							return res.send('Error ao remover Paciente do Equipe');
 						}
 						else {
-							console.log('Medico removido do Equipe com sucesso');
-							return res.send('Medico removido do Equipe com sucesso');
+							console.log('Paciente removido da equipe com sucesso');
+							return res.send('Paciente removido da equipe com sucesso');
 						}
 				  });
 			} else {
@@ -352,16 +354,16 @@ router.route('/relacoes/pulseiras')
 					console.log(rows);
 					console.log(fields);
 					if(err == null){
-						res.send("Pulseira adicionado ao equipe com sucesso.");
+						res.send("Pulseira adicionada à equipe com sucesso.");
 					}
 					else{
-						res.send("Erro ao adicionar o pulseira à equipe. Erro SQL.");
+						res.send("Erro ao adicionar a pulseira à equipe. Erro SQL.");
 					}
 
 				});
 			}
 			else {
-				res.send('Pulseira não foi adicionado à equipe. Erro.');
+				res.send('Pulseira não foi adicionada à equipe. Erro.');
 			}
 		});
 	})
@@ -373,20 +375,20 @@ router.route('/relacoes/pulseiras')
 				req.body.hasOwnProperty('idPulseira') &&
 				req.body.hasOwnProperty('idEquipe') ) {
 				connection.query(
-				  'DELETE FROM Equipe_Pulseira WHERE Pulseira=? AND idEquipe=?',
-				  [req.body.idMedico, req.body.idEquipe],
+				  'DELETE FROM Equipe_Pulseira WHERE idPulseira=? AND idEquipe=? LIMIT 1',
+				  [req.body.idPulseira, req.body.idEquipe],
 					function(err) {
 						if (err != null) {
-							console.log('Error ao remover pulseira da equipe');
-							return res.send('Error ao remover pulseira da equipe');
+							console.log('Erro ao remover pulseira da equipe');
+							return res.send('Erro ao remover pulseira da equipe');
 						}
 						else {
-							console.log('Pulseira removido da equipe com sucesso');
-							return res.send('Pulseira removido da equipe com sucesso');
+							console.log('Pulseira removida da equipe com sucesso');
+							return res.send('Pulseira removida da equipe com sucesso');
 						}
 				  });
 			} else {
-				return res.send('Indique o id único da equipe e da pulseira a ser removido.');
+				return res.send('Indique o id único da equipe e da pulseira a ser removida.');
 			}
 		});
 	});
