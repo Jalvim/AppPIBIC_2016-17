@@ -22,22 +22,27 @@ var express = require('express'),
 	loginRouter = require('./routes/login.js'),
 	pulseiraRouter = require('./routes/pulseira.js'),
 	grupoPacientesRouter = require('./routes/grupoPacientes.js'),
-	hospitaisRouter = require('./routes/hospitais.js');
+	equipeRouter = require('./routes/equipe.js');
 	compartilhamentoRouter = require('./routes/compartilhamento.js');
 	feedRouter = require('./routes/feed.js');
-
+	//request = require('request');
 
 //A extensão chrome POSTman realiza requisições com facilidade torna setupOptionsVariables
 //redundante. 
 //setando todas as variáveis de options nos requests http de teste
 // setupOptionsVariables(app);
 
-// request(app.optionsPutTestRequestMedico, function(err, httpResponse, body) {
-// 	console.log(err);
-// 	//console.log(httpResponse);
-// 	console.log(body);
-// });
 
+// var getDynamicHealthParams = require('./lib/getDynamicHealthParamsLib.js');
+// getDynamicHealthParams(58, new Date(), 30);
+/*
+ request(app.optionsDeleteTestRequestEquipeRelacPulseira, function(err, httpResponse, body) {
+ 	console.log(err);
+ 	//console.log(httpResponse);
+ 	console.log(body);
+ });
+*/
+>>>>>>> dac2668118f6cbbc09721e93dd4f3751f9db28e7
 var spawn = require('child_process').spawn;
 
 
@@ -114,7 +119,7 @@ app.use('/api/pulseira', pulseiraRouter);
 
 app.use('/api/grupoPacientes', grupoPacientesRouter);
 
-app.use('/api/hospitais', hospitaisRouter);
+app.use('/api/equipe', equipeRouter);
 
 app.use('/api/compartilhamento', compartilhamentoRouter);
 

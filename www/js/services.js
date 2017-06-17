@@ -374,21 +374,21 @@ medApp.services = {
         '</div>' +
         '<div class="center">'+
           '<ons-row class="paciente-header">'+
-            '<ons-col>' +
               '<span class="list__item__title nome">' + info.patient.nomePaciente + '</span>' +
+          '</ons-row>' +
+          '<ons-row class="paciente-detalhes">' +
+            '<ons-col>' +
+              '<ons-icon icon="md-info-outline" class="list__item__icon"></ons-icon>' +
+              '<span class="list__item__subtitle">' + 
+              ((info.patient.ativo == 1) ? 'Novo paciente adicionado' : 'Paciente teve alta') + 
+              '</span>' +
             '</ons-col>' +
           '</ons-row>' +
-          '<ons-row>' +
             '<ons-row class="paciente-detalhes">' +
-              '<ons-icon icon="md-plaster" class="list__item__icon"></ons-icon>' +
-              '<span class="list__item__subtitle">' + 
-              ((info.patient.ativo == 1) ? 'Paciente novo adicionado' : 'Paciente teve alta') + 
-              '</span>' +
-            '</ons-row>' +
-            '<ons-row class="paciente-detalhes">' +
+            '<ons-col>' +
               '<ons-icon icon="md-calendar" class="list__item__icon"></ons-icon>' +
               '<span class="list__item__subtitle">' + data + ' ' + hora + '</span>' +
-            '</ons-row>' +
+            '</ons-col>' +
           '</ons-row>' +
         '</div>' +
       '</ons-list-item>';
@@ -411,26 +411,30 @@ medApp.services = {
       var hora = info.reminder.timestamp.substring(11,16);
 
       template.innerHTML =
-      '<ons-list-item id="item'+ i + '" class="paciente-lista " modifier="longdivider" tappable>' +
+      '<ons-list-item class="paciente-lista " modifier="longdivider" tappable>' +
+        '<div class="left">' +
+          '<ons-icon icon="md-assignment" class="list__item__thumbnail" size="40px"></ons-icon>' +
+        '</div>' +
         '<div class="center">'+
           '<ons-row class="paciente-header">'+
             '<ons-col>' +
-              '<span class="list__item__title nome">' + 'Lembrete' + '</span>' +
+              '<span class="list__item__title nome">' + 'Notificação de lembrete' + '</span>' +
             '</ons-col>' +
           '</ons-row>' +
           '<ons-row>' +
             '<ons-row class="paciente-detalhes">' +
-              '<ons-icon icon="md-plaster" class="list__item__icon"></ons-icon>' +
-              '<span class="list__item__subtitle">' + 'Dados Alterados: K - ' + info.reminder.K + ' Na - ' + info.reminder.Na +
-              ' Cl - ' + info.reminder.Cl+ ' Co2 - '+ info.reminder.Co2 + ' Bun - '+info.reminder.Bun+ ' Great - '+ info.reminder.Great
-              + ' Gluc - ' +info.reminder.Gluc+ ' Wcb - '+info.reminder.wcb+' HgB - '+info.reminder.HgB+ ' Hct - ' +info.reminder.Hct+
-              ' Plt - '+info.reminder.Plt+ + '</span>' +
-              '<ons-row class="paciente-detalhes">' +
-              '<ons-icon icon="md-calendar" class="list__item__icon"></ons-icon>' +
-              '<span class="list__item__subtitle">' + data + ' ' + hora + '</span>' +
+              '<ons-col>' +
+                '<ons-icon icon="md-plaster" class="list__item__icon"></ons-icon>' +
+                '<span class="list__item__title nome">' + info.reminder.nomePaciente + '</span>' +
+              '</ons-col>' +
+            '</ons-row>' +
+            '<ons-row class="paciente-detalhes">' +
+              '<ons-col>' +
+                '<ons-icon icon="md-calendar" class="list__item__icon"></ons-icon>' +
+                '<span class="list__item__subtitle">' + data + ' ' + hora + '</span>' +
+              '</ons-col>' +
             '</ons-row>' +
             '</ons-row>' +
-          '</ons-row>' +
         '</div>' +
       '</ons-list-item>';
       /*'<ons-list-titem id="item' + i + '">'
@@ -480,11 +484,30 @@ medApp.services = {
 
       } else if(info.type === "Lembrete") {
 
-        // Funcionalidade de mostrar paciente adicionado
+        // Funcionalidade de mostrar lembrete adicionado
         feedItem.querySelector('.center').onclick = function() {
 
+          var dataLembreteFormatoBarra = info.reminder.data.substring(8,10) + '/' +
+                                         info.reminder.data.substring(5,7) + '/' +
+                                         info.reminder.data.substring(0,4);
+
           medApp.services.dial = document.getElementById('dialog-lembrete').id;
-          console.log($('#dialog-lembrete').children());
+          document.querySelector('#paciente-feed-lembrete').innerHTML = info.reminder.nomePaciente.substring(0,15);
+          document.querySelector('#data-feed-lembrete').innerHTML = dataLembreteFormatoBarra;
+          document.querySelector('#medico-feed-lembrete').innerHTML = info.reminder.nome;
+          $('#texto-feed-lembrete').val(info.reminder.mensagem);
+          document.querySelector('#NA-feed').innerHTML = info.reminder.Na;
+          document.querySelector('#K-feed').innerHTML = info.reminder.K;
+          document.querySelector('#Cl-feed').innerHTML = info.reminder.CI;
+          document.querySelector('#Co2-feed').innerHTML = info.reminder.Co2;
+          document.querySelector('#Bun-feed').innerHTML = info.reminder.Bun;
+          document.querySelector('#Creat-feed').innerHTML = info.reminder.Creat;
+          document.querySelector('#Gluc-feed').innerHTML = info.reminder.Gluc;
+          document.querySelector('#wbc-feed').innerHTML = info.reminder.wcb;
+          document.querySelector('#HgB-feed').innerHTML = info.reminder.HgB;
+          document.querySelector('#Hct-feed').innerHTML = info.reminder.Hct;
+          document.querySelector('#Plt-feed').innerHTML = info.reminder.Plt;
+
           medApp.services.showPopover(medApp.services.dial);
 
         };
