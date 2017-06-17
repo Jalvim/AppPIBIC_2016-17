@@ -33,6 +33,7 @@ router.route('/')
 			});
 		});
 	})
+	//Criação de Equipes
 	.post(function(req, res) {
 		mysql.getConnection(function(err, connection){
 
@@ -66,6 +67,7 @@ router.route('/')
 			}
 		});
 	})
+	//Editar o Nome da Equipe
 	.put(function(req, res) {
 
 		mysql.getConnection(function(err, connection) {
@@ -118,6 +120,7 @@ router.route('/')
 			}
 		});
 	})
+	//Remover Equipe
 	.delete(function(req, res) {
 
 		mysql.getConnection(function(err, connection) {
@@ -169,7 +172,8 @@ router.route('/medico/:idMedico')
 		});
 	});
 
-router.route('/relacoes/')
+//Operações sobre a tabela Equipe_Paciente, adicionando médicos à equipe.
+router.route('/relacoes/medicos')
 	.post(function(req, res) {
 
 		mysql.getConnection(function(err, connection) {
@@ -225,6 +229,122 @@ router.route('/relacoes/')
 		});
 	});
 
+//Operações sobre a tabela Equipe_Paciente, adicionando pacientes à equipe.
+	router.route('/relacoes/pacientes')
+	.post(function(req, res) {
+
+		mysql.getConnection(function(err, connection) {
+			if (req.hasOwnProperty('body') &&
+				req.body.hasOwnProperty('idPaciente') &&
+				req.body.hasOwnProperty('idEquipe')){
+				var query ={
+					sql: `INSERT INTO Equipe_Paciente (idMedico, idEquipe) VALUES (${connection.escape(req.body.idPaciente)}, ${connection.escape(req.body.idEquipe)})`,
+					timeout: 1000
+				}
+
+				connection.query(query, function(err, rows, fields) {
+					console.log(err);
+					console.log(rows);
+					console.log(fields);
+					if(err == null){
+						res.send("Paciente adicionado ao Equipe com sucesso.");
+					}
+					else{
+						res.send("Erro ao adicionar o paciente ao Equipe. Erro SQL.");
+					}
+
+				});
+			}
+			else {
+				res.send('Paciente não foi adicionado ao Equipe. Erro.');
+			}
+		});
+	})
+	.delete(function(req, res) {
+
+		mysql.getConnection(function(err, connection) {
+
+			if (req.hasOwnProperty('body') &&
+				req.body.hasOwnProperty('idPaciente') &&
+				req.body.hasOwnProperty('idEquipe') ) {
+				connection.query(
+				  'DELETE FROM Equipe_Paciente WHERE idPaciente=? AND idEquipe=?',
+				  [req.body.idMedico, req.body.idEquipe],
+					function(err) {
+						if (err != null) {
+							console.log('Error ao remover Paciente do Equipe');
+							return res.send('Error ao remover Paciente do Equipe');
+						}
+						else {
+							console.log('Medico removido do Equipe com sucesso');
+							return res.send('Medico removido do Equipe com sucesso');
+						}
+				  });
+			} else {
+				return res.send('Indique o id único do Equipe e do Paciente a ser removido.');
+			}
+		});
+	});
+
+//Operações sobre a tabela Equipe_Pulseiras, adicionando puleiras à equipe. Ainda não implementado
+router.route('/relacoes/pulseiras')
+	.post(function(req, res) {
+
+		mysql.getConnection(function(err, connection) {
+			if (req.hasOwnProperty('body') &&
+				req.body.hasOwnProperty('idPulseira') &&
+				req.body.hasOwnProperty('idEquipe')){
+				var query ={
+					sql: `INSERT INTO Equipe_Pulseira (idPulseira, idEquipe) VALUES (${connection.escape(req.body.idPulseira)}, ${connection.escape(req.body.idEquipe)})`,
+					timeout: 1000
+				}
+
+				connection.query(query, function(err, rows, fields) {
+					console.log(err);
+					console.log(rows);
+					console.log(fields);
+					if(err == null){
+						res.send("Pulseira adicionado ao equipe com sucesso.");
+					}
+					else{
+						res.send("Erro ao adicionar o pulseira à equipe. Erro SQL.");
+					}
+
+				});
+			}
+			else {
+				res.send('Pulseira não foi adicionado à equipe. Erro.');
+			}
+		});
+	})
+	.delete(function(req, res) {
+
+		mysql.getConnection(function(err, connection) {
+
+			if (req.hasOwnProperty('body') &&
+				req.body.hasOwnProperty('idPulseira') &&
+				req.body.hasOwnProperty('idEquipe') ) {
+				connection.query(
+				  'DELETE FROM Equipe_Pulseira WHERE Pulseira=? AND idEquipe=?',
+				  [req.body.idMedico, req.body.idEquipe],
+					function(err) {
+						if (err != null) {
+							console.log('Error ao remover pulseira da equipe');
+							return res.send('Error ao remover pulseira da equipe');
+						}
+						else {
+							console.log('Pulseira removido da equipe com sucesso');
+							return res.send('Pulseira removido da equipe com sucesso');
+						}
+				  });
+			} else {
+				return res.send('Indique o id único da equipe e da pulseira a ser removido.');
+			}
+		});
+	});
+
+
+	
 router.route('/:idEquipe/medicos')
 	.get(function(req, res) {
 		mysql.getConnection(function(err, connection) {
