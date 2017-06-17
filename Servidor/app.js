@@ -23,6 +23,7 @@ var express = require('express'),
 	compartilhamentoRouter = require('./routes/compartilhamento.js');
 	feedRouter = require('./routes/feed.js');
 
+
 //setando todas as variáveis de options nos requests http de teste
 setupOptionsVariables(app);
 
