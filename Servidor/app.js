@@ -42,7 +42,6 @@ var express = require('express'),
  	console.log(body);
  });
 */
->>>>>>> dac2668118f6cbbc09721e93dd4f3751f9db28e7
 var spawn = require('child_process').spawn;
 
 
