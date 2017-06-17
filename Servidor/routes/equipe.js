@@ -229,6 +229,54 @@ router.route('/relacoes/medicos')
 		});
 	});
 
+
+router.route('/relacoes/medicos/email')
+	.post(function(req, res) {
+
+		mysql.getConnection(function(err, connection) {
+			if (req.hasOwnProperty('body') &&
+				req.body.hasOwnProperty('email') &&
+				req.body.hasOwnProperty('idEquipe')){
+
+				var encontraMedicoQuery = { 
+					sql:`SELECT idMedico FROM logins WHERE email = ${connection.escape(req.body.emailMedico)}`,
+					timeout: 1000
+					}
+				connection.query(encontraMedicoQuery, function(err, rows, fields) {
+					console.log(err);
+					console.log(rows);
+					console.log(fields);
+					if(err == null){
+
+						var insereMedicoQuery = {
+							sql: `INSERT INTO Equipe_Medico (idMedico, idEquipe) VALUES (${connection.escape(req.body.idMedico)}, ${connection.escape(req.body.idEquipe)})`,
+							timeout: 1000
+						}
+
+						connection.query(insereMedicoQuery, function(err, rows, fields) {
+							console.log(err);
+							console.log(rows);
+							console.log(fields);
+							if(err == null){
+								res.send("Medico adicionado ao Equipe com sucesso.");
+							}
+							else{
+								res.send("Erro ao adicionar o medico ao Equipe. Erro SQL.");
+							}
+						});
+					}
+					else{
+						res.send("Erro ao adicionar o medico ao Equipe. Não foi encontrado o email inserido.");
+					}
+				});
+			}
+			else {
+				res.send('Por favor, insira o email e equipe em que o méidco deve ser inserido. Erro.');
+			}
+		});
+	});
+
+	
 //Operações sobre a tabela Equipe_Paciente, adicionando pacientes à equipe.
 	router.route('/relacoes/pacientes')
 	.post(function(req, res) {
@@ -344,7 +392,7 @@ router.route('/relacoes/pulseiras')
 	});
 
 
-	
+//Rota para adquirir médicos presentes na equipe	
 router.route('/:idEquipe/medicos')
 	.get(function(req, res) {
 		mysql.getConnection(function(err, connection) {
@@ -371,6 +419,31 @@ router.route('/:idEquipe/medicos')
                         });
                         res.json(rows);
                     });
+				}
+			});
+
+		});
+
+	});
+
+//Rota para adquirir médicos presentes na equipe	
+router.route('/:idEquipe/pacientes')
+	.get(function(req, res) {
+		mysql.getConnection(function(err, connection) {
+
+			var query = {
+				sql: `SELECT  Paciente.nomePaciente as nome , Equipe_Paciente.idPaciente as idPaciente FROM Paciente INNER JOIN Equipe_Paciente ON idPaciente = idtable1 WHERE Equipe_Paciente.idEquipe = ${req.params.idEquipe}`,
+				timeout: 1000
+			}
+
+			connection.query(query, function(error, rows) {
+				if (error != null) {
+					console.log(error);
+					console.log('Erro ao recuperar pacientes da equipe.');
+					res.send('Erro ao recuperar pacientes da equipe.');
+				} else {
+                        res.json(rows);
+                    
 				}
 			});
 

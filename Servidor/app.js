@@ -19,7 +19,7 @@ var express = require('express'),
 	loginRouter = require('./routes/login.js'),
 	pulseiraRouter = require('./routes/pulseira.js'),
 	grupoPacientesRouter = require('./routes/grupoPacientes.js'),
-	hospitaisRouter = require('./routes/hospitais.js');
+	equipeRouter = require('./routes/equipe.js');
 	compartilhamentoRouter = require('./routes/compartilhamento.js');
 	feedRouter = require('./routes/feed.js');
 
@@ -105,7 +105,7 @@ app.use('/api/pulseira', pulseiraRouter);
 
 app.use('/api/grupoPacientes', grupoPacientesRouter);
 
-app.use('/api/hospitais', hospitaisRouter);
+app.use('/api/equipe', equipeRouter);
 
 app.use('/api/compartilhamento', compartilhamentoRouter);
 
