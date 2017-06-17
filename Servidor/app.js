@@ -5,14 +5,17 @@ Faculdade de Tecnologia - UnB
 
 */
 
-// ============================= Código ativo =====================================
+// ================================ código ativo ===================================
 
 //Setup de módulos necessários para a aplicação
 var senhas = require('./senhas.js');
 var express = require('express'),
 	app = express(),
 	bodyParser = require('body-parser'),
-	setupOptionsVariables = require('./setupVariables.js'),
+	cookieParser = require('cookie-parser');
+	
+// 	importando rotas da aplicação
+// 	setupOptionsVariables = require('./setupVariables.js'),
 	pacienteRouter = require('./routes/paciente.js'),
 	lembreteRouter = require('./routes/lembrete.js'),
 	medicoRouter = require('./routes/medico.js'),
@@ -24,11 +27,10 @@ var express = require('express'),
 	feedRouter = require('./routes/feed.js');
 
 
+//A extensão chrome POSTman realiza requisições com facilidade torna setupOptionsVariables
+//redundante. 
 //setando todas as variáveis de options nos requests http de teste
-setupOptionsVariables(app);
-
-// var getDynamicHealthParams = require('./lib/getDynamicHealthParamsLib.js');
-// getDynamicHealthParams(58, new Date(), 30);
+// setupOptionsVariables(app);
 
 // request(app.optionsPutTestRequestMedico, function(err, httpResponse, body) {
 // 	console.log(err);
@@ -63,10 +65,17 @@ function childProcessRestarter(pathAndFile, processname) {
 
 }
 
+//Iniciar processos filho para loops de resgate de dados de saúde
 childProcessRestarter('./childProcesses/getStaticHealthParams.js', 'getStatic');
 childProcessRestarter('./childProcesses/Proc_getDynamicHealthParams.js', 'getDynamic');
 
 // ================================ código servidor	===================================
+
+//Setup de cookies para implementação de cookie session do express
+app.use(cookieParser({
+	key: 'lifeTrackerCookie.sess',
+	secret: senhas.cookiePassword
+}));
 
 //Setup para uso do módulo body parser para possibilitar extração de parâmetros do corpo do request http
 app.use(bodyParser.json());
@@ -112,5 +121,14 @@ app.use('/api/compartilhamento', compartilhamentoRouter);
 app.use('/api/feed', feedRouter);
 
 port = process.env.PORT || 3000;
+
+app.get('/teste', function(req, res){
+	res.send(req.cookies);
+});
+
+app.get('/cookie', function(req,res){
+	res.cookie('lifeTrackerIdM', 20);
+	res.redirect('http://127.0.0.1:3000/?idMedico='+req.cookies.lifeTrackerIdM);
+});
 
 app.listen(port);
