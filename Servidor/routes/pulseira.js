@@ -143,7 +143,7 @@ de uso da conta da pulseira pelo usuário.
 router.get('/codigo', function(req, res) {
 
 	mysql.getConnection(function(err, connection){
-
+		console.log(req.cookies);
 		var tokenRefreshAuthorization = 'Basic ' + new Buffer(`${senhas.clientID}:${senhas.clientSecret}`).toString('base64');
 		var oauthOptions = {
 			method: 'POST',
