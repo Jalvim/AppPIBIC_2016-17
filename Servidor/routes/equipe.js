@@ -434,7 +434,7 @@ router.route('/:idEquipe/pacientes')
 		mysql.getConnection(function(err, connection) {
 
 			var query = {
-				sql: `SELECT  Paciente.nomePaciente as nome , Equipe_Paciente.idPaciente as idPaciente FROM Paciente INNER JOIN Equipe_Paciente ON idPaciente = idtable1 WHERE Equipe_Paciente.idEquipe = ${req.params.idEquipe}`,
+				sql: `SELECT  Paciente.* FROM Paciente INNER JOIN Equipe_Paciente ON idPaciente = idtable1 WHERE Equipe_Paciente.idEquipe = ${req.params.idEquipe}`,
 				timeout: 1000
 			}
 
