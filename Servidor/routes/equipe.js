@@ -11,6 +11,7 @@ var express = require('express');
 var mysql = require('../lib/mysqlWraper.js');
 var base64Util = require('../lib/base64Util.js');
 var router = express.Router();
+var base64Util = require('../lib/base64Util.js');
 
 router.route('/')
 	.get(function(req, res){
@@ -447,7 +448,8 @@ router.route('/:idEquipe/pacientes')
 					console.log('Erro ao recuperar pacientes da equipe.');
 					res.send('Erro ao recuperar pacientes da equipe.');
 				} else {
-                        res.json(rows);
+					var rowsWithPhotosEncondedInBase64 = pacienteService.encodePatientsPhotosAsBase64(rows);
+					res.json(rowsWithPhotosEncondedInBase64);
                     
 				}
 			});
