@@ -1190,9 +1190,6 @@ medApp.services = {
     var template = document.createElement('div');
     template.innerHTML =
       '<ons-list-item>' +
-        '<div class="left">' +
-          '<img class="list__item__thumbnail" src="http://www.clker.com/cliparts/A/Y/O/m/o/N/placeholder-md.png">' +
-        '</div>' +
         '<div class="center">' +
           '<span class="list__item__title">' +
           paciente.nome +

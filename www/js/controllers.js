@@ -1693,44 +1693,48 @@ medApp.controllers = {
 
   pulseiras: function(page){
 
-  	/*$.get('http://julianop.com.br:3000/api/pulseira/disponivel')
-    .done(function(data){
-      for(var i = 0; i <data.length; i++){
-        medApp.services.pulseirasDisponiveis[i] = data[i].idPulseira;
-      }
-    })
-    .done(function() {
-      for(var i = 0; i < medApp.services.pulseirasDisponiveis.length; i++){
-    	medApp.services.showPulseirasDisponiveis2(i);
-      }
-    });*/
+    /* (REMOVIDO PARA TESTES)
+  	page.addEventListener('show', function(event) {
 
-    /*page.querySelector('#addpulseira').onclick = function(){
-      var  Oauth;
-      ons.notification.prompt({message: "Digite o codigo da FITBIT"})
-      .then(function(prompt) {
-        Oauth = prompt;
-      //Oauth = prompt("Digite o codigo da FITBIT");
-      //pega o codigoOauth
-        //console.log(Oauth);
-        $.post("http://julianop.com.br:3000/api/pulseira",
-          {
-            redirectUri :"http://julianop.com.br:3000/",
-            ClientID: "227WRB",
-            ClientSecret: "---",  // Inserir secret
-            CodigoOauth: Oauth
-          })
-          .done(function(data){
-            //console.log(data);
-          });
+      //Botão desabilitado por default para verificar se o médico está em alguma equipe
+
+      $.get('http://julianop.com.br:3000/api/equipe/medico/' + medApp.services.getIdMedico())
+      .done(function(data) {
+
+          if(data.length == 0) {
+            
+            page.querySelector('#instrucoes').innerHTML = 'As pulseiras devem ser ligadas a uma equipe!' +
+                                                          '<br>' +
+                                                          'Crie uma nova Equipe na aba de Perfil Médico.' +
+                                                          '<br>';
+
+          } else {  
+            
+            page.querySelector('#instrucoes').innerHTML = 'Para adicionar uma nova pulseira, por favor siga essas etapas:' +
+                                                          '<br>' +
+                                                          '1. Clique no botão para acessar o linke no seu navegador padrão do celular;' +
+                                                          '<br>' +
+                                                          '2. Entre com sua conta FITBIT e clique em "Allow";' +
+                                                          '<br>' +
+                                                          '3. Selecione a Equipe para a qual a pulseira será cadastrada.' +
+                                                          '<br>';
+
+            page.querySelector('#link-fitbit').removeAttribute('disabled', '');
+
+          };
+
       });
-    };*/
+
+    });
+    */
 
     page.querySelector('#link-fitbit').onclick = function() {
 
-      window.open( "https://www.fitbit.com/oauth2/authorize?response_type=code&client_id=227WRB&redirect_uri=http%3A%2F%2Fjulianop.com.br%3A3000%2Fapi%2Fpulseira%2Fcodigo&scope=activity%20heartrate%20location%20nutrition%20profile%20settings%20sleep%20social%20weight&expires_in=604800");
+      window.open('https://www.fitbit.com/oauth2/authorize?response_type=code&client_id=227WRB&redirect_uri=lifetracker%3A%2F%2F&scope=activity%20heartrate%20location%20nutrition%20profile%20settings%20sleep%20social%20weight&expires_in=604800', '_system', 'location=yes');
 
     };
+
+    //ons.notification.alert(window.localStorage.getItem('urlfitbit'));
 
   },
 
@@ -2467,13 +2471,13 @@ medApp.controllers = {
       $('#lista-pac-equipe').empty();
       $.get('http://julianop.com.br:3000/api/equipe/' + medApp.services.getEquipeAtual() + '/pacientes')
       .done(function(pacientes) {
-
-        if(pacientes[0].hasOwnProperty('idPaciente')) {
+        
+        if(pacientes.length != 0) {
 
             for (var i = 0, len = pacientes.length; i < len; i++) {
 
               var pacientesInfo = pacientes[i];
-
+              
               medApp.services.createPaciente(
                 {
                   statusPaciente: (pacientesInfo.ativo == 1) ? 'ativo' : 'inativo',
@@ -2482,7 +2486,7 @@ medApp.controllers = {
                   dataPaciente: pacientesInfo.dataDeNascimento,
                   causaPaciente: pacientesInfo.causaDaInternacao,
                   hospital: pacientesInfo.telefone,
-                  idPaciente: pacientesInfo.idPaciente,
+                  idPaciente: pacientesInfo.idtable1,
                   medicoResp: pacientesInfo.medicoResposavel
                 }, 'equipes');
 
@@ -2516,15 +2520,15 @@ medApp.controllers = {
       $('#delete-pac-equipe').empty();
       $.get('http://julianop.com.br:3000/api/equipe/' + medApp.services.getEquipeAtual() + '/pacientes')
       .done(function(pacientes) {
-
-        if(pacientes[0].hasOwnProperty('idPaciente')) {
+        console.log(pacientes);
+        if(pacientes.length != 0) {
 
             for (var i = 0, len = pacientes.length; i < len; i++) {
 
               var pacientesInfo = pacientes[i];
 
-              medApp.services.editPacientesEquipe({ nome: pacientesInfo.nome,
-                                                    idPaciente: pacientesInfo.idPaciente });
+              medApp.services.editPacientesEquipe({ nome: pacientesInfo.nomePaciente,
+                                                    idPaciente: pacientesInfo.idtable1 });
 
             };
 
@@ -2534,6 +2538,35 @@ medApp.controllers = {
 
     });
 
-  }  
+  },  
+
+  ///////////////////////////////////////////////////
+  // Controlador de Completar Registro de Pulseira //
+  ///////////////////////////////////////////////////
+
+  registropulseira: function(page) {
+
+    if(window.localStorage.getItem('urlfitbit') != null) {
+
+      //POST AQUI
+      $.post('http://julianop.com.br:3000/api/equipe/relacoes/medicos/email',
+        {
+          code: window.localStorage.getItem('urlfitbit'),
+          idMedico: medApp.services.getIdMedico()
+        })
+        .done(function(data) {
+
+          ons.notification.alert(data);
+          document.querySelector('#loginNav').popPage();
+
+        });
+
+    } else {
+
+      ons.notification.alert("Erro ao cadastrar pulseira! Tente novamente.");
+
+    };
+
+  }
 
 };

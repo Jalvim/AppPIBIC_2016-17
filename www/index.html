@@ -30,6 +30,15 @@
   <link rel="stylesheet" href="css/equipes.css">
   <link rel="stylesheet" href="css/style.css">
   <script>
+
+    function handleOpenURL(url) {
+       
+      setTimeout(function() {
+        window.localStorage.setItem('urlfitbit', url); 
+        }, 0);
+
+    };
+
     ons.ready(function() {
       //console.log("Onsen UI is ready!");
       if(window.localStorage.getItem('idMedico') != null) {
@@ -37,7 +46,8 @@
         medApp.services.setIdMedico(window.localStorage.getItem('idMedico'));
         document.querySelector('#loginNav').pushPage('html/inicial.html');
 
-      };
+      };  
+
     });
   </script>
 </head>

@@ -30,22 +30,22 @@
 
   .alerta {
     background-color: white;
-	  border-left: 10px solid #EF5350; 
+	  /*border-left: 10px solid #EF5350;*/ 
   }
 
   .ativo {
 	 background-color: white;
-   border-left: 10px solid #8BC34A;  
+   /*border-left: 10px solid #8BC34A;*/  
   }
 
   .inativo {
     background-color: white;
-    border-left: 10px solid #607D8B; 
+    /*border-left: 10px solid #607D8B; */
   }
 
   .grupo {
     background-color: white;
-    border-left: 10px solid #FFEB3B;
+    /*border-left: 10px solid #FFEB3B;*/
   }
 
   .paciente-detalhes {
