@@ -238,21 +238,22 @@ router.route('/relacoes/medicos/email')
 		mysql.getConnection(function(err, connection) {
 			if (req.hasOwnProperty('body') &&
 				req.body.hasOwnProperty('email') &&
-				req.body.hasOwnProperty('idMedico') &&
 				req.body.hasOwnProperty('idEquipe')){
 
 				var encontraMedicoQuery = { 
-					sql:`SELECT idMedico FROM logins WHERE email = ${connection.escape(req.body.emailMedico)}`,
+					sql:`SELECT idMedico FROM logins WHERE email LIKE ${connection.escape(req.body.email)}`,
 					timeout: 1000
 					}
 				connection.query(encontraMedicoQuery, function(err, rows, fields) {
 					console.log(err);
+					console.log(encontraMedicoQuery.sql);
 					console.log(rows);
+					console.log(rows[0].idMedico);
 					console.log(fields);
 					if(err == null){
 
 						var insereMedicoQuery = {
-							sql: `INSERT INTO Equipe_Medico (idMedico, idEquipe) VALUES (${connection.escape(req.body.idMedico)}, ${connection.escape(req.body.idEquipe)})`,
+							sql: `INSERT INTO Equipe_Medico (idMedico, idEquipe) VALUES (${connection.escape(rows[0].idMedico)}, ${connection.escape(req.body.idEquipe)})`,
 							timeout: 1000
 						}
 

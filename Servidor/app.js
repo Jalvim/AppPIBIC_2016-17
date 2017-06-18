@@ -15,7 +15,7 @@ var express = require('express'),
 	cookieParser = require('cookie-parser');
 	
 // 	importando rotas da aplicação
-// 	setupOptionsVariables = require('./setupVariables.js'),
+ 	//setupOptionsVariables = require('./setupVariables.js'),
 	pacienteRouter = require('./routes/paciente.js'),
 	lembreteRouter = require('./routes/lembrete.js'),
 	medicoRouter = require('./routes/medico.js'),
@@ -25,18 +25,18 @@ var express = require('express'),
 	equipeRouter = require('./routes/equipe.js');
 	compartilhamentoRouter = require('./routes/compartilhamento.js');
 	feedRouter = require('./routes/feed.js');
-	//request = require('request');
+	request = require('request');
 
 //A extensão chrome POSTman realiza requisições com facilidade torna setupOptionsVariables
 //redundante. 
 //setando todas as variáveis de options nos requests http de teste
-// setupOptionsVariables(app);
+ //setupOptionsVariables(app);
 
 
 // var getDynamicHealthParams = require('./lib/getDynamicHealthParamsLib.js');
 // getDynamicHealthParams(58, new Date(), 30);
 /*
- request(app.optionsDeleteTestRequestEquipeRelacPulseira, function(err, httpResponse, body) {
+ request(app.optionsPostTestEmailRequestEquipeRelacMedico, function(err, httpResponse, body) {
  	console.log(err);
  	//console.log(httpResponse);
  	console.log(body);

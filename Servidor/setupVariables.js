@@ -277,6 +277,15 @@ module.exports = function(app) {
 	};
 
 	//Rotas de testes de inserção de médicos na equipe
+	app.optionsPostTestEmailRequestEquipeRelacMedico = {
+		method:'POST',
+		url:'http://127.0.0.1:3000/api/equipe/relacoes/medicos/email',
+		form:{ 
+			idEquipe: 1,
+			email:'roberto'
+		}
+	};
+	
 	app.optionsPostTestRequestEquipeRelacMedico = {
 		method:'POST',
 		url:'http://127.0.0.1:3000/api/equipe/relacoes/medicos',
