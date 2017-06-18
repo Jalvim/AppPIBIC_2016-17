@@ -246,10 +246,11 @@ router.route('/relacoes/medicos/email')
 					}
 				connection.query(encontraMedicoQuery, function(err, rows, fields) {
 					console.log(err);
-					console.log(encontraMedicoQuery.sql);
-					console.log(rows);
-					console.log(rows[0].idMedico);
+					//console.log(encontraMedicoQuery.sql);
+					//console.log(rows);
+					//console.log(rows[0].idMedico);
 					console.log(fields);
+					if(rows.length == 0) return res.send("Email não encontrado na base de dados. Erro.");
 					if(err == null){
 
 						var insereMedicoQuery = {
