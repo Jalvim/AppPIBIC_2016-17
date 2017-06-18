@@ -238,6 +238,7 @@ router.route('/relacoes/medicos/email')
 		mysql.getConnection(function(err, connection) {
 			if (req.hasOwnProperty('body') &&
 				req.body.hasOwnProperty('email') &&
+				req.body.hasOwnProperty('idMedico') &&
 				req.body.hasOwnProperty('idEquipe')){
 
 				var encontraMedicoQuery = { 
