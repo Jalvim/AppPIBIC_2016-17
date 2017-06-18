@@ -10,8 +10,9 @@ var senhas = require('../senhas');
 var express = require('express');
 var mysql = require('../lib/mysqlWraper.js');
 var base64Util = require('../lib/base64Util.js');
+var pacienteService = require('../lib/pacienteService.js');
 var router = express.Router();
-var base64Util = require('../lib/base64Util.js');
+
 
 router.route('/')
 	.get(function(req, res){
