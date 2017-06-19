@@ -2557,6 +2557,7 @@ medApp.controllers = {
         .done(function(data) {
 
           ons.notification.alert(data);
+          window.localStorage.removeItem('urlfitbit');
           document.querySelector('#loginNav').popPage();
 
         });
@@ -2564,6 +2565,7 @@ medApp.controllers = {
     } else {
 
       ons.notification.alert("Erro ao cadastrar pulseira! Tente novamente.");
+      document.querySelector('#loginNav').popPage();
 
     };
 
