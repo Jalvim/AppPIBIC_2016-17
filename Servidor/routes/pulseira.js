@@ -5,13 +5,13 @@ Faculdade de Tecnologia - UnB
 Este arquivo contém o módulo node com a API de chamadas relacionadas à pulseiras inteligentes
 
 Log:
-=> Criada tabela de pulseiras na base de dados
-=> Mudança de chave estrangeira na tabela autenticação de idPaciente para idPulseira
-=> API de pulseiras testada 
-=> Adaptações feitas aos métodos OAuth2 de refresh(ainda não testado) e param estáticos
+=>PUT testado após integração no to do.
+=>GET disponível testado 
 
 TO DO's:
-=> Avaliar e adaptar se necessário API's de paciente e métodos OAuth2 de app.js	
+=> Conferir bom desempenho de todas as chamadas que possam ter sido afetadas pela integração das 
+	pulseiras.
+=> Cobrir caso POST de pulseira já registrada. Editar médico dono se necessário.
 */
 
 var senhas = require('../senhas');
@@ -59,7 +59,7 @@ router.route('/')
 				console.log('Pulseira autenticada com sucesso');
 		
 				//verificar se pulseira ja foi cadastrada anteriormente
-				connection.query('SELECT * FROM Autenticacao WHERE userID=? LIMIT 1',[temp.user_id], function(err, result, fields){
+				connection.query('SELECT A.*, P.idMedico FROM Autenticacao A, Medico M WHERE A.userID=? AND P.idPulseira=A.idPulseira LIMIT 1',[temp.user_id], function(err, result, fields){
 			
 					if (result.length > 0) {
 						//atualizar informações de autenticação caso sim
@@ -67,6 +67,7 @@ router.route('/')
 							[temp.refresh_token, temp.access_token, temp.user_id], function(err){
 					
 							if (err) { return res.send('Erro: Falha no armazenamento das informações de autenticação.'); }
+							if (req.body.idMedico != result.idMedico) { return res.send('Esta pulseira já foi cadastrada por outro médico.'); }
 							res.send('Pulseira já resgistrada, dados cadastrais atualizados.');
 						
 						});
