@@ -74,7 +74,7 @@ router.route('/')
 					}
 			
 					//adicionar nova pulseira normalmente caso não
-					connection.query('INSERT INTO Pulseira (disponivel, idMedicoDonoDaPulseira) VALUE (1, ?)',[req.body.idMedico],function(err, rows, fields){
+					connection.query('INSERT INTO Pulseira (disponivel, idMedico) VALUE (1, ?)',[req.body.idMedico],function(err, rows, fields){
 						if (err) { return res.send('Error: Falha ao inserir pulseira na base de dados tabela Pulseira'); }
 		
 						connection.query(
