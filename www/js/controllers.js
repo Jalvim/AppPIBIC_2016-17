@@ -756,7 +756,7 @@ medApp.controllers = {
 
             var chrt1 = document.getElementById("myChart1");
             var data1 = {
-              labels: ["Últimas atualizações."],//["Dia 1", "Dia 2", "Dia 3", "Dia 4", "Dia 5", "Dia 6", "Dia 7"], //medApp.services.semana,
+              labels: ["1", "2", "3", "4", "5", "6", "7"],//["Dia 1", "Dia 2", "Dia 3", "Dia 4", "Dia 5", "Dia 6", "Dia 7"], //medApp.services.semana,
               datasets: [
                 {
                   label: "Calorias perdidas nas 7 últimas atualizações",
@@ -849,7 +849,7 @@ medApp.controllers = {
 
             var chrt2 = document.getElementById("myChart2");
             var data2 = {
-              labels: ["Últimas atualizações."],//["Dia 1", "Dia 2", "Dia 3", "Dia 4", "Dia 5", "Dia 6", "Dia 7"], //medApp.services.semana, //["Domingo", "Segunda", "Terça", "Quarta", "Quinta", "Sexta", "Sábado"],
+              labels: ["1", "2", "3", "4", "5", "6", "7"],//["Dia 1", "Dia 2", "Dia 3", "Dia 4", "Dia 5", "Dia 6", "Dia 7"], //medApp.services.semana, //["Domingo", "Segunda", "Terça", "Quarta", "Quinta", "Sexta", "Sábado"],
                 datasets: [
                   {
                     label: "Número de passos dados nas 7 últimas atualizações",
@@ -1016,24 +1016,37 @@ medApp.controllers = {
           .done(function() {
 
 
-            var chrt4 = document.getElementById("myChart4");
-            var data4 = {
-              labels: ["Últimas atualizações."],//["Dia 1", "Dia 2", "Dia 3", "Dia 4", "Dia 5", "Dia 6", "Dia 7"], //medApp.services.semana, //["Domingo", "Segunda", "Terça", "Quarta", "Quinta", "Sexta", "Sábado"],
+             var chrt1 = document.getElementById("myChart1");
+            var data1 = {
+              labels: ["1", "2", "3", "4", "5", "6", "7"],,//["Dia 1", "Dia 2", "Dia 3", "Dia 4", "Dia 5", "Dia 6", "Dia 7"], //medApp.services.semana,
               datasets: [
                 {
-                  label: "Número de degraus subidos.",
+                  label: "Degraus subidos nas 7 últimas atualizações",
+                  fill: false,
+                  lineTension: 0.1,
                   backgroundColor: "rgba(75,192,192,0.4)",
                   borderColor: "rgba(75,192,192,1)",
-                  borderWidth: 5,
-                  hoverBackgroundColor: "rgba(255, 99, 132, 0.4)",
-                  hoverBorderColor: "rgba:(255, 99, 132, 1)",
-                  data: medApp.services.dadosEstaticos.degraus
+                  borderCapStyle: 'butt',
+                  borderDash: [],
+                  borderDashOffset: 0.0,
+                  borderJoinStyle: 'miter',
+                  pointBorderColor: "rgba(75,192,192,1)",
+                  pointBackgroundColor: "#fff",
+                  pointBorderWidth: 1,
+                  pointHoverRadius: 5,
+                  pointHoverBackgroundColor: "rgba(75,192,192,1)",
+                  pointHoverBorderColor: "rgba(220,220,220,1)",
+                  pointHoverBorderWidth: 2,
+                  pointRadius: 1,
+                  pointHitRadius: 10,
+                  data: medApp.services.dadosEstaticos.degraus,
+                  spanGaps: false,
                 }
               ]
             }; //TODO implementação da comunicação de dados com o servidor.
-            var myChart4 = new Chart(chrt4, {
-              type: 'radar',
-              data: data4,
+            var myChart1 = new Chart(chrt1, {
+              type: 'line',
+              data: data1,
               options: {
                 responsive: true
               }
