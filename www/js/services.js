@@ -1295,8 +1295,8 @@ medApp.services = {
         }
       });
 
-      
       medApp.services.hidePopover(medApp.services.dial);
+      ons.notification.alert("Pulseira alterada!");
 
     };
 

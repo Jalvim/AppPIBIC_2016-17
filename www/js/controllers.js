@@ -388,12 +388,13 @@ medApp.controllers = {
     function gerarListaPacientes () {
 
       // Função que evita a dupla atualização na build do app
-      medApp.services.changeUpdatePaciente();
-      $('#lista-pacientes').empty();
+      //medApp.services.changeUpdatePaciente();
 
-      if(medApp.services.isUpdatedPaciente) {
+      //if(medApp.services.isUpdatedPaciente) {
       $.get('http://julianop.com.br:3000/api/paciente/geral/idMedico/' + medApp.services.getIdMedico())
         .done(function(data) {
+          // Limpa e popula a lista de pacientes
+          $('#lista-pacientes').empty();
 
           if(data[0].hasOwnProperty('idPaciente')) {
 
@@ -418,7 +419,7 @@ medApp.controllers = {
           };
 
       });
-      };
+
     };
 
     // Atualiza a lista de pacientes sempre que a página for mostrada
@@ -524,7 +525,7 @@ medApp.controllers = {
       medApp.services.dial = document.getElementById('dialog-pulseiras-perfil').id;
       $('#lista-pulseiras-perfil').empty();
 
-      document.querySelector('#remove-pulseira').addEventListener("click", function(event){
+      document.querySelector('#remove-pulseira').onclick = function() {
 
         if(medApp.services.pulseiraAtual != -1) {
           $.ajax({
@@ -533,6 +534,7 @@ medApp.controllers = {
                 success: function(data) {
                   console.log(data);
                   medApp.services.pulseiraAtual = -1;
+                  ons.notification.alert("Pulseira retirada do paciente!");
                   document.querySelector('#pulseira-pac').innerHTML = 'Nenhuma';
                 },
                 error: function(data) {
@@ -547,26 +549,23 @@ medApp.controllers = {
         };
 
         medApp.services.hidePopover(medApp.services.dial);
-        ons.notification.alert("Pulseira retirada do paciente!");
 
-      });
+      };
       
       $.get('http://julianop.com.br:3000/api/pulseira/disponivel/' + medApp.services.getIdMedico())
         .done(function(pulseira){
 
           if(pulseira.length != 0) {
-            if(pulseira[0].hasOwnProperty('idPulseira')) {
 
-              for (var i = 0, len = pulseira.length; i < len; i++) {
+            for (var i = 0, len = pulseira.length; i < len; i++) {
 
-                medApp.services.listPulseiras(pulseira[i], 'perfil');
-
-              };
-
-              medApp.services.showPopover(medApp.services.dial);
+              medApp.services.listPulseiras(pulseira[i], 'perfil');
 
             };
+
           };
+
+          medApp.services.showPopover(medApp.services.dial);
 
         });
 
@@ -1016,9 +1015,9 @@ medApp.controllers = {
           .done(function() {
 
 
-             var chrt1 = document.getElementById("myChart1");
+            var chrt1 = document.getElementById("myChart1");
             var data1 = {
-              labels: ["1", "2", "3", "4", "5", "6", "7"],,//["Dia 1", "Dia 2", "Dia 3", "Dia 4", "Dia 5", "Dia 6", "Dia 7"], //medApp.services.semana,
+              labels: ["1", "2", "3", "4", "5", "6", "7"],//["Dia 1", "Dia 2", "Dia 3", "Dia 4", "Dia 5", "Dia 6", "Dia 7"], //medApp.services.semana,
               datasets: [
                 {
                   label: "Degraus subidos nas 7 últimas atualizações",
@@ -1086,8 +1085,6 @@ medApp.controllers = {
         // Fim da interface gráfica 4. TODO --> Implementar outros gráficos.
 
   },
-
-
 
   /////////////////////////////////////
   // Controlador de edição do Médico //
@@ -1945,7 +1942,7 @@ medApp.controllers = {
       medApp.services.dial = document.getElementById('dialog-pulseiras').id;
       $('#lista-pulseiras-config').empty();
 
-      document.querySelector('#nuloPulseira').addEventListener("click", function(event){
+      document.querySelector('#nuloPulseira').onclick = function() {
 
         if(medApp.services.pulseiraAtual != -1) {
           $.ajax({
@@ -1969,24 +1966,22 @@ medApp.controllers = {
         medApp.services.hidePopover(medApp.services.dial);
         ons.notification.alert("Pulseira retirada do paciente!");
 
-      });
+      };
       
       $.get('http://julianop.com.br:3000/api/pulseira/disponivel/' + medApp.services.getIdMedico())
         .done(function(pulseira){
-
+          
           if(pulseira.length != 0) {
-            if(pulseira[0].hasOwnProperty('idPulseira')) {
 
-              for (var i = 0, len = pulseira.length; i < len; i++) {
+            for (var i = 0, len = pulseira.length; i < len; i++) {
 
-                medApp.services.listPulseiras(pulseira[i], 'config');
-
-              };
-
-              medApp.services.showPopover(medApp.services.dial);
+              medApp.services.listPulseiras(pulseira[i], 'config');
 
             };
+
           };
+
+          medApp.services.showPopover(medApp.services.dial);
 
         });
 
@@ -2100,14 +2095,13 @@ medApp.controllers = {
 
       // Limpa o grupo atual selecionado
       medApp.services.deleteGrupoAtual();
-      // Limpa e popula a lista de grupos
-      medApp.services.changeUpdateGrupo();
-      $('#lista-grupos').empty();
+      
+      //medApp.services.changeUpdateGrupo();
 
-      if(medApp.services.isUpdatedGrupo) {
       $.get('http://julianop.com.br:3000/api/grupoPacientes/buscarGrupo/idMedico/' + medApp.services.getIdMedico())
       .done(function(data) {
-
+          // Limpa e popula a lista de grupos
+          $('#lista-grupos').empty();
           if(data[0].hasOwnProperty('idGrupoPac')) {
 
             for (var i = 0, len = data.length; i < len; i++) {
@@ -2122,7 +2116,6 @@ medApp.controllers = {
 
         });
 
-    };
   });
     // Página para criar um novo grupo de pacientes
     page.querySelector('#add-grupo').onclick = function() {
@@ -2327,11 +2320,11 @@ medApp.controllers = {
       // Limpa a equipe atual selecionada
       medApp.services.deleteEquipeAtual();
 
-      // Limpa e popula a lista de equipes
-      $('#lista-equipe').empty();
       $.get('http://julianop.com.br:3000/api/equipe/medico/' + medApp.services.getIdMedico())
       .done(function(data) {
 
+        // Limpa e popula a lista de equipes
+        $('#lista-equipe').empty();
         if(data.length != 0) {
           if(data[0].hasOwnProperty('idEquipe')) {
             for (var i = 0, len = data.length; i < len; i++) {
@@ -2405,11 +2398,11 @@ medApp.controllers = {
       // Seta o nome da equipe no espaço correspondente
       page.querySelector('#nome-equipe').innerHTML = page.data.nomeEquipe;
 
-      // Limpa e popula a lista de membros da equipes
-      $('#membros-equipe').empty();
       $.get('http://julianop.com.br:3000/api/equipe/' + medApp.services.getEquipeAtual() + '/medicos')
           .done(function(data) {
 
+            // Limpa e popula a lista de membros da equipes
+            $('#membros-equipe').empty();
             if(data[0].hasOwnProperty('idMedico')) {
 
               for (var i = 0, len = data.length; i < len; i++) {
@@ -2557,11 +2550,11 @@ medApp.controllers = {
     // Lista as equipes as quais o médico pertence e seus respectivos membros
     page.addEventListener('show', function(event) {
 
-      // Limpa e popula a lista de equipes
-      $('#lista-compartilhar').empty();
       $.get('http://julianop.com.br:3000/api/equipe/medico/' + medApp.services.getIdMedico())
       .done(function(equipes) {
 
+          // Limpa e popula a lista de equipes
+          $('#lista-compartilhar').empty();
           if(equipes[0].hasOwnProperty('idEquipe')) {
             
             for (var i = 0, len = equipes.length; i < len; i++) {
@@ -2590,11 +2583,12 @@ medApp.controllers = {
     // Lista os pacientes de uma determinada equipe
     page.addEventListener('show', function(event) {
 
-      // Limpa e popula a lista de pacientes da equipe
-      $('#lista-pac-equipe').empty();
       $.get('http://julianop.com.br:3000/api/equipe/' + medApp.services.getEquipeAtual() + '/pacientes')
       .done(function(pacientes) {
         
+        // Limpa e popula a lista de pacientes da equipe
+        $('#lista-pac-equipe').empty();
+
         if(pacientes.length != 0) {
 
             for (var i = 0, len = pacientes.length; i < len; i++) {
@@ -2639,11 +2633,11 @@ medApp.controllers = {
     // Lista os pacientes de uma determinada equipe para remoção
     page.addEventListener('show', function(event) {
 
-      // Limpa e popula a lista de pacientes da equipe para remoção
-      $('#delete-pac-equipe').empty();
       $.get('http://julianop.com.br:3000/api/equipe/' + medApp.services.getEquipeAtual() + '/pacientes')
       .done(function(pacientes) {
-        console.log(pacientes);
+
+        // Limpa e popula a lista de pacientes da equipe para remoção
+        $('#delete-pac-equipe').empty();
         if(pacientes.length != 0) {
 
             for (var i = 0, len = pacientes.length; i < len; i++) {
