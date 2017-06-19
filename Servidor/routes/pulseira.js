@@ -43,7 +43,7 @@ router.route('/')
 				form: {
 					clientId:'227WRB',
 					grant_type:'authorization_code',
-					redirect_uri:'http://julianop.com.br:3000/api/pulseira/codigo',
+					redirect_uri:'lifetracker://',
 					code:req.body.code
 				},
 				timeout: 3000
