@@ -1015,8 +1015,8 @@ medApp.controllers = {
           .done(function() {
 
 
-            var chrt1 = document.getElementById("myChart1");
-            var data1 = {
+            var chrt4 = document.getElementById("myChart4");
+            var data4 = {
               labels: ["1", "2", "3", "4", "5", "6", "7"],//["Dia 1", "Dia 2", "Dia 3", "Dia 4", "Dia 5", "Dia 6", "Dia 7"], //medApp.services.semana,
               datasets: [
                 {
@@ -1043,9 +1043,9 @@ medApp.controllers = {
                 }
               ]
             }; //TODO implementação da comunicação de dados com o servidor.
-            var myChart1 = new Chart(chrt1, {
+            var myChart4 = new Chart(chrt4, {
               type: 'line',
-              data: data1,
+              data: data4,
               options: {
                 responsive: true
               }
