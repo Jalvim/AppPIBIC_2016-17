@@ -493,11 +493,11 @@ medApp.controllers = {
 
   	    if(data.length == 0){
 
-           medApp.services.pulseiraAtual = data;
+           medApp.services.pulseiraAtual = -1;
 
          } else {
 
-           medApp.services.pulseiraAtual = data[0];
+           medApp.services.pulseiraAtual = data[0].idPulseira;
 
          }
 
@@ -510,7 +510,7 @@ medApp.controllers = {
 
         } else {
 
-      	  page.querySelector('#pulseira-pac').innerHTML = medApp.services.pulseiraAtual.idPulseira;
+      	  page.querySelector('#pulseira-pac').innerHTML = medApp.services.pulseiraAtual;
 
         };
 
@@ -518,10 +518,59 @@ medApp.controllers = {
 
     });
 
-    // Chama página de configurações para a pulseira/paciente
+    // Chama o dialog para alterar a pulseira do paciente
     page.querySelector('#perfil-pulseiras').onclick = function() {
 
-      document.querySelector('#pacienteNav').pushPage('html/configpaciente.html');
+      medApp.services.dial = document.getElementById('dialog-pulseiras-perfil').id;
+      $('#lista-pulseiras-perfil').empty();
+
+      document.querySelector('#remove-pulseira').addEventListener("click", function(event){
+
+        if(medApp.services.pulseiraAtual != -1) {
+          $.ajax({
+                url: 'http://julianop.com.br:3000/api/pulseira',
+                type: 'PUT',
+                success: function(data) {
+                  console.log(data);
+                  medApp.services.pulseiraAtual = -1;
+                  document.querySelector('#pulseira-pac').innerHTML = 'Nenhuma';
+                },
+                error: function(data) {
+                  console.log(data);
+                },
+                data: {
+                  idPulseira: medApp.services.pulseiraAtual,
+                  disponivel: 1,
+                  idPaciente: medApp.services.getIdPaciente()
+                }
+          });
+        };
+
+        medApp.services.hidePopover(medApp.services.dial);
+        ons.notification.alert("Pulseira retirada do paciente!");
+
+      });
+      
+      $.get('http://julianop.com.br:3000/api/pulseira/disponivel/' + medApp.services.getIdMedico())
+        .done(function(pulseira){
+
+          if(pulseira.length != 0) {
+            if(pulseira[0].hasOwnProperty('idPulseira')) {
+
+              for (var i = 0, len = pulseira.length; i < len; i++) {
+
+                medApp.services.listPulseiras(pulseira[i], 'perfil');
+
+              };
+
+              medApp.services.showPopover(medApp.services.dial);
+
+            };
+          };
+
+        });
+
+      //document.querySelector('#pacienteNav').pushPage('html/configpaciente.html');
 
     };
 
@@ -1880,7 +1929,59 @@ medApp.controllers = {
 
   	page.querySelector('#manage-pulseiras').onclick = function() {
 
-  		medApp.services.dial = document.getElementById('dialog-pulseiras').id;
+      medApp.services.dial = document.getElementById('dialog-pulseiras').id;
+      $('#lista-pulseiras-config').empty();
+
+      document.querySelector('#nuloPulseira').addEventListener("click", function(event){
+
+        if(medApp.services.pulseiraAtual != -1) {
+          $.ajax({
+                url: 'http://julianop.com.br:3000/api/pulseira',
+                type: 'PUT',
+                success: function(data) {
+                  console.log(data);
+                  medApp.services.pulseiraAtual = -1;
+                },
+                error: function(data) {
+                  console.log(data);
+                },
+                data: {
+                  idPulseira: medApp.services.pulseiraAtual,
+                  disponivel: 1,
+                  idPaciente: medApp.services.getIdPaciente()
+                }
+          });
+        };
+
+        medApp.services.hidePopover(medApp.services.dial);
+        ons.notification.alert("Pulseira retirada do paciente!");
+
+      });
+      
+      $.get('http://julianop.com.br:3000/api/pulseira/disponivel/' + medApp.services.getIdMedico())
+        .done(function(pulseira){
+
+          if(pulseira.length != 0) {
+            if(pulseira[0].hasOwnProperty('idPulseira')) {
+
+              for (var i = 0, len = pulseira.length; i < len; i++) {
+
+                medApp.services.listPulseiras(pulseira[i], 'config');
+
+              };
+
+              medApp.services.showPopover(medApp.services.dial);
+
+            };
+          };
+
+        });
+
+    };
+
+
+  		/* RETIRADO PARA TESTES
+      medApp.services.dial = document.getElementById('dialog-pulseiras').id;
 
         //Método responsável por encontrar na base as pulseiras disponíveis.
         $.get('http://julianop.com.br:3000/api/pulseira/disponivel/' + medApp.services.getIdMedico())
@@ -1892,7 +1993,7 @@ medApp.controllers = {
             for(var i = 0; i < data.length; i++){
 
               medApp.services.pulseirasDisponiveis[i] = data[i].idPulseira;
-              
+
             };
           };
 
@@ -1933,8 +2034,7 @@ medApp.controllers = {
             medApp.services.showPulseirasDisponiveis(i);
           }
 
-        });
-    };
+        });*/
 
     // Funcionalidade de alta do paciente (setar ativo = '0')
     page.querySelector('#alta-pac').onclick = function() {
@@ -2219,6 +2319,7 @@ medApp.controllers = {
       $.get('http://julianop.com.br:3000/api/equipe/medico/' + medApp.services.getIdMedico())
       .done(function(data) {
 
+        if(data.length != 0) {
           if(data[0].hasOwnProperty('idEquipe')) {
             for (var i = 0, len = data.length; i < len; i++) {
               medApp.services.listEquipe({ nomeEquipe: data[i].nome,
@@ -2226,6 +2327,7 @@ medApp.controllers = {
             };
 
           };
+        };
 
       });
     });

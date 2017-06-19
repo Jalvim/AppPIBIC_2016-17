@@ -1233,6 +1233,75 @@ medApp.services = {
 
     editEquipeLista.appendChild(pacEditEquipe);
 
+  },
+
+  listPulseiras: function(pulseira, tela) {
+
+    var template = document.createElement('div');
+    template.innerHTML = 
+      '<ons-list-item tappable>' +
+        '<div>Pulseira de id ' + pulseira.idPulseira + '</div>' +
+      '</ons-list-item>';
+
+    var pulseiraDisp = template.firstChild;
+    $(pulseiraDisp).data('idPulseira', pulseira.idPulseira);
+
+    // Verifica a tela que o diálogo é chamado
+    if(tela == 'perfil') {
+      var pulseiraDispLista = document.querySelector('#lista-pulseiras-perfil');
+    } else if(tela == 'config') {
+      var pulseiraDispLista = document.querySelector('#lista-pulseiras-config');
+    }
+
+    pulseiraDisp.onclick = function() {
+
+      if(medApp.services.pulseiraAtual != -1){
+
+         $.ajax({
+           url: 'http://julianop.com.br:3000/api/pulseira',
+           type: 'PUT',
+           success: function(data) {
+             console.log(data);
+           },
+           error: function(data) {
+             console.log(data);
+            },
+           data: {
+             idPulseira: medApp.services.pulseiraAtual,
+             disponivel: 1,
+             idPaciente: medApp.services.getIdPaciente()
+           }
+         });
+
+      };
+
+      //ons.notification.alert("Pulseira " + medApp.services.pulseiraAtual + " selecionada.");
+      //Adiciona a pulseira para o paciente na base de dados.
+      $.ajax({
+        url: 'http://julianop.com.br:3000/api/pulseira',
+        type: 'PUT',
+        success: function(data) {
+          console.log(data);
+          medApp.services.pulseiraAtual = $(pulseiraDisp).data('idPulseira');
+          document.querySelector('#pulseira-pac').innerHTML = $(pulseiraDisp).data('idPulseira');
+        },
+        error: function(data) {
+          //console.log(data);
+        },
+        data: {
+          idPulseira: $(pulseiraDisp).data('idPulseira'),
+          disponivel: 0,
+          idPaciente: medApp.services.getIdPaciente()
+        }
+      });
+
+      
+      medApp.services.hidePopover(medApp.services.dial);
+
+    };
+
+    pulseiraDispLista.appendChild(pulseiraDisp);
+
   }
 
 };

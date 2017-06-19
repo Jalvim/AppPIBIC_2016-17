@@ -11,6 +11,7 @@
     </ons-tab>
   </ons-tabbar>
 
+  <!-- Dialog de mostrar lembrete no feed -->
   <ons-dialog id="dialog-lembrete" cancelable>
     <div class="lembrete-container">
         <ons-icon icon="md-assignment" size="35px" class="lembrete-header-icon"></ons-icon>
@@ -81,6 +82,18 @@
 
     </ons-row>
     </div>
+  </ons-dialog>
+
+  <!-- Dialog de alterar pulseiras no perfil do paciente -->
+
+  <ons-dialog id="dialog-pulseiras-perfil" cancelable>
+    <ons-list> 
+      <ons-list-item id="remove-pulseira" tappable>
+        <div>Desindexar a pulseira atual</div>
+      </ons-list-item>
+    </ons-list> 
+    <ons-list id="lista-pulseiras-perfil"> 
+    </ons-list>
   </ons-dialog>
   
 </ons-page>
