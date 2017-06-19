@@ -1883,11 +1883,19 @@ medApp.controllers = {
   		medApp.services.dial = document.getElementById('dialog-pulseiras').id;
 
         //Método responsável por encontrar na base as pulseiras disponíveis.
-        $.get('http://julianop.com.br:3000/api/pulseira/disponivel')
+        $.get('http://julianop.com.br:3000/api/pulseira/disponivel/' + medApp.services.getIdMedico())
         .done(function(data){
-          for(var i = 0; i < data.length; i++){
-            medApp.services.pulseirasDisponiveis[i] = data[i].idPulseira;
-          }
+          console.log(data);
+
+          if(data[0].hasOwnProperty('idPulseira')) {
+
+            for(var i = 0; i < data.length; i++){
+
+              medApp.services.pulseirasDisponiveis[i] = data[i].idPulseira;
+              
+            };
+          };
+
         })
         .done(function() {
 
@@ -2549,7 +2557,7 @@ medApp.controllers = {
     if(window.localStorage.getItem('urlfitbit') != null) {
 
       //POST AQUI
-      $.post('http://julianop.com.br:3000/api/equipe/relacoes/medicos/email',
+      $.post('http://julianop.com.br:3000/api/pulseira',
         {
           code: window.localStorage.getItem('urlfitbit'),
           idMedico: medApp.services.getIdMedico()

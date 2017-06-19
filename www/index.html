@@ -34,7 +34,7 @@
     function handleOpenURL(url) {
        
       setTimeout(function() {
-        window.localStorage.setItem('urlfitbit', url.substring(20));
+        window.localStorage.setItem('urlfitbit', url.slice(20, -4));
         document.querySelector('#loginNav').pushPage('html/registropulseira.html');
         }, 0);
 
