@@ -23,6 +23,76 @@ var router = express.Router();
 
 
 router.route('/')
+	.post(function(req, res){
+	
+		if(!req.body.hasOwnProperty('idMedico') ||
+		   !req.body.hasOwnProperty('code')){
+			return res.send('Erro: Não mandou todos os parâmetros necessários para registro de pulseira. (code + idMedico)');
+				
+		}
+		
+		mysql.getConnection(function(err, connection){
+// 			console.log(req.cookies);
+			var tokenRefreshAuthorization = 'Basic ' + new Buffer(`${senhas.clientID}:${senhas.clientSecret}`).toString('base64');
+			var oauthOptions = {
+				method: 'POST',
+				url: 'https://api.fitbit.com/oauth2/token',
+				headers: {
+					'Authorization': tokenRefreshAuthorization
+				},
+				form: {
+					clientId:'227WRB',
+					grant_type:'authorization_code',
+					redirect_uri:'http://julianop.com.br:3000/api/pulseira/codigo',
+					code:req.body.code
+				},
+				timeout: 3000
+			}
+			//request de informações essenciais para puxar dados da fitbit
+			request(oauthOptions, function(error, response, body) {
+				var temp = JSON.parse(body);
+				console.log(temp);
+				if (temp.hasOwnProperty('errors')) {
+			
+					return res.send('Falha no processo de autenticação ao tentar registrar a pulseira');
+				}
+				console.log('Pulseira autenticada com sucesso');
+		
+				//verificar se pulseira ja foi cadastrada anteriormente
+				connection.query('SELECT * FROM Autenticacao WHERE userID=? LIMIT 1',[temp.user_id], function(err, result, fields){
+			
+					if (result.length > 0) {
+						//atualizar informações de autenticação caso sim
+						connection.query('UPDATE Autenticacao SET refreshToken=?, accessToken=? WHERE userID=?',
+							[temp.refresh_token, temp.access_token, temp.user_id], function(err){
+					
+							if (err) { return res.send('Erro: Falha no armazenamento das informações de autenticação.'); }
+							res.send('Pulseira já resgistrada, dados cadastrais atualizados.');
+						
+						});
+						return;
+					}
+			
+					//adicionar nova pulseira normalmente caso não
+					connection.query('INSERT INTO Pulseira (disponivel, idMedicoDonoDaPulseira) VALUE (1, ?)',[req.body.idMedico],function(err, rows, fields){
+						if (err) { return res.send('Error: Falha ao inserir pulseira na base de dados tabela Pulseira'); }
+		
+						connection.query(
+						  'INSERT INTO Autenticacao (idPulseira, userID, refreshToken, accessToken) VALUES (?, ?, ?, ?)',
+						  [rows.insertId, temp.user_id, temp.refresh_token, temp.access_token],
+						  function(err) {
+							if (err) { 
+								res.send('Error: Falha ao armazenar info na tabela de autenticação'); 
+								connection.query(`DELETE FROM Pulseira WHERE idPulseira=${rows.insertId}`);
+							} else {
+								res.send('Pulseira adicionada com sucesso.');
+							}
+						});
+					});
+				});
+			});
+		});
+	})
 	.put(function(req,res) {
 	
 		mysql.getConnection(function(err, connection) {
@@ -114,10 +184,10 @@ router.route('/')
 		});
 	}); 
 	
-router.get('/disponivel', function(req, res){
+router.get('/disponivel/:idMedico', function(req, res){
 
 	mysql.getConnection(function(err, connection) {
-		connection.query('SELECT idPulseira FROM Pulseira WHERE disponivel=1', function(err, rows) {
+		connection.query('SELECT idPulseira FROM Pulseira WHERE disponivel=1 AND idMedico=?',[req.params.idMedico], function(err, rows) {
 			if (err) { return res.send('Erro ao selecionar pulseiras disponiveis na base de dados. '); }
 			res.json(rows);
 		});
