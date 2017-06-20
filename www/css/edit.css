@@ -1,4 +1,4 @@
-@media screen and (orientation: portrait){
+/*@media screen and (orientation: portrait){
 	/*Portrait orientation design*/
 
 	.edit-wrapper {
@@ -17,10 +17,10 @@
       padding: 15px 0 15px 30px;
     }
 
-}
+/*}
 
 @media screen and (orientation: landscape){
-	/*Landscape orientation design*/
+	/*Landscape orientation design
 
 	.edit-wrapper {
       padding: 16px 10px 0 10px;
@@ -38,4 +38,4 @@
       padding: 15px 0 15px 30px;
     }
 
-}
+}*/

@@ -128,7 +128,7 @@ medApp.services = {
     template.innerHTML =
       '<ons-list-item class="paciente-lista ' + data.statusPaciente + '" modifier="longdivider" tappable>' +
         '<div class="left">' +
-          '<img class="list__item__thumbnail" src="'+ data.img + '">' +
+          '<img class="list__item__thumbnail" style="border: inset 1px rgba(0, 0, 0, 0.3);" src="'+ data.img + '">' +
         '</div>' +
         '<div class="center">'+
           '<ons-row class="paciente-header">'+
@@ -399,7 +399,7 @@ medApp.services = {
         // Atributo tappable apenas se o paciente estiver ativo
         ((info.patient.ativo == 1) ? 'tappable>' : '>') +
         '<div class="left">' +
-          '<img class="list__item__thumbnail" src="'+ foto + '">' +
+          '<img class="list__item__thumbnail" style="border: inset 1px rgba(0, 0, 0, 0.3);" src="'+ foto + '">' +
         '</div>' +
         '<div class="center">'+
           '<ons-row class="paciente-header">'+
@@ -723,7 +723,7 @@ medApp.services = {
     template.innerHTML =
       '<ons-list-item>' +
           '<div class="left">' +
-            '<img class="list__item__thumbnail" src="http://www.clker.com/cliparts/A/Y/O/m/o/N/placeholder-md.png">' +
+            '<img class="list__item__thumbnail" style="border: inset 1px rgba(0, 0, 0, 0.3);" src="img/defaultprofile.svg">' +
           '</div>' +
           '<div class="center">' +
             data.nomePaciente +
@@ -968,7 +968,7 @@ medApp.services = {
       '<ons-list-item>' +
         '<div class="left">' +
           //'<img class="list__item__thumbnail" src="http://www.clker.com/cliparts/A/Y/O/m/o/N/placeholder-md.png">' +
-          '<img class="list__item__thumbnail" src="'+ membro.foto + '">' +
+          '<img class="list__item__thumbnail" style="border: inset 1px rgba(0, 0, 0, 0.3);" src="'+ membro.foto + '">' +
         '</div>' +
         '<div class="center">' +
           '<span class="list__item__title">' +

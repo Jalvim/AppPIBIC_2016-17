@@ -1,4 +1,4 @@
-@media screen and (orientation: portrait){
+/*@media screen and (orientation: portrait){*/
 
   #login .page__background { 
     background-color: white;
@@ -97,7 +97,7 @@
     left: 7px;
     top: 6px; 
   }
-}
+/*}
 
 @media screen and (orientation: landscape){
   #login .page__background { 
@@ -197,5 +197,5 @@
     left: 7px;
     top: 6px; 
   }
-}
+}*/
 

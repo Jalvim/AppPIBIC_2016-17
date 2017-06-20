@@ -1,4 +1,4 @@
-@media screen and (orientation: portrait){
+/*@media screen and (orientation: portrait){
 	/*Portrait orientation design*/
 
 	.lembrete-container {
@@ -76,10 +76,10 @@
 	  border-bottom: 1px solid #9E9E9E;
     }
 
-}
+/*}
 
 @media screen and (orientation: landscape){
-	/*Landscape orientation design*/
+	/*Landscape orientation design
 
 	.lembrete-container {
       width: 90%;
@@ -156,4 +156,4 @@
 	  border-bottom: 1px solid #9E9E9E;
     }
 
-}
+}*/

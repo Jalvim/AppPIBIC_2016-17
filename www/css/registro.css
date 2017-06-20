@@ -1,4 +1,4 @@
-@media screen and (orientation: portrait){
+/*@media screen and (orientation: portrait){
 	/*Portrait orientation design*/
 
 	.registro-form {
@@ -59,10 +59,10 @@
       border: inset 1px rgba(0, 0, 0, 0.3);
     }
 
-}
+/*}
 
 @media screen and (orientation: landscape){
-	/*Landscape orientation design*/
+	/*Landscape orientation design
 
 	.registro-form {
       text-align: center;
@@ -121,4 +121,4 @@
       border: inset 1px rgba(0, 0, 0, 0.3);
     }
 
-}
+}*/
