@@ -69,7 +69,7 @@ router.route('/')
 							[temp.refresh_token, temp.access_token, temp.user_id], function(err){
 					
 							if (err) { return res.send('Erro: Falha no armazenamento das informações de autenticação.'); }
-							if (req.body.idMedico != result.idMedico) { return res.send('Esta pulseira já foi cadastrada por outro médico.'); }
+							if (req.body.idMedico != result[0].idMedico) { return res.send('Esta pulseira já foi cadastrada por outro médico.'); }
 							res.send('Pulseira já resgistrada, dados cadastrais atualizados.');
 						
 						});
