@@ -60,7 +60,8 @@ router.route('/')
 		
 				//verificar se pulseira ja foi cadastrada anteriormente
 				connection.query('SELECT A.*, P.idMedico FROM Autenticacao A, Medico M WHERE A.userID=? AND P.idPulseira=A.idPulseira LIMIT 1',[temp.user_id], function(err, result, fields){
-			
+					console.log(err);
+					console.log(result);
 					if (result.length > 0) {
 						//atualizar informações de autenticação caso sim
 						connection.query('UPDATE Autenticacao SET refreshToken=?, accessToken=? WHERE userID=?',
@@ -242,7 +243,7 @@ router.get('/codigo', function(req, res) {
 		
 			//verificar se pulseira ja foi cadastrada anteriormente
 			connection.query('SELECT * FROM Autenticacao WHERE userID=? LIMIT 1',[temp.user_id], function(err, result, fields){
-			
+				
 				if (result.length > 0) {
 					//atualizar informações de autenticação caso sim
 					connection.query('UPDATE Autenticacao SET refreshToken=?, accessToken=? WHERE userID=?',
