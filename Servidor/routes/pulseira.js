@@ -59,7 +59,7 @@ router.route('/')
 				console.log('Pulseira autenticada com sucesso');
 		
 				//verificar se pulseira ja foi cadastrada anteriormente
-				connection.query('SELECT A.*, P.idMedico FROM Autenticacao A, Medico M WHERE A.userID=? AND P.idPulseira=A.idPulseira LIMIT 1',[temp.user_id], function(err, result, fields){
+				connection.query('SELECT A.*, P.idMedico FROM Autenticacao A, Pulseira P WHERE A.userID=? AND P.idPulseira=A.idPulseira LIMIT 1',[temp.user_id], function(err, result, fields){
 					console.log(err);
 					console.log(result);
 					if (result.length > 0) {
