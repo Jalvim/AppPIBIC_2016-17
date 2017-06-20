@@ -9,7 +9,9 @@ Este arquivo contém o módulo javascript de roteamento para as chamadas à API 
 var senhas = require('../senhas');
 var express = require('express');
 var mysql = require('../lib/mysqlWraper.js');
-// var mysql = require('mysql');
+var base64Util = require('../lib/base64Util.js');
+var pacienteService = require('../lib/pacienteService.js');
+
 var router = express.Router();
 
 router.route('/')
@@ -300,7 +302,8 @@ router.route('/medicos/')
 						console.log(err);
 						console.log(rows);
 						//console.log(fields);
-						res.json(rows);
+						var rowsWithPhotosEncondedInBase64 = pacienteService.encodePatientsPhotosAsBase64(rows);
+						res.json(rowsWithPhotosEncondedInBase64);
 					}
 				});
 			} else {
