@@ -62,6 +62,7 @@ router.route('/')
 				connection.query('SELECT A.*, P.idMedico FROM Autenticacao A, Pulseira P WHERE A.userID=? AND P.idPulseira=A.idPulseira LIMIT 1',[temp.user_id], function(err, result, fields){
 					console.log(err);
 					console.log(result);
+					console.log(req.body.idMedico);
 					if (result.length > 0) {
 						//atualizar informações de autenticação caso sim
 						connection.query('UPDATE Autenticacao SET refreshToken=?, accessToken=? WHERE userID=?',
