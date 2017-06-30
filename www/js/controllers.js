@@ -735,11 +735,18 @@ medApp.controllers = {
 
         $.get('http://julianop.com.br:3000/api/paciente/health/static/' + medApp.services.dadosPacienteAtual.idAtualPaciente)
           .done(function(data) {
+
             if(data.length <= 7){
+
+              medApp.services.dadosEstaticos.tamanho[0] = data.length - 1
+
               for(var i = 0; i < data.length; i++){
                 medApp.services.dadosEstaticos.calorias[i] = data[i].calories;
               }
             } else {
+
+              medApp.services.dadosEstaticos.tamanho[0] = 6
+
               for(var i = 0; i < 7; i++){
                 medApp.services.dadosEstaticos.calorias[i] = data[((data.length - 7) + i)].calories;
               }
@@ -789,6 +796,10 @@ medApp.controllers = {
               }
             });
 
+            console.log(medApp.services.dadosEstaticos.tamanho[0]);
+
+            page.querySelector('#ultCalorias').innerHTML = medApp.services.dadosEstaticos.calorias[medApp.services.dadosEstaticos.tamanho[0]]; 
+
           });
 
           medApp.services.dataDados = $('#data-dados').val();
@@ -832,15 +843,23 @@ medApp.controllers = {
 
         $.get('http://julianop.com.br:3000/api/paciente/health/static/' + medApp.services.dadosPacienteAtual.idAtualPaciente)
         .done(function(data) {
+
           if(data.length <= 7){
+
+            medApp.services.dadosEstaticos.tamanho[1] = data.length - 1
+
             for(var i = 0; i < data.length; i++){
               medApp.services.dadosEstaticos.passos[i] = data[i].steps;
             }
           } else {
+
+            medApp.services.dadosEstaticos.tamanho[1] = 6
+
             for(var i = 0; i < 7; i++){
               medApp.services.dadosEstaticos.passos[i] = data[((data.length - 7) + i)].steps;
             }
           }
+
         })
 
           .done(function() {
@@ -881,6 +900,8 @@ medApp.controllers = {
                   responsive: true
                 }
               });
+
+              page.querySelector('#ultPassos').innerHTML = medApp.services.dadosEstaticos.passos[medApp.services.dadosEstaticos.tamanho[1]];
 
           });
 
@@ -924,16 +945,24 @@ medApp.controllers = {
         //Request
         $.get('http://julianop.com.br:3000/api/paciente/health/dynamic/' + medApp.services.dadosPacienteAtual.idAtualPaciente + '/' + medApp.services.getToday('traco'))
           .done(function(data) {
+
             if(data.length < 10){
+
+              medApp.services.dadosEstaticos.tamanho[2] = data.length - 1
+
               for(var i = 0; i < data.length; i ++) {
                 medApp.services.dadosEstaticos.pulso[i] = data[i].heartRate;
               }
             } else {
+
+              medApp.services.dadosEstaticos.tamanho[2] = 9
+
               for(var i = 0; i < 10; i++){
                 medApp.services.dadosEstaticos.pulso[i] = data[((data.length - 10) + i)].heartRate;
               }
             }
             //console.log(data);
+
           })
           .done(function () {
             //console.log(medApp.services.dadosEstaticos.pulso);
@@ -959,6 +988,9 @@ medApp.controllers = {
                 responsive: true
               }
             });
+
+            page.querySelector('#ultBatimentos').innerHTML = medApp.services.dadosEstaticos.pulso[medApp.services.dadosEstaticos.tamanho[2]];
+
           });
 
           /*medApp.services.dataDados = $('#data-dados').val();
@@ -1001,15 +1033,23 @@ medApp.controllers = {
         //Request
         $.get('http://julianop.com.br:3000/api/paciente/health/static/' + medApp.services.dadosPacienteAtual.idAtualPaciente)
           .done(function(data) {
+
             if(data.length <= 7){
+
+              medApp.services.dadosEstaticos.tamanho[3] = data.length - 1
+
               for(var i = 0; i < data.length; i++){
                 medApp.services.dadosEstaticos.degraus[i] = data[i].floors;
               }
             } else {
+
+              medApp.services.dadosEstaticos.tamanho[3] = 6
+
               for(var i = 0; i < 7; i++){
                 medApp.services.dadosEstaticos.degraus[i] = data[((data.length - 7) + i)].floors;
               }
             }
+
           })
 
           .done(function() {
@@ -1050,6 +1090,8 @@ medApp.controllers = {
                 responsive: true
               }
             });
+
+            page.querySelector('#ultDegraus').innerHTML = medApp.services.dadosEstaticos.Degraus[medApp.services.dadosEstaticos.tamanho[3]];
 
           });
 

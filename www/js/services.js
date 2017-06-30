@@ -92,7 +92,8 @@ medApp.services = {
     calorias: new Array,
     passos: new Array,
     pulso: new Array,
-    degraus: new Array
+    degraus: new Array,
+    tamanho: new Array
   },
 
   // Função que verifica se os dados do médico foram editados
