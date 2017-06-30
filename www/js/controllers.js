@@ -796,8 +796,6 @@ medApp.controllers = {
               }
             });
 
-            console.log(medApp.services.dadosEstaticos.tamanho[0]);
-
             page.querySelector('#ultCalorias').innerHTML = medApp.services.dadosEstaticos.calorias[medApp.services.dadosEstaticos.tamanho[0]]; 
 
           });
@@ -959,9 +957,7 @@ medApp.controllers = {
 
               for(var i = 0; i < 10; i++){
                 medApp.services.dadosEstaticos.pulso[i] = data[((data.length - 10) + i)].heartRate;
-              }
-            }
-            //console.log(data);
+
 
           })
           .done(function () {
