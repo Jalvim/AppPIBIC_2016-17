@@ -1,22 +1,23 @@
 var mysql = require('mysql');
 var settings = require('../senhas.js');
 // Servidor Heroku
-var pool = mysql.createPool({
-	connectionLimit:100,
-	host : '79.170.40.183',
-	user : 'cl19-dbpipibic',
-	password : settings.senha_DB,
-	database : 'cl19-dbpipibic'
-});
-
-//Servidor Aws Bruno
 // var pool = mysql.createPool({
 // 	connectionLimit:100,
-// 	host : 'dev.cj01emk8l0tb.us-west-2.rds.amazonaws.com',
-// 	user : 'root',
-// 	password : 'apppibic',
-// 	database : 'dbpibic'
+// 	host : '79.170.40.183',
+// 	user : 'cl19-dbpipibic',
+// 	password : settings.senha_DB,
+// 	database : 'cl19-dbpipibic'
 // });
+
+//Servidor AWS
+var pool = mysql.createPool({
+	connectionLimit:100,
+	host : 'pibic.cg43srnwi1wb.us-east-2.rds.amazonaws.com',
+	user : 'root',
+	password : settings.senha_DB,
+	database : 'Pibic'
+});
+
 
 
 
@@ -53,3 +54,4 @@ module.exports.getConnection = function(callback) {
     conn.release();
   });
 };
+
