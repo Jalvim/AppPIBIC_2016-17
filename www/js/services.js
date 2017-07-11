@@ -1236,6 +1236,7 @@ medApp.services = {
 
   },
 
+  // Lista as pulseiras disponíveis no dialog das telas de perfil ou configuração do paciente
   listPulseiras: function(pulseira, tela) {
 
     var template = document.createElement('div');
@@ -1302,6 +1303,70 @@ medApp.services = {
     };
 
     pulseiraDispLista.appendChild(pulseiraDisp);
+
+  },
+
+  // Lista as pulseiras em uso ou disponíveis na aba de configurações
+  listStatusPulseiras: function(pulseira, status) {
+
+    var template = document.createElement('div');
+    template.innerHTML = 
+      '<ons-list-item>' +
+        '<div class="center">' +
+          'Pulseira #' + pulseira +
+        '</div>' +
+        '<div class="right">' +
+          '<ons-switch class="pulseiraalocada"' + (status ? 'checked' : 'disabled') + '></ons-switch>' +
+        '</div>' +
+      '</ons-list-item>';
+
+    var pulseiraStatus = template.firstChild;
+    $(pulseiraStatus).data('idPulseira', pulseira);
+    var pulseiraStatusLista = document.querySelector('#statuspulseiras');
+
+    // Função para desalocar uma pulseira ativa via configurações
+    pulseiraStatus.querySelector('.pulseiraalocada').onclick = function(e) {
+
+      if (!e.value){
+        ons.notification.confirm({message: 'Deseja desalocar essa pulseira?'})
+          .then( function(confirm){
+
+            if(confirm) {
+
+              pulseiraStatus.querySelector('.pulseiraalocada').disabled = true;
+              /* NÃO IMPLEMENTADO
+              $.ajax({
+                url: 'http://julianop.com.br:3000/api/pulseira',
+                type: 'PUT',
+                success: function(data) {
+                  ons.notification.alert("Pulseira desalocada!");
+                  pulseiraStatus.querySelector('.pulseiraalocada').checked = false;
+                },
+                error: function(data) {
+                  ons.notification.alert("Erro ao desalocar pulseira!");
+                  pulseiraStatus.querySelector('.pulseiraalocada').checked = true;
+                  pulseiraStatus.querySelector('.pulseiraalocada').disabled = false;
+                },
+                data: {
+                  idPulseira: $(pulseiraStatus).data('idPulseira'),
+                  disponivel: 1,
+                  idPaciente: //medApp.services.getIdPaciente()
+                }
+              });
+            */
+            } else if (!confirm) {
+
+              pulseiraStatus.querySelector('.pulseiraalocada').checked = true;
+
+            };
+
+          });
+
+      };
+      
+    };
+
+    pulseiraStatusLista.appendChild(pulseiraStatus);
 
   }
 

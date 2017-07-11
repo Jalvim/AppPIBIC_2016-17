@@ -246,7 +246,9 @@ medApp.controllers = {
         ons.notification.alert("E-mail invalido");
 
       }
- else if(document.getElementById('picture').src!='http://www.clker.com/cliparts/A/Y/O/m/o/N/placeholder-md.png'){
+
+      else if(document.getElementById('picture').src != 'img/defaultprofile.svg'){
+
         $.post('http://julianop.com.br:3000/api/medico/',
         {
           nomeMedico: $('#nome-cadastro').val(),
@@ -967,16 +969,19 @@ medApp.controllers = {
 
               for(var i = 0; i < data.length; i ++) {
                 medApp.services.dadosEstaticos.pulso[i] = data[i].heartRate;
-              }
+              };
+
             } else {
 
               medApp.services.dadosEstaticos.tamanho[2] = 9
 
               for(var i = 0; i < 10; i++){
                 medApp.services.dadosEstaticos.pulso[i] = data[((data.length - 10) + i)].heartRate;
-
+              };
+            };
 
           })
+          
           .done(function () {
             //console.log(medApp.services.dadosEstaticos.pulso);
             var chrt3 = document.getElementById("myChart3");
@@ -1249,7 +1254,8 @@ medApp.controllers = {
     page.querySelector('#salvar-med').onclick = function() {
 
       //if ($("#medico-edit-form").data("changed")) {
-if(document.getElementById('img-medico').src!='http://www.clker.com/cliparts/A/Y/O/m/o/N/placeholder-md.png'){
+      if(document.getElementById('img-medico').src != 'img/defaultprofile.svg') {
+
         var dadosEdit = {
 
           nome: $('#nome-medico').val(),
@@ -1276,8 +1282,8 @@ if(document.getElementById('img-medico').src!='http://www.clker.com/cliparts/A/Y
                   foto: dadosEdit.foto
                 }
         });
-}
-else{
+      }
+      else {
       var dadosEdit = {
 
           nome: $('#nome-medico').val(),
@@ -1301,8 +1307,9 @@ else{
                   email: dadosEdit.email,
                 }
         });
-}
-        document.querySelector('#medicoNav').popPage();
+      }
+
+      document.querySelector('#medicoNav').popPage();
 
       /*} else {
         document.querySelector('#medicoNav').popPage();
@@ -1436,7 +1443,7 @@ else{
 
 
       //Request PUT responsável pela edição de pacientes diretamente na base de dados.
-if (document.getElementById('edit-pac').src!='http://www.clker.com/cliparts/A/Y/O/m/o/N/placeholder-md.png'){
+      if (document.getElementById('edit-pac').src != 'img/defaultprofile.svg'){
       // Dados editados do paciente
       var dadosEditPac = {
 
@@ -1477,8 +1484,10 @@ if (document.getElementById('edit-pac').src!='http://www.clker.com/cliparts/A/Y/
           ons.notification.alert("Alterações não efetuadas");
           document.querySelector('#pacienteNav').popPage();
         });
-}
-else { // Dados editados do paciente
+      }
+      else { 
+
+      // Dados editados do paciente
       var dadosEditPac = {
 
       nome: $('#nome-pac-edit').val(),
@@ -1516,8 +1525,8 @@ else { // Dados editados do paciente
           ons.notification.alert("Alterações não efetuadas");
           document.querySelector('#pacienteNav').popPage();
         });
-}
 
+      };
 
     };
 
@@ -1796,7 +1805,8 @@ else { // Dados editados do paciente
         var dataNovoPaciente = $('#data-novo-pac').val();
         var causaNovoPaciente = $('#causa-novo-pac').val();
         var localNovoPaciente = $('#local-novo-pac').val();
-if (document.getElementById('img-pac').src!='http://www.clker.com/cliparts/A/Y/O/m/o/N/placeholder-md.png'){
+
+      if (document.getElementById('img-pac').src != 'img/defaultprofile.svg') {
 
         $.post('http://julianop.com.br:3000/api/paciente/geral',
         {
@@ -1827,9 +1837,10 @@ if (document.getElementById('img-pac').src!='http://www.clker.com/cliparts/A/Y/O
           });
 
         });
-}
-else{
-  $.post('http://julianop.com.br:3000/api/paciente/geral',
+      }
+      else{
+
+        $.post('http://julianop.com.br:3000/api/paciente/geral',
         {
           nomePaciente: $('#nome-novo-pac').val(),
           nomeMedico: medApp.services.getNomeMedico(),
@@ -1857,7 +1868,8 @@ else{
           });
 
         });
-}
+
+      };
 
       };
 
@@ -1871,6 +1883,13 @@ else{
   //////////////////////////////////
 
   configuracoes: function(page) {
+
+    // Preenche o status das pulseiras cadastradas na conta atual
+    page.addEventListener('show', function(event) {
+
+      //medApp.services.listStatusPulseiras(3, 1);
+
+    });
 
     page.querySelector('#manage-pulseiras').onclick = function() {
 
@@ -1908,6 +1927,29 @@ else{
           };
 
         });
+
+    };
+
+    page.querySelector('#checkpulseira').onchange = function(e) {
+
+      if (!e.value){
+        ons.notification.confirm({message: 'Deseja desalocar essa pulseira?'})
+          .then( function(confirm){
+
+            if(confirm) {
+
+              page.querySelector('#checkpulseira').checked = false;
+              page.querySelector('#checkpulseira').disabled = true;
+
+            } else if (!confirm) {
+
+              page.querySelector('#checkpulseira').checked = true;
+
+            };
+
+          });
+
+      };
 
     };
 
