@@ -278,4 +278,14 @@ router.get('/codigo', function(req, res) {
 	});
 });
 
+router.get('/status/:idMedico', function(req, res) {
+	
+	mysql.getConnection(function(err, connection) {
+		connection.query('SELECT idPulseira, disponivel  FROM Pulseira WHERE disponivel=1 AND idMedico=?    UNION     SELECT P.idPulseira, P.disponivel, PP.pacienteAtual  FROM Pulseira AS P INNER JOIN Pulseira_Paciente as PP on P.idPulseira = PP.idPulseira WHERE disponivel=0 AND idMedico=?   ',[req.params.idMedico], function(err, rows) {
+			if (err) { return res.send('Erro ao selecionar pulseiras disponiveis na base de dados. '); }
+			res.json(rows);
+		});
+	});
+});
+
 module.exports = router;

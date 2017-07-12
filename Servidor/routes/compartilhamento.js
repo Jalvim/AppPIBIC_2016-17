@@ -19,11 +19,11 @@ router.route('/paciente/')
 	
 			if (req.hasOwnProperty('body') &&
 				req.body.hasOwnProperty('idPaciente') &&
-				req.body.hasOwnProperty('idHospitalOrigem') &&
+				req.body.hasOwnProperty('idEquipeOrigem') &&
 				req.body.hasOwnProperty('idMedicoDestino')){
 
 				var queryValidacao = {
-					sql: `SELECT HM.idHospital FROM Hospital_Medico HM WHERE idMedico = ${connection.escape(req.body.idMedicoDestino)} AND idHospital = ${connection.escape(req.body.idHospitalOrigem)}`,
+					sql: `SELECT EM.idEquipe FROM Equipe_Medico EM WHERE idMedico = ${connection.escape(req.body.idMedicoDestino)} AND idHospital = ${connection.escape(req.body.idEquipeOrigem)}`,
 					timeout: 1000
 
 				}
