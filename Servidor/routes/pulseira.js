@@ -280,12 +280,30 @@ router.get('/codigo', function(req, res) {
 
 router.get('/status/:idMedico', function(req, res) {
 	
+	if (req.params.hasOwnProperty('idMedico')) {
 	mysql.getConnection(function(err, connection) {
-		connection.query('SELECT idPulseira, disponivel  FROM Pulseira WHERE disponivel=1 AND idMedico=?    UNION     SELECT P.idPulseira, P.disponivel, PP.pacienteAtual  FROM Pulseira AS P INNER JOIN Pulseira_Paciente as PP on P.idPulseira = PP.idPulseira WHERE disponivel=0 AND idMedico=?   ',[req.params.idMedico], function(err, rows) {
-			if (err) { return res.send('Erro ao selecionar pulseiras disponiveis na base de dados. '); }
+		console.log(req.params.idMedico);
+
+		queryStatusPulseiras = {
+		sql: `
+		SELECT idPulseira, disponivel , NULL as pacienteAtual FROM Pulseira WHERE disponivel=1 AND idMedico= ${(req.params.idMedico)}
+		 UNION
+		 SELECT P.idPulseira as idPulseira, P.disponivel as disponivel, PP.pacienteAtual as pacienteAtual  FROM Pulseira AS P INNER JOIN Pulseira_Paciente as PP on P.idPulseira = PP.idPulseira 
+		 WHERE disponivel=0 AND idMedico= ${(req.params.idMedico)}   `,
+		 timeout: 10000
+		} 
+		connection.query(queryStatusPulseiras, function(err, rows) {
+		
+			if (err) 
+			{ 
+				console.log(err);
+				console.log(queryStatusPulseiras.sql);
+				return res.json(rows); 
+			}
 			res.json(rows);
 		});
 	});
+	}
 });
 
 module.exports = router;
