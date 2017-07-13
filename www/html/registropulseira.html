@@ -7,14 +7,31 @@
     <br>
     
     <div style="margin: 0 auto; width: 300px;">
-    <p style="text-align: center;">Completando registro de sua pulseira.</p>
-    <p style="text-align: center;">Aguarde...</p>
+    <p style="text-align: center;" id="pulseirawait">
+    	Completando registro de sua pulseira.
+    	<br>
+    	Aguarde...
+    </p>
     <div class="center">
 
     <br>
     
-    <div style="margin: 0 auto; width: 20px;">
+    <div style="text-align: center; margin: 0 auto; width: 20px;" id="progess-pulseiras">
     <ons-progress-circular indeterminate></ons-progress-circular>
+    </div>
+
+    <div style="margin: 0 auto; display: none;" id="acaolistapulseira">
+    	<ons-list>
+    		<ons-list-item id="pulseirapacexitente" tappable>
+    			Adicionar a um paciente existente
+    		</ons-list-item>
+    		<ons-list-item id="pulseiranovopac" tappable>
+    			Criar novo paciente
+    		</ons-list-item>
+    		<ons-list-item id="pulseiranada" tappable>
+    			Não fazer nada
+    		</ons-list-item>
+    	</ons-list>
     </div>
     
 </ons-page>

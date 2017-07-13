@@ -193,7 +193,21 @@ medApp.services = {
 
       pacienteItem.onclick = function() {
 
-        document.querySelector('#tab-inicial').setActiveTab(1, {options: {animation: 'slide'}});
+        ons.notification.confirm({message: 'Deseja adicionar esse paciente à sua lista para monitorá-lo?'})
+        .then(function(confirm){
+          
+          $.post('http://julianop.com.br:3000/api/compartilhamento/paciente',
+          {
+            idPaciente: $(pacienteItem).data('idPaciente'),
+            idEquipeOrigem: medApp.services.getEquipeAtual(),
+            idMedicoDestino: medApp.services.getIdMedico()
+          })
+          .done(function(data) {
+            console.log('deu: ' + data);
+            //ons.notification.alert(data);
+
+          });
+        /*document.querySelector('#tab-inicial').setActiveTab(1, {options: {animation: 'slide'}});
         medApp.services.setPacienteAtual( { idPaciente: $(pacienteItem).data('idPaciente'),
                                             nome: data.nomePaciente,
                                             dataIntFormatoTraco: dataPacienteFormatoTraco,
@@ -205,6 +219,8 @@ medApp.services = {
                                           });
 
         document.querySelector('#pacienteNav').pushPage('html/perfilpaciente.html');
+        */
+        });
 
       };
 

@@ -1887,6 +1887,10 @@ medApp.controllers = {
     // Preenche o status das pulseiras cadastradas na conta atual
     page.addEventListener('show', function(event) {
 
+      $.get('http://julianop.com.br:3000/api/pulseira/status/' + medApp.services.getIdMedico())
+      .done(function(pulseiras) {
+          console.log(pulseiras);
+        });
       //medApp.services.listStatusPulseiras(3, 1);
 
     });
@@ -2872,9 +2876,49 @@ medApp.controllers = {
 
   registropulseira: function(page) {
 
-    if(window.localStorage.getItem('urlfitbit') != null) {
+    page.addEventListener('show', function(event) {
 
-      //POST AQUI
+      setTimeout(actionpulseiras(), 8000);
+
+    });
+    
+    function actionpulseiras() {
+
+      page.querySelector('#pulseirawait').innerHTML = 'Pulseira cadastrada com sucesso!' +  
+                                                      '<br>' +
+                                                      'Deseja adicionar a pulseira a algum paciente?';
+      $('#progess-pulseiras').hide();
+      $('#acaolistapulseira').show();
+
+      // Adiciona a um paciente existente na lista
+      $('#pulseirapacexitente').click(function() {
+
+        document.querySelector('#loginNav').popPage();
+        document.querySelector('#tab-inicial').setActiveTab( 1 , {options: {animation: 'slide'}});
+
+      });
+
+      // Redireciona para o cadastro de novo paciente
+      $('#pulseiranovopac').click(function() {
+
+        document.querySelector('#loginNav').popPage();
+        document.querySelector('#tab-inicial').setActiveTab( 1 , {options: {animation: 'slide'}});
+        document.querySelector('#pacienteNav').pushPage('html/addpaciente.html');
+
+
+      });
+
+      // Sair da página de conclusão de cadastro da pulseira
+      $('#pulseiranada').click(function() {
+
+        document.querySelector('#loginNav').popPage();
+
+      });
+
+    };
+
+    /*if(window.localStorage.getItem('urlfitbit') != null) {
+
       $.post('http://julianop.com.br:3000/api/pulseira',
         {
           code: window.localStorage.getItem('urlfitbit'),
@@ -2884,6 +2928,7 @@ medApp.controllers = {
 
           ons.notification.alert(data);
           window.localStorage.removeItem('urlfitbit');
+
           document.querySelector('#loginNav').popPage();
 
         });
@@ -2894,6 +2939,7 @@ medApp.controllers = {
       document.querySelector('#loginNav').popPage();
 
     };
+    */
 
   }
 
