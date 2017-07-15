@@ -1889,9 +1889,21 @@ medApp.controllers = {
 
       $.get('http://julianop.com.br:3000/api/pulseira/status/' + medApp.services.getIdMedico())
       .done(function(pulseiras) {
-          console.log(pulseiras);
+
+          // Limpa e popula a lista de pulseiras conectadas
+          $('#statuspulseiras').empty();
+
+          if(pulseiras[0].hasOwnProperty('idPulseira')) {
+
+            for(var i = 0; i < pulseiras.length; i++){
+
+              medApp.services.listStatusPulseiras(pulseiras[i]);
+
+            };
+
+          };
+
         });
-      //medApp.services.listStatusPulseiras(3, 1);
 
     });
 
@@ -1933,7 +1945,7 @@ medApp.controllers = {
         });
 
     };
-
+    /*
     page.querySelector('#checkpulseira').onchange = function(e) {
 
       if (!e.value){
@@ -1956,6 +1968,7 @@ medApp.controllers = {
       };
 
     };
+    */
 
   },
 
