@@ -160,7 +160,7 @@ medApp.controllers = {
         //Error CallBack
         function FailCallback (message) {
 
-            alert ('Erro!!!: ' + message);
+            ons.notification.alert(message);
 
         };
 
@@ -191,7 +191,7 @@ medApp.controllers = {
           //Error CallBack
           function FailCallback (message) {
 
-            ons.notification.alert('Erro!!!: ' + message);
+            ons.notification.alert(message);
 
           };
 
@@ -1195,7 +1195,7 @@ medApp.controllers = {
         //Error CallBack
         function FailCallback (message) {
 
-            alert ('Erro!!!: ' + message);
+            ons.notification.alert(message);
 
           };
 
@@ -1227,7 +1227,7 @@ medApp.controllers = {
           //Error CallBack
           function FailCallback (message) {
 
-            alert ('Erro!!!: ' + message);
+            ons.notification.alert(message);
 
           };
 
@@ -1370,7 +1370,7 @@ medApp.controllers = {
         //Error CallBack
         function FailCallback (message) {
 
-            alert ('Erro!!!: ' + message);
+            ons.notification.alert(message);
 
         };
 
@@ -1401,7 +1401,7 @@ medApp.controllers = {
           //Error CallBack
           function FailCallback (message) {
 
-            alert ('Erro!!!: ' + message);
+            ons.notification.alert(message);
 
           };
 
@@ -1730,7 +1730,7 @@ medApp.controllers = {
         //Error CallBack
         function FailCallback (message) {
 
-            alert ('Erro!!!: ' + message);
+            ons.notification.alert(message);
 
         };
 
@@ -1761,7 +1761,7 @@ medApp.controllers = {
           //Error CallBack
           function FailCallback (message) {
 
-            ons.notification.alert ('Erro!!!: ' + message);
+            ons.notification.alert(message);
 
           };
 
@@ -1890,20 +1890,37 @@ medApp.controllers = {
       $.get('http://julianop.com.br:3000/api/pulseira/status/' + medApp.services.getIdMedico())
       .done(function(pulseiras) {
 
+        if(pulseiras.length == 0) {
+
+          $('#statuspulseiras').empty();
+
+          var template = document.createElement('div');
+
+          template.innerHTML = '<ons-list-item>' +
+            '<div class="center">' +
+              'Nenhuma pulseira conectada' +
+            '</div>' +
+          '</ons-list-item>';
+
+          var statuspulseiraItem = template.firstChild;
+          var statuspulseiraLista = document.querySelector('#statuspulseiras');
+
+          statuspulseiraLista.appendChild(statuspulseiraItem);
+
+        } else if(pulseiras[0].hasOwnProperty('idPulseira')) {
+
           // Limpa e popula a lista de pulseiras conectadas
           $('#statuspulseiras').empty();
 
-          if(pulseiras[0].hasOwnProperty('idPulseira')) {
+          for(var i = 0; i < pulseiras.length; i++){
 
-            for(var i = 0; i < pulseiras.length; i++){
-
-              medApp.services.listStatusPulseiras(pulseiras[i]);
-
-            };
+            medApp.services.listStatusPulseiras(pulseiras[i]);
 
           };
 
-        });
+        };
+
+      });
 
     });
 
