@@ -746,13 +746,37 @@ medApp.controllers = {
   ///Controle dos Gráficos de saúde ///
   /////////////////////////////////////
 
+  dadossaude0: function(page){
+
+  	//Interface da lista mostrando última atualização de cada ítem
+
+  	$.get('http://julianop.com.br:3000/api/paciente/health/static/' + medApp.services.getIdPaciente())
+  	.done(function(data){
+
+  		if(data.length == 0){
+  			ons.notification.alert("Sem conexão com o servidor");
+  		} else {
+
+  			page.querySelector('#itemCalorias').innerHTML = data[data.length - 1].calories;
+
+  			page.querySelector('#itemPassos').innerHTML = data[data.length - 1].steps;
+
+  			//page.querySelector('#itemPulso').innerHTML = data[data.length - 1].heartRate;
+
+  			page.querySelector('#itemDegraus').innerHTML = data[data.length - 1].floors;
+
+  		}
+  	});
+
+  },
+
   dadossaude1: function(page) {
 
         //Interface gráfica interativa dos dados estáticos de saúde.
 
         //Request feito quando a interface gráfica carregar para obter os dados estáticos do paciente.
 
-        $.get('http://julianop.com.br:3000/api/paciente/health/static/' + medApp.services.dadosPacienteAtual.idAtualPaciente)
+        $.get('http://julianop.com.br:3000/api/paciente/health/static/' + medApp.services.getIdPaciente())
           .done(function(data) {
 
             if(data.length <= 7){

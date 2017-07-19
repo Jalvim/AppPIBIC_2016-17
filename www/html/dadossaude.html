@@ -7,15 +7,115 @@
     </ons-toolbar>
 
     <ons-tabbar position="top">
-        <ons-tab label="Calorias" class="tabbar" page="dadossaude1.html" active>
+        <ons-tab label="Home" class="tabbar" page="dadossaude0.html" active>
         </ons-tab>
-        <ons-tab label="Passos" class="tabbar" page="dadossaude2.html">
+        <ons-tab label="Cal" class="tabbar" page="dadossaude1.html">
         </ons-tab>
-        <ons-tab label="Pulso" class="tabbar" page="dadossaude3.html">
+        <ons-tab label="Pas" class="tabbar" page="dadossaude2.html">
         </ons-tab>
-        <ons-tab label="Degraus" class="tabbar" page="dadossaude4.html"> <!-- TODO Averiguar possibilidade de implementação. -->
+        <ons-tab label="Pul" class="tabbar" page="dadossaude3.html">
+        </ons-tab>
+        <ons-tab label="Deg" class="tabbar" page="dadossaude4.html"> <!-- TODO Averiguar possibilidade de implementação. -->
         </ons-tab>
     </ons-tabbar>
+
+    <ons-template id="dadossaude0.html">
+      <ons-page id="dadossaude0">
+
+      <ons-list>
+
+        <ons-list-item class="paciente-lista">
+          <div class="left">
+            <ons-icon
+            icon="ion-pizza"
+            size="30px"
+            style="color: grey">
+            </ons-icon>
+          </div>
+          <div class="center">
+            <ons-row class="paciente-header">
+              <ons-col>
+                <span class="list__item__title nome"> Calorias queimadas </span>            
+                </ons-col>
+            </ons-row>
+            <ons-row>
+              <ons-col>
+                <span class="list__item__subtitle" id="itemCalorias"></span>
+              </ons-col>
+            </ons-row>
+          </div>
+        </ons-list-item>
+
+        <ons-list-item class="paciente-lista">
+          <div class="left">
+            <ons-icon
+            icon="ion-android-walk"
+            size="30px"
+            style="color: grey">
+            </ons-icon>
+          </div>
+          <div class="center">
+            <ons-row class="paciente-header">
+              <ons-col>
+                <span class="list__item__title nome"> Passos dados </span>            
+                </ons-col>
+            </ons-row>
+            <ons-row>
+              <ons-col>
+                <span class="list__item__subtitle" id="itemPassos"></span>
+              </ons-col>
+            </ons-row>
+          </div>
+        </ons-list-item>
+
+        <ons-list-item class="paciente-lista">
+          <div class="left">
+            <ons-icon
+            icon="ion-heart"
+            size="30px"
+            style="color: grey">
+            </ons-icon>
+          </div>
+          <div class="center">
+            <ons-row class="paciente-header">
+              <ons-col>
+                <span class="list__item__title nome"> Batimento cardíaco </span>            
+                </ons-col>
+            </ons-row>
+            <ons-row>
+              <ons-col>
+                <span class="list__item__subtitle" id="itemPulso"> dummie </span>
+              </ons-col>
+            </ons-row>
+          </div>
+        </ons-list-item>
+
+        <ons-list-item class="paciente-lista">
+          <div class="left">
+            <ons-icon
+            icon="ion-planet"
+            size="30px"
+            style="color: grey">
+            </ons-icon>
+          </div>
+          <div class="center">
+            <ons-row class="paciente-header">
+              <ons-col>
+                <span class="list__item__title nome"> Degraus subidos </span>            
+                </ons-col>
+            </ons-row>
+            <ons-row>
+              <ons-col>
+                <span class="list__item__subtitle" id="itemDegraus"></span>
+              </ons-col>
+            </ons-row>
+          </div>
+        </ons-list-item>
+
+      </ons-list>
+        
+      </ons-page>
+    </ons-template>
 
     <!-- Template da página com primeira informação gráfica -->
     <ons-template id="dadossaude1.html">
@@ -34,7 +134,7 @@
 
               <ons-list-item>
                 <div class="left">
-                  Última medição:                 
+                  Última atualização:                 
                 </div>
 
                 <div class="center" id="ultCalorias"></div>
@@ -86,7 +186,7 @@
 
               <ons-list-item>
                 <div class="left">
-                  Última medição: 
+                  Última atualização: 
                 </div>
 
                 <div class="center" id="ultPassos"></div>
@@ -138,7 +238,7 @@
 
               <ons-list-item>
                 <div class="left">
-                  Última medição: 
+                  Última atualização: 
                 </div>
 
                 <div class="center" id="ultBatimentos"></div>
@@ -190,7 +290,7 @@
 
               <ons-list-item>
                 <div class="left">
-                  Última medição: 
+                  Última atualização: 
                 </div>
 
                 <div class="center" id="ultDegraus"></div>
