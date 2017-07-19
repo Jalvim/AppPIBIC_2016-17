@@ -757,13 +757,13 @@ medApp.controllers = {
   			ons.notification.alert("Sem conexão com o servidor");
   		} else {
 
-  			page.querySelector('#itemCalorias').innerHTML = data[data.length - 1].calories;
+  			page.querySelector('#itemCalorias').innerHTML = data[data.length - 1].calories + ' calorias';
 
-  			page.querySelector('#itemPassos').innerHTML = data[data.length - 1].steps;
+  			page.querySelector('#itemPassos').innerHTML = data[data.length - 1].steps + ' passos';
 
   			//page.querySelector('#itemPulso').innerHTML = data[data.length - 1].heartRate;
 
-  			page.querySelector('#itemDegraus').innerHTML = data[data.length - 1].floors;
+  			page.querySelector('#itemDegraus').innerHTML = data[data.length - 1].floors + ' degraus';
 
   		}
   	});
