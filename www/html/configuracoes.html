@@ -20,30 +20,10 @@
             <ons-icon icon="md-watch" class="list__item__icon"></ons-icon>
           </div>
           <div class="center">
-            Adicionar Pulseiras
+            Gerenciar Pulseiras
           </div>
         </ons-list-item>
 
-        <ons-list-header>Status das Pulseiras</ons-list-header>
-
-        <ons-list id="statuspulseiras">
-          <!--
-          <ons-list-item>
-            <div class="center">
-              Pulseira #1
-            </div>
-            <div class="right">
-              <ons-switch id="checkpulseira" checked></ons-switch>
-            </div>
-          </ons-list-item>
-          -->
-        </ons-list>
-
-      </ons-list>
-
-      <br>
-
-      <ons-list>
         <ons-list-header>Sobre a Aplicação</ons-list-header>
         <ons-list-item>
           <div class="left">
@@ -79,7 +59,51 @@
 
       <ons-toolbar class="toolbar">
         <div class="left"><ons-back-button>Voltar</ons-back-button></div>
-        <div class="center">Adicionar Pulseiras</div>
+        <div class="center">Pulseiras</div>
+      </ons-toolbar>
+
+      <br>
+
+      <ons-list>
+
+        <ons-list-header>Opções</ons-list-header>
+
+        <ons-list-item id="add-pulseiras" tappable>
+          <div class="left">
+            <ons-icon icon="md-plus" class="list__item__icon"></ons-icon>
+          </div>
+          <div class="center">
+            Adicionar Pulseiras
+          </div>
+        </ons-list-item>
+
+        <ons-list-header>Status das Pulseiras</ons-list-header>
+
+        <ons-list id="statuspulseiras">
+          <!--
+          <ons-list-item>
+            <div class="center">
+              Pulseira #1
+            </div>
+            <div class="right">
+              <ons-switch id="checkpulseira" checked></ons-switch>
+            </div>
+          </ons-list-item>
+          -->
+        </ons-list>
+
+      </ons-list>
+
+
+    </ons-page>
+  </ons-template>
+
+  <ons-template id="addpulseira.html">
+    <ons-page id="addpulseira">
+
+      <ons-toolbar class="toolbar">
+        <div class="left"><ons-back-button>Voltar</ons-back-button></div>
+        <div class="center">Adicionar Pulseira</div>
       </ons-toolbar>
 
       <br>

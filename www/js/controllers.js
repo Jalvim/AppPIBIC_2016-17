@@ -1908,46 +1908,6 @@ medApp.controllers = {
 
   configuracoes: function(page) {
 
-    // Preenche o status das pulseiras cadastradas na conta atual
-    page.addEventListener('show', function(event) {
-
-      $.get('http://julianop.com.br:3000/api/pulseira/status/' + medApp.services.getIdMedico())
-      .done(function(pulseiras) {
-
-        if(pulseiras.length == 0) {
-
-          $('#statuspulseiras').empty();
-
-          var template = document.createElement('div');
-
-          template.innerHTML = '<ons-list-item>' +
-            '<div class="center">' +
-              'Nenhuma pulseira conectada' +
-            '</div>' +
-          '</ons-list-item>';
-
-          var statuspulseiraItem = template.firstChild;
-          var statuspulseiraLista = document.querySelector('#statuspulseiras');
-
-          statuspulseiraLista.appendChild(statuspulseiraItem);
-
-        } else if(pulseiras[0].hasOwnProperty('idPulseira')) {
-
-          // Limpa e popula a lista de pulseiras conectadas
-          $('#statuspulseiras').empty();
-
-          for(var i = 0; i < pulseiras.length; i++){
-
-            medApp.services.listStatusPulseiras(pulseiras[i]);
-
-          };
-
-        };
-
-      });
-
-    });
-
     page.querySelector('#manage-pulseiras').onclick = function() {
 
       // Template dentro de html/configuracoes
@@ -2014,10 +1974,65 @@ medApp.controllers = {
   },
 
   ////////////////////////////////////////
-  // Controlador do Adicionar Pulseiras //
+  // Controlador de Opções de Pulseiras //
   ////////////////////////////////////////
 
   pulseiras: function(page){
+
+    // Preenche o status das pulseiras cadastradas na conta atual
+    page.addEventListener('show', function(event) {
+
+      $.get('http://julianop.com.br:3000/api/pulseira/status/' + medApp.services.getIdMedico())
+      .done(function(pulseiras) {
+
+        if(pulseiras.length == 0) {
+
+          $('#statuspulseiras').empty();
+
+          var template = document.createElement('div');
+
+          template.innerHTML = '<ons-list-item>' +
+            '<div class="center">' +
+              'Nenhuma pulseira conectada' +
+            '</div>' +
+          '</ons-list-item>';
+
+          var statuspulseiraItem = template.firstChild;
+          var statuspulseiraLista = document.querySelector('#statuspulseiras');
+
+          statuspulseiraLista.appendChild(statuspulseiraItem);
+
+        } else if(pulseiras[0].hasOwnProperty('idPulseira')) {
+
+          // Limpa e popula a lista de pulseiras conectadas
+          $('#statuspulseiras').empty();
+
+          for(var i = 0; i < pulseiras.length; i++){
+
+            medApp.services.listStatusPulseiras(pulseiras[i]);
+
+          };
+
+        };
+
+      });
+
+    });
+
+    page.querySelector('#add-pulseiras').onclick = function() {
+
+      // Template dentro de html/configuracoes
+      document.querySelector('#configuracoesNav').pushPage('addpulseira.html');
+
+    };
+
+  },
+
+  ////////////////////////////////////////
+  // Controlador de Adicionar Pulseiras //
+  ////////////////////////////////////////
+
+  addpulseira: function(page){
 
     /* (REMOVIDO PARA TESTES)
   	page.addEventListener('show', function(event) {
