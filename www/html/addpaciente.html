@@ -10,55 +10,67 @@
   <div class="editar-form">
 
     <ons-list modifier="noborder" disable-auto-styling>
-      <ons-list-item modifier="nodivider">
-        <div class="left registro-image">
-          <img id="img-pac" src="img/defaultprofile.svg" class="editar-image">
+
+      <ons-list-item modifier="nodivider" class="reg-card-img">
+        <div class="left img-col" tappable>
+          <!--  <img src="http://www.clker.com/cliparts/A/Y/O/m/o/N/placeholder-md.png" class="editar-image" id="picture"> -->
+          <img src="img/defaultprofile.svg" class="editar-image" id="img-pac">
         </div>
-        <div class="center">
-          <ons-input placeholder="Nome" input-id="nome-novo-pac" class="text-input--underbar registro-input-top" disable-auto-styling></ons-input>
-          <ons-input placeholder="Médico Responsável" input-id="med-novo-pac" class="text-input--underbar registro-input-top" disable-auto-styling readonly></ons-input>
+        <div class="center info-col-img">
+          <ons-row>
+          <ons-input placeholder="Nome" input-id="nome-novo-pac" class="text-input--underbar" disable-auto-styling></ons-input>
+          </ons-row>
+          <ons-row>
+          <ons-input placeholder="Médico Responsável" input-id="med-novo-pac" class="text-input--underbar" 
+          disable-auto-styling readonly></ons-input>
+          </ons-row>
         </div>
       </ons-list-item>
 
-      <ons-list-item tappable class="add-foto">
+      <ons-button position="center" class="add-foto">
         <ons-icon icon="md-camera" class="list_item_icon"></ons-icon>
-          <span style="margin-left: 10px;">Adicionar foto</span>
-      </ons-list-item>
+        <span style="margin-left: 10px;">Adicionar foto</span>
+      </ons-button>
 
-      <ons-list-header>
-        Data de Internação
-      </ons-list-header>
-
-      <ons-list-item modifier="nodivider" disable-auto-styling>
-        <div class="left registro-icone">
+      <ons-list-item modifier="nodivider" class="reg-card-dois" disable-auto-styling>
+        <div class="left icon-col">
           <ons-icon icon="md-calendar" class="list__item__icon"></ons-icon>
         </div>
-        <div class="center">
-          <ons-input class="text-input--underbar registro-input-icon" input-id="data-novo-pac" type="date" disable-auto-styling>
+        <div class="center info-col">
+          <ons-row>
+            <span style="margin: 10px 3px 15px;">Data de Internação</span>
+          </ons-row>
+          <ons-row>
+          <ons-input class="text-input--underbar" input-id="data-novo-pac" type="date" disable-auto-styling>
           </ons-input>
-        </div>  
+          </ons-row>
+        </div>
       </ons-list-item>
 
-      <ons-list-item modifier="nodivider" disable-auto-styling>
-        <div class="left registro-icone">
+      <ons-list-item modifier="nodivider" class="reg-card-um" disable-auto-styling>
+        <div class="left icon-col">
           <ons-icon icon="md-plaster" class="list__item__icon"></ons-icon>
         </div>
-        <div class="center">
-          <ons-input placeholder="Causa da Internação" input-id="causa-novo-pac" class="text-input--underbar registro-input-icon" disable-auto-styling></ons-input>
+        <div class="center info-col">
+          <ons-input placeholder="Causa da Internação" input-id="causa-novo-pac" class="text-input--underbar" disable-auto-styling>
+          </ons-input>
         </div>
       </ons-list-item>
 
-      <ons-list-item modifier="nodivider" disable-auto-styling>
-        <div class="left registro-icone">
+      <ons-list-item modifier="nodivider" class="reg-card-um" disable-auto-styling>
+        <div class="left icon-col">
           <ons-icon icon="hospital-o" class="list__item__icon"></ons-icon>
         </div>
-        <div class="center">
-          <ons-input placeholder="Hospital" input-id="local-novo-pac" class="text-input--underbar registro-input-icon" disable-auto-styling></ons-input>
+        <div class="center info-col">
+          <ons-input placeholder="Hospital" input-id="local-novo-pac" class="text-input--underbar" disable-auto-styling>
+          </ons-input>
         </div>
       </ons-list-item>
 
+    </ons-list>
+
         <ons-dialog id="fotosource">
-        <ons-toolbar inline>
+        <ons-toolbar class="toolbar" inline>
           <div class="center">
             Editar imagem
           </div>

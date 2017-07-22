@@ -1597,7 +1597,7 @@ medApp.controllers = {
 
     	    for(var i=0; i<data.length; i++){
 
-    	      medApp.services.iconeFeed(data[i], i);
+    	      medApp.services.iconeFeed(data[i]);
     	      /* onclick que redireciona está dentro da fç
 		    
               page.querySelector('#ietm'+ i +'').onclick = function(){

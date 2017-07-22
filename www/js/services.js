@@ -397,7 +397,7 @@ medApp.services = {
 
   //Função responsável pela criacão de ítem no feed
 
-  iconeFeed: function(info, i){
+  iconeFeed: function(info){
 
     var template = document.createElement('div');
 
@@ -412,7 +412,7 @@ medApp.services = {
       var hora = info.patient.timestamp.substring(11,16);
 
       template.innerHTML =
-      '<ons-list-item id="item' + i + '" class="paciente-lista " modifier="longdivider"' +
+      '<ons-list-item class="paciente-lista " modifier="longdivider"' +
         // Atributo tappable apenas se o paciente estiver ativo
         ((info.patient.ativo == 1) ? 'tappable>' : '>') +
         '<div class="left">' +

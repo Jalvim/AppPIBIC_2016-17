@@ -9,65 +9,73 @@
 
     <ons-list modifier="noborder" disable-auto-styling>
 
-      <ons-list-item modifier="nodivider">
-        <div class="left registro-image">
-        <!--  <img src="http://www.clker.com/cliparts/A/Y/O/m/o/N/placeholder-md.png" class="editar-image" id="picture"> -->
-        <img src="img/defaultprofile.svg" class="editar-image" id="picture">
-        
+      <ons-list-item modifier="nodivider" class="reg-card-img">
+        <div class="left img-col" tappable>
+          <!--  <img src="http://www.clker.com/cliparts/A/Y/O/m/o/N/placeholder-md.png" class="editar-image" id="picture"> -->
+          <img src="img/defaultprofile.svg" class="editar-image" id="picture">
         </div>
-        <div class="center">
-          <ons-input input-id="nome-cadastro" placeholder="Nome" class="text-input--underbar registro-input-top" disable-auto-styling></ons-input>
-          <ons-input input-id="cpf-cadastro" placeholder="CPF" class="text-input--underbar registro-input-top" disable-auto-styling></ons-input>
+        <div class="center info-col-img">
+          <ons-row>
+          <ons-input input-id="nome-cadastro" placeholder="Nome" class="text-input--underbar" disable-auto-styling></ons-input>
+          </ons-row>
+          <ons-row>
+          <ons-input input-id="cpf-cadastro" placeholder="CPF" class="text-input--underbar" disable-auto-styling></ons-input>
+          </ons-row>
         </div>
       </ons-list-item>
 
-      <ons-list-item tappable class="add-foto">
+      <ons-button position="center" class="add-foto">
         <ons-icon icon="md-camera" class="list_item_icon"></ons-icon>
-          <span style="margin-left: 10px;">Adicionar foto</span>
-      </ons-list-item>
+        <span style="margin-left: 10px;">Adicionar foto</span>
+      </ons-button>
 
-      <ons-list-item modifier="nodivider" disable-auto-styling>
-        <div class="left registro-icone">
+      <ons-list-item modifier="nodivider" class="reg-card-dois" disable-auto-styling>
+        <div class="left icon-col">
           <ons-icon icon="fa-medkit" class="list__item__icon"></ons-icon>
         </div>
-        <div class="center">
-          <ons-input input-id="crm-cadastro" placeholder="CRM" class="text-input--underbar registro-input-icon" disable-auto-styling></ons-input>
+        <div class="center info-col">
+          <ons-row>
+            <ons-input input-id="crm-cadastro" placeholder="CRM" class="text-input--underbar registro-input" 
+            disable-auto-styling></ons-input>
+          </ons-row>
+          <ons-row>
+            <ons-input input-id="esp-cadastro" placeholder="Especialidade" class="text-input--underbar"
+            disable-auto-styling></ons-input>
+          </ons-row>
         </div>  
       </ons-list-item>
 
-      <ons-list-item modifier="nodivider" disable-auto-styling>
-        <ons-input input-id="esp-cadastro" placeholder="Especialidade" class="text-input--underbar registro-input" disable-auto-styling></ons-input>
-      </ons-list-item>
-
-      <ons-list-item modifier="nodivider" disable-auto-styling>
-        <div class="left registro-icone">
+      <ons-list-item modifier="nodivider" class="reg-card-um" disable-auto-styling>
+        <div class="left icon-col">
           <ons-icon icon="md-email" class="list__item__icon"></ons-icon>
         </div>
-        <div class="center">
+        <div class="center info-col">
           <ons-input input-id="email-cadastro" type="email" pattern="/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/" placeholder="Email" class="text-input--underbar registro-input-icon" disable-auto-styling></ons-input>
         </div>
       </ons-list-item>
 
-      <ons-list-item modifier="nodivider" disable-auto-styling>
-        <div class="left registro-icone">
+      <ons-list-item modifier="nodivider" class="reg-card-um" disable-auto-styling>
+        <div class="left icon-col">
           <ons-icon icon="md-phone" class="list__item__icon"></ons-icon>
         </div>
-        <div class="center">
-          <ons-input input-id="telefone-cadastro" type="tel" placeholder="Telefone" class="text-input--underbar registro-input-icon" disable-auto-styling></ons-input>
+        <div class="center info-col">
+          <ons-input input-id="telefone-cadastro" type="tel" placeholder="Telefone" class="text-input--underbar" disable-auto-styling></ons-input>
         </div>
       </ons-list-item>
 
-      <ons-list-item modifier="nodivider" disable-auto-styling>
-        <div class="left registro-icone">
+      <ons-list-item modifier="nodivider" class="reg-card-dois" disable-auto-styling>
+        <div class="left icon-col">
           <ons-icon icon="md-lock-outline" class="list__item__icon"></ons-icon>
         </div>
-        <div class="center">
-          <ons-input input-id="senha-cadastro" type="password" placeholder="Senha" class="text-input--underbar registro-input-icon" disable-auto-styling></ons-input>
+        <div class="center info-col">
+          <ons-row>
+            <ons-input input-id="senha-cadastro" type="password" placeholder="Senha" class="text-input--underbar registro-input" 
+            disable-auto-styling></ons-input>
+          </ons-row>
+          <ons-row>
+            <ons-input input-id="senha-confirm" type="password" placeholder="Repetir Senha" class="text-input--underbar" disable-auto-styling></ons-input>
+          </ons-row>
         </div>
-      </ons-list-item>
-
-      <ons-list-item modifier="nodivider" disable-auto-styling>
-        <ons-input input-id="senha-confirm" type="password" placeholder="Repetir Senha" class="text-input--underbar registro-input" disable-auto-styling></ons-input>
       </ons-list-item>
 
     </ons-list>
