@@ -1168,7 +1168,7 @@ medApp.controllers = {
 
               //console.log(medApp.services.dataDados);
 
-              $.get('http://julianop.com.br:3000/api/paciente/health/static/' + medApp.services.getIdPaciente() + '/' + medApp.services.dataDados)
+              $.get('http://julianop.com.br:3000/api/paciente/health/static/' + medApp.services.getIdPaciente()  + '/' + medApp.services.dataDados)
               .done(function(data) {
 
 
