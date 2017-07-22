@@ -1168,7 +1168,7 @@ medApp.controllers = {
 
               //console.log(medApp.services.dataDados);
 
-              $.get('http://julianop.com.br:3000/api/paciente/health/static/' + medApp.services.getIdPaciente()  + '/' + medApp.services.dataDados)
+              $.get('http://julianop.com.br:3000/api/paciente/health/static/' + medApp.services.getIdPaciente() + '/' + medApp.services.dataDados)
               .done(function(data) {
 
 
@@ -1390,8 +1390,8 @@ medApp.controllers = {
         medApp.services.hidePopover(medApp.services.dial);
 
         navigator.camera.getPicture (successCallback, FailCallback, { quality: 100,
-                                                                      targetWidth :110,
-                                                                      targetHeight :110,
+                                                                      targetWidth :80,
+                                                                      targetHeight :80,
                                                                       allowEdit: true,
                                                                       sourceType: Camera.PictureSourceType.CAMERA,
                                                                       destinationType: Camera.DestinationType.DATA_URL
@@ -1421,8 +1421,8 @@ medApp.controllers = {
         medApp.services.hidePopover(medApp.services.dial);
 
         navigator.camera.getPicture (successCallback, FailCallback, {  quality: 100,
-                                                                      targetWidth :110,
-                                                                      targetHeight :110,
+                                                                      targetWidth :80,
+                                                                      targetHeight :80,
                                                                       allowEdit: true,
                                                                       sourceType: Camera.PictureSourceType.PHOTOLIBRARY,
                                                                       destinationType: Camera.DestinationType.DATA_URL
@@ -1750,8 +1750,8 @@ medApp.controllers = {
         medApp.services.hidePopover(medApp.services.dial);
 
         navigator.camera.getPicture (successCallback, FailCallback, { quality: 100,
-                                                                      targetWidth :110,
-                                                                      targetHeight :110,
+                                                                      targetWidth :80,
+                                                                      targetHeight :80,
                                                                       allowEdit: true,
                                                                       sourceType: Camera.PictureSourceType.CAMERA,
                                                                       destinationType: Camera.DestinationType.DATA_URL
@@ -1781,8 +1781,8 @@ medApp.controllers = {
         medApp.services.hidePopover(medApp.services.dial);
 
         navigator.camera.getPicture (successCallback, FailCallback, { quality: 100,
-                                                                      targetWidth :110,
-                                                                      targetHeight :110,
+                                                                      targetWidth :80,
+                                                                      targetHeight :80,
                                                                       allowEdit: true,
                                                                       sourceType: Camera.PictureSourceType.PHOTOLIBRARY,
                                                                       destinationType: Camera.DestinationType.DATA_URL
