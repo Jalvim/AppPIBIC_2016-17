@@ -754,8 +754,10 @@ medApp.controllers = {
   	.done(function(data){
 
   		if(data.length == 0){
-  			ons.notification.alert("Sem conexão com o servidor");
-  		} else {
+  		
+      	ons.notification.alert("Sem conexão com o servidor");
+  		
+      } else {
 
   			page.querySelector('#itemCalorias').innerHTML = data[data.length - 1].calories + ' calorias';
 
@@ -767,6 +769,19 @@ medApp.controllers = {
 
   		}
   	});
+
+    $.get('http://julianop.com.br:3000/api/paciente/health/dynamic/' + medApp.services.getIdPaciente() + '/' + medApp.services.getToday('traco'))
+    .done(function(data){
+      if(data.length == 0){
+        
+        ons.notification.alert("Sem conexão com o servidor");
+      
+      } else {
+
+        page.querySelector('#itemPulso').innerHTML = data[data.length - 1].heartRate + ' BpM';
+
+      }
+    });
 
   },
 
@@ -859,7 +874,7 @@ medApp.controllers = {
 
               //console.log(medApp.services.dataDados);
 
-              $.get('http://julianop.com.br:3000/api/paciente/health/static/' + medApp.services.dadosPacienteAtual.idAtualPaciente + '/' + medApp.services.dataDados)
+              $.get('http://julianop.com.br:3000/api/paciente/health/static/' + medApp.services.getIdPaciente() + '/' + medApp.services.dataDados)
               .done(function(data) {
 
 
@@ -882,7 +897,7 @@ medApp.controllers = {
 
         //Request
 
-        $.get('http://julianop.com.br:3000/api/paciente/health/static/' + medApp.services.dadosPacienteAtual.idAtualPaciente)
+        $.get('http://julianop.com.br:3000/api/paciente/health/static/' + medApp.services.getIdPaciente())
         .done(function(data) {
 
           if(data.length <= 7){
@@ -962,7 +977,7 @@ medApp.controllers = {
 
               //console.log(medApp.services.dataDados);
 
-              $.get('http://julianop.com.br:3000/api/paciente/health/static/' + medApp.services.dadosPacienteAtual.idAtualPaciente + '/' + medApp.services.dataDados)
+              $.get('http://julianop.com.br:3000/api/paciente/health/static/' + medApp.services.getIdPaciente() + '/' + medApp.services.dataDados)
               .done(function(data) {
 
 
@@ -984,7 +999,7 @@ medApp.controllers = {
         //Interface gráfica interativa dos dados estáticos de saúde.
 
         //Request
-        $.get('http://julianop.com.br:3000/api/paciente/health/dynamic/' + medApp.services.dadosPacienteAtual.idAtualPaciente + '/' + medApp.services.getToday('traco'))
+        $.get('http://julianop.com.br:3000/api/paciente/health/dynamic/' + medApp.services.getIdPaciente() + '/' + medApp.services.getToday('traco'))
           .done(function(data) {
 
             if(data.length < 10){
@@ -1051,7 +1066,7 @@ medApp.controllers = {
 
               console.log(medApp.services.dataDados);
 
-              $.get('http://julianop.com.br:3000/api/paciente/health/static/' + medApp.services.dadosPacienteAtual.idAtualPaciente + '/' + medApp.services.dataDados)
+              $.get('http://julianop.com.br:3000/api/paciente/health/static/' + medApp.services.getIdPaciente() + '/' + medApp.services.dataDados)
               .done(function(data) {
 
 
@@ -1073,7 +1088,7 @@ medApp.controllers = {
         //Interface gráfica interativa dos dados estáticos de saúde.
 
         //Request
-        $.get('http://julianop.com.br:3000/api/paciente/health/static/' + medApp.services.dadosPacienteAtual.idAtualPaciente)
+        $.get('http://julianop.com.br:3000/api/paciente/health/static/' + medApp.services.getIdPaciente())
           .done(function(data) {
 
             if(data.length <= 7){
@@ -1153,7 +1168,7 @@ medApp.controllers = {
 
               //console.log(medApp.services.dataDados);
 
-              $.get('http://julianop.com.br:3000/api/paciente/health/static/' + medApp.services.dadosPacienteAtual.idAtualPaciente + '/' + medApp.services.dataDados)
+              $.get('http://julianop.com.br:3000/api/paciente/health/static/' + medApp.services.getIdPaciente() + '/' + medApp.services.dataDados)
               .done(function(data) {
 
 
