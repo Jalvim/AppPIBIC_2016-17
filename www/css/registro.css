@@ -20,7 +20,7 @@
 	.registro-form {
       text-align: center;
       width: 95%;
-      margin: 8px auto 20px;
+      margin: auto;/*8px auto 20px;*/
     }
 
     .registro-input {
@@ -49,7 +49,7 @@
 
     .add-foto {
       width: 320px;
-      margin-left: 3px;
+      margin: auto; /*margin-left: 3px;*/
       color: white;
       background-color: #29B6F6; 
     }
@@ -104,7 +104,7 @@
     .reg-card-um {
       border-radius: 5px;
       padding: 0;
-      margin: 10px 5px 10px;
+      margin: auto; /*10px 5px 10px;*/
       height: 60px;
       width: 320px;
     }
@@ -112,7 +112,16 @@
     .reg-card-dois {
       border-radius: 5px;
       padding: 0;
-      margin: 10px 5px 10px;
+      margin: auto; /*10px 5px 10px;*/
+      height: 85px;
+      width: 320px;
+    }
+
+    .but {
+      background-color: #EEEEEE;
+      border-radius: 5px;
+      padding: 0;
+      margin: auto; /*10px 5px 10px;*/
       height: 85px;
       width: 320px;
     }
@@ -120,7 +129,7 @@
     .reg-card-img {
       border-radius: 5px;
       padding: 0;
-      margin: 10px 5px 10px;
+      margin: auto; /*10px 5px 10px;*/
       height: 100px;
       width: 320px;
     }
