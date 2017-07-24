@@ -2,19 +2,19 @@
 	/*Portrait orientation design*/
 
   #cadastromedico .page__background { 
-    background-color: #EEEEEE;
+    background-color: white;
   }
 
   #editarmedico .page__background { 
-    background-color: #EEEEEE;
+    background-color: white;
   }
 
   #addpaciente .page__background { 
-    background-color: #EEEEEE;
+    background-color: white;
   }
 
   #editarpaciente .page__background { 
-    background-color: #EEEEEE;
+    background-color: white;
   }
 
 	.registro-form {
@@ -85,6 +85,7 @@
       border-top-left-radius: 5px;
       border-bottom-left-radius: 5px;
       padding: 10px;
+      color: white;
     }
 
     .info-col {
@@ -103,15 +104,17 @@
 
     .reg-card-um {
       border-radius: 5px;
+      border: 1px solid #29B6F6;
       padding: 0;
       margin: auto; /*10px 5px 10px;*/
       margin-bottom: 8px;
-      height: 60px;
+      height: 62px;
       width: 320px;
     }
 
     .reg-card-dois {
       border-radius: 5px;
+      border: 1px solid #29B6F6;
       padding: 0;
       margin: auto; /*10px 5px 10px;*/
       margin-bottom: 8px;
@@ -120,7 +123,7 @@
     }
 
     .but {
-      background-color: #EEEEEE;
+      background-color: white;
       border-radius: 5px;
       padding: 0;
       margin: auto; /*10px 5px 10px;*/
@@ -130,6 +133,7 @@
 
     .reg-card-img {
       border-radius: 5px;
+      border: 1px solid #29B6F6;
       padding: 0;
       margin: auto; /*10px 5px 10px;*/
       height: 100px;
