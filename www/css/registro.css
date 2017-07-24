@@ -105,6 +105,7 @@
       border-radius: 5px;
       padding: 0;
       margin: auto; /*10px 5px 10px;*/
+      margin-bottom: 5px;
       height: 60px;
       width: 320px;
     }
@@ -113,6 +114,7 @@
       border-radius: 5px;
       padding: 0;
       margin: auto; /*10px 5px 10px;*/
+      margin-bottom: 5px;
       height: 85px;
       width: 320px;
     }
