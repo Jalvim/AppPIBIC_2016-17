@@ -3001,7 +3001,7 @@ medApp.controllers = {
 
     };
 
-    /*if(window.localStorage.getItem('urlfitbit') != null) {
+    if(window.localStorage.getItem('urlfitbit') != null) {
 
       $.post('http://julianop.com.br:3000/api/pulseira',
         {
@@ -3023,7 +3023,7 @@ medApp.controllers = {
       document.querySelector('#loginNav').popPage();
 
     };
-    */
+    
 
   }
 
