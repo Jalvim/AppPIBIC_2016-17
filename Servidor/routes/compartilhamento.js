@@ -24,7 +24,7 @@ router.route('/paciente/')
 
 				var queryValidacao = {
 					sql: `SELECT EM.idEquipe FROM Equipe_Medico EM WHERE idMedico = ${connection.escape(req.body.idMedicoDestino)} AND idEquipe = ${connection.escape(req.body.idEquipeOrigem)}`,
-					timeout: 1000
+					timeout: 10000
 
 				}
 
@@ -36,7 +36,7 @@ router.route('/paciente/')
 					if(err == null && rows.length >= 1){
 						var queryCompartilhar = {
 							sql: `INSERT INTO Paciente_Medico (idMedico, idPaciente) VALUES (${connection.escape(req.body.idMedicoDestino)}, ${connection.escape(req.body.idPaciente)})`,
-							timeout: 1000
+							timeout: 10000
 
 						}
 						connection.query(queryCompartilhar, function(err, rows, fields) {
@@ -47,13 +47,16 @@ router.route('/paciente/')
 							if(err == null ){
 								res.send("Paciente compartilhado com sucesso.");
 							}
+							else if (err.code == 1062 ){ //MYSQL_CODE_DUPLICATE_KEY
+								res.send("O Paciente já se encontra na lista do Médico. Nenhuma alteração registrada.")
+							}
 							else{
 								res.send("Erro ao compartilhar paciente. Erro SQL.");
 							}
 						});
 					}
 					else{
-						res.send("Erro ao compartilhar paciente. Erro SQL.");
+						res.send("Erro ao selecionar pacientes da base. Erro SQL.");
 					}
 
 				});
