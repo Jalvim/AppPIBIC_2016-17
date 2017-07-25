@@ -196,17 +196,19 @@ medApp.services = {
         ons.notification.confirm({message: 'Deseja adicionar esse paciente à sua lista para monitorá-lo?'})
         .then(function(confirm){
           
-          $.post('http://julianop.com.br:3000/api/compartilhamento/paciente',
-          {
-            idPaciente: $(pacienteItem).data('idPaciente'),
-            idEquipeOrigem: medApp.services.getEquipeAtual(),
-            idMedicoDestino: medApp.services.getIdMedico()
-          })
-          .done(function(data) {
-            
-            ons.notification.alert(data);
+          if(confirm){
+            $.post('http://julianop.com.br:3000/api/compartilhamento/paciente',
+            {
+              idPaciente: $(pacienteItem).data('idPaciente'),
+              idEquipeOrigem: medApp.services.getEquipeAtual(),
+              idMedicoDestino: medApp.services.getIdMedico()
+            })
+            .done(function(data) {
+              
+              ons.notification.alert(data);
 
-          });
+            });
+          };
         /*document.querySelector('#tab-inicial').setActiveTab(1, {options: {animation: 'slide'}});
         medApp.services.setPacienteAtual( { idPaciente: $(pacienteItem).data('idPaciente'),
                                             nome: data.nomePaciente,
