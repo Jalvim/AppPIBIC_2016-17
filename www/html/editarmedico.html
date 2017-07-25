@@ -11,56 +11,73 @@
 
     <form id="medico-edit-form">
     <ons-list modifier="noborder" disable-auto-styling>
-      <ons-list-item modifier="nodivider">
-        <div class="left registro-image">
+
+      <ons-list-item modifier="nodivider" class="reg-card-img">
+        <div class="left img-col" tappable>
           <img src="img/defaultprofile.svg" class="editar-image" id="img-medico">
         </div>
-        <div class="center">
-          <ons-input input-id="nome-medico" placeholder="Nome" class="text-input--underbar registro-input-top" disable-auto-styling></ons-input>
-          <ons-input input-id="cpf-medico" placeholder="CPF" class="text-input--underbar registro-input-top" disable-auto-styling></ons-input>
+        <div class="center info-col-img">
+          <ons-row>
+          <ons-input input-id="nome-medico" placeholder="Nome" class="text-input--underbar" disable-auto-styling></ons-input>
+          </ons-row>
+          <ons-row>
+          <ons-input input-id="cpf-medico" placeholder="CPF" class="text-input--underbar" disable-auto-styling></ons-input>
+          </ons-row>
         </div>
       </ons-list-item>
 
-      <ons-list-item tappable class="add-foto">
+      <ons-list-item modifier="nodivider" class="but" disable-auto-styling>
+      <ons-button position="center" class="add-foto">
         <ons-icon icon="md-camera" class="list_item_icon"></ons-icon>
-          <span style="margin-left: 10px;">Editar foto</span>
+        <span style="margin-left: 10px;">Editar foto</span>
+      </ons-button>
       </ons-list-item>
 
-      <ons-list-item modifier="nodivider" disable-auto-styling>
-        <div class="left registro-icone">
+      <ons-list-item modifier="nodivider" class="reg-card-dois" disable-auto-styling>
+        <div class="left icon-col">
           <ons-icon icon="fa-medkit" class="list__item__icon"></ons-icon>
         </div>
-        <div class="center">
-          <ons-input input-id="crm-medico" placeholder="CRM" class="text-input--underbar registro-input-icon" disable-auto-styling></ons-input>
+        <div class="center info-col">
+          <ons-row>
+            <ons-input input-id="crm-medico" placeholder="CRM" class="text-input--underbar registro-input" disable-auto-styling>
+            </ons-input>
+          </ons-row>
+          <ons-row>
+            <ons-input input-id="esp-medico" placeholder="Especialidade" class="text-input--underbar" disable-auto-styling>
+            </ons-input>
+          </ons-row>
         </div>  
       </ons-list-item>
 
-      <ons-list-item modifier="nodivider" disable-auto-styling>
-        <ons-input input-id="esp-medico" placeholder="Especialidade" class="text-input--underbar registro-input" disable-auto-styling></ons-input>
-      </ons-list-item>
-
-      <ons-list-item modifier="nodivider" disable-auto-styling>
-        <div class="left registro-icone">
+      <ons-list-item modifier="nodivider" class="reg-card-um" disable-auto-styling>
+        <div class="left icon-col">
           <ons-icon icon="md-email" class="list__item__icon"></ons-icon>
         </div>
-        <div class="center">
-          <ons-input input-id="email-medico" type="email" placeholder="Email" class="text-input--underbar registro-input-icon" disable-auto-styling></ons-input>
+        <div class="center info-col">
+          <ons-input input-id="email-medico" type="email" pattern="/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/" placeholder="Email" class="text-input--underbar registro-input-icon" disable-auto-styling></ons-input>
         </div>
       </ons-list-item>
 
-      <ons-list-item modifier="nodivider" disable-auto-styling>
-        <div class="left registro-icone">
+      <ons-list-item modifier="nodivider" class="reg-card-um" disable-auto-styling>
+        <div class="left icon-col">
           <ons-icon icon="md-phone" class="list__item__icon"></ons-icon>
         </div>
-        <div class="center">
-          <ons-input input-id="tel-medico" type="tel" placeholder="Telefone" class="text-input--underbar registro-input-icon" disable-auto-styling></ons-input>
+        <div class="center info-col">
+          <ons-input input-id="tel-medico" type="tel" placeholder="Telefone" class="text-input--underbar" disable-auto-styling>
+          </ons-input>
         </div>
+      </ons-list-item>
+
+      <ons-list-item modifier="nodivider" class="but" disable-auto-styling>
+
+      <ons-button position="center" class="add-foto" id="salvar-med">Salvar</ons-button>
+
       </ons-list-item>
 
     </ons-list>
     </form>    
 
-    <ons-button position="center" class="button-send" id="salvar-med">Salvar</ons-button>
+    <!-- <ons-button position="center" class="button-send" id="salvar-med">Salvar</ons-button> -->
 
   </div>
 

@@ -52,6 +52,14 @@
     padding: 12px 0 12px 4px;
   }
 
+  .profile-ons{
+      background-color:#263238;
+      color:white;
+border:1px solid;
+
+  }
+
+
 /*}
 
 @media screen and (orientation: landscape){

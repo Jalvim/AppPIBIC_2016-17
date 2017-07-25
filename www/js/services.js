@@ -203,8 +203,8 @@ medApp.services = {
             idMedicoDestino: medApp.services.getIdMedico()
           })
           .done(function(data) {
-            console.log('deu: ' + data);
-            //ons.notification.alert(data);
+            
+            ons.notification.alert(data);
 
           });
         /*document.querySelector('#tab-inicial').setActiveTab(1, {options: {animation: 'slide'}});
@@ -397,7 +397,7 @@ medApp.services = {
 
   //Função responsável pela criacão de ítem no feed
 
-  iconeFeed: function(info, i){
+  iconeFeed: function(info){
 
     var template = document.createElement('div');
 
@@ -412,7 +412,7 @@ medApp.services = {
       var hora = info.patient.timestamp.substring(11,16);
 
       template.innerHTML =
-      '<ons-list-item id="item' + i + '" class="paciente-lista " modifier="longdivider"' +
+      '<ons-list-item class="paciente-lista " modifier="longdivider"' +
         // Atributo tappable apenas se o paciente estiver ativo
         ((info.patient.ativo == 1) ? 'tappable>' : '>') +
         '<div class="left">' +
@@ -1323,21 +1323,22 @@ medApp.services = {
   },
 
   // Lista as pulseiras em uso ou disponíveis na aba de configurações
-  listStatusPulseiras: function(pulseira, status) {
+  listStatusPulseiras: function(pulseira) {
 
     var template = document.createElement('div');
     template.innerHTML = 
       '<ons-list-item>' +
         '<div class="center">' +
-          'Pulseira #' + pulseira +
+          'Pulseira #' + pulseira.idPulseira +
         '</div>' +
         '<div class="right">' +
-          '<ons-switch class="pulseiraalocada"' + (status ? 'checked' : 'disabled') + '></ons-switch>' +
+          '<ons-switch class="pulseiraalocada"' + (!(pulseira.disponivel) ? 'checked' : 'disabled') + '></ons-switch>' +
         '</div>' +
       '</ons-list-item>';
 
     var pulseiraStatus = template.firstChild;
-    $(pulseiraStatus).data('idPulseira', pulseira);
+    $(pulseiraStatus).data('idPulseira', pulseira.idPulseira);
+    $(pulseiraStatus).data('idPaciente', pulseira.pacienteAtual);
     var pulseiraStatusLista = document.querySelector('#statuspulseiras');
 
     // Função para desalocar uma pulseira ativa via configurações
@@ -1350,7 +1351,6 @@ medApp.services = {
             if(confirm) {
 
               pulseiraStatus.querySelector('.pulseiraalocada').disabled = true;
-              /* NÃO IMPLEMENTADO
               $.ajax({
                 url: 'http://julianop.com.br:3000/api/pulseira',
                 type: 'PUT',
@@ -1366,10 +1366,10 @@ medApp.services = {
                 data: {
                   idPulseira: $(pulseiraStatus).data('idPulseira'),
                   disponivel: 1,
-                  idPaciente: //medApp.services.getIdPaciente()
+                  idPaciente: $(pulseiraStatus).data('idPaciente')
                 }
               });
-            */
+
             } else if (!confirm) {
 
               pulseiraStatus.querySelector('.pulseiraalocada').checked = true;

@@ -160,7 +160,7 @@ medApp.controllers = {
         //Error CallBack
         function FailCallback (message) {
 
-            alert ('Erro!!!: ' + message);
+            ons.notification.alert(message);
 
         };
 
@@ -191,7 +191,7 @@ medApp.controllers = {
           //Error CallBack
           function FailCallback (message) {
 
-            ons.notification.alert('Erro!!!: ' + message);
+            ons.notification.alert(message);
 
           };
 
@@ -746,13 +746,52 @@ medApp.controllers = {
   ///Controle dos Gráficos de saúde ///
   /////////////////////////////////////
 
+  dadossaude0: function(page){
+
+  	//Interface da lista mostrando última atualização de cada ítem
+
+  	$.get('http://julianop.com.br:3000/api/paciente/health/static/' + medApp.services.getIdPaciente())
+  	.done(function(data){
+
+  		if(data.length == 0){
+  		
+      	ons.notification.alert("Sem conexão com o servidor");
+  		
+      } else {
+
+  			page.querySelector('#itemCalorias').innerHTML = data[data.length - 1].calories + ' calorias';
+
+  			page.querySelector('#itemPassos').innerHTML = data[data.length - 1].steps + ' passos';
+
+  			//page.querySelector('#itemPulso').innerHTML = data[data.length - 1].heartRate;
+
+  			page.querySelector('#itemDegraus').innerHTML = data[data.length - 1].floors + ' degraus';
+
+  		}
+  	});
+
+    $.get('http://julianop.com.br:3000/api/paciente/health/dynamic/' + medApp.services.getIdPaciente() + '/' + medApp.services.getToday('traco'))
+    .done(function(data){
+      if(data.length == 0){
+        
+        ons.notification.alert("Sem conexão com o servidor");
+      
+      } else {
+
+        page.querySelector('#itemPulso').innerHTML = data[data.length - 1].heartRate + ' BpM';
+
+      }
+    });
+
+  },
+
   dadossaude1: function(page) {
 
         //Interface gráfica interativa dos dados estáticos de saúde.
 
         //Request feito quando a interface gráfica carregar para obter os dados estáticos do paciente.
 
-        $.get('http://julianop.com.br:3000/api/paciente/health/static/' + medApp.services.dadosPacienteAtual.idAtualPaciente)
+        $.get('http://julianop.com.br:3000/api/paciente/health/static/' + medApp.services.getIdPaciente())
           .done(function(data) {
 
             if(data.length <= 7){
@@ -835,7 +874,7 @@ medApp.controllers = {
 
               //console.log(medApp.services.dataDados);
 
-              $.get('http://julianop.com.br:3000/api/paciente/health/static/' + medApp.services.dadosPacienteAtual.idAtualPaciente + '/' + medApp.services.dataDados)
+              $.get('http://julianop.com.br:3000/api/paciente/health/static/' + medApp.services.getIdPaciente() + '/' + medApp.services.dataDados)
               .done(function(data) {
 
 
@@ -858,7 +897,7 @@ medApp.controllers = {
 
         //Request
 
-        $.get('http://julianop.com.br:3000/api/paciente/health/static/' + medApp.services.dadosPacienteAtual.idAtualPaciente)
+        $.get('http://julianop.com.br:3000/api/paciente/health/static/' + medApp.services.getIdPaciente())
         .done(function(data) {
 
           if(data.length <= 7){
@@ -938,7 +977,7 @@ medApp.controllers = {
 
               //console.log(medApp.services.dataDados);
 
-              $.get('http://julianop.com.br:3000/api/paciente/health/static/' + medApp.services.dadosPacienteAtual.idAtualPaciente + '/' + medApp.services.dataDados)
+              $.get('http://julianop.com.br:3000/api/paciente/health/static/' + medApp.services.getIdPaciente() + '/' + medApp.services.dataDados)
               .done(function(data) {
 
 
@@ -960,7 +999,7 @@ medApp.controllers = {
         //Interface gráfica interativa dos dados estáticos de saúde.
 
         //Request
-        $.get('http://julianop.com.br:3000/api/paciente/health/dynamic/' + medApp.services.dadosPacienteAtual.idAtualPaciente + '/' + medApp.services.getToday('traco'))
+        $.get('http://julianop.com.br:3000/api/paciente/health/dynamic/' + medApp.services.getIdPaciente() + '/' + medApp.services.getToday('traco'))
           .done(function(data) {
 
             if(data.length < 10){
@@ -1027,7 +1066,7 @@ medApp.controllers = {
 
               console.log(medApp.services.dataDados);
 
-              $.get('http://julianop.com.br:3000/api/paciente/health/static/' + medApp.services.dadosPacienteAtual.idAtualPaciente + '/' + medApp.services.dataDados)
+              $.get('http://julianop.com.br:3000/api/paciente/health/static/' + medApp.services.getIdPaciente() + '/' + medApp.services.dataDados)
               .done(function(data) {
 
 
@@ -1049,7 +1088,7 @@ medApp.controllers = {
         //Interface gráfica interativa dos dados estáticos de saúde.
 
         //Request
-        $.get('http://julianop.com.br:3000/api/paciente/health/static/' + medApp.services.dadosPacienteAtual.idAtualPaciente)
+        $.get('http://julianop.com.br:3000/api/paciente/health/static/' + medApp.services.getIdPaciente())
           .done(function(data) {
 
             if(data.length <= 7){
@@ -1129,7 +1168,7 @@ medApp.controllers = {
 
               //console.log(medApp.services.dataDados);
 
-              $.get('http://julianop.com.br:3000/api/paciente/health/static/' + medApp.services.dadosPacienteAtual.idAtualPaciente + '/' + medApp.services.dataDados)
+              $.get('http://julianop.com.br:3000/api/paciente/health/static/' + medApp.services.getIdPaciente() + '/' + medApp.services.dataDados)
               .done(function(data) {
 
 
@@ -1195,7 +1234,7 @@ medApp.controllers = {
         //Error CallBack
         function FailCallback (message) {
 
-            alert ('Erro!!!: ' + message);
+            ons.notification.alert(message);
 
           };
 
@@ -1227,7 +1266,7 @@ medApp.controllers = {
           //Error CallBack
           function FailCallback (message) {
 
-            alert ('Erro!!!: ' + message);
+            ons.notification.alert(message);
 
           };
 
@@ -1351,8 +1390,8 @@ medApp.controllers = {
         medApp.services.hidePopover(medApp.services.dial);
 
         navigator.camera.getPicture (successCallback, FailCallback, { quality: 100,
-                                                                      targetWidth :110,
-                                                                      targetHeight :110,
+                                                                      targetWidth :80,
+                                                                      targetHeight :80,
                                                                       allowEdit: true,
                                                                       sourceType: Camera.PictureSourceType.CAMERA,
                                                                       destinationType: Camera.DestinationType.DATA_URL
@@ -1370,7 +1409,7 @@ medApp.controllers = {
         //Error CallBack
         function FailCallback (message) {
 
-            alert ('Erro!!!: ' + message);
+            ons.notification.alert(message);
 
         };
 
@@ -1382,8 +1421,8 @@ medApp.controllers = {
         medApp.services.hidePopover(medApp.services.dial);
 
         navigator.camera.getPicture (successCallback, FailCallback, {  quality: 100,
-                                                                      targetWidth :110,
-                                                                      targetHeight :110,
+                                                                      targetWidth :80,
+                                                                      targetHeight :80,
                                                                       allowEdit: true,
                                                                       sourceType: Camera.PictureSourceType.PHOTOLIBRARY,
                                                                       destinationType: Camera.DestinationType.DATA_URL
@@ -1401,7 +1440,7 @@ medApp.controllers = {
           //Error CallBack
           function FailCallback (message) {
 
-            alert ('Erro!!!: ' + message);
+            ons.notification.alert(message);
 
           };
 
@@ -1573,7 +1612,7 @@ medApp.controllers = {
 
     	    for(var i=0; i<data.length; i++){
 
-    	      medApp.services.iconeFeed(data[i], i);
+    	      medApp.services.iconeFeed(data[i]);
     	      /* onclick que redireciona está dentro da fç
 		    
               page.querySelector('#ietm'+ i +'').onclick = function(){
@@ -1711,8 +1750,8 @@ medApp.controllers = {
         medApp.services.hidePopover(medApp.services.dial);
 
         navigator.camera.getPicture (successCallback, FailCallback, { quality: 100,
-                                                                      targetWidth :110,
-                                                                      targetHeight :110,
+                                                                      targetWidth :80,
+                                                                      targetHeight :80,
                                                                       allowEdit: true,
                                                                       sourceType: Camera.PictureSourceType.CAMERA,
                                                                       destinationType: Camera.DestinationType.DATA_URL
@@ -1730,7 +1769,7 @@ medApp.controllers = {
         //Error CallBack
         function FailCallback (message) {
 
-            alert ('Erro!!!: ' + message);
+            ons.notification.alert(message);
 
         };
 
@@ -1742,8 +1781,8 @@ medApp.controllers = {
         medApp.services.hidePopover(medApp.services.dial);
 
         navigator.camera.getPicture (successCallback, FailCallback, { quality: 100,
-                                                                      targetWidth :110,
-                                                                      targetHeight :110,
+                                                                      targetWidth :80,
+                                                                      targetHeight :80,
                                                                       allowEdit: true,
                                                                       sourceType: Camera.PictureSourceType.PHOTOLIBRARY,
                                                                       destinationType: Camera.DestinationType.DATA_URL
@@ -1761,7 +1800,7 @@ medApp.controllers = {
           //Error CallBack
           function FailCallback (message) {
 
-            ons.notification.alert ('Erro!!!: ' + message);
+            ons.notification.alert(message);
 
           };
 
@@ -1884,17 +1923,6 @@ medApp.controllers = {
 
   configuracoes: function(page) {
 
-    // Preenche o status das pulseiras cadastradas na conta atual
-    page.addEventListener('show', function(event) {
-
-      $.get('http://julianop.com.br:3000/api/pulseira/status/' + medApp.services.getIdMedico())
-      .done(function(pulseiras) {
-          console.log(pulseiras);
-        });
-      //medApp.services.listStatusPulseiras(3, 1);
-
-    });
-
     page.querySelector('#manage-pulseiras').onclick = function() {
 
       // Template dentro de html/configuracoes
@@ -1933,7 +1961,7 @@ medApp.controllers = {
         });
 
     };
-
+    /*
     page.querySelector('#checkpulseira').onchange = function(e) {
 
       if (!e.value){
@@ -1956,14 +1984,70 @@ medApp.controllers = {
       };
 
     };
+    */
 
   },
 
   ////////////////////////////////////////
-  // Controlador do Adicionar Pulseiras //
+  // Controlador de Opções de Pulseiras //
   ////////////////////////////////////////
 
   pulseiras: function(page){
+
+    // Preenche o status das pulseiras cadastradas na conta atual
+    page.addEventListener('show', function(event) {
+
+      $.get('http://julianop.com.br:3000/api/pulseira/status/' + medApp.services.getIdMedico())
+      .done(function(pulseiras) {
+
+        if(pulseiras.length == 0) {
+
+          $('#statuspulseiras').empty();
+
+          var template = document.createElement('div');
+
+          template.innerHTML = '<ons-list-item>' +
+            '<div class="center">' +
+              'Nenhuma pulseira conectada' +
+            '</div>' +
+          '</ons-list-item>';
+
+          var statuspulseiraItem = template.firstChild;
+          var statuspulseiraLista = document.querySelector('#statuspulseiras');
+
+          statuspulseiraLista.appendChild(statuspulseiraItem);
+
+        } else if(pulseiras[0].hasOwnProperty('idPulseira')) {
+
+          // Limpa e popula a lista de pulseiras conectadas
+          $('#statuspulseiras').empty();
+
+          for(var i = 0; i < pulseiras.length; i++){
+
+            medApp.services.listStatusPulseiras(pulseiras[i]);
+
+          };
+
+        };
+
+      });
+
+    });
+
+    page.querySelector('#add-pulseiras').onclick = function() {
+
+      // Template dentro de html/configuracoes
+      document.querySelector('#configuracoesNav').pushPage('addpulseira.html');
+
+    };
+
+  },
+
+  ////////////////////////////////////////
+  // Controlador de Adicionar Pulseiras //
+  ////////////////////////////////////////
+
+  addpulseira: function(page){
 
     /* (REMOVIDO PARA TESTES)
   	page.addEventListener('show', function(event) {

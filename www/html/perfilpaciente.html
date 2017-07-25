@@ -1,9 +1,9 @@
 <ons-page id="perfilpaciente">
 
- <ons-toolbar class="toolbar">
-  <div class="left"> <ons-back-button>Voltar</ons-back-button></div>
-  <div class="center"></div>
- </ons-toolbar>
+  <ons-toolbar class="toolbar">
+    <div class="left"> <ons-back-button>Voltar</ons-back-button></div>
+    <div class="center"></div>
+  </ons-toolbar>
 
 
   <div class="profile-card">
@@ -15,15 +15,15 @@
 
   </div>
 
-  <div class="profile-list" style="margin-bottom: 10px">
+  <div style="padding:10px; background-color:#263238;">
 
-    <ons-list modifier="inset">
+    <ons-list modifier="inset" class="profile-ons">
 
-      <ons-list-header>
+      <ons-list-header  class="profile-ons">
         Dados do Paciente
       </ons-list-header>
 
-      <ons-list-item>
+      <ons-list-item class="profile-ons">
         <div class="left registro-icone">
           <ons-icon icon="md-calendar" class="list__item__icon"></ons-icon>
         </div>
@@ -34,13 +34,13 @@
         </div>
       </ons-list-item>
 
-      <ons-list-item>
+      <ons-list-item class="profile-ons">
         <div class="left registro-icone">
           <ons-icon icon="user-md" class="list__item__icon"></ons-icon>
         </div>
         <div class="center">
           <ons-row style="margin-bottom: 5px">
-          Médico Responsável:
+            Médico Responsável:
           </ons-row>
           <ons-row>
             <span id="medico"></span>
@@ -48,7 +48,7 @@
         </div>
       </ons-list-item>
 
-      <ons-list-item>
+      <ons-list-item class="profile-ons">
         <div class="left registro-icone">
           <ons-icon icon="md-plaster" class="list__item__icon"></ons-icon>
         </div>
@@ -58,11 +58,11 @@
           </ons-row>
           <ons-row>
             <span id="causa"></span>
-          </ons-row>  
+          </ons-row>
         </div>
       </ons-list-item>
 
-      <ons-list-item>
+      <ons-list-item class="profile-ons">
         <div class="left registro-icone">
           <ons-icon icon="hospital-o" class="list__item__icon"></ons-icon>
         </div>
@@ -74,26 +74,27 @@
         </div>
       </ons-list-item>
 
-      <ons-list-item id="perfil-pulseiras" tappable>
-          <div class="left">
-            <ons-icon icon="md-watch" class="list__item__icon"></ons-icon>
-          </div>
-          <div class="center">
-            Pulseira Utilizada:
-          </div>
-          <div class="right" id="pulseira-pac">
-          </div>
-      </ons-list-item>
-
     </ons-list>
 
-  <br>
-
-    <ons-list modifier="inset" class="menu-list"> 
+  </div>
+  <br />
+  <div class="profile-list" style="padding:10px">
+    <ons-list modifier="inset"class="menu-list">
 
       <ons-list-header>
         Opções
       </ons-list-header>
+
+      <ons-list-item id="perfil-pulseiras" modifier="chevron" tappable>
+        <div class="left">
+          <ons-icon icon="md-watch" class="list__item__icon"></ons-icon>
+        </div>
+        <div class="center">
+          Pulseira Utilizada:
+        </div>
+        <div class="right" id="pulseira-pac">
+        </div>
+      </ons-list-item>
 
       <ons-list-item id="graf" modifier="chevron" tappable>
         <div class="left registro-icone">

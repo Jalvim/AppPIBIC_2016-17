@@ -1,16 +1,30 @@
 /*@media screen and (orientation: portrait){
 	/*Portrait orientation design*/
 
+  #cadastromedico .page__background { 
+    background-color: white;
+  }
+
+  #editarmedico .page__background { 
+    background-color: white;
+  }
+
+  #addpaciente .page__background { 
+    background-color: white;
+  }
+
+  #editarpaciente .page__background { 
+    background-color: white;
+  }
+
 	.registro-form {
       text-align: center;
       width: 95%;
-      margin: 8px auto 20px;
+      margin: auto;/*8px auto 20px;*/
     }
 
     .registro-input {
-      text-align: center;
-      width: 100%;
-      margin-left: 45px;
+      margin-bottom: 5px;
     }
 
     .registro-input-top {
@@ -29,10 +43,16 @@
     }
 
     .button-send {
-      margin-top: 25px;
       background-color: #039BE5;
       color: white;
     }  
+
+    .add-foto {
+      width: 320px;
+      margin: auto; /*margin-left: 3px;*/
+      color: white;
+      background-color: #29B6F6; 
+    }
 
     .registro-image {
 
@@ -57,6 +77,75 @@
       border-radius: 50%;
       -webkit-border-radius: 50%;
       border: inset 1px rgba(0, 0, 0, 0.3);
+    }
+
+    .icon-col {
+      background-color: #29B6F6; 
+      min-width: 55px;
+      border-top-left-radius: 5px;
+      border-bottom-left-radius: 5px;
+      padding: 10px;
+      color: white;
+    }
+
+    .info-col {
+      background-color: white; 
+      border-top-right-radius: 5px;
+      border-bottom-right-radius: 5px;
+      padding: 5px 10px;
+    }
+
+    .info-col-img {
+      background-color: white; 
+      border-top-right-radius: 5px;
+      border-bottom-right-radius: 5px;
+      padding: 10px 5px;
+    }
+
+    .reg-card-um {
+      border-radius: 5px;
+      border: 1px solid #29B6F6;
+      padding: 0;
+      margin: auto; /*10px 5px 10px;*/
+      margin-bottom: 8px;
+      height: 62px;
+      width: 320px;
+    }
+
+    .reg-card-dois {
+      border-radius: 5px;
+      border: 1px solid #29B6F6;
+      padding: 0;
+      margin: auto; /*10px 5px 10px;*/
+      margin-bottom: 8px;
+      height: 85px;
+      width: 320px;
+    }
+
+    .but {
+      background-color: white;
+      border-radius: 5px;
+      padding: 0;
+      margin: auto; /*10px 5px 10px;*/
+      height: 85px;
+      width: 320px;
+    }
+
+    .reg-card-img {
+      border-radius: 5px;
+      border: 1px solid #29B6F6;
+      padding: 0;
+      margin: auto; /*10px 5px 10px;*/
+      height: 100px;
+      width: 320px;
+    }
+
+    .img-col {
+      background-color: #29B6F6; 
+      min-width: 80px;
+      border-top-left-radius: 5px;
+      border-bottom-left-radius: 5px;
+      padding: 5px;
     }
 
 /*}
