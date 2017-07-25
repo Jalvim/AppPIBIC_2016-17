@@ -47,11 +47,11 @@ router.route('/paciente/')
 							if(err == null ){
 								res.send("Paciente compartilhado com sucesso.");
 							}
-							else if (err.code == 1062 ){ //MYSQL_CODE_DUPLICATE_KEY
+							else if (err.code == 'ER_DUP_ENTRY' ){ //MYSQL_CODE_DUPLICATE_KEY
 								res.send("O Paciente já se encontra na lista do Médico. Nenhuma alteração registrada.")
 							}
 							else{
-								res.send("Erro ao compartilhar paciente. Erro SQL.");
+								res.send("Erro ao compartilhar paciente. Erro SQL."  + err.code);
 							}
 						});
 					}
