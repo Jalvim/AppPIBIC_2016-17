@@ -1,12 +1,7 @@
 <ons-navigator id="medicoNav" page="html/medico.html">
 
-<ons-page id="medico">
+  <ons-page id="medico">
 
-   <!--
-    <ons-if orientation="portrait">
-   	DESENVOLVER AQUI O TEMPLATE DE COMO A PÁGINA FICA
-    REMOVIDO PARA TESTES
-   -->
 
    	<ons-toolbar class="toolbar">
      <div class="center">Perfil Médico</div>
@@ -16,11 +11,6 @@
        </ons-toolbar-button>
      </div>
     </ons-toolbar>
-
-    <!-- REMOVIDO PARA TESTES
-    <ons-pull-hook id="pull-hook">
-    </ons-pull-hook>
-    -->
 
     <div class="profile-card">
 
@@ -84,49 +74,6 @@
         </ons-button>
       </p>
 
-  <!-- Vizualização da tela em modo paisagem (RETIRADO PARA TESTES)
-   </ons-if>
-
-   <ons-if orientation="landscape">
-   
-
-   	<ons-toolbar class="toolbar">
-     <div class="center">Perfil Médico</div>
-     <div class="right">
-       <ons-toolbar-button id="edit-med">
-        <ons-icon icon="md-edit" size="24px"></ons-icon>
-       </ons-toolbar-button>
-     </div>
-    </ons-toolbar>
-   	
-   	<ons-splitter>
-   		<ons-splitter-side id="mainperfil" side="left" width="220px" collapse swipeable>
-   			<ons-page>
-              <ons-toolbar class="toolbar">
-                <div class="center">Perfil Médico</div>
-                <div class="right">
-                  <ons-toolbar-button id="edit-med">
-                    <ons-icon icon="md-edit" size="24px"></ons-icon>
-                  </ons-toolbar-button>
-                </div>
-              </ons-toolbar>
-
-              <div class="profile-card">
-
-                <img src="https://pbs.twimg.com/profile_images/1608370290/VivaRio_MedicoDeFamilia_400x400.jpg" class="profile-image">
-                <div id="nome-perfil" class="profile-name">John Doe</div>
-                <div id="crm-perfil" class="profile-desc">CRM 4356</div>
-                <div id="esp-perfil" class="profile-desc">Médico Oncologista</div>
-
-              </div>
-            </ons-page>
-   		</ons-splitter-side>
-   		<ons-splitter-content id="secundPerfil" page="secundperfil.html"></ons-splitter-content>
-   	</ons-splitter>
-
-   </ons-if>
-    -->
-
-</ons-page>
+  </ons-page>
 
 </ons-navigator>

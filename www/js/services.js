@@ -136,12 +136,6 @@ medApp.services = {
             '<ons-col>' +
               '<span class="list__item__title nome">' + data.nomePaciente + '</span>' +
             '</ons-col>' +
-            /* TODO: Adicionar os dados dinâmicos de batimentos cardíacos
-            '<ons-col>' +
-              '<ons-icon icon="heartbeat" class="list__item__icon"></ons-icon>' +
-              '<span class="list__item__title">' + data.batimentos + ' bpm</span>' +
-            '</ons-col>' +
-            */
           '</ons-row>' +
           '<ons-row>' +
             '<ons-col class="paciente-detalhes">' +
@@ -209,19 +203,7 @@ medApp.services = {
 
             });
           };
-        /*document.querySelector('#tab-inicial').setActiveTab(1, {options: {animation: 'slide'}});
-        medApp.services.setPacienteAtual( { idPaciente: $(pacienteItem).data('idPaciente'),
-                                            nome: data.nomePaciente,
-                                            dataIntFormatoTraco: dataPacienteFormatoTraco,
-                                            dataIntFormatoBarra: dataPacienteFormatoBarra,
-                                            causa: data.causaPaciente,
-                                            medicoResp: data.medicoResp,
-                                            hospital: data.hospital,
-                                            foto: data.img
-                                          });
 
-        document.querySelector('#pacienteNav').pushPage('html/perfilpaciente.html');
-        */
         });
 
       };
@@ -440,18 +422,9 @@ medApp.services = {
           '</ons-row>' +
         '</div>' +
       '</ons-list-item>';
-      /*'<ons-list-item id="item' + i + '">'
-      + '<div class="rigth">' + info.foto +
-      '</div>' +
-      '<div class="center">' + info.nome +
-      '</div>' +
-      '<div class="left">' + timeStamp +
-      '</div>'
-      + '</ons-list-item>';*/
 
     } else {
 
-      //console.log(JSON.stringify(info));
       var data =  info.reminder.timestamp.substring(8,10) + '/' +
                   info.reminder.timestamp.substring(5,7) + '/' +
                   info.reminder.timestamp.substring(0,4);
@@ -485,52 +458,42 @@ medApp.services = {
             '</ons-row>' +
         '</div>' +
       '</ons-list-item>';
-      /*'<ons-list-titem id="item' + i + '">'
-      + '<div>' + info.reminder.mensagem +
-      '</div>'
-      '<div>' + timeStamp + '</div>' +
-      '<div> Dados alterados: K - ' + info.reminder.K + ' Na - ' + info.reminder.Na +
-      ' Cl - ' + info.reminder.Cl+ ' Co2 - '+ info.reminder.Co2+ ' Bun - '+info.reminder.Bun+ ' Great - '+ info.reminder.Great
-      + ' Gluc - ' +info.reminder.Gluc+ ' Wcb - '+info.reminder.wcb+' HgB - '+info.reminder.HgB+ ' Hct - ' +info.reminder.Hct+
-      ' Plt - '+info.reminder.Plt+ '</div>'
-      + '</ons-list-item>';*/
 
-    }
+    };
 
     var feedItem = template.firstChild;
     var listaFeed = document.querySelector('#feed-lista');
 
-    //feedItem.querySelector('.center').onclick = function(info) {
 
-      if(info.type === "Paciente"){
+    if(info.type === "Paciente"){
 
-        if (info.patient.ativo == 1) {
+      if (info.patient.ativo == 1) {
 
-          // Funcionalidade de mostrar paciente adicionado se ele ainda estiver ativo
-          feedItem.querySelector('.center').onclick = function() {
+        // Funcionalidade de mostrar paciente adicionado se ele ainda estiver ativo
+        feedItem.querySelector('.center').onclick = function() {
 
-            var dataPacienteFormatoBarra = info.patient.dataDeNascimento.substring(8,10) + '/' +
-                                           info.patient.dataDeNascimento.substring(5,7) + '/' +
-                                           info.patient.dataDeNascimento.substring(0,4);
+          var dataPacienteFormatoBarra = info.patient.dataDeNascimento.substring(8,10) + '/' +
+                                         info.patient.dataDeNascimento.substring(5,7) + '/' +
+                                         info.patient.dataDeNascimento.substring(0,4);
 
-            var dataPacienteFormatoTraco = info.patient.dataDeNascimento.substring(0,10);
+          var dataPacienteFormatoTraco = info.patient.dataDeNascimento.substring(0,10);
 
-            document.querySelector('#tab-inicial').setActiveTab( 1 , {options: {animation: 'slide'}});
-            medApp.services.setPacienteAtual( { idPaciente: info.patient.idtable1,
-                                                nome: info.patient.nomePaciente,
-                                                dataIntFormatoTraco: dataPacienteFormatoTraco,
-                                                dataIntFormatoBarra: dataPacienteFormatoBarra,
-                                                causa: info.patient.causaDaInternacao,
-                                                medicoResp: info.patient.medicoResposavel,
-                                                hospital: info.patient.telefone,
-                                                foto: "data:image/jpeg;base64, " + info.patient.foto
-                                              });
-            document.querySelector('#pacienteNav').pushPage('html/perfilpaciente.html');
+          document.querySelector('#tab-inicial').setActiveTab( 1 , {options: {animation: 'slide'}});
+          medApp.services.setPacienteAtual( { idPaciente: info.patient.idtable1,
+                                              nome: info.patient.nomePaciente,
+                                              dataIntFormatoTraco: dataPacienteFormatoTraco,
+                                              dataIntFormatoBarra: dataPacienteFormatoBarra,
+                                              causa: info.patient.causaDaInternacao,
+                                              medicoResp: info.patient.medicoResposavel,
+                                              hospital: info.patient.telefone,
+                                              foto: "data:image/jpeg;base64, " + info.patient.foto
+                                            });
+          document.querySelector('#pacienteNav').pushPage('html/perfilpaciente.html');
 
-          };
         };
+      };
 
-      } else if(info.type === "Lembrete") {
+    } else if(info.type === "Lembrete") {
 
         // Funcionalidade de mostrar lembrete adicionado
         feedItem.querySelector('.center').onclick = function() {
@@ -560,7 +523,7 @@ medApp.services = {
 
         };
 
-      };
+    };
 
     listaFeed.appendChild(feedItem);
 
@@ -648,41 +611,6 @@ medApp.services = {
     };
 
   },
-
-  /*
-  showHospitais: function(index, objeto){
-    var template = document.createElement('div');
-
-    template.innerHTML = '<ons-list-item modifier="nodivider" id=hospital'+ index +'> <div class="left">' + objeto[index].nome +
-    '<div class="rigth"> <ons-radio-button><ons-radio-button> </div> </ons-list-item>';
-
-    var hospitalItem = template.firstChild;
-    var hospitalLista = document.querySelector('#lista-hospital');
-
-    hospitalLista.appendChild(hospitalItem);
-
-    document.querySelector('#hospital' + index).onclick = function(objeto){
-
-      $.post("http://julianop.com.br:3000/api/compartilhamento/paciente",{
-
-        idPaciente: this.idAtualPaciente,
-        idHospitalOrigem: objeto[index].idHospital,
-        idMedicoDestino: this.idAtualMedico
-
-      })
-      .done(function(data){
-        ons.notification.alert('Paciente indexado ao hospital:' + objeto[index].nome +'.');
-      })
-      .fail(function(){
-        ons.notification.alert('Paciente não indexado ao hospital por erro interno.');
-      }); //TODO --> VER SE VAI DAR CERTO COM ESSA CHAMADA
-
-      this.hidePopover(this.dial);
-
-    };
-
-  },
-  */
 
   showPulseirasDisponiveis2: function(index) {
     var template = document.createElement('div');
@@ -791,12 +719,6 @@ medApp.services = {
             '<span class="list__item__title">' + data.nomeGrupo + '</span>' +
           '</ons-row>' +
           '<ons-row>' +
-            /* TODO: Adicionar número de membros de um grupo ao request
-            '<ons-col class="paciente-detalhes">' +
-              '<ons-icon icon="md-accounts" class="list__item__icon"></ons-icon>' +
-              '<span class="list__item__subtitle">' + data.tamanhoGrupo + '</span>' +
-            '</ons-col>' +
-            */
             '<ons-col class="paciente-detalhes">' +
               '<ons-icon icon="user-md" class="list__item__icon"></ons-icon>' +
               '<span class="list__item__subtitle">' + data.medicoResp + '</span>' +
@@ -986,7 +908,6 @@ medApp.services = {
     template.innerHTML =
       '<ons-list-item>' +
         '<div class="left">' +
-          //'<img class="list__item__thumbnail" src="http://www.clker.com/cliparts/A/Y/O/m/o/N/placeholder-md.png">' +
           '<img class="list__item__thumbnail" style="border: inset 1px rgba(0, 0, 0, 0.3);" src="'+ membro.foto + '">' +
         '</div>' +
         '<div class="center">' +
@@ -1033,7 +954,6 @@ medApp.services = {
               }
             })
             .done(function(data) {
-
               ons.notification.alert(data);
               membroLista.removeChild(membroListItem);
 
@@ -1128,47 +1048,6 @@ medApp.services = {
     compartLista.appendChild(equipesCompartItem);
 
   },
-
-  /* Retorna membros da equipe selecionada para compartilhamento de pacientes
-  listMembrosCompart: function(membro, equipe) {
-
-    var template = document.createElement('div');
-    template.innerHTML =
-      '<ons-list-item tappable>' +
-        '<ons-icon icon="user-md"></ons-icon>' +
-          membro.nomeMembro +
-      '</ons-list-item>';
-
-    var membroCompartItem = template.firstChild;
-    $(membroCompartItem).data('idMedico', membro.idMembro);
-    $(membroCompartItem).data('equipe', equipe);
-    membroCompartItem.onclick = function() {
-
-      ons.notification.confirm({message: 'Deseja compartilhar com esse médico?'})
-        .then( function(confirm){
-
-          if(confirm) {
-            $.post("http://julianop.com.br:3000/api/compartilhamento/paciente",
-              {
-              idPaciente: medApp.services.getIdPaciente(),
-              idHospitalOrigem: $(membroCompartItem).data('equipe'),
-              idMedicoDestino: $(membroCompartItem).data('idMedico'),
-              })
-            .done(function (data){
-
-              ons.notification.alert(data);
-
-            });
-          };
-
-        });
-
-    };
-
-    return membroCompartItem;
-
-  },
-  */
 
   // Função para preencher a tela de compartilhamento de pacientes caso esteja vazia
   compartVazio: function() {
@@ -1295,7 +1174,6 @@ medApp.services = {
 
       };
 
-      //ons.notification.alert("Pulseira " + medApp.services.pulseiraAtual + " selecionada.");
       //Adiciona a pulseira para o paciente na base de dados.
       $.ajax({
         url: 'http://julianop.com.br:3000/api/pulseira',
@@ -1389,5 +1267,3 @@ medApp.services = {
   }
 
 };
-
-

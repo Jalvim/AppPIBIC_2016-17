@@ -1,6 +1,3 @@
-/*@media screen and (orientation: portrait){
-	/*Portrait orientation design*/
-
   #cadastromedico .page__background { 
     background-color: white;
   }
@@ -20,7 +17,7 @@
 	.registro-form {
       text-align: center;
       width: 95%;
-      margin: auto;/*8px auto 20px;*/
+      margin: auto;
     }
 
     .registro-input {
@@ -49,7 +46,7 @@
 
     .add-foto {
       width: 320px;
-      margin: auto; /*margin-left: 3px;*/
+      margin: auto;
       color: white;
       background-color: #29B6F6; 
     }
@@ -106,7 +103,7 @@
       border-radius: 5px;
       border: 1px solid #29B6F6;
       padding: 0;
-      margin: auto; /*10px 5px 10px;*/
+      margin: auto;
       margin-bottom: 8px;
       height: 62px;
       width: 320px;
@@ -116,7 +113,7 @@
       border-radius: 5px;
       border: 1px solid #29B6F6;
       padding: 0;
-      margin: auto; /*10px 5px 10px;*/
+      margin: auto;
       margin-bottom: 8px;
       height: 85px;
       width: 320px;
@@ -126,7 +123,7 @@
       background-color: white;
       border-radius: 5px;
       padding: 0;
-      margin: auto; /*10px 5px 10px;*/
+      margin: auto;
       height: 85px;
       width: 320px;
     }
@@ -135,7 +132,7 @@
       border-radius: 5px;
       border: 1px solid #29B6F6;
       padding: 0;
-      margin: auto; /*10px 5px 10px;*/
+      margin: auto;
       height: 100px;
       width: 320px;
     }
@@ -147,67 +144,3 @@
       border-bottom-left-radius: 5px;
       padding: 5px;
     }
-
-/*}
-
-@media screen and (orientation: landscape){
-	/*Landscape orientation design
-
-	.registro-form {
-      text-align: center;
-      width: 90%;
-      margin: 20px auto 0;
-    }
-
-    .registro-input {
-      text-align: center;
-      width: 100%;
-      margin-left: 45px;
-    }
-
-    .registro-input-top {
-      text-align: center;
-      margin-left: 20px;
-      margin-bottom: 10px;
-    }
-
-    .registro-input-icon {
-      text-align: center;
-      width: 100%;
-    }
-
-    .registro-icone{
-       width: 45px;
-    }
-
-    .button-send {
-      margin-top: 25px;
-      background-color: #039BE5;
-      color: white;
-    }  
-
-    .registro-image {
-      height: 120px;
-      width: 120px;
-      border-radius: 50%;
-      -webkit-border-radius: 50%;
-      background-color: white;
-      border: 1px solid white;
-
-    }
-
-    .editar-form {
-      text-align: center;
-      width: 90%;
-      margin: 40px auto 0;
-    }
-
-    .editar-image {
-      width: 70px;
-      height: 70px;
-      border-radius: 50%;
-      -webkit-border-radius: 50%;
-      border: inset 1px rgba(0, 0, 0, 0.3);
-    }
-
-}*/
