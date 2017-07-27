@@ -517,13 +517,13 @@ medApp.controllers = {
                 url: 'http://julianop.com.br:3000/api/pulseira',
                 type: 'PUT',
                 success: function(data) {
-                  console.log(data);
+                  //console.log(data);
                   medApp.services.pulseiraAtual = -1;
                   ons.notification.alert("Pulseira retirada do paciente!");
                   document.querySelector('#pulseira-pac').innerHTML = 'Nenhuma';
                 },
                 error: function(data) {
-                  console.log(data);
+                  //console.log(data);
                 },
                 data: {
                   idPulseira: medApp.services.pulseiraAtual,
@@ -1609,7 +1609,7 @@ medApp.controllers = {
       $('#lista-lembretes').empty();
       $.get('http://julianop.com.br:3000/api/lembrete/' + medApp.services.getIdPaciente())
       .done(function(data){
-        console.log(data);
+ 
         // Cria os lembretes no inverso dos id's retornados (ordem cronológica)
         for (var i = data.length - 1; i >= 0; i--) {
 
@@ -2093,11 +2093,11 @@ medApp.controllers = {
                 url: 'http://julianop.com.br:3000/api/pulseira',
                 type: 'PUT',
                 success: function(data) {
-                  console.log(data);
+                  //console.log(data);
                   medApp.services.pulseiraAtual = -1;
                 },
                 error: function(data) {
-                  console.log(data);
+                  //console.log(data);
                 },
                 data: {
                   idPulseira: medApp.services.pulseiraAtual,
@@ -2364,7 +2364,7 @@ medApp.controllers = {
               }
             })
             .done(function(data) {
-              console.log(data);
+              //console.log(data);
             });
 
           } else if((listaNaoIntegrantes.includes(idPacEditGrupo)) && integrantesEdit[i].checked == true) {
