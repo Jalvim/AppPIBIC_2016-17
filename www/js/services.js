@@ -887,7 +887,7 @@ medApp.services = {
     // Verifica existe foto, se não, retorna o placeholder
     if(img == null) {
 
-      return 'http://www.clker.com/cliparts/A/Y/O/m/o/N/placeholder-md.png';
+      return 'img/defaultprofile.svg';
 
     } else {
 
