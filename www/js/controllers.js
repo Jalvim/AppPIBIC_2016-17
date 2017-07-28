@@ -23,7 +23,7 @@ medApp.controllers = {
         message:"Digite seu e-mail:",
         callback: function(email){
           $.ajax({
-          url:'http://www.julianop.com.br:3000/api/login/',
+          url:'http://julianop.com.br:3000/api/login/',
             type:'PUT',
             data:{
               email:email
