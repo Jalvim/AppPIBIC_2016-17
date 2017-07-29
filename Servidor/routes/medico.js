@@ -67,16 +67,13 @@ router.route('/')
 							connection.query(query, function(err) {
 								console.log(err);
 								if (err == null){
-									res.send("Novo login e médico criado com sucesso.");
+									res.send("Conta criada com sucesso!");
 
 									var url = `http://julianop.com.br:3000/api/medico/confirm/${idMedico}`;
 									var verificationEmail = {
 										to: req.body.email,
 										subject: 'Confirmação de Email',
-										text: `Este endereço de email foi usado no cadastro de uma nova conta no aplicativo das pulseiras inteligentes.\n\n` +
-												`Por favor confirmar seu endereço de email clicando no link abaixo.\n\n` +
-												`Caso você seja o proprietário deste email e não tenha realizado o cadastro ignore esta mensagem.`,
-										html: `Link para confirmação de email: <a>${url}</a>`
+										html: `Bem Vindo à LifeTracker,<br/><br/>Por favor, confirme seu email no link abaixo:<br/><br/>Link para confirmação de email: <a>${url}</a><br/><br/>Obrigado,<br/><br/>Equipe LifeTracker`,
 									}
 									mailSender(verificationEmail);
 
