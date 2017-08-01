@@ -30,7 +30,7 @@ setInterval(function() {
 			}
 		});
 	});
-}, 60000);
+}, 40000);
 
 //request(optionsGetHR, getHRCallback);
 //getDynamicHealthParams(60, new Date(), 0);
