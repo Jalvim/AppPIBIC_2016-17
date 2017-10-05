@@ -342,8 +342,20 @@ router.get('/health/dynamic/:idPaciente/:data', function(req, res){
 			}
 		});
 	});
+});
 
-
+router.get('/busca/id/:idPaciente', function(req, res) {
+	mysql.getConnection(function(err, connection){
+		if (err) { return res.send('Erro de conexão com base de dados Get paciente por id'); }
+		connection.query(
+			'SELECT * FROM Paciente WHERE idtable1=?',
+			[req.params.idPaciente],
+			function(err, rows, fields) {
+				if (err) res.send('Error: não foi possível puxar dados do paciente com id especificado.');
+				res.send(rows[0]);
+			}
+		)
+	});
 });
 
 module.exports = router;
