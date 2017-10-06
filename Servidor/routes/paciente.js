@@ -352,7 +352,8 @@ router.get('/busca/id/:idPaciente', function(req, res) {
 			[req.params.idPaciente],
 			function(err, rows, fields) {
 				if (err) res.send('Error: não foi possível puxar dados do paciente com id especificado.');
-				res.send(rows[0]);
+				let rowsWithPhotosInBase64 = pacienteService.encodePatientsPhotosAsBase64(rows);
+				res.json(rowsWithPhotosInBase64);
 			}
 		)
 	});
