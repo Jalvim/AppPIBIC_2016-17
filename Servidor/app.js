@@ -27,6 +27,8 @@ var express = require('express'),
 	feedRouter = require('./routes/feed.js');
 	request = require('request');
 
+
+
 //A extensão chrome POSTman realiza requisições com facilidade torna setupOptionsVariables
 //redundante.
 //setando todas as variáveis de options nos requests http de teste
@@ -138,4 +140,9 @@ app.get('/cookie', function(req,res){
 	res.redirect('http://julianop.com.br:3000/?idMedico='+req.cookies.lifeTrackerIdM);
 });
 
-app.listen(port);
+app.listen(port, ()=> console.log('Server running on port 3000'));
+
+app.get('/', (req, res) => {
+  res.send('HEY!')
+})
+
