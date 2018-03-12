@@ -322,6 +322,29 @@ router.get('/health/static/:idPaciente', function(req, res){
 	});
 });
 
+//Rota que inclui batimentos cardiacos no mesmo request
+router.get('/health/params/:idPaciente', function(req, res){
+
+	mysql.getConnection(function(err, connection) {
+
+		if (err) { return res.send('Erro de conexão com base de dados Get dados estáticos'); }
+
+		connection.query(
+		  'SELECT SaudeParamsEstaticos.*, SaudeParamsDinamicos.heartRate FROM SaudeParamsEstaticos inner join SaudeParamsDinamicos on (SaudeParamsEstaticos.idpaciente=SaudeParamsDinamicos.idpaciente) where SaudeParamsEstaticos.idpaciente=?',
+		  [req.params.idPaciente],
+		  function(err, rows, fields) {
+			if (err) res.send('Error: não foi possível puxar dados do paciente especificado.');
+			else {
+				if(rows.length < 1){
+					res.send('Id Inválido');
+				} else {
+					res.json(rows);
+				}
+			}
+		});
+	});
+});
+
 router.get('/health/dynamic/:idPaciente/:data', function(req, res){
 
 	mysql.getConnection(function(err, connection) {
