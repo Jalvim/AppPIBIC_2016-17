@@ -48,7 +48,7 @@ router.route('/')
 					'Authorization': tokenRefreshAuthorization
 				},
 				form: {
-					clientId:'227WRB',
+					clientId:'22CNLZ',
 					grant_type:'authorization_code',
 					redirect_uri:'https://app.julianop.com.br/CadPul',
 					code:req.body.code
@@ -232,9 +232,9 @@ router.get('/codigo', function(req, res) {
 				'Authorization': tokenRefreshAuthorization
 			},
 			form: {
-				clientId:'227WRB',
+				clientId:'22CNLZ',
 				grant_type:'authorization_code',
-				redirect_uri:'http://julianop.com.br:3000/api/pulseira/codigo',
+				redirect_uri:'https://julianop.com.br/api/pulseira/codigo',
 				code:req.query.code
 			},
 			timeout: 3000
