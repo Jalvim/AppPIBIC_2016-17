@@ -40,6 +40,7 @@ router.route('/')
 
 		mysql.getConnection(function(err, connection){
 // 			console.log(req.cookies);
+			
 			var tokenRefreshAuthorization = 'Basic ' + new Buffer(`${senhas.clientID}:${senhas.clientSecret}`).toString('base64');
 			var oauthOptions = {
 				method: 'POST',
@@ -50,7 +51,7 @@ router.route('/')
 				form: {
 					clientId:'22CNLZ',
 					grant_type:'authorization_code',
-					redirect_uri:'https://app.julianop.com.br/CadPul',
+					redirect_uri:'https://app.julianop.com.br/pulseira',
 					code:req.body.code
 				},
 				timeout: 3000
@@ -62,6 +63,7 @@ router.route('/')
 				if (temp.hasOwnProperty('errors')) {
 
 					return res.send('Falha no processo de autenticação ao tentar registrar a pulseira');
+					//return res.send(temp);
 				}
 				console.log('Pulseira autenticada com sucesso');
 
