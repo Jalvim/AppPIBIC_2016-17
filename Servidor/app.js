@@ -137,7 +137,7 @@ app.get('/teste', function(req, res){
 
 app.get('/cookie', function(req,res){
 	res.cookie('lifeTrackerIdM', 20);
-	res.redirect('http://julianop.com.br:3000/?idMedico='+req.cookies.lifeTrackerIdM);
+	res.redirect('http://julianop.com.br/?idMedico='+req.cookies.lifeTrackerIdM);
 });
 
 app.listen(port, ()=> console.log('Server running on port 3000'));

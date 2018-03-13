@@ -232,7 +232,7 @@ module.exports = function(app) {
 		url:'http://127.0.0.1:3000/api/pulseira/',
 		form:{ 
 			codigoOAuth:'865ad44c39a9715cdfee9fde335e194d02b1bf91',
-			redirectUri:'http://julianop.com.br:3000/'
+			redirectUri:'http://julianop.com.br/'
 		}
 	};
 	app.optionsPutTestRequestPulseira = {

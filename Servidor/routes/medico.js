@@ -69,7 +69,7 @@ router.route('/')
 								if (err == null){
 									res.send("Conta criada com sucesso!");
 
-									var url = `http://julianop.com.br:3000/api/medico/confirm/${idMedico}`;
+									var url = `http://julianop.com.br/api/medico/confirm/${idMedico}`;
 									var verificationEmail = {
 										to: req.body.email,
 										subject: 'Confirmação de Email',
@@ -177,7 +177,7 @@ router.route('/')
 					});
 
 					if (req.body.hasOwnProperty('email')){
-						var url = `http://julianop.com.br:3000/api/medico/confirm/${req.body.idMedico}`;
+						var url = `http://julianop.com.br/medico/confirm/${req.body.idMedico}`;
 						var verificationEmail = {
 							to: req.body.email,
 							subject: 'Confirmação de mudança de Email',
