@@ -129,7 +129,7 @@ app.use('/api/compartilhamento', compartilhamentoRouter);
 
 app.use('/api/feed', feedRouter);
 
-port = process.env.PORT || 3000;
+port = process.env.PORT || 4567;
 
 app.get('/teste', function(req, res){
 	res.send(req.cookies);
@@ -140,7 +140,7 @@ app.get('/cookie', function(req,res){
 	res.redirect('http://julianop.com.br/?idMedico='+req.cookies.lifeTrackerIdM);
 });
 
-app.listen(port, ()=> console.log('Server running on port 3000'));
+app.listen(port, ()=> console.log('Server running on port 4567'));
 
 app.get('/', (req, res) => {
   res.send('HEY!')
