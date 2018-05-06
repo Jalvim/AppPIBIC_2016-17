@@ -13,7 +13,7 @@ var express = require('express'),
 	app = express(),
 	bodyParser = require('body-parser'),
 	cookieParser = require('cookie-parser');
-
+	cors = require('cors'),
 // 	importando rotas da aplicação
  	//setupOptionsVariables = require('./setupVariables.js'),
 	pacienteRouter = require('./routes/paciente.js'),
@@ -84,18 +84,42 @@ app.use(cookieParser({
 }));
 
 //Setup para uso do módulo body parser para possibilitar extração de parâmetros do corpo do request http
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json({limit:'50mb'}));
+app.use(bodyParser.urlencoded({ 
+	limit: '50mb',
+	extended: true,
+	parameterLimit:50000
+ }));
 
 //Tentativa de corrigir CORS para interação com front end
+//app.use(function(req, res, next) {
+//	 res.header("Access-Control-Allow-Origin", "*");
+  //	res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept,Authorization");
+//	res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,PATCH,OPTIONS');
+//	res.header("Access-Control-Allow-Credentials", true)
+
+  //next();
+//}); */
+
 app.use(function(req, res, next) {
-  res.setHeader("Access-Control-Allow-Origin", "*");
-  res.setHeader("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept,Authorization");
-	res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
-	res.header("Access-Control-Allow-Credentials", "false")
+  res.header("Access-Control-Allow-Origin","*");
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept,Authorization");
+  res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,PATCH,OPTIONS');
+  res.header("Access-Control-Allow-Credentials", "false")
 
   next();
 });
+
+/* app.all('*', function(req, res, next) {
+    res.header('Access-Control-Allow-Origin', 'URLs to trust of allow');
+    res.header('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
+    res.header('Access-Control-Allow-Headers', 'Content-Type');
+    if ('OPTIONS' == req.method) {
+    res.sendStatus(200);
+    } else {
+      next();
+    }
+  }); */
 
 //Setup da template engine escolhida para renderizar emails e páginas web
 app.set('view engine', 'pug');
@@ -105,7 +129,7 @@ app.set('views','./views');
 app.get('/', function(req, res) {
 	res.render('index');
 });
-
+app.options('*', cors());
 //Ações para alterar tabela paciente na base de dados, usar módulo local ./router/paciente.js
 app.use('/api/paciente', pacienteRouter);
 
@@ -129,7 +153,7 @@ app.use('/api/compartilhamento', compartilhamentoRouter);
 
 app.use('/api/feed', feedRouter);
 
-port = process.env.PORT || 3000;
+port = process.env.PORT || 4567;
 
 app.get('/teste', function(req, res){
 	res.send(req.cookies);
